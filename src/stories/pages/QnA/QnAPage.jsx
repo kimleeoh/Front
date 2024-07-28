@@ -10,19 +10,25 @@ const initialQuestionData = [
         id: 1,
         title: '나이키스트 어쩌구',
         content: '내용어쩌구',
-        subject: '디지털미디어원리'
+        subject: '디지털미디어원리',
+        time: '5분전',
+        read: '30'
     },
     {
         id: 2,
         title: '나이키스트 어쩌구',
         content: '내용어쩌구',
-        subject: '디지털미디어원리'
+        subject: '디지털미디어원리',
+        time: '5분전',
+        read: '30'
     },
     {
         id: 3,
         title: '나이키스트 어쩌구',
         content: '내용어쩌구',
-        subject: '디지털미디어원리'
+        subject: '디지털미디어원리',
+        time: '5분전',
+        read: '30'
     },
 ];
 
@@ -43,15 +49,19 @@ const QnAPage = () => {
     return (
         <Wrapper>
             <Header showIcon={false} text="Q&A" backButton={true} />
-
             {questionData.map((question) => (
                 <Questions
                     key={question.id}
                     title={question.title}
                     content={question.content}
                     subject={question.subject}
+                    time={question.time}
+                    read={question.read}
+
                 />
             ))}
+
+            
 
             <FixedBottomContainer>
                 <NavBar state='QnA' />
