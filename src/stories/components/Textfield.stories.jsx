@@ -1,8 +1,8 @@
-import Textfield from './Textfield';
+import TextField from './TextField';
 
 const meta = {
-  component: Textfield,
-  title: 'Components/Textfield',
+  component: TextField,
+  title: 'Components/TextField',
   taggs: ['autodocs']
 };
 

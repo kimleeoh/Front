@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 const Questions = ({ title, content, subject, time, read }) => {
     return (
+        <OutWrapper>
         <Wrapper>
             <Title>{title}</Title>
             <Content>{content}</Content>
@@ -12,6 +13,7 @@ const Questions = ({ title, content, subject, time, read }) => {
                 {time} | {subject} | 조회수 {read}
             </MetaContainer>
         </Wrapper>
+        </OutWrapper>
     );
 }
 
@@ -41,9 +43,7 @@ const Wrapper = styled.div`
     height: 140px;
     padding: 20px 10px;
     border-radius: 10px;
-    border-bottom: 1px solid #ACB2BB;
-
-    pointer: cursor;
+    cursor: pointer;
     &:active {
         background-color: #F1F7Fd;
         transition: all 0.2s ease;
@@ -55,8 +55,6 @@ const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
-
-    pointer: cursor;
 `;
 
 const Content = styled.div`
@@ -75,3 +73,9 @@ const MetaContainer = styled.div`
     
     font-size: 10px;
 `
+
+
+const OutWrapper = styled.div`
+    border-bottom: 1px solid #ACB2BB;
+    width: 400px;
+`;
