@@ -40,13 +40,23 @@ const Wrapper = styled.div`
     width: 380px;
     height: 140px;
     padding: 20px 10px;
+    border-radius: 10px;
     border-bottom: 1px solid #ACB2BB;
+
+    pointer: cursor;
+    &:active {
+        background-color: #F1F7Fd;
+        transition: all 0.2s ease;
+        scale: 0.98;
+    }
 `;
 
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
+
+    pointer: cursor;
 `;
 
 const Content = styled.div`

@@ -75,10 +75,13 @@ const IconButtonWrapper = styled.div`
   cursor: pointer;
 
   &:hover {
+    background-color: #acb2bb;
+    transition: all 0.3s ease;
+  }
+    &:active {
     transition: all 0.3s ease;
     scale: 0.95;
-    background-color: #acb2bb;
-  }
+}
 `;
 
 const CenterContent = styled.div`
