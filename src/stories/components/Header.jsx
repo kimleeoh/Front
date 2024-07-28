@@ -7,13 +7,11 @@ const Header = ({ showIcon, text, backButton }) => {
   //const navigate = useNavigate();
 
   return (
-    <TopLayout bgColor="white">
+    <TopLayout>
       {backButton && (
         <IconButtonWrapper>
           <IconButton
             src="/Icons/Icon_arrow.svg"
-            width="40px"
-            height="40px"
             //onClick={() => navigate(-1)}
           />
         </IconButtonWrapper>
@@ -49,19 +47,17 @@ const TopLayout = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  background-color: ${(props) => props.bgColor};
+  background: rgba(240, 242, 244, 0.30);
+  backdrop-filter: blur(3px);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 49px;
+  height: 88px;
   z-index: 1000;
   padding: 10px 10px 20px 10px;
 `;
 
 const IconButton = styled.img`
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
-    cursor: pointer;
 `;
 
 const IconButtonWrapper = styled.div`
@@ -69,14 +65,20 @@ const IconButtonWrapper = styled.div`
   left: 15px;
   top: 50%;
   transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   border-radius: 16px;
+  cursor: pointer;
 
-    &:hover {
-        background-color: #acb2bb;
-        transform: scale(0.95);
-        color: #434b60;
-    }
+  &:hover {
+    transition: all 0.3s ease;
+    scale: 0.95;
+    background-color: #acb2bb;
+  }
 `;
 
 const CenterContent = styled.div`
@@ -86,5 +88,5 @@ const CenterContent = styled.div`
   top:35%;
   font-size: 18px;
   font-weight: 700;
-  color: black;
+  color: #434b60;
 `;
