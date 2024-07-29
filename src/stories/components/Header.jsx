@@ -9,12 +9,12 @@ const Header = ({ showIcon, text, backButton }) => {
   return (
     <TopLayout>
       {backButton && (
-        <IconButtonWrapper>
+        <LeftContent>
           <IconButton
             src="/Icons/Icon_arrow.svg"
             //onClick={() => navigate(-1)}
           />
-        </IconButtonWrapper>
+        </LeftContent>
       )}
       
       <CenterContent>
@@ -24,6 +24,11 @@ const Header = ({ showIcon, text, backButton }) => {
           <span>{text}</span>
         )}
       </CenterContent>
+
+      <RightContent>
+        <IconButton src="Icons/Search.svg"/>
+      </RightContent>
+
     </TopLayout>
   );
 };
@@ -45,7 +50,6 @@ export default Header;
 const TopLayout = styled.div`
   position: fixed;
   top: 0;
-  left: 35.6%;
   width: 380px;
   background: rgba(240, 242, 244, 0.30);
   backdrop-filter: blur(3px);
@@ -60,9 +64,33 @@ const TopLayout = styled.div`
 const IconButton = styled.img`
 `;
 
-const IconButtonWrapper = styled.div`
+const LeftContent = styled.div`
   position: absolute;
   left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #acb2bb;
+    transition: all 0.3s ease;
+  }
+    &:active {
+    transition: all 0.3s ease;
+    scale: 0.95;
+}
+`;
+
+const RightContent = styled.div`
+  position: absolute;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
   width: 60px;

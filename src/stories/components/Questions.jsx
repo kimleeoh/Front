@@ -2,7 +2,7 @@ import react from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Questions = ({ title, content, subject, time, read, img }) => {
+const Questions = ({ title, content, subject, time, read, img, limit }) => {
     return (
         <OutWrapper>
             <Wrapper>
@@ -18,7 +18,8 @@ const Questions = ({ title, content, subject, time, read, img }) => {
                 </ContentWrapper>
 
                 <MetaContainer>
-                    {time}분 전 | {subject} | 조회수 {read}
+                    <span> {time}분 전 | {subject} | 조회수 {read} </span>
+                    <span style={{marginLeft: 'auto'}}> {limit === 'true' ? '등급 제한: A' : '등급 제한: 없음'} </span>
                 </MetaContainer>
             </Wrapper>
         </OutWrapper>
@@ -33,7 +34,8 @@ Questions.propTypes = {
     subject: PropTypes.string.isRequired,
     time: PropTypes.number.isRequired,
     read: PropTypes.number.isRequired,
-    img: PropTypes.string
+    img: PropTypes.string,
+    limit: PropTypes.string.isRequired
 };
 
 Questions.defaultProps = {
@@ -42,7 +44,8 @@ Questions.defaultProps = {
     subject: '과목',
     time: 0,
     read: 0,
-    img: null
+    img: null,
+    limit: 'false'
 };
 
 const Wrapper = styled.div`

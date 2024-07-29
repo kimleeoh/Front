@@ -5,6 +5,7 @@ import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import Questions from '../../components/Questions';
 import CheckBar from '../../components/CheckBar';
+import FixedQuestionIcon from '../../components/FixedQuestionIcon';
 
 const initialQuestionData = [
     {
@@ -14,7 +15,8 @@ const initialQuestionData = [
         subject: '디지털미디어원리',
         time: 5,
         read: 30,
-        img: '/Icons/1607-2.jpg'
+        img: '/Icons/1607-2.jpg',
+        limit: 'true'
     },
     {
         id: 2,
@@ -23,7 +25,8 @@ const initialQuestionData = [
         subject: '컴퓨터시스템개론',
         time: 10,
         read: 88,
-        img: '/Icons/1607-2.jpg'
+        img: '/Icons/1607-2.jpg',
+        limit: 'false'
     },
     {
         id: 3,
@@ -32,7 +35,8 @@ const initialQuestionData = [
         subject: '미디어제작및실습',
         time: 15,
         read: 302,
-        img: null
+        img: null,
+        limit: 'false'
     },
 ];
 
@@ -64,11 +68,11 @@ const QnAPage = () => {
                     time={question.time}
                     read={question.read}
                     img={question.img}
+                    limit={question.limit}
                 />
             ))}
 
-            
-
+            <FixedQuestionIcon/>
             <FixedBottomContainer>
                 <NavBar state='QnA' />
             </FixedBottomContainer>

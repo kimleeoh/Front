@@ -24,7 +24,7 @@ const CheckBox = ({disabledIconSrc, enabledIconSrc}) => {
     return(
         <Button onClick={handleCheckboxClick}>
             <img src={isChecked === 'true' ? enabledIconSrc : disabledIconSrc}></img>
-            <span style={{color: isChecked === 'true' ? 'black' : '#ACB2BB', fontSize: '12px', paddingLeft: '5px', }}>A등급 제한</span>
+            <span style={{color: isChecked === 'true' ? 'black' : '#ACB2BB', fontSize: '12px', paddingLeft: '5px' }}>A등급 제한</span>
         </Button>
     )
 }
@@ -50,6 +50,8 @@ const Button = styled.button`
     border-radius: 0px;
     border: 0px;
     background-color: white;
+
+    cursor: pointer;
 
     &:active {
         transition: all 0.3s ease;
