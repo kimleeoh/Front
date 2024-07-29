@@ -1,13 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 // NavBar Component
-const NavBar = ({ state }) => {
+const NavBar = () => {
+    const [activeButton, setActiveButton] = useState('Home');
+
+    const handleButtonClick = (buttonName) => {
+        setActiveButton(buttonName);
+    };
+
     return (
         <BottomLayout>
             <NavButton
-                isActive={state === 'QnA'}
+                isActive={activeButton === 'Home'}
+                onClick={() => handleButtonClick('Home')}
+                disabledIconSrc='/Icons/Home_d.svg'
+                enabledIconSrc='/Icons/Home_e.svg'
+            >
+                Home 
+            </NavButton>
+
+            <NavButton
+                isActive={activeButton === 'QnA'}
+                onClick={() => handleButtonClick('QnA')}
                 disabledIconSrc='/Icons/QnA_d.svg'
                 enabledIconSrc='/Icons/QnA_e.svg'
             >
@@ -15,31 +32,26 @@ const NavBar = ({ state }) => {
             </NavButton>
 
             <NavButton
-                isActive={state === 'Note'}
-                disabledIconSrc='/Icons/Note_d.svg'
-                enabledIconSrc='/Icons/Note_e.svg'
+                isActive={activeButton === 'Board'}
+                onClick={() => handleButtonClick('Board')}
+                disabledIconSrc='/Icons/Board_d.svg'
+                enabledIconSrc='/Icons/Board_e.svg'
             >
-                Note
+                Board
             </NavButton>
 
             <NavButton
-                isActive={state === 'Grade'}
+                isActive={activeButton === 'Tips'}
+                onClick={() => handleButtonClick('Tips')}
                 disabledIconSrc='/Icons/Grade_d.svg'
                 enabledIconSrc='/Icons/Grade_e.svg'
             >
-                Grade
-            </NavButton>
-
-            <NavButton
-                isActive={state === 'Point'}
-                disabledIconSrc='/Icons/Point_d.svg'
-                enabledIconSrc='/Icons/Point_e.svg'
-            >
-                Point 
+                Tips
             </NavButton>
             
             <NavButton
-                isActive={state === 'Mypage'}
+                isActive={activeButton === 'MyPage'}
+                onClick={() => handleButtonClick('MyPage')}
                 disabledIconSrc='/Icons/Mypage_d.svg'
                 enabledIconSrc='/Icons/Mypage_e.svg'
             >
@@ -50,17 +62,17 @@ const NavBar = ({ state }) => {
 };
 
 NavBar.propTypes = {
-    state: PropTypes.oneOf(['QnA', 'Note', 'Grade', 'Point', 'Mypage']).isRequired,
+    state: PropTypes.oneOf(['Home', 'QnA', 'Board', 'Tips', 'Mypage']).isRequired,
 };
 
 NavBar.defaultProps = {
-    state: 'QnA',
+    state: 'Home',
 };
 
 export default NavBar;
 
 // NavButton Component
-const NavButton = ({ isActive, disabledIconSrc, enabledIconSrc, children, ...props }) => {
+const NavButton = ({ isActive, disabledIconSrc, enabledIconSrc, children, onClick, ...props }) => {
     const [isHovered, setIsHovered] = React.useState(false);
 
     return (
@@ -68,6 +80,7 @@ const NavButton = ({ isActive, disabledIconSrc, enabledIconSrc, children, ...pro
             isActive={isActive}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            onClick={onClick}
             {...props}
         >
             <img src={isActive || isHovered ? enabledIconSrc : disabledIconSrc} alt={children} />

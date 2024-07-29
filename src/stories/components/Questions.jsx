@@ -2,17 +2,25 @@ import react from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Questions = ({ title, content, subject, time, read }) => {
+const Questions = ({ title, content, subject, time, read, img }) => {
     return (
         <OutWrapper>
-        <Wrapper>
-            <Title>{title}</Title>
-            <Content>{content}</Content>
+            <Wrapper>
+                <ContentWrapper>
+                    <TextWrapper>
+                        <Title>{title}</Title>
+                        <Content>{content}</Content>
+                    </TextWrapper>
 
-            <MetaContainer>
-                {time} | {subject} | 조회수 {read}
-            </MetaContainer>
-        </Wrapper>
+                    {img && <ImageContainer>
+                        <Image src={img}/>
+                    </ImageContainer>}
+                </ContentWrapper>
+
+                <MetaContainer>
+                    {time}분 전 | {subject} | 조회수 {read}
+                </MetaContainer>
+            </Wrapper>
         </OutWrapper>
     );
 }
@@ -23,16 +31,18 @@ Questions.propTypes = {
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     subject: PropTypes.string.isRequired,
-    time: PropTypes.string.isRequired,
-    read: PropTypes.string.isRequired,
+    time: PropTypes.number.isRequired,
+    read: PropTypes.number.isRequired,
+    img: PropTypes.string
 };
 
 Questions.defaultProps = {
     title: '제목',
     content: '내용',
     subject: '과목',
-    time: '시간',
-    read: '조회수'
+    time: 0,
+    read: 0,
+    img: null
 };
 
 const Wrapper = styled.div`
@@ -48,18 +58,39 @@ const Wrapper = styled.div`
         background-color: #F1F7Fd;
         transition: all 0.2s ease;
         scale: 0.98;
+        border-radius: 0px;
     }
 `;
+
+const ContentWrapper = styled.div`
+    display: flex;
+`
+
+const TextWrapper = styled.div`
+    align-items: flex-start;
+`
 
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
+    max-width: 295px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 `;
 
 const Content = styled.div`
     font-size: 16px;
     margin-bottom: 10px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 const Subject = styled.div`
@@ -74,8 +105,22 @@ const MetaContainer = styled.div`
     font-size: 10px;
 `
 
-
 const OutWrapper = styled.div`
     border-bottom: 1px solid #ACB2BB;
     width: 400px;
+`;
+
+const ImageContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15px;
+`;
+
+const Image = styled.img`
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 8px;
 `;

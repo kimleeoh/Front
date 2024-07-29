@@ -45,8 +45,8 @@ export default Header;
 const TopLayout = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: 35.6%;
+  width: 380px;
   background: rgba(240, 242, 244, 0.30);
   backdrop-filter: blur(3px);
   display: flex;
