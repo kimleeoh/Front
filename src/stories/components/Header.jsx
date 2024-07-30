@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const Header = ({ showIcon, text, backButton }) => {
+const Header = ({ showIcon, text, backButton, searchButton }) => {
   //const navigate = useNavigate();
 
   return (
@@ -24,10 +24,11 @@ const Header = ({ showIcon, text, backButton }) => {
           <span>{text}</span>
         )}
       </CenterContent>
-
-      <RightContent>
-        <IconButton src="Icons/Search.svg"/>
-      </RightContent>
+        {searchButton && (
+          <RightContent>
+            <IconButton src="Icons/Search.svg"/>
+          </RightContent>
+        )}
 
     </TopLayout>
   );
@@ -37,12 +38,14 @@ Header.propTypes = {
   showIcon: PropTypes.bool.isRequired,
   text: PropTypes.string.isRequired,
   backButton: PropTypes.bool.isRequired,
+  searchButton: PropTypes.bool.isRequired,
 };
 
 Header.defaultProps = {
   showIcon: false,
   text: 'Q&A',
   backButton: true,
+  searchButton: true
 };
 
 export default Header;
@@ -56,7 +59,7 @@ const TopLayout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 88px;
+  height: 80px;
   z-index: 1000;
   padding: 10px 10px 20px 10px;
 `;

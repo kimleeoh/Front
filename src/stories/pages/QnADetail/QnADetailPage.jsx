@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import QuestionsDetail from '../../components/QuestionsDetail'
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
-import Questions from '../../components/Questions';
-import CheckBar from '../../components/CheckBar';
-import FixedIcon from '../../components/FixedIcon';
 
 const initialQuestionData = [
     {
@@ -17,30 +15,10 @@ const initialQuestionData = [
         read: 30,
         img: '/Icons/1607-2.jpg',
         limit: 'true'
-    },
-    {
-        id: 2,
-        title: '자료구조',
-        content: '스택이랑 큐의 차이점을 자세히 설명해 주세요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ',
-        subject: '컴퓨터시스템개론',
-        time: 10,
-        read: 88,
-        img: '/Icons/1607-2.jpg',
-        limit: 'false'
-    },
-    {
-        id: 3,
-        title: '미디어제작및실습 포토샵',
-        content: '포토샵 재학생 인증 어떻게 하나요?? 알려주시면 좋은 행운이 찾아올 거예요~',
-        subject: '미디어제작및실습',
-        time: 15,
-        read: 302,
-        img: null,
-        limit: 'false'
-    },
-];
+    }
+]
 
-const QnAPage = () => {
+const QnADetailPage = () => {
     const [questionData, setQuestionData] = useState([]);
 
     useEffect(() => {
@@ -54,13 +32,11 @@ const QnAPage = () => {
             setQuestionData(initialQuestionData);
         }
     }, []);
-
     return (
         <Wrapper>
-            <Header showIcon={false} text="Q&A" backButton={true} searchButton={true}/>
-            <CheckBar/>
+            <Header showIcon={false} text="" backButton={true} searchButton={false}/>
             {questionData.map((question) => (
-                <Questions
+                <QuestionsDetail
                     key={question.id}
                     title={question.title}
                     content={question.content}
@@ -72,7 +48,6 @@ const QnAPage = () => {
                 />
             ))}
 
-            <FixedIcon src="/Icons/Question.svg"/>
             <FixedBottomContainer>
                 <NavBar state='QnA' />
             </FixedBottomContainer>
@@ -80,7 +55,7 @@ const QnAPage = () => {
     );
 };
 
-export default QnAPage;
+export default QnADetailPage;
 
 const Wrapper = styled.div`
     display: flex;

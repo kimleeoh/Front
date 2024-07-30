@@ -1,9 +1,8 @@
 import react from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
 
-const Questions = ({title, content, subject, time, read, img, limit }) => {
+const Tips = ({ title, content, subject, time, read, img, point }) => {
     return (
         <OutWrapper>
             <Wrapper>
@@ -14,39 +13,39 @@ const Questions = ({title, content, subject, time, read, img, limit }) => {
                     </TextWrapper>
 
                     {img && <ImageContainer>
-                        <Image src={img}/>
+                        <Image src={img} />
                     </ImageContainer>}
                 </ContentWrapper>
 
                 <MetaContainer>
                     <span> {time}분 전 | {subject} | 조회수 {read} </span>
-                    <span style={{marginLeft: 'auto'}}> {limit === 'true' ? '등급 제한: A' : '등급 제한: 없음'} </span>
+                    <span style={{marginLeft: 'auto'}}> {point}P </span>
                 </MetaContainer>
             </Wrapper>
         </OutWrapper>
     );
 }
 
-export default Questions;
+export default Tips;
 
-Questions.propTypes = {
+Tips.propTypes = {
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     subject: PropTypes.string.isRequired,
     time: PropTypes.number.isRequired,
     read: PropTypes.number.isRequired,
     img: PropTypes.string,
-    limit: PropTypes.string.isRequired
+    point: PropTypes.number.isRequired
 };
 
-Questions.defaultProps = {
+Tips.defaultProps = {
     title: '제목',
     content: '내용',
     subject: '과목',
     time: 0,
     read: 0,
     img: null,
-    limit: 'false'
+    point: 100
 };
 
 const Wrapper = styled.div`

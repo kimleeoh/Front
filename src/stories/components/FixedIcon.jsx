@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 
-const FixedQuestionIcon = () => {
+const FixedIcon = ({src}) => {
     return (
         <FixedIconContainer>
             <Button>
-                <img src="/Icons/Question.svg"/>
+                <img src={src} />
             </Button>
         </FixedIconContainer>
     )
 }
 
-export default FixedQuestionIcon;
+export default FixedIcon;
 
 const FixedIconContainer = styled.div`
     position: fixed;
