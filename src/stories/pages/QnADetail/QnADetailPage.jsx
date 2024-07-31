@@ -4,17 +4,45 @@ import QuestionsDetail from '../../components/QuestionsDetail'
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
+import AnswersDetail from '../../components/AnswersDetail';
+import UserComment from '../../components/UserComment';
 
 const initialQuestionData = [
     {
         id: 1,
-        title: '나이키스트 원리llllllllllllllllllllllll;;;;;;;;;;;;;;;;;;;;',
+        title: '나이키스트 원리',
         content: '나이키스트 관련 식 이렇게 이해하면 되나요?',
         subject: '디지털미디어원리',
         time: 5,
         read: 30,
         img: '/Icons/1607-2.jpg',
         limit: 'true'
+    }
+]
+
+const initialAnswerData = [
+    {
+        id: 1,
+        name: '오준우',
+        level: 15,
+        grade: 'A+',
+        figure: 1,
+        major: '글로벌미디어학부',
+        profileImg: '/Icons/Pen.svg',
+        content: '1번 답: 01101101',
+        img: "/Icons/1607-2.jpg"
+    }
+]
+
+const initialUserData = [
+    {
+        id: 1,
+        name: '이예진',
+        level: 13,
+        grade: 'A',
+        figure: 2,
+        major: '글로벌미디어학부',
+        profileImg: '/Icons/Pen.svg',
     }
 ]
 
@@ -34,7 +62,7 @@ const QnADetailPage = () => {
     }, []);
     return (
         <Wrapper>
-            <Header showIcon={false} text="" backButton={true} searchButton={false}/>
+            <Header showIcon={false} text={""} backButton={true} searchButton={false}/>
             {questionData.map((question) => (
                 <QuestionsDetail
                     key={question.id}
@@ -45,6 +73,30 @@ const QnADetailPage = () => {
                     read={question.read}
                     img={question.img}
                     limit={question.limit}
+                />
+            ))}
+
+            {initialAnswerData.map((answer) => (
+                <AnswersDetail
+                    name={answer.name}
+                    level={answer.level}
+                    grade={answer.grade}
+                    major={answer.major}
+                    figure={answer.figure}
+                    profileImg={answer.profileImg}
+                    content={answer.content}
+                    img={answer.img}
+                />
+            ))}
+
+            {initialUserData.map((user) => (
+                <UserComment
+                    name={user.name}
+                    level={user.level}
+                    grade={user.grade}
+                    major={user.major}
+                    figure={user.figure}
+                    profileImg={user.profileImg}
                 />
             ))}
 

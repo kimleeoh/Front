@@ -6,7 +6,7 @@ import styled from 'styled-components';
  * Primary UI component for user interaction
  */
 const Button = React.forwardRef(
-  ({ color, backgroundColor, hoverColor, hoverBackgroundColor, width, height, label, ...props }, ref) => {
+  ({ color, backgroundColor, hoverColor, hoverBackgroundColor, fontSize, width, height, label, disabled, ...props }, ref) => {
     return (
       <StyledButton
         ref={ref}
@@ -14,8 +14,10 @@ const Button = React.forwardRef(
         backgroundColor={backgroundColor}
         hoverColor={hoverColor}
         hoverBackgroundColor={hoverBackgroundColor}
+        fontSize={fontSize}
         width={width}
         height={height}
+        disabled={disabled}
         {...props}
       >
         {label}
@@ -44,6 +46,10 @@ Button.propTypes = {
   /**
    * Width of the button
    */
+  fontSize: PropTypes.string,
+  /**
+   * Size of the font
+   */
   width: PropTypes.string,
   /**
    * Height of the button
@@ -56,6 +62,7 @@ Button.propTypes = {
   /**
    * Optional click handler
    */
+  disabled: PropTypes.bool,
   onClick: PropTypes.func,
 };
 
@@ -64,8 +71,10 @@ Button.defaultProps = {
   backgroundColor: '#3182F7',
   hoverColor: 'white',
   hoverBackgroundColor: '#145c9e',
+  fontSize: '16px',
   width: '340px',
   height: '50px',
+  disabled: false,
   onClick: undefined,
 };
 
@@ -73,22 +82,26 @@ export default Button;
 
 const StyledButton = styled.button`
   font-family: 'Arial', sans-serif;
-  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  font-size: ${(props) => props.fontSize};
   padding: 11px 20px;
   border: none;
   border-radius: 16px;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
   color: ${(props) => props.color};
   background-color: ${(props) => props.backgroundColor};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   transition: all 0.3s ease;
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   &:hover {
-    color: ${(props) => props.hoverColor};
-    background-color: ${(props) => props.hoverBackgroundColor};
+    color: ${(props) => (props.disabled ? props.color : props.hoverColor)};
+    background-color: ${(props) => (props.disabled ? props.backgroundColor : props.hoverBackgroundColor)};
   }
   &:active {
     transition: all 0.3s ease;
-    scale: 0.95;
+    scale: ${(props) => (props.disabled ? 1 : 0.95)};
   }
 `;

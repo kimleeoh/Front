@@ -2,6 +2,7 @@ import react from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import Tool from './Tool';
 
 const Questions = ({title, content, subject, time, read, img, limit }) => {
     return (
@@ -17,6 +18,8 @@ const Questions = ({title, content, subject, time, read, img, limit }) => {
                     {img && <ImageContainer>
                         <Image src={img}/>
                     </ImageContainer>}
+
+                    <Tool like={10} report={false}/>
             </Wrapper>
         </OutWrapper>
     );
@@ -50,7 +53,7 @@ const Wrapper = styled.div`
     justify-content: center;
     width: 380px;
     padding: 20px 10px;
-    border-radius: 10px;
+    border-bottom: 1px solid #F1F2F4;
 `;
 
 
@@ -58,6 +61,8 @@ const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
 `;
 
 const Content = styled.div`
