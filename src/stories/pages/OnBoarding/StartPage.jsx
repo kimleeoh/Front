@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField';
+import Logo from './Logo'
 
 const StartPage = () => {
     const [isLoginMode, setIsLoginMode] = useState(false);
@@ -13,7 +14,7 @@ const StartPage = () => {
     return (
         <Wrapper>
             <LogoWrapper isLoginMode={isLoginMode}>
-                <img src="/Logo_main.svg" alt="Logo" />
+                <Logo/>
             </LogoWrapper>
             <ContentWrapper isLoginMode={isLoginMode}>
                 {isLoginMode ? (
