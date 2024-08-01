@@ -1,5 +1,5 @@
 // components/Logo.js
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
 // 애니메이션 정의
@@ -8,7 +8,7 @@ const jellyAnimation = keyframes`
         transform: scaleX(1) scaleY(1);
     }
     25% {
-        transform: scaleX(1.1) scaleY(0.9); // 가로로 늘어나기
+        transform: scaleX(1.05) scaleY(0.95); // 가로로 늘어나기
     }
     50% {
         transform: scaleX(1) scaleY(1); // 원래 상태로 돌아오기
@@ -23,15 +23,15 @@ const jellyAnimation = keyframes`
 
 // Logo 컴포넌트
 const Logo = () => {
-    const [isAnimating, setIsAnimating] = useState(false);
+    const [animationKey, setAnimationKey] = useState(0);
 
-    const handleClick = () => {
-        setIsAnimating(true);
-        setTimeout(() => setIsAnimating(false), 250); // 애니메이션 시간과 일치
-    };
+    const handleClick = useCallback(() => {
+        // 애니메이션을 강제로 초기화하기 위해 키를 변경
+        setAnimationKey(prevKey => prevKey + 1);
+    }, []);
 
     return (
-        <LogoWrapper isAnimating={isAnimating} onClick={handleClick}>
+        <LogoWrapper key={animationKey} onClick={handleClick}>
             <img src="/Logo_main.svg" alt="Logo" />
         </LogoWrapper>
     );
@@ -49,11 +49,7 @@ const LogoWrapper = styled.div`
     cursor: pointer;
     transition: transform 0.3s ease;
 
-    ${({ isAnimating }) =>
-        isAnimating &&
-        css`
-            animation: ${jellyAnimation} 0.25s ease forwards;
-        `}
+    animation: ${jellyAnimation} 0.25s ease forwards;
 
     img {
         max-width: 100%;

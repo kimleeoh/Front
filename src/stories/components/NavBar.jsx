@@ -25,9 +25,12 @@ const jellyAnimation = keyframes`
 // NavBar Component
 const NavBar = ({ state }) => {
     const [activeButton, setActiveButton] = React.useState(state);
+    const [animationKey, setAnimationKey] = React.useState(0);
 
     const handleButtonClick = (buttonName) => {
         setActiveButton(buttonName);
+        // 애니메이션을 강제로 초기화하기 위해 키를 변경
+        setAnimationKey((prevKey) => prevKey + 1);
     };
 
     return (
