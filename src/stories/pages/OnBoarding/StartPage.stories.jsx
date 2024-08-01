@@ -3,7 +3,7 @@ import StartPage from './StartPage';
 const meta = {
   component: StartPage,
   title: 'pages/OnBoarding/StartPage',
-  taggs: ['autodocs']
+  tags: ['autodocs']
 };
 
 export default meta;

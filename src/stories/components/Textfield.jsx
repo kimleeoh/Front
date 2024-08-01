@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const TextField = ({ label, value, onChange, disabled }) => {
+const TextField = ({ label, value, onChange, disabled, type }) => {
   const [inputValue, setInputValue] = useState(value);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -31,14 +31,14 @@ const TextField = ({ label, value, onChange, disabled }) => {
           {label}
         </StyledLabel>
         <Input
-          type="text"
+          type={type}
           value={inputValue}
           onChange={handleChange}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           disabled={disabled}
         />
-        {inputValue && !disabled && isFocused &&(
+        {inputValue && !disabled && isFocused && (
           <ClearButton onMouseDown={clearInput}>×</ClearButton>
         )}
       </InputWrapper>
@@ -52,11 +52,13 @@ TextField.propTypes = {
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   width: PropTypes.string,
+  type: PropTypes.string,
 };
 
 TextField.defaultProps = {
   disabled: false,
   width: '310px',
+  type: 'text',
 };
 
 export default TextField;

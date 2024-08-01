@@ -6,7 +6,7 @@ import styled from 'styled-components';
  * Primary UI component for user interaction
  */
 const Button = React.forwardRef(
-  ({ color, backgroundColor, hoverColor, hoverBackgroundColor, fontSize, width, height, label, disabled, ...props }, ref) => {
+  ({ color, backgroundColor, hoverColor, hoverBackgroundColor, fontSize, width, height, label, disabled, underline, ...props }, ref) => {
     return (
       <StyledButton
         ref={ref}
@@ -18,6 +18,7 @@ const Button = React.forwardRef(
         width={width}
         height={height}
         disabled={disabled}
+        underline={underline}
         {...props}
       >
         {label}
@@ -64,6 +65,10 @@ Button.propTypes = {
    */
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
+  /**
+   * Whether to apply underline to the text
+   */
+  underline: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -76,6 +81,7 @@ Button.defaultProps = {
   height: '50px',
   disabled: false,
   onClick: undefined,
+  underline: false,
 };
 
 export default Button;
@@ -85,6 +91,8 @@ const StyledButton = styled.button`
   font-weight: bold;
   display: flex;
   align-items: center;
+  justify-content: center;
+  white-space: nowrap;
   font-size: ${(props) => props.fontSize};
   padding: 11px 20px;
   border: none;
@@ -96,6 +104,7 @@ const StyledButton = styled.button`
   height: ${(props) => props.height};
   transition: all 0.3s ease;
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  text-decoration: ${(props) => (props.underline ? 'underline' : 'none')}; /* Underline 적용 */
   &:hover {
     color: ${(props) => (props.disabled ? props.color : props.hoverColor)};
     background-color: ${(props) => (props.disabled ? props.backgroundColor : props.hoverBackgroundColor)};

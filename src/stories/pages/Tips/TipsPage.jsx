@@ -72,7 +72,7 @@ const TipsPage = () => {
 
             <FixedIcon src="/Icons/Pen.svg"/>
             <FixedBottomContainer>
-                <NavBar state='QnA' />
+                <NavBar state='Tips' />
             </FixedBottomContainer>
         </Wrapper>
     )

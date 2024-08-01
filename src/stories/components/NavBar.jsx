@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 // NavBar Component
-const NavBar = () => {
-    const [activeButton, setActiveButton] = useState('Home');
+const NavBar = ({state}) => {
+    const [activeButton, setActiveButton] = useState(state);
 
     const handleButtonClick = (buttonName) => {
         setActiveButton(buttonName);
