@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import QuestionsDetail from '../../components/QuestionsDetail'
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
@@ -105,7 +106,6 @@ const QnADetailPage = () => {
             ))}
 
             <FixedBottomContainer>
-                <NavBar state='QnA' />
             </FixedBottomContainer>
         </Wrapper>
     );
