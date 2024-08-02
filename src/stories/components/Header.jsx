@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 const Header = ({ showIcon, text, backButton, searchButton }) => {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <TopLayout>
@@ -12,7 +12,7 @@ const Header = ({ showIcon, text, backButton, searchButton }) => {
         <LeftContent>
           <IconButton
             src="/Icons/Icon_arrow.svg"
-            //onClick={() => navigate(-1)}
+            onClick={() => navigate(-1)}
           />
         </LeftContent>
       )}

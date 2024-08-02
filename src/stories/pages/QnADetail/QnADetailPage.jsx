@@ -47,6 +47,7 @@ const initialUserData = [
 ]
 
 const QnADetailPage = () => {
+    const { id } = useParams();
     const [questionData, setQuestionData] = useState([]);
 
     useEffect(() => {
@@ -60,6 +61,9 @@ const QnADetailPage = () => {
             setQuestionData(initialQuestionData);
         }
     }, []);
+
+    const currentQuestion = questionData.find((question) => question.id === Number(id));
+    
     return (
         <Wrapper>
             <Header showIcon={false} text={""} backButton={true} searchButton={false}/>

@@ -57,11 +57,12 @@ const QnAPage = () => {
 
     return (
         <Wrapper>
-            <Header showIcon={false} text="Q&A" backButton={true} searchButton={true}/>
+            <Header showIcon={false} text="Q&A" backButton={false} searchButton={true}/>
             <CheckBar/>
             {questionData.map((question) => (
                 <Questions
                     key={question.id}
+                    id={question.id}  // id prop을 추가합니다.
                     title={question.title}
                     content={question.content}
                     subject={question.subject}
