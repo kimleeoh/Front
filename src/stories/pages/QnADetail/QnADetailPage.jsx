@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import QuestionsDetail from '../../components/QuestionsDetail'
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
@@ -47,6 +48,7 @@ const initialUserData = [
 ]
 
 const QnADetailPage = () => {
+    const { id } = useParams();
     const [questionData, setQuestionData] = useState([]);
 
     useEffect(() => {
@@ -60,6 +62,9 @@ const QnADetailPage = () => {
             setQuestionData(initialQuestionData);
         }
     }, []);
+
+    const currentQuestion = questionData.find((question) => question.id === Number(id));
+    
     return (
         <Wrapper>
             <Header showIcon={false} text={""} backButton={true} searchButton={false}/>
@@ -101,7 +106,6 @@ const QnADetailPage = () => {
             ))}
 
             <FixedBottomContainer>
-                <NavBar state='QnA' />
             </FixedBottomContainer>
         </Wrapper>
     );

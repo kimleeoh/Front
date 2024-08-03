@@ -56,7 +56,7 @@ const TipsPage = () => {
 
     return (
         <Wrapper>
-            <Header showIcon={false} text="Tips" backButton={true} searchButton={true}/>
+            <Header showIcon={false} text="Tips" backButton={false} searchButton={true}/>
             {TipsData.map((tip) => (
                 <Tips
                     key={tip.id}

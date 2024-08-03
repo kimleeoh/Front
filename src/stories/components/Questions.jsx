@@ -1,11 +1,12 @@
-import react from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-const Questions = ({title, content, subject, time, read, img, limit }) => {
+const Questions = ({ id, title, content, subject, time, read, img, limit }) => {
     return (
         <OutWrapper>
+            <StyledLink to={`/qna/${id}`}>
             <Wrapper>
                 <ContentWrapper>
                     <TextWrapper>
@@ -23,6 +24,7 @@ const Questions = ({title, content, subject, time, read, img, limit }) => {
                     <span style={{marginLeft: 'auto'}}> {limit === 'true' ? '등급 제한: A' : '등급 제한: 없음'} </span>
                 </MetaContainer>
             </Wrapper>
+            </StyledLink>
         </OutWrapper>
     );
 }
@@ -30,6 +32,7 @@ const Questions = ({title, content, subject, time, read, img, limit }) => {
 export default Questions;
 
 Questions.propTypes = {
+    id: PropTypes.number.isRequired, // id prop을 추가합니다.
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     subject: PropTypes.string.isRequired,
@@ -48,6 +51,11 @@ Questions.defaultProps = {
     img: null,
     limit: 'false'
 };
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: black;
+`;
 
 const Wrapper = styled.div`
     display: flex;
@@ -92,7 +100,7 @@ const Content = styled.div`
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    
+
     text-overflow: ellipsis;
     overflow: hidden;
 `;
@@ -105,7 +113,7 @@ const Subject = styled.div`
 const MetaContainer = styled.div`
     display: flex;
     margin-top: auto;
-    
+
     font-size: 10px;
 `
 

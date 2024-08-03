@@ -1,7 +1,8 @@
 // components/NavBar.js
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import PropTypes from 'prop-types';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // 애니메이션 정의
 const jellyAnimation = keyframes`
@@ -23,59 +24,80 @@ const jellyAnimation = keyframes`
 `;
 
 // NavBar Component
-const NavBar = ({ state }) => {
-    const [activeButton, setActiveButton] = React.useState(state);
-    const [animationKey, setAnimationKey] = React.useState(0);
+const NavBar = ({ initialState }) => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [activeButton, setActiveButton] = useState(initialState);
+    const [isAnimating, setIsAnimating] = useState(false);
 
-    const handleButtonClick = (buttonName) => {
+    useEffect(() => {
+        const pathToStateMap = {
+            '/home': 'Home',
+            '/qna': 'QnA',
+            '/tips': 'Tips',
+        };
+
+        const newActiveButton = pathToStateMap[location.pathname] || 'Home';
+        setActiveButton(newActiveButton);
+        setIsAnimating(true);
+        const timer = setTimeout(() => setIsAnimating(false), 250);
+        return () => clearTimeout(timer);
+    }, [location.pathname]);
+
+    const handleButtonClick = useCallback((buttonName, path) => {
         setActiveButton(buttonName);
-        // 애니메이션을 강제로 초기화하기 위해 키를 변경
-        setAnimationKey((prevKey) => prevKey + 1);
-    };
+        setIsAnimating(true);
+        navigate(path);
+    }, [navigate]);
 
     return (
         <BottomLayout>
             <NavButton
                 isActive={activeButton === 'Home'}
-                onClick={() => handleButtonClick('Home')}
+                onClick={() => handleButtonClick('Home', '/home')}
                 disabledIconSrc='/Icons/Home_d.svg'
                 enabledIconSrc='/Icons/Home_e.svg'
+                isAnimating={isAnimating && activeButton === 'Home'}
             >
                 Home 
             </NavButton>
 
             <NavButton
                 isActive={activeButton === 'QnA'}
-                onClick={() => handleButtonClick('QnA')}
+                onClick={() => handleButtonClick('QnA', '/qna')}
                 disabledIconSrc='/Icons/QnA_d.svg'
                 enabledIconSrc='/Icons/QnA_e.svg'
+                isAnimating={isAnimating && activeButton === 'QnA'}
             >
                 QnA
             </NavButton>
 
             <NavButton
                 isActive={activeButton === 'Board'}
-                onClick={() => handleButtonClick('Board')}
+                onClick={() => handleButtonClick('Board', '/board')}
                 disabledIconSrc='/Icons/Board_d.svg'
                 enabledIconSrc='/Icons/Board_e.svg'
+                isAnimating={isAnimating && activeButton === 'Board'}
             >
                 Board
             </NavButton>
 
             <NavButton
                 isActive={activeButton === 'Tips'}
-                onClick={() => handleButtonClick('Tips')}
+                onClick={() => handleButtonClick('Tips', '/tips')}
                 disabledIconSrc='/Icons/Grade_d.svg'
                 enabledIconSrc='/Icons/Grade_e.svg'
+                isAnimating={isAnimating && activeButton === 'Tips'}
             >
                 Tips
             </NavButton>
             
             <NavButton
                 isActive={activeButton === 'MyPage'}
-                onClick={() => handleButtonClick('MyPage')}
+                onClick={() => handleButtonClick('MyPage', '/mypage')}
                 disabledIconSrc='/Icons/Mypage_d.svg'
                 enabledIconSrc='/Icons/Mypage_e.svg'
+                isAnimating={isAnimating && activeButton === 'MyPage'}
             >
                 My Page
             </NavButton>
@@ -84,37 +106,30 @@ const NavBar = ({ state }) => {
 };
 
 NavBar.propTypes = {
-    state: PropTypes.oneOf(['Home', 'QnA', 'Board', 'Tips', 'MyPage']).isRequired,
+    initialState: PropTypes.oneOf(['Home', 'QnA', 'Board', 'Tips', 'MyPage']).isRequired,
 };
 
 NavBar.defaultProps = {
-    state: 'Home',
+    initialState: 'Home',
 };
 
 export default NavBar;
 
 // NavButton Component
-const NavButton = ({ isActive, disabledIconSrc, enabledIconSrc, children, onClick, ...props }) => {
-    const [isAnimating, setIsAnimating] = React.useState(false);
-    const [isHovered, setIsHovered] = React.useState(false);
-
-    const handleClick = () => {
-        setIsAnimating(true);
-        setTimeout(() => setIsAnimating(false), 250); // 애니메이션 지속 시간
-        if (onClick) onClick();
-    };
+const NavButton = ({ isActive, disabledIconSrc, enabledIconSrc, children, onClick, isAnimating, ...props }) => {
+    const [isHovered, setIsHovered] = useState(false);
 
     return (
         <Button
             isActive={isActive}
-            isAnimating={isAnimating}
             isHovered={isHovered}
+            isAnimating={isAnimating} // 애니메이션 상태 전달
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            onClick={handleClick}
+            onClick={onClick}
             {...props}
         >
-            <img src={isActive || isAnimating || isHovered ? enabledIconSrc : disabledIconSrc} alt={children} />
+            <img src={isActive || isHovered ? enabledIconSrc : disabledIconSrc} alt={children} />
             {children}
         </Button>
     );
@@ -126,6 +141,7 @@ NavButton.propTypes = {
     enabledIconSrc: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
     onClick: PropTypes.func,
+    isAnimating: PropTypes.bool.isRequired,
 };
 
 // 버튼 스타일 정의
