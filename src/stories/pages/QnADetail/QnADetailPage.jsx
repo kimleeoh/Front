@@ -39,8 +39,8 @@ const initialUserData = [
         id: 1,
         name: '이예진',
         level: 13,
-        grade: 'A',
-        figure: 2,
+        grade: null,
+        figure: null,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
     }

@@ -17,8 +17,8 @@ const Tool = ({like, report}) => {
             />
 
             <ToolButton
-                disabledIconSrc='/Icons/Save.svg'
-                enabledIconSrc='/Icons/Save.svg'
+                disabledIconSrc='/Icons/Save_d.svg'
+                enabledIconSrc='/Icons/Save_e.svg'
             />
 
             <ToolButton

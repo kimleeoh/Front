@@ -7,14 +7,22 @@ const User = ({name, level, grade, figure, major, profileImg}) => {
     return (
         <OutWrapper>
             <Wrapper>
-                {figure <= 1 ? (
-                <SubWrapper>
-                    <img src="/Icons/Profile.svg" />
-                    <ProfileContainer>
-                        <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
-                        <MajorName>{major} {name}<span style={{color: '#3182F7'}}>님은 답변 등록이 가능합니다.</span></MajorName>
-                     </ProfileContainer>
-                </SubWrapper>
+                {figure === null ? (
+                    <SubWrapper>
+                        <img src="/Icons/Profile.svg" />
+                        <ProfileContainer>
+                            <LevelGrade>Lv. {level} | 미정</LevelGrade>
+                            <MajorName><span style={{color: '#ACB2BB'}}>성적 입력 후 답변이 가능합니다.</span></MajorName>
+                        </ProfileContainer>
+                    </SubWrapper>
+                ) : figure <= 1 ? (
+                    <SubWrapper>
+                        <img src="/Icons/Profile.svg" />
+                        <ProfileContainer>
+                            <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
+                            <MajorName>{major} {name}<span style={{color: '#3182F7'}}>님은 답변 등록이 가능합니다.</span></MajorName>
+                        </ProfileContainer>
+                    </SubWrapper>
                 ) : (
                     <SubWrapper>
                         <img src="/Icons/Profile.svg" />
@@ -24,7 +32,9 @@ const User = ({name, level, grade, figure, major, profileImg}) => {
                         </ProfileContainer>
                     </SubWrapper>
                 )}
-                {figure <= 1 ? (
+                {figure === null ? (
+                    <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} disabled={true} style={{marginLeft: 'auto', marginTop: '5px'}}></Button>
+                ) : figure <= 1 ? (
                     <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} style={{marginLeft: 'auto', marginTop: '5px'}}></Button>
                 ) : (
                     <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} disabled={true} style={{marginLeft: 'auto', marginTop: '5px'}}></Button>
@@ -48,7 +58,7 @@ User.propTypes = {
 User.defaultProps = {
     name: '이름',
     level: 1,
-    grade: '성적',
+    grade: null,
     figure: null,
     major: '전공',
     profileImg: '/Icons/profile.svg'
