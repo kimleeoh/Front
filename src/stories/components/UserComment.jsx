@@ -2,8 +2,37 @@ import react from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Button from './Button';
+import { useState } from 'react';
+import ImageUploader from './ImageUploader';
+import TextField from '../components/TextField'
 
 const User = ({name, level, grade, figure, major, profileImg}) => {
+    const [isAnswered, setIsAnswered] = useState(false);
+
+    const handleAnswerSubmit = () => {
+        setIsAnswered(true);
+    };
+
+    if (isAnswered) {
+        return (
+            <OutWrapper>
+                <Wrapper>
+                    <SubWrapper>
+                        <img src="/Icons/Profile.svg" />
+                        <ProfileContainer>
+                            <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
+                            <MajorName>{major} {name}</MajorName>
+                        </ProfileContainer>
+                        <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} style={{marginLeft: 'auto'}}></Button>
+                    </SubWrapper>
+                    <PlaceHolder>답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다.<br/><br/>
+                    서비스 운영 정책에 따라주세요.</PlaceHolder>
+                    <ImageUploader/>
+                </Wrapper>
+            </OutWrapper>
+        );
+    }
+
     return (
         <OutWrapper>
             <Wrapper>
@@ -35,7 +64,7 @@ const User = ({name, level, grade, figure, major, profileImg}) => {
                 {figure === null ? (
                     <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} disabled={true} style={{marginLeft: 'auto', marginTop: '5px'}}></Button>
                 ) : figure <= 1 ? (
-                    <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} style={{marginLeft: 'auto', marginTop: '5px'}}></Button>
+                    <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} style={{marginLeft: 'auto', marginTop: '5px'}} onClick={handleAnswerSubmit}></Button>
                 ) : (
                     <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} disabled={true} style={{marginLeft: 'auto', marginTop: '5px'}}></Button>
                 )}
@@ -126,3 +155,12 @@ const Image = styled.img`
     object-fit: cover;
     object-position: center;
 `;
+
+const PlaceHolder = styled.div`
+    display: flex; 
+    padding: 20px 20px;
+
+    font-size: 12px;
+    color: #ACB2BB;
+    
+`

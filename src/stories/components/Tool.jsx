@@ -3,29 +3,30 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-const Tool = ({like, report}) => {
+const Tool = ({like, save, notification, report}) => {
     return(
         <Wrapper>
             <ToolButton 
                 disabledIconSrc='/Icons/Up.svg'
                 enabledIconSrc='/Icons/Up.svg'
             />
-            <span style={{marginLeft: '5px', marginRight: '5px'}}>{like}</span>
+            <span style={{marginLeft: '5px', marginRight: '5px', color: '#3182F7'}}>{like}</span>
             <ToolButton
                 disabledIconSrc='/Icons/Down.svg'
                 enabledIconSrc='/Icons/Down.svg'
             />
-
-            <ToolButton
+            {save && (
+                <ToolButton
                 disabledIconSrc='/Icons/Save_d.svg'
                 enabledIconSrc='/Icons/Save_e.svg'
             />
-
-            <ToolButton
+            )}
+            {notification && (
+                <ToolButton
                 disabledIconSrc='/Icons/Notification_d.svg'
                 enabledIconSrc='/Icons/Notification_e.svg'
             />
-
+            )}
             {report && (
                 <Button style={{marginLeft: 'auto'}}><img src="/Icons/report.svg"></img></Button>
             )}
@@ -47,11 +48,16 @@ const ToolButton = ({disabledIconSrc, enabledIconSrc}) => {
 
 Tool.propTypes = {
     like: PropTypes.number.isRequired,
+    save: PropTypes.bool.isRequired,
+    notification: PropTypes.bool.isRequired,
     report: PropTypes.bool.isRequired,
+
 };
   
 Tool.defaultProps = {
     like: 0,
+    save: true,
+    notification: true,
     report: true,
 };
 

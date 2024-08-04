@@ -18,7 +18,27 @@ const initialQuestionData = [
         read: 30,
         img: '/Icons/1607-2.jpg',
         limit: 'true'
-    }
+    },
+    {
+        id: 2,
+        title: '자료구조',
+        content: '스택이랑 큐의 차이점을 자세히 설명해 주세요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ',
+        subject: '컴퓨터시스템개론',
+        time: 10,
+        read: 88,
+        img: '/Icons/1607-2.jpg',
+        limit: 'false'
+    },
+    {
+        id: 3,
+        title: '미디어제작및실습 포토샵',
+        content: '포토샵 재학생 인증 어떻게 하나요?? 알려주시면 좋은 행운이 찾아올 거예요~',
+        subject: '미디어제작및실습',
+        time: 15,
+        read: 302,
+        img: null,
+        limit: 'false'
+    },
 ]
 
 const initialAnswerData = [
@@ -32,6 +52,28 @@ const initialAnswerData = [
         profileImg: '/Icons/Pen.svg',
         content: '1번 답: 01101101',
         img: "/Icons/1607-2.jpg"
+    },
+    {
+        id: 2,
+        name: '김난슬',
+        level: 15,
+        grade: 'A+',
+        figure: 1,
+        major: '글로벌미디어학부',
+        profileImg: '/Icons/Pen.svg',
+        content: '몰라이씨',
+        img: "/Icons/1607-2.jpg"
+    },
+    {
+        id: 3,
+        name: '이동현',
+        level: 15,
+        grade: 'A+',
+        figure: 1,
+        major: '글로벌미디어학부',
+        profileImg: '/Icons/Pen.svg',
+        content: '채택해 주세요.',
+        img: "/Icons/1607-2.jpg"
     }
 ]
 
@@ -40,8 +82,8 @@ const initialUserData = [
         id: 1,
         name: '이예진',
         level: 13,
-        grade: null,
-        figure: null,
+        grade: 'A+',
+        figure: 1,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
     }
@@ -50,49 +92,59 @@ const initialUserData = [
 const QnADetailPage = () => {
     const { id } = useParams();
     const [questionData, setQuestionData] = useState([]);
+    const [answerData, setAnswerData] = useState([]);
 
     useEffect(() => {
         //로컬 스토리지에서 질문 데이터 로드 또는 초기화
         localStorage.removeItem('questionData');
+        localStorage.removeItem('answerData');
         const questionData = localStorage.getItem('questionData');
+        const answerData = localStorage.getItem('answerData');
         if (questionData) {
             setQuestionData(JSON.parse(questionData));
         } else {
             localStorage.setItem('questionData', JSON.stringify(initialQuestionData));
             setQuestionData(initialQuestionData);
         }
+        if (answerData) {
+            setAnswerData(JSON.parse(answerData));
+        } else {
+            localStorage.setItem('answerData', JSON.stringify(initialAnswerData));
+            setAnswerData(initialAnswerData);
+        }
     }, []);
 
     const currentQuestion = questionData.find((question) => question.id === Number(id));
+    const currentAnswer = answerData.find((answer) => answer.id === Number(id));
     
     return (
         <Wrapper>
             <Header showIcon={false} text={""} backButton={true} searchButton={false}/>
-            {questionData.map((question) => (
+            {questionData.find(question => question.id === Number(id)) && (
                 <QuestionsDetail
-                    key={question.id}
-                    title={question.title}
-                    content={question.content}
-                    subject={question.subject}
-                    time={question.time}
-                    read={question.read}
-                    img={question.img}
-                    limit={question.limit}
+                    key={currentQuestion.id}
+                    title={currentQuestion.title}
+                    content={currentQuestion.content}
+                    subject={currentQuestion.subject}
+                    time={currentQuestion.time}
+                    read={currentQuestion.read}
+                    img={currentQuestion.img}
+                    limit={currentQuestion.limit}
                 />
-            ))}
+            )}
 
-            {initialAnswerData.map((answer) => (
+            {answerData.find(answer => answer.id === Number(id)) && (
                 <AnswersDetail
-                    name={answer.name}
-                    level={answer.level}
-                    grade={answer.grade}
-                    major={answer.major}
-                    figure={answer.figure}
-                    profileImg={answer.profileImg}
-                    content={answer.content}
-                    img={answer.img}
+                    name={currentAnswer.name}
+                    level={currentAnswer.level}
+                    grade={currentAnswer.grade}
+                    major={currentAnswer.major}
+                    figure={currentAnswer.figure}
+                    profileImg={currentAnswer.profileImg}
+                    content={currentAnswer.content}
+                    img={currentAnswer.img}
                 />
-            ))}
+            )}
 
             {initialUserData.map((user) => (
                 <UserComment

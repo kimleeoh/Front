@@ -1,6 +1,7 @@
 import react from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import Tool from './Tool';
 
 const Answers = ({name, level, grade, major, profileImg, content, img }) => {
     return (
@@ -19,6 +20,7 @@ const Answers = ({name, level, grade, major, profileImg, content, img }) => {
                 {img && <ImageContainer>
                     <Image src={img}/>
                 </ImageContainer>}
+                <Tool like={10} save={false} notification={false} report={false}/>
             </Wrapper>
         </OutWrapper>
     );
