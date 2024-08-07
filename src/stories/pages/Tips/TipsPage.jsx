@@ -5,6 +5,7 @@ import Tips from '../../components/Tips';
 import FixedIcon from '../../components/FixedIcon';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
+import BadgeFilter from '../../components/BadgeFilter';
 
 const initialTipsData = [
     {
@@ -57,6 +58,7 @@ const TipsPage = () => {
     return (
         <Wrapper>
             <Header showIcon={false} text="Tips" backButton={false} searchButton={true}/>
+            <BadgeFilter/>
             {TipsData.map((tip) => (
                 <Tips
                     key={tip.id}

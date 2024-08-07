@@ -1,39 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const SelectBoard = ({ options, placeholder, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false);
-    if (onChange) {
-      onChange(option);
+    if (option.subcategories && option.subcategories.length > 0) {
+      setSelectedOptions([...selectedOptions, option]);
+    } else {
+      setSelectedOptions([...selectedOptions, option]);
+      setIsOpen(false);
+      if (onChange) {
+        onChange(option);
+      }
     }
   };
 
+  const handleBackClick = () => {
+    setSelectedOptions(selectedOptions.slice(0, -1));
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Ensure currentOptions is always an array
+  const currentOptions = selectedOptions.length === 0 
+    ? options 
+    : (selectedOptions[selectedOptions.length - 1]?.subcategories || []);
+
   return (
-    <DropdownContainer>
+    <DropdownContainer ref={dropdownRef}>
       <DropdownHeader onClick={toggleDropdown}>
-        {selectedOption ? selectedOption.label : placeholder}
-        <ArrowIcon isOpen={isOpen}>▼</ArrowIcon>
+        {selectedOptions.length === 0 
+          ? placeholder 
+          : selectedOptions.map(option => option.label).join(' > ')}
+        <ArrowIcon isOpen={isOpen}><img src='/Icons/Arrow.svg' alt="arrow" /></ArrowIcon>
       </DropdownHeader>
       {isOpen && (
         <DropdownListContainer>
           <DropdownList>
-            {options.map((option) => (
-              <ListItem
-                key={option.value}
-                onClick={() => handleOptionClick(option)}
-              >
-                {option.label}
-              </ListItem>
-            ))}
+            {currentOptions.length > 0 ? (
+              currentOptions.map((option) => (
+                <ListItem
+                  key={option.value}
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option.label}
+                </ListItem>
+              ))
+            ) : (
+              <ListItem></ListItem>
+            )}
           </DropdownList>
+          {selectedOptions.length > 0 && (
+            <BackButton onClick={handleBackClick}>뒤로 가기</BackButton>
+          )}
         </DropdownListContainer>
       )}
     </DropdownContainer>
@@ -45,8 +81,15 @@ export default SelectBoard;
 SelectBoard.propTypes = {
     options: PropTypes.arrayOf(
         PropTypes.shape({
-        value: PropTypes.string.isRequired,
-        label: PropTypes.string.isRequired,
+            value: PropTypes.string.isRequired,
+            label: PropTypes.string.isRequired,
+            subcategories: PropTypes.arrayOf(
+                PropTypes.shape({
+                    value: PropTypes.string.isRequired,
+                    label: PropTypes.string.isRequired,
+                    subcategories: PropTypes.array,
+                })
+            ),
         })
     ).isRequired,
     placeholder: PropTypes.string,
@@ -58,21 +101,23 @@ SelectBoard.defaultProps = {
 };
 
 const DropdownContainer = styled.div`
-    margin-top: 5px;
     font-family: Arial, sans-serif;
     font-size: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #ACB2BB;
+    position: relative;
 `;
 
 const DropdownHeader = styled.div`
     width: 380px;
-    height: 50px;
-    border-bottom: 1px solid #ACB2BB;
+    height: 30px;
     border-radius: none;
     background-color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    color: #434B60;
 `;
 
 const ArrowIcon = styled.span`
@@ -83,6 +128,7 @@ const ArrowIcon = styled.span`
 const DropdownListContainer = styled.div`
   position: absolute;
   top: 100%;
+  left: 0;
   width: 100%;
   z-index: 1;
   border: 1px solid #ddd;
@@ -106,4 +152,12 @@ const ListItem = styled.li`
   &:hover {
     background-color: #f0f0f0;
   }
+`;
+
+const BackButton = styled.div`
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  background-color: #f0f0f0;
+  border-top: 1px solid #ddd;
 `;

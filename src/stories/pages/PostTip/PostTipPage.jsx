@@ -11,7 +11,7 @@ import ImageUploader from '../../components/ImageUploader2';
 import PointInput from '../../components/PointInput';
 import CheckBar from '../../components/CheckBar';
 import Button from '../../components/Button'
-import CategorySelector from "../../components/CategorySelector"
+import BadgeFilter from '../../components/BadgeFilter';
 
 const initialUserData = [
     {
@@ -19,13 +19,7 @@ const initialUserData = [
         name: '이예진',
         point: 1020
     }
-];
-
-const categories = [
-    { name: 'Category 1', subcategories: ['Subcategory 1.1', 'Subcategory 1.2'] },
-    { name: 'Category 2', subcategories: ['Subcategory 2.1', 'Subcategory 2.2'] },
-    // Add more categories and subcategories as needed
-];
+]
 
 const PostQuestionPage = () => {
     const boardOptions = [
@@ -64,11 +58,9 @@ const PostQuestionPage = () => {
     ];
 
     const [userData, setUserData] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
     useEffect(() => {
-        // Local storage operations for user data
+        //로컬 스토리지에서 질문 데이터 로드 또는 초기화
         localStorage.removeItem('userData');
         const userData = localStorage.getItem('userData');
         if (userData) {
@@ -79,36 +71,31 @@ const PostQuestionPage = () => {
         }
     }, []);
 
-    const handleCategorySelect = (category, subcategory) => {
-        setSelectedCategory(category);
-        setSelectedSubcategory(subcategory);
-    };
-
     return (
         <Wrapper>
-            <Header showIcon={false} text="질문 작성하기" backButton={true} searchButton={false} />
-            <TextInput width={'380px'} height={'30px'} fontSize={'15px'} placeholder={'제목 입력'} />
-            <SelectBoard options={boardOptions} />
-            <TextArea width={'380px'} height={'300px'} fontSize={'15px'}
-                placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."} />
-            <ImageUploader />
+            <Header showIcon={false} text="질문 작성하기" backButton={true} searchButton={false}/>
+            <TextInput width={'380px'} height={'30px'} fontSize={'15px'} placeholder={'제목 입력'}/>
+            <SelectBoard options={boardOptions}/>
+            <BadgeFilter/>
+            <TextArea width={'380px'} height={'300px'} fontSize={'15px'} 
+            placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."}/>
+            <ImageUploader/>
             {initialUserData.map((user) => (
                 <PointInput
-                    key={user.id}
                     name={user.name}
                     point={user.point}
                 />
             ))}
-            <CheckBar text={'A 이상의 답변만 받고 싶어요.'} />
+            <CheckBar text={'A 이상의 답변만 받고 싶어요.'}/>
             <Condition>
-                <span style={{ fontSize: '10px', color: '#D00303', marginLeft: '20px' }}>100p 이상 입력해야 조건을 제시할 수 있습니다.</span>
+                <span style={{fontSize: '10px', color: '#D00303', marginLeft: '20px'}}>100p 이상 입력해야 조건을 제시할 수 있습니다.</span>
             </Condition>
-            <Button label={'등록하기'} width={'380px'} style={{ marginTop: '15px' }} />
+            <Button label={'등록하기'} width={'380px'} style={{marginTop: '15px'}}/>
             <FixedBottomContainer>
                 <NavBar state='QnA' />
             </FixedBottomContainer>
         </Wrapper>
-    );
+    )
 }
 
 export default PostQuestionPage;
@@ -126,4 +113,4 @@ const Condition = styled.div`
     display: flex;
     align-items: center;
     width: 380px;
-`;
+`

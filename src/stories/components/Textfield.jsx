@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const TextField = ({ label, value, onChange, disabled, type }) => {
+const TextField = ({ label, value, onChange, disabled, type, width }) => {
   const [inputValue, setInputValue] = useState(value);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -67,7 +67,7 @@ const TextFieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 10px 0;
-  width: 310px;
+  width: ${props => props.width};
   height: 50px;
   position: relative;
 `;

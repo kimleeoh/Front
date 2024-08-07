@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const TextArea = ({ width, height, placeholder, fontColor, backgroundColor, fontSize, onChange }) => {
+const TextInput = ({ width, height, placeholder, fontColor, backgroundColor, fontSize, onChange}) => {
     const [content, setContent] = useState('');
     const [isFocused, setIsFocused] = useState(false);
 
     const handleChange = (e) => {
         setContent(e.target.value);
         if (onChange) {
-            onChange(e.target.value);
+        onChange(e.target.value);
         }
     };
 
@@ -24,7 +24,7 @@ const TextArea = ({ width, height, placeholder, fontColor, backgroundColor, font
     };
 
     return (
-        <StyledTextArea
+        <StyledTextInput
             value={content}
             onChange={handleChange}
             placeholder={isFocused ? '' : placeholder}
@@ -39,15 +39,17 @@ const TextArea = ({ width, height, placeholder, fontColor, backgroundColor, font
     );
 };
 
-export default TextArea;
+export default TextInput;
 
-const StyledTextArea = styled.textarea`
-    margin-top: 20px;
+const StyledTextInput = styled.input`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: ${props => props.width};
     height: ${props => props.height};
     padding: 10px;
     border: none;
-
+    border-bottom: 1px solid #ACB2BB;
     background-color: ${props => props.backgroundColor};
     color: ${props => props.fontColor};
     font-size: ${props => props.fontSize};
@@ -55,21 +57,13 @@ const StyledTextArea = styled.textarea`
     resize: none;
     outline: none;
 
-    overflow-y: auto;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-
     &::placeholder {
-        color: #ACB2BB;
+        color: #434B60;
         font-size: ${props => props.fontSize};
-        white-space: pre-wrap;
     }
-
-    font-family: Arial, sans-serif;
-
 `;
 
-TextArea.propTypes = {
+TextInput.propTypes = {
     width: PropTypes.string,
     height: PropTypes.string,
     placeholder: PropTypes.string,
@@ -79,11 +73,11 @@ TextArea.propTypes = {
     onChange: PropTypes.func
 };
 
-TextArea.defaultProps = {
+TextInput.defaultProps = {
     width: '100%',
-    height: '100px',
+    height: '30px',
     placeholder: '내용을 입력하세요.',
-    fontColor: '#434B60',
+    fontColor: '#000',
     backgroundColor: 'white',
     fontSize: '18px'
 };

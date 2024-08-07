@@ -58,7 +58,7 @@ const QnAPage = () => {
     return (
         <Wrapper>
             <Header showIcon={false} text="Q&A" backButton={false} searchButton={true}/>
-            <CheckBar/>
+            <CheckBar text={'A등급 제한'}/>
             {questionData.map((question) => (
                 <Questions
                     key={question.id}
