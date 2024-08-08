@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import QuestionsDetail from '../../components/QuestionsDetail';
 import Header from '../../components/Header';
-import Tips from '../../components/Tips';
-import FixedIcon from '../../components/FixedIcon';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
-import BadgeFilter from '../../components/BadgeFilter';
+import AnswersDetail from '../../components/AnswersDetail';
+import UserComment from '../../components/UserComment';
+import TipsDetail from '../../components/TipsDetail';
 
 const initialTipsData = [
     {
@@ -18,6 +20,7 @@ const initialTipsData = [
         time: 5,
         read: 30,
         img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
+        filter: '필기공유'
     },
     {
         id: 2,
@@ -29,6 +32,7 @@ const initialTipsData = [
         time: 10,
         read: 88,
         img: '/Icons/1607-2.jpg',
+        filter: '수업꿀팁'
     },
     {
         id: 3,
@@ -40,52 +44,52 @@ const initialTipsData = [
         time: 5,
         read: 30,
         img: '/Icons/1607-2.jpg',
+        filter: '수업꿀팁'
     },
 ];
 
-const TipsPage = () => {
-    const [TipsData, setTipsData] = useState([]);
+const TipsDetailPage = () => {
+    const { id } = useParams();
+    const [tipData, setTipData] = useState([]);
 
     useEffect(() => {
         //로컬 스토리지에서 질문 데이터 로드 또는 초기화
-        localStorage.removeItem('TipsData');
-        const TipsData = localStorage.getItem('TipsData');
-        if (TipsData) {
-            setTipsData(JSON.parse(TipsData));
+        localStorage.removeItem('tipData');
+        const tipData = localStorage.getItem('tipData');
+
+        if (tipData) {
+            setTipData(JSON.parse(tipData));
         } else {
-            localStorage.setItem('TipsData', JSON.stringify(initialTipsData));
-            setTipsData(initialTipsData);
+            localStorage.setItem('tipData', JSON.stringify(initialTipsData));
+            setTipData(initialTipsData);
         }
     }, []);
+    const currentTip = tipData.find((tip) => tip.id === Number(id));
 
     return (
         <Wrapper>
-            <Header showIcon={false} text="Tips" backButton={false} searchButton={true}/>
-            <BadgeFilter/>
-            {TipsData.map((tip) => (
-                <Tips
-                    key={tip.id}
-                    id={tip.id}
-                    name={tip.name}
-                    major={tip.major}
-                    subject={tip.subject}
-                    title={tip.title}
-                    content={tip.content}
-                    time={tip.time}
-                    read={tip.read} 
-                    img={Array.isArray(tip.img) ? tip.img[0] : tip.img} // Only the first image
+            <Header showIcon={false} text={""} backButton={true} searchButton={false}/>
+            {tipData.find(tip => tip.id === Number(id)) && (
+                <TipsDetail
+                    key={currentTip.id}
+                    name={currentTip.name}
+                    major={currentTip.major}
+                    title={currentTip.title}
+                    content={currentTip.content}
+                    subject={currentTip.subject}
+                    time={currentTip.time}
+                    read={currentTip.read}
+                    img={currentTip.img}
                 />
-            ))}
+            )}
 
-            <FixedIcon src="/Icons/Pen.svg"/>
             <FixedBottomContainer>
-                <NavBar state='Tips' />
             </FixedBottomContainer>
         </Wrapper>
-    )
+    );
 }
 
-export default TipsPage;
+export default TipsDetailPage;
 
 const Wrapper = styled.div`
     display: flex;

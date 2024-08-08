@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const ImageUploader = () => {
-    const [file, setFile] = useState(null);
+    const [files, setFiles] = useState([]);
 
     const handleFileChange = (event) => {
-        const selectedFile = event.target.files[0];
-        if (selectedFile) {
-            setFile(selectedFile);
+        const selectedFiles = Array.from(event.target.files);
+        if (selectedFiles.length) {
+            setFiles([...files, ...selectedFiles]);
         }
     };
 
     return (
         <UploaderWrapper>
             <FileAddArea>
-                {file ? (
-                    <FileName>{file.name}</FileName>
+                {files.length > 0 ? (
+                     <FileName>{files.map(file => file.name).join(', ')}</FileName>
                 ) : (
                     <PlaceholderText>
                         이미지를 불러오기 또는 사진 촬영
@@ -27,6 +27,7 @@ const ImageUploader = () => {
                 <input 
                     type="file" 
                     accept="image/*" 
+                    multiple 
                     onChange={handleFileChange} 
                     style={{ display: 'none' }}
                 />
@@ -62,8 +63,11 @@ const FileAddArea = styled.div`
     border: 2px solid #ccc;
     border-radius: 0px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    overflow: hidden;
 `;
 
 const PlaceholderText = styled.p`
@@ -74,4 +78,10 @@ const PlaceholderText = styled.p`
 const FileName = styled.p`
     color: #333;
     font-size: 14px;
+    margin: 0;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
 `;

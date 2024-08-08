@@ -1,27 +1,30 @@
 import react from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-const Tips = ({ title, content, subject, time, read, img, point }) => {
+const Tips = ({ id, name, major, title, content, time, read, img, point }) => {
     return (
         <OutWrapper>
-            <Wrapper>
-                <ContentWrapper>
-                    <TextWrapper>
-                        <Title>{title}</Title>
-                        <Content>{content}</Content>
-                    </TextWrapper>
+             <StyledLink to={`/tips/${id}`}>
+                <Wrapper>
+                    <ContentWrapper>
+                        <TextWrapper>
+                            <Title>{title}</Title>
+                            <Content>{content}</Content>
+                        </TextWrapper>
 
-                    {img && <ImageContainer>
-                        <Image src={img} />
-                    </ImageContainer>}
-                </ContentWrapper>
+                        {img && <ImageContainer>
+                            <Image src={img} />
+                        </ImageContainer>}
+                    </ContentWrapper>
 
-                <MetaContainer>
-                    <span> {time}분 전 | {subject} | 조회수 {read} </span>
-                    <span style={{marginLeft: 'auto'}}> {point}P </span>
-                </MetaContainer>
-            </Wrapper>
+                    <MetaContainer>
+                        <span> {time}분 전 | {major} {name} | 조회수 {read} </span>
+                        <span style={{marginLeft: 'auto'}}> {point}P </span>
+                    </MetaContainer>
+                </Wrapper>
+            </StyledLink>
         </OutWrapper>
     );
 }
@@ -29,9 +32,10 @@ const Tips = ({ title, content, subject, time, read, img, point }) => {
 export default Tips;
 
 Tips.propTypes = {
+    name: PropTypes.string.isRequired,
+    major: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-    subject: PropTypes.string.isRequired,
     time: PropTypes.number.isRequired,
     read: PropTypes.number.isRequired,
     img: PropTypes.string,
@@ -39,14 +43,20 @@ Tips.propTypes = {
 };
 
 Tips.defaultProps = {
+    name: '이름',
+    major: '전공',
     title: '제목',
     content: '내용',
-    subject: '과목',
     time: 0,
     read: 0,
     img: null,
     point: 100
 };
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: black;
+`;
 
 const Wrapper = styled.div`
     display: flex;

@@ -13,13 +13,6 @@ import CheckBar from '../../components/CheckBar';
 import Button from '../../components/Button'
 import BadgeFilter from '../../components/BadgeFilter';
 
-const initialUserData = [
-    {
-        id: 1,
-        name: '이예진',
-        point: 1020
-    }
-]
 
 const PostQuestionPage = () => {
     const boardOptions = [
@@ -57,19 +50,6 @@ const PostQuestionPage = () => {
         },
     ];
 
-    const [userData, setUserData] = useState([]);
-
-    useEffect(() => {
-        //로컬 스토리지에서 질문 데이터 로드 또는 초기화
-        localStorage.removeItem('userData');
-        const userData = localStorage.getItem('userData');
-        if (userData) {
-            setUserData(JSON.parse(userData));
-        } else {
-            localStorage.setItem('userData', JSON.stringify(initialUserData));
-            setUserData(initialUserData);
-        }
-    }, []);
 
     return (
         <Wrapper>
@@ -80,12 +60,9 @@ const PostQuestionPage = () => {
             <TextArea width={'380px'} height={'300px'} fontSize={'15px'} 
             placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."}/>
             <ImageUploader/>
-            {initialUserData.map((user) => (
-                <PointInput
-                    name={user.name}
-                    point={user.point}
-                />
-            ))}
+            <StyledDiv>
+                <span>일정 포인트를 자동으로 지급해줘요.</span>
+            </StyledDiv>
             <CheckBar text={'A 이상의 답변만 받고 싶어요.'}/>
             <Condition>
                 <span style={{fontSize: '10px', color: '#D00303', marginLeft: '20px'}}>100p 이상 입력해야 조건을 제시할 수 있습니다.</span>
@@ -113,4 +90,17 @@ const Condition = styled.div`
     display: flex;
     align-items: center;
     width: 380px;
+`
+
+const StyledDiv = styled.div`
+    display: flex;
+    align-items: center;
+    width: 380px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: #434B60;
+    background-color: #F0F2F4;
+
+    margin-top: 10px;
 `

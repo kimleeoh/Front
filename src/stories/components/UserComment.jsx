@@ -5,6 +5,7 @@ import Button from './Button';
 import { useState } from 'react';
 import ImageUploader from './ImageUploader';
 import TextField from '../components/TextField'
+import TextArea from './TextArea';
 
 const User = ({name, level, grade, figure, major, profileImg}) => {
     const [isAnswered, setIsAnswered] = useState(false);
@@ -25,8 +26,7 @@ const User = ({name, level, grade, figure, major, profileImg}) => {
                         </ProfileContainer>
                         <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} style={{marginLeft: 'auto'}}></Button>
                     </SubWrapper>
-                    <PlaceHolder>답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다.<br/><br/>
-                    서비스 운영 정책에 따라주세요.</PlaceHolder>
+                    <TextArea width={'360px'} height={'300px'} fontSize={'15px'} placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."}/>
                     <ImageUploader/>
                 </Wrapper>
             </OutWrapper>

@@ -4,22 +4,28 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import Tool from './Tool';
 
-const Questions = ({title, content, subject, time, read, img, limit }) => {
+const Questions = ({name, major, title, content, subject, time, read, img, limit }) => {
+    const images = Array.isArray(img) ? img : img ? [img] : [];
+    
     return (
         <OutWrapper>
             <Wrapper>
-                    <Title><img src="/Icons/Q.svg" style={{marginRight: '10px'}}/>{title}</Title>
-                    <MetaContainer>
-                        <span> {time}분 전 | {subject} | 조회수 {read} </span>
-                        <span style={{marginLeft: 'auto'}}> {limit === 'true' ? '등급 제한: A' : '등급 제한: 없음'} </span>
-                     </MetaContainer>
-                    <Content>{content}</Content>
+                <Title><img src="/Icons/Q.svg" style={{marginRight: '10px'}}/>{title}</Title>
+                <MetaContainer>
+                    <span> {time}분 전 | {major} {name} | 조회수 {read} </span>
+                    {/* <span style={{marginLeft: 'auto'}}> {limit === 'true' ? '등급 제한: A' : '등급 제한: 없음'} </span> */}
+                </MetaContainer>
+                <Content>{content}</Content>
 
-                    {img && <ImageContainer>
-                        <Image src={img}/>
-                    </ImageContainer>}
+                {images.length > 0 && (
+                    <ImageContainer>
+                        {images.map((image, index) => (
+                            <Image key={index} src={image} />
+                        ))}
+                    </ImageContainer>
+                )}
 
-                    <Tool like={10} report={false}/>
+                <Tool like={10} report={false}/>
             </Wrapper>
         </OutWrapper>
     );
@@ -28,6 +34,8 @@ const Questions = ({title, content, subject, time, read, img, limit }) => {
 export default Questions;
 
 Questions.propTypes = {
+    name: PropTypes.string.isRequired,
+    major: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     subject: PropTypes.string.isRequired,
@@ -38,6 +46,8 @@ Questions.propTypes = {
 };
 
 Questions.defaultProps = {
+    name: '이름',
+    major: '전공',
     title: '제목',
     content: '내용',
     subject: '과목',
@@ -90,6 +100,7 @@ const ImageContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
     margin-top: 20px;
 `;

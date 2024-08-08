@@ -11,16 +11,20 @@ import UserComment from '../../components/UserComment';
 const initialQuestionData = [
     {
         id: 1,
+        name: '이예진',
+        major: '글로벌미디어학부',
         title: '나이키스트 원리',
         content: '나이키스트 관련 식 이렇게 이해하면 되나요?',
         subject: '디지털미디어원리',
         time: 5,
         read: 30,
-        img: '/Icons/1607-2.jpg',
+        img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
         limit: 'true'
     },
     {
         id: 2,
+        name: '오준우',
+        major: '글로벌미디어학부',
         title: '자료구조',
         content: '스택이랑 큐의 차이점을 자세히 설명해 주세요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ',
         subject: '컴퓨터시스템개론',
@@ -31,6 +35,8 @@ const initialQuestionData = [
     },
     {
         id: 3,
+        name: '이동현',
+        major: '글로벌미디어학부',
         title: '미디어제작및실습 포토샵',
         content: '포토샵 재학생 인증 어떻게 하나요?? 알려주시면 좋은 행운이 찾아올 거예요~',
         subject: '미디어제작및실습',
@@ -123,6 +129,8 @@ const QnADetailPage = () => {
             {questionData.find(question => question.id === Number(id)) && (
                 <QuestionsDetail
                     key={currentQuestion.id}
+                    name={currentQuestion.name}
+                    major={currentQuestion.major}
                     title={currentQuestion.title}
                     content={currentQuestion.content}
                     subject={currentQuestion.subject}

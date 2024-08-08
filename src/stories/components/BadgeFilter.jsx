@@ -15,7 +15,7 @@ const BadgeFilter = () => {
     const badges = ['필기공유', '시험정보', '수업꿀팁'];
 
     return (
-        <div>
+        <div style={{marginTop: '10px'}}>
             {badges.map(badge => (
                 <Badge
                     key={badge}

@@ -5,6 +5,7 @@ import QnAPage from './stories/pages/QnA/QnAPage';
 import TipsPage from './stories/pages/Tips/TipsPage'; 
 
 import QnADetailPage from './stories/pages/QnADetail/QnADetailPage';
+import TipsDetailPage from './stories/pages/TipsDetail/TipsDetailPage';
 
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
                             <TipsPage />
                     }
                 />
+                <Route path="/tips/:id" element={<TipsDetailPage />} />
             </Routes>
         </Router>
     );

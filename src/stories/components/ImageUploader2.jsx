@@ -2,29 +2,30 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const ImageUploader = () => {
-    const [file, setFile] = useState(null);
+    const [files, setFiles] = useState([]);
 
     const handleFileChange = (event) => {
-        const selectedFile = event.target.files[0];
-        if (selectedFile) {
-            setFile(selectedFile);
+        const selectedFiles = Array.from(event.target.files);
+        if (selectedFiles.length) {
+            setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
         }
     };
 
     return (
         <UploaderWrapper>
-            {file ? (
-                <FileName>{file.name}</FileName>
+            {files.length > 0 ? (
+                <FileName>{files.map(file => file.name).join(', ')}</FileName>
             ) : (
                 <PlaceholderText>
                     파일첨부
                 </PlaceholderText>
             )}
             <UploadButton>
-                <img src="/Icons/Plus.svg"/>
+                <img src="/Icons/Plus.svg" alt="Add"/>
                 <input 
                     type="file" 
                     accept="image/*" 
+                    multiple 
                     onChange={handleFileChange} 
                     style={{ display: 'none' }}
                 />
@@ -44,26 +45,32 @@ const UploaderWrapper = styled.div`
     border-radius: 50px;
     padding: 0 20px;
     font-size: 14px;
+    flex-wrap: wrap;
 `;
 
 const UploadButton = styled.label`
     display: flex;
     text-align: center;
     align-items: center;
-
-
-    border-radius: 0px;
     cursor: pointer;
     font-size: 14px;
     margin-left: auto;
 `;
 
-const PlaceholderText = styled.p`
+const PlaceholderText = styled.div`
     color: #999;
     font-size: 14px;
+    display: flex;
+    align-items: center;
 `;
 
 const FileName = styled.p`
     color: #ACB2BB;
     font-size: 14px;
+    margin: 0 10px 0 0;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 90%;
 `;

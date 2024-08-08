@@ -7,23 +7,23 @@ const Questions = ({ id, title, content, subject, time, read, img, limit }) => {
     return (
         <OutWrapper>
             <StyledLink to={`/qna/${id}`}>
-            <Wrapper>
-                <ContentWrapper>
-                    <TextWrapper>
-                        <Title>{title}</Title>
-                        <Content>{content}</Content>
-                    </TextWrapper>
+                <Wrapper>
+                    <ContentWrapper>
+                        <TextWrapper>
+                            <Title>{title}</Title>
+                            <Content>{content}</Content>
+                        </TextWrapper>
 
-                    {img && <ImageContainer>
-                        <Image src={img}/>
-                    </ImageContainer>}
-                </ContentWrapper>
+                        {img && <ImageContainer>
+                            <Image src={img}/>
+                        </ImageContainer>}
+                    </ContentWrapper>
 
-                <MetaContainer>
-                    <span> {time}분 전 | {subject} | 조회수 {read} </span>
-                    <span style={{marginLeft: 'auto'}}> {limit === 'true' ? '등급 제한: A' : '등급 제한: 없음'} </span>
-                </MetaContainer>
-            </Wrapper>
+                    <MetaContainer>
+                        <span> {time}분 전 | {subject} | 조회수 {read} </span>
+                        <span style={{marginLeft: 'auto'}}> {limit === 'true' ? '등급 제한: A' : '등급 제한: 없음'} </span>
+                    </MetaContainer>
+                </Wrapper>
             </StyledLink>
         </OutWrapper>
     );
