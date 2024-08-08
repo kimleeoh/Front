@@ -26,7 +26,7 @@ const StyledBadge = styled.div`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 20px;
+    padding: 5px 10px;
     margin: 5px;
     border-radius: 20px;
     border: 1px solid #ACB2BB;

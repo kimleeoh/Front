@@ -41,11 +41,14 @@ CheckBar.defaultProps = {
 };
 
 const SubHeader = styled.div`
-    width: 400px;;
+    width: 400px;
     height: 40px;
 
     display: flex;
     align-items: center;
+
+    margin-top: 10px;
+    margin-left: 5px;
 `
 
 const Button = styled.button`
