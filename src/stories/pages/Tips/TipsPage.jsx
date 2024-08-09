@@ -18,6 +18,7 @@ const initialTipsData = [
         time: 5,
         read: 30,
         img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
+        filter: '필기공유'
     },
     {
         id: 2,
@@ -29,6 +30,7 @@ const initialTipsData = [
         time: 10,
         read: 88,
         img: '/Icons/1607-2.jpg',
+        filter: '수업꿀팁'
     },
     {
         id: 3,
@@ -40,29 +42,42 @@ const initialTipsData = [
         time: 5,
         read: 30,
         img: '/Icons/1607-2.jpg',
+        filter: '수업꿀팁'
     },
 ];
 
 const TipsPage = () => {
     const [TipsData, setTipsData] = useState([]);
+    const [filteredTips, setFilteredTips] = useState([]);
 
     useEffect(() => {
-        //로컬 스토리지에서 질문 데이터 로드 또는 초기화
+        // Load TipsData from localStorage or initialize it
         localStorage.removeItem('TipsData');
         const TipsData = localStorage.getItem('TipsData');
         if (TipsData) {
             setTipsData(JSON.parse(TipsData));
+            setFilteredTips(JSON.parse(TipsData)); // Initialize filteredTips with all tips
         } else {
             localStorage.setItem('TipsData', JSON.stringify(initialTipsData));
             setTipsData(initialTipsData);
+            setFilteredTips(initialTipsData); // Initialize filteredTips with all tips
         }
     }, []);
+
+    const handleFilterChange = (activeBadges) => {
+        if (activeBadges.length === 0) {
+            setFilteredTips(TipsData); // Show all tips if no filter is selected
+        } else {
+            const filtered = TipsData.filter(tip => activeBadges.includes(tip.filter));
+            setFilteredTips(filtered);
+        }
+    };
 
     return (
         <Wrapper>
             <Header showIcon={false} text="Tips" backButton={false} searchButton={true}/>
-            <BadgeFilter/>
-            {TipsData.map((tip) => (
+            <BadgeFilter onFilterChange={handleFilterChange} />
+            {filteredTips.map((tip) => (
                 <Tips
                     key={tip.id}
                     id={tip.id}
@@ -76,13 +91,12 @@ const TipsPage = () => {
                     img={Array.isArray(tip.img) ? tip.img[0] : tip.img} // Only the first image
                 />
             ))}
-
-            <FixedIcon src="/Icons/Pen.svg"/>
+            <FixedIcon src="/Icons/Pen.svg" url={'/tips/post'}/>
             <FixedBottomContainer>
                 <NavBar state='Tips' />
             </FixedBottomContainer>
         </Wrapper>
-    )
+    );
 }
 
 export default TipsPage;

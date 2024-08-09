@@ -6,6 +6,8 @@ import TipsPage from './stories/pages/Tips/TipsPage';
 
 import QnADetailPage from './stories/pages/QnADetail/QnADetailPage';
 import TipsDetailPage from './stories/pages/TipsDetail/TipsDetailPage';
+import PostTipPage from './stories/pages/PostTip/PostTipPage';
+import PostQuestionPage from './stories/pages/PostQuestion/PostQuestionPage';
 
 
 const App = () => {
@@ -25,6 +27,7 @@ const App = () => {
                     }
                 />
                 <Route path="/qna/:id" element={<QnADetailPage />} />
+                <Route path="/qna/post" element={<PostQuestionPage />} />
                 <Route
                     path="/tips"
                     element={
@@ -32,6 +35,7 @@ const App = () => {
                     }
                 />
                 <Route path="/tips/:id" element={<TipsDetailPage />} />
+                <Route path="/tips/post" element={<PostTipPage />} />
             </Routes>
         </Router>
     );

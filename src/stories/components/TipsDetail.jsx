@@ -108,7 +108,7 @@ const ImageContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-    gap: 10px; /* Add some space between images */
+    gap: 10px;
 `;
 
 const Image = styled.img`

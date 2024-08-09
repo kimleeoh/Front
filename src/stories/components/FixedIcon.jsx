@@ -1,9 +1,18 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-const FixedIcon = ({src}) => {
+const FixedIcon = ({src, url}) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        if (url) {
+            navigate(url);
+        }
+    };
+
     return (
         <FixedIconContainer>
-            <Button>
+            <Button onClick={handleClick}>
                 <img src={src} />
             </Button>
         </FixedIconContainer>

@@ -73,7 +73,7 @@ const QnAPage = () => {
                 />
             ))}
 
-            <FixedIcon src="/Icons/Question.svg"/>
+            <FixedIcon src="/Icons/Question.svg" url={"/qna/post"}/>
             <FixedBottomContainer>
                 <NavBar state='QnA' />
             </FixedBottomContainer>
