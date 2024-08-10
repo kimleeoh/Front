@@ -69,7 +69,7 @@ const Wrapper = styled.div`
     width: 380px;
     height: 30px;
 
-    margin-top: 10px;
+    margin-top: 15px;
 `
 
 const Button = styled.button`

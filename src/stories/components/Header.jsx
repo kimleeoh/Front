@@ -26,7 +26,7 @@ const Header = ({ showIcon, text, backButton, searchButton }) => {
       </CenterContent>
         {searchButton && (
           <RightContent>
-            <IconButton src="Icons/Search.svg"/>
+            <IconButton src="/Icons/Search.svg"/>
           </RightContent>
         )}
 

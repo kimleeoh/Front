@@ -45,6 +45,18 @@ const initialQuestionData = [
         img: null,
         limit: 'false'
     },
+    {
+        id: 4,
+        name: '이예진',
+        major: '글로벌미디어학부',
+        title: '표본화 양자화 부호화',
+        content: '각각을 한 문장으로 정리할 수 있다면?',
+        subject: '디지털미디어원리',
+        time: 5,
+        read: 30,
+        img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
+        limit: 'false'
+    },
 ]
 
 const initialAnswerData = [
@@ -80,7 +92,19 @@ const initialAnswerData = [
         profileImg: '/Icons/Pen.svg',
         content: '채택해 주세요.',
         img: "/Icons/1607-2.jpg"
+    },
+    {
+        id: 1,
+        name: '이동현',
+        level: 15,
+        grade: 'A+',
+        figure: 1,
+        major: '글로벌미디어학부',
+        profileImg: '/Icons/Pen.svg',
+        content: '채택해 주세요.',
+        img: "/Icons/1607-2.jpg"
     }
+    
 ]
 
 const initialUserData = [
@@ -121,7 +145,6 @@ const QnADetailPage = () => {
     }, []);
 
     const currentQuestion = questionData.find((question) => question.id === Number(id));
-    const currentAnswer = answerData.find((answer) => answer.id === Number(id));
     
     return (
         <Wrapper>
@@ -141,18 +164,21 @@ const QnADetailPage = () => {
                 />
             )}
 
-            {answerData.find(answer => answer.id === Number(id)) && (
-                <AnswersDetail
-                    name={currentAnswer.name}
-                    level={currentAnswer.level}
-                    grade={currentAnswer.grade}
-                    major={currentAnswer.major}
-                    figure={currentAnswer.figure}
-                    profileImg={currentAnswer.profileImg}
-                    content={currentAnswer.content}
-                    img={currentAnswer.img}
-                />
-            )}
+            {answerData
+                .filter(answer => answer.id === Number(id))
+                .map((question) => (
+                    <AnswersDetail
+                        name={question.name}
+                        level={question.level}
+                        grade={question.grade}
+                        major={question.major}
+                        figure={question.figure}
+                        profileImg={question.profileImg}
+                        content={question.content}
+                        img={question.img}
+                    />
+                ))
+            }
 
             {initialUserData.map((user) => (
                 <UserComment

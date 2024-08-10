@@ -85,8 +85,8 @@ const NavBar = ({ initialState }) => {
             <NavButton
                 isActive={activeButton === 'Tips'}
                 onClick={() => handleButtonClick('Tips', '/tips')}
-                disabledIconSrc='/Icons/Grade_d.svg'
-                enabledIconSrc='/Icons/Grade_e.svg'
+                disabledIconSrc='/Icons/Tips_d.svg'
+                enabledIconSrc='/Icons/Tips_e.svg'
                 isAnimating={isAnimating && activeButton === 'Tips'}
             >
                 Tips

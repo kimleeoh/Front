@@ -21,7 +21,7 @@ const Questions = ({ id, title, content, subject, time, read, img, limit }) => {
 
                     <MetaContainer>
                         <span> {time}분 전 | {subject} | 조회수 {read} </span>
-                        <span style={{marginLeft: 'auto'}}> {limit === 'true' ? '등급 제한: A' : '등급 제한: 없음'} </span>
+                        <span style={{marginLeft: 'auto'}}> {limit === 'true' ? '등급 제한: A' : ''} </span>
                     </MetaContainer>
                 </Wrapper>
             </StyledLink>
@@ -80,13 +80,13 @@ const ContentWrapper = styled.div`
 
 const TextWrapper = styled.div`
     align-items: flex-start;
+    max-width: 290px;
 `
 
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
-    max-width: 295px;
 
     overflow: hidden;
     white-space: nowrap;
@@ -126,7 +126,7 @@ const ImageContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 15px;
+    margin-left: auto;
 `;
 
 const Image = styled.img`
