@@ -66,6 +66,7 @@ const Wrapper = styled.div`
     padding: 20px 10px;
     border-radius: 10px;
     cursor: pointer;
+    transition: all 0.2s ease;
     &:active {
         background-color: #F1F7Fd;
         transition: all 0.2s ease;

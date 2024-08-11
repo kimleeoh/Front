@@ -51,13 +51,21 @@ const StyledLink = styled(Link)`
 `;
   
 const Wrapper = styled.div`
-    width: 380px;
+    width: 370px;
     height: 40px;
     display: flex;
     align-items: center;
     border: none;
     border-bottom: 1px solid #F1F2F4;
     padding: 5px;
+
+    transition: all 0.2s ease;
+    &: active {
+        background-color: #F1F2F4;
+        transition: all 0.2s ease;
+        scale: 0.98;
+        border-radius: 0px;
+    }
 `;
 
 const SubjectTitle = styled.div`

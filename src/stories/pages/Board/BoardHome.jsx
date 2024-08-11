@@ -127,7 +127,7 @@ const BoardHome = () => {
                 </SubjectWrapper>
             </ColorWrapper>
             <FixedBottomContainer>
-                <NavBar state='QnA' />
+                <NavBar state='Board' />
             </FixedBottomContainer>
 
         </Wrapper>
@@ -176,5 +176,7 @@ const ScrollableSubjectList = styled.div`
     width: 100%;
     max-height: 300px; // 최대 높이 설정
     overflow-y: auto; // 세로 스크롤 활성화
+
+    
     
 `;

@@ -70,6 +70,7 @@ const Button = styled.button`
 
     cursor: pointer;
 
+    transition: all 0.3s ease;
     &:active {
         transition: all 0.3s ease;
         scale: 0.95;

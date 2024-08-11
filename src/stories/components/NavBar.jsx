@@ -93,11 +93,11 @@ const NavBar = ({ initialState }) => {
             </NavButton>
             
             <NavButton
-                isActive={activeButton === 'MyPage'}
-                onClick={() => handleButtonClick('MyPage', '/mypage')}
+                isActive={activeButton === 'Menu'}
+                onClick={() => handleButtonClick('Menu', '/menu')}
                 disabledIconSrc='/Icons/Mypage_d.svg'
                 enabledIconSrc='/Icons/Mypage_e.svg'
-                isAnimating={isAnimating && activeButton === 'MyPage'}
+                isAnimating={isAnimating && activeButton === 'menu'}
             >
                 My Page
             </NavButton>

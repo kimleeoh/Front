@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const FixedBottomContainer = styled.div`
   position: fixed;  
-  bottom: 80px;
+  bottom: 30px;
   left: 0;
   width: 100%;
   display: flex;

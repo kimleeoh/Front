@@ -14,6 +14,7 @@ import BoardHome from './stories/pages/Board/BoardHome';
 import EditBoardPage from './stories/pages/EditBoard/EditBoardPage';
 import QnABoard from './stories/pages/Board/QnABoard';
 
+import MenuPage from './stories/pages/Menu/MenuPage';
 
 const App = () => {
     return (
@@ -50,6 +51,8 @@ const App = () => {
                 <Route path="/board" element={<BoardHome />} />
                 <Route path="/qna/:id" element={<QnADetailPage />} />
                 <Route path="/board/:subject" element={<QnABoard />} />
+
+                <Route path="/menu" element={<MenuPage />} />
             </Routes>
         </Router>
     );

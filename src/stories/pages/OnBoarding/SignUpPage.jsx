@@ -30,6 +30,12 @@ const SignUpPage = () => {
     setStep(prevStep => prevStep - 1);
   };
 
+  const handleSubmit = async () => {
+    // 서버로 데이터를 전송하는 로직을 추가할 수 있습니다.
+    // 예: await fetch('/api/signup', { method: 'POST', body: JSON.stringify(formData) });
+    console.log('제출된 데이터:', formData);
+  };
+
   const validateStep = () => {
     switch (step) {
       case 1:
@@ -47,10 +53,59 @@ const SignUpPage = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    // 서버로 데이터를 전송하는 로직을 추가할 수 있습니다.
-    // 예: await fetch('/api/signup', { method: 'POST', body: JSON.stringify(formData) });
-    console.log('제출된 데이터:', formData);
+  const renderButtons = () => {
+    // 버튼의 개수에 따라 버튼을 렌더링
+    if (step === 1) {
+      return (
+        <ButtonWrapper buttonCount={1}>
+          <Button
+            label="다음"
+            onClick={handleNext}
+            backgroundColor="#434B60"
+            hoverBackgroundColor="#5A6480"
+            width="100%"
+          />
+        </ButtonWrapper>
+      );
+    }
+    if (step === 5) {
+      return (
+        <ButtonWrapper buttonCount={2}>
+          <Button
+            label="이전"
+            onClick={handlePrevious}
+            backgroundColor="#434B60"
+            hoverBackgroundColor="#5A6480"
+            width="48%"
+          />
+          <Button
+            label="제출"
+            onClick={handleSubmit}
+            backgroundColor="#434B60"
+            hoverBackgroundColor="#5A6480"
+            width="48%"
+          />
+        </ButtonWrapper>
+      );
+    }
+    return (
+      <ButtonWrapper buttonCount={2}>
+        <Button
+          label="이전"
+          onClick={handlePrevious}
+          backgroundColor="#434B60"
+          hoverBackgroundColor="#5A6480"
+          width="48%"
+        />
+        <Button
+          label="다음"
+          onClick={handleNext}
+          backgroundColor="#434B60"
+          hoverBackgroundColor="#5A6480"
+          width="48%"
+        />
+      </ButtonWrapper>
+    );
   };
 
   const renderStepContent = () => {
@@ -154,31 +209,7 @@ const SignUpPage = () => {
     <Wrapper>
       <FormWrapper>
         {renderStepContent()}
-        <ButtonWrapper>
-          {step > 1 && (
-            <Button
-              label="이전"
-              onClick={handlePrevious}
-              backgroundColor="#434B60"
-              hoverBackgroundColor="#5A6480"
-            />
-          )}
-          {step < 5 ? (
-            <Button
-              label="다음"
-              onClick={handleNext}
-              backgroundColor="#434B60"
-              hoverBackgroundColor="#5A6480"
-            />
-          ) : (
-            <Button
-              label="제출"
-              onClick={handleSubmit}
-              backgroundColor="#434B60"
-              hoverBackgroundColor="#5A6480"
-            />
-          )}
-        </ButtonWrapper>
+        {renderButtons()}
       </FormWrapper>
     </Wrapper>
   );
@@ -207,8 +238,14 @@ const FormWrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ buttonCount }) => (buttonCount === 1 ? 'center' : 'space-between')};
   margin-top: 20px;
+  width: 400px;
+  gap: 10px; /* 버튼 간의 간격 설정 */
+
+  button {
+    width: ${({ buttonCount }) => (buttonCount === 1 ? '400px' : '48%')}; /* 버튼 너비 설정 */
+  }
 `;
 
 const StepDescription = styled.div`
