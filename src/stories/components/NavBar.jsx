@@ -10,130 +10,97 @@ const jellyAnimation = keyframes`
         transform: scaleX(1) scaleY(1);
     }
     25% {
-        transform: scaleX(1.1) scaleY(0.9); // 가로로 늘어나기
+        transform: scaleX(1.1) scaleY(0.9);
     }
     50% {
-        transform: scaleX(1) scaleY(1); // 원래 상태로 돌아오기
+        transform: scaleX(1) scaleY(1);
     }
     75% {
-        transform: scaleX(0.9) scaleY(1.1); // 세로로 늘어나기
+        transform: scaleX(0.9) scaleY(1.1);
     }
     100% {
-        transform: scaleX(1) scaleY(1); // 원래 상태로 돌아오기
+        transform: scaleX(1) scaleY(1);
     }
 `;
+
+const ICONS = {
+    Home: { enabled: '/Icons/Home_e.svg', disabled: '/Icons/Home_d.svg' },
+    QnA: { enabled: '/Icons/QnA_e.svg', disabled: '/Icons/QnA_d.svg' },
+    Board: { enabled: '/Icons/Board_e.svg', disabled: '/Icons/Board_d.svg' },
+    Tips: { enabled: '/Icons/Tips_e.svg', disabled: '/Icons/Tips_d.svg' },
+    Menu: { enabled: '/Icons/Mypage_e.svg', disabled: '/Icons/Mypage_d.svg' },
+};
 
 // NavBar Component
 const NavBar = ({ initialState }) => {
     const location = useLocation();
     const navigate = useNavigate();
     const [activeButton, setActiveButton] = useState(initialState);
-    const [isAnimating, setIsAnimating] = useState(false);
+    const [animatingButton, setAnimatingButton] = useState(null);
 
     useEffect(() => {
-        const pathToStateMap = {
-            '/home': 'Home',
-            '/qna': 'QnA',
-            '/tips': 'Tips',
-        };
+        setActiveButton(location.pathname);
+        setAnimatingButton(location.pathname);
 
-        const newActiveButton = pathToStateMap[location.pathname] || 'Home';
-        setActiveButton(newActiveButton);
-        setIsAnimating(true);
-        const timer = setTimeout(() => setIsAnimating(false), 250);
+        const timer = setTimeout(() => {
+            setAnimatingButton(null); // 애니메이션 상태를 null로 설정
+        }, 250);
+
         return () => clearTimeout(timer);
     }, [location.pathname]);
 
-    const handleButtonClick = useCallback((buttonName, path) => {
-        setActiveButton(buttonName);
-        setIsAnimating(true);
-        navigate(path);
+    const handleButtonClick = useCallback((path) => {
+        setAnimatingButton(null);  // 이전 애니메이션 상태를 리셋
+        setTimeout(() => {
+            setActiveButton(path);
+            setAnimatingButton(path);  // 새로운 애니메이션 상태 설정
+            navigate(path);
+        }, 0);  // 0ms 지연을 주어 애니메이션이 매번 실행되도록 함
     }, [navigate]);
 
     return (
         <BottomLayout>
-            <NavButton
-                isActive={activeButton === 'Home'}
-                onClick={() => handleButtonClick('Home', '/home')}
-                disabledIconSrc='/Icons/Home_d.svg'
-                enabledIconSrc='/Icons/Home_e.svg'
-                isAnimating={isAnimating && activeButton === 'Home'}
-            >
-                Home 
-            </NavButton>
-
-            <NavButton
-                isActive={activeButton === 'QnA'}
-                onClick={() => handleButtonClick('QnA', '/qna')}
-                disabledIconSrc='/Icons/QnA_d.svg'
-                enabledIconSrc='/Icons/QnA_e.svg'
-                isAnimating={isAnimating && activeButton === 'QnA'}
-            >
-                QnA
-            </NavButton>
-
-            <NavButton
-                isActive={activeButton === 'Board'}
-                onClick={() => handleButtonClick('Board', '/board')}
-                disabledIconSrc='/Icons/Board_d.svg'
-                enabledIconSrc='/Icons/Board_e.svg'
-                isAnimating={isAnimating && activeButton === 'Board'}
-            >
-                Board
-            </NavButton>
-
-            <NavButton
-                isActive={activeButton === 'Tips'}
-                onClick={() => handleButtonClick('Tips', '/tips')}
-                disabledIconSrc='/Icons/Tips_d.svg'
-                enabledIconSrc='/Icons/Tips_e.svg'
-                isAnimating={isAnimating && activeButton === 'Tips'}
-            >
-                Tips
-            </NavButton>
-            
-            <NavButton
-                isActive={activeButton === 'Menu'}
-                onClick={() => handleButtonClick('Menu', '/menu')}
-                disabledIconSrc='/Icons/Mypage_d.svg'
-                enabledIconSrc='/Icons/Mypage_e.svg'
-                isAnimating={isAnimating && activeButton === 'menu'}
-            >
-                My Page
-            </NavButton>
+            {Object.keys(ICONS).map((buttonName) => (
+                <NavButton
+                    key={buttonName}
+                    path={`/${buttonName.toLowerCase()}`}
+                    isActive={activeButton === `/${buttonName.toLowerCase()}`}
+                    onClick={() => handleButtonClick(`/${buttonName.toLowerCase()}`)}
+                    disabledIconSrc={ICONS[buttonName].disabled}
+                    enabledIconSrc={ICONS[buttonName].enabled}
+                    isAnimating={animatingButton === `/${buttonName.toLowerCase()}`}
+                >
+                    {buttonName}
+                </NavButton>
+            ))}
         </BottomLayout>
     );
 };
 
 NavBar.propTypes = {
-    initialState: PropTypes.oneOf(['Home', 'QnA', 'Board', 'Tips', 'MyPage']).isRequired,
+    initialState: PropTypes.oneOf(Object.keys(ICONS).map((key) => `/${key.toLowerCase()}`)).isRequired,
 };
 
 NavBar.defaultProps = {
-    initialState: 'Home',
+    initialState: '/home',
 };
 
 export default NavBar;
 
 // NavButton Component
-const NavButton = ({ isActive, disabledIconSrc, enabledIconSrc, children, onClick, isAnimating, ...props }) => {
-    const [isHovered, setIsHovered] = useState(false);
-
-    return (
-        <Button
-            isActive={isActive}
-            isHovered={isHovered}
-            isAnimating={isAnimating} // 애니메이션 상태 전달
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onClick={onClick}
-            {...props}
-        >
-            <img src={isActive || isHovered ? enabledIconSrc : disabledIconSrc} alt={children} />
-            {children}
-        </Button>
-    );
-};
+const NavButton = ({ isActive, disabledIconSrc, enabledIconSrc, children, onClick, isAnimating, ...props }) => (
+    <Button
+        isActive={isActive}
+        isAnimating={isAnimating}
+        onClick={onClick}
+        enabledIconSrc={enabledIconSrc}
+        disabledIconSrc={disabledIconSrc}
+        {...props}
+    >
+        <img src={isActive ? enabledIconSrc : disabledIconSrc} alt={children} />
+        {children}
+    </Button>
+);
 
 NavButton.propTypes = {
     isActive: PropTypes.bool.isRequired,
@@ -149,15 +116,15 @@ const Button = styled.button`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* Center align the image and text */
-    gap: 5px; /* Set the gap between the image and text */
+    align-items: center;
+    gap: 5px;
     width: 65px;
     height: 65px;
     border-radius: 16px;
     border: 0;
     background-color: #fff;
     font-size: 16px;
-    color: ${(props) => (props.isActive ? '#434b60' : '#acb2bb')}; /* 조건부 색상 변경 */
+    color: ${(props) => (props.isActive ? '#434b60' : '#acb2bb')};
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -169,28 +136,29 @@ const Button = styled.button`
         `}
 
     img {
-        width: 24px; /* Set the width of the icon */
-        height: 24px; /* Set the height of the icon */
-        transition: all 0.3s ease; /* Smooth transition for image change */
+        width: 24px;
+        height: 24px;
+        transition: all 0.3s ease;
     }
 
     &:hover {
         background-color: #acb2bb;
         color: #434b60;
+
+        img {
+            content: url(${(props) => props.enabledIconSrc});
+        }
     }
 
-    &:active {
-        scale: 0.95;
-    }
 `;
 
 const BottomLayout = styled.div`
-  position: fixed;
-  gap: 10px;
-  width: 100%;
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  background-color: #fff;
-  z-index: 1000; /* 충분히 높은 z-index를 설정 */
+    position: fixed;
+    gap: 10px;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    z-index: 1000;
 `;

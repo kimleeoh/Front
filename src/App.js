@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Switch  } from 're
 import StartPage from './stories/pages/OnBoarding/StartPage'; // 스토리북 페이지 컴포넌트
 import SignUpPage from './stories/pages/OnBoarding/SignUpPage'; // 스토리북 페이지 컴포넌트
 
+import HomePage from './stories/pages/Home/HomePage';
 import QnAPage from './stories/pages/QnA/QnAPage'; 
 import TipsPage from './stories/pages/Tips/TipsPage'; 
 
@@ -20,32 +21,14 @@ const App = () => {
     return (
         <Router>
             <Routes>
-                <Route
-                    path="/"
-                    element={
-                            <StartPage />
-                    }
-                />
-                <Route
-                    path="/signup"
-                    element={
-                            <SignUpPage />
-                    }
-                />
-                <Route
-                    path="/qna"
-                    element={
-                            <QnAPage />
-                    }
-                />
+                <Route path="/" element={<StartPage />} />
+                <Route path="/signup" element={<SignUpPage />} />
+                
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/qna" element={<QnAPage />} />
                 <Route path="/qna/:id" element={<QnADetailPage />} />
                 <Route path="/qna/post" element={<PostQuestionPage />} />
-                <Route
-                    path="/tips"
-                    element={
-                            <TipsPage />
-                    }
-                />
+                <Route path="/tips" element={ <TipsPage />} />
                 <Route path="/tips/:id" element={<TipsDetailPage />} />
                 <Route path="/tips/post" element={<PostTipPage />} />
                 <Route path="/board" element={<BoardHome />} />

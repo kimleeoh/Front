@@ -28,9 +28,9 @@ MenuList.defaultProps = {
 const Wrapper = styled.div`
     display: flex;
     width: 358px;
-    height: 19px;
+    height: 30px;
     padding: 10px 14px;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 10px;
     flex-shrink: 0;

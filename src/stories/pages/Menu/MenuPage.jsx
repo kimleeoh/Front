@@ -136,7 +136,7 @@ line-height: normal;
 const Section = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 3px;
 `;
 
 const Title = styled.div`
