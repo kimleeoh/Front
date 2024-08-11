@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField';
@@ -6,9 +7,14 @@ import Logo from './Logo'
 
 const StartPage = () => {
     const [isLoginMode, setIsLoginMode] = useState(false);
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const handleLoginClick = () => {
         setIsLoginMode(true);
+    };
+
+    const handleSignUpClick = () => {
+        navigate('/signup'); // Navigate to the signup page
     };
 
     return (
@@ -41,9 +47,7 @@ const StartPage = () => {
                         <StartButtonWrapper>
                             <Button
                                 label="시작하기"
-                                onClick={() => {
-                                    console.log('시작하기 버튼 클릭');
-                                }}
+                                onClick={handleSignUpClick} // Use navigation function
                             />
                         </StartButtonWrapper>
                     </>
@@ -67,9 +71,7 @@ const StartPage = () => {
                         hoverColor="#434B60"
                         backgroundColor="transparent"
                         hoverBackgroundColor="#ACB2BB"
-                        onClick={() => {
-                            console.log('계정 만들기 버튼 클릭');
-                        }}
+                        onClick={handleSignUpClick} // Use navigation function
                     />
                 </CreateAccountButtonWrapper>
             )}

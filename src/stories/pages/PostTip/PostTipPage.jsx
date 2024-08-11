@@ -68,9 +68,6 @@ const PostQuestionPage = () => {
                 <span style={{fontSize: '10px', color: '#D00303', marginLeft: '20px'}}>100p 이상 입력해야 조건을 제시할 수 있습니다.</span>
             </Condition>
             <Button label={'등록하기'} width={'380px'} style={{marginTop: '15px'}}/>
-            <FixedBottomContainer>
-                <NavBar state='QnA' />
-            </FixedBottomContainer>
         </Wrapper>
     )
 }

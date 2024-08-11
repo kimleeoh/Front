@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Switch  } from 'react-router-dom';
 import StartPage from './stories/pages/OnBoarding/StartPage'; // 스토리북 페이지 컴포넌트
+import SignUpPage from './stories/pages/OnBoarding/SignUpPage'; // 스토리북 페이지 컴포넌트
+
 import QnAPage from './stories/pages/QnA/QnAPage'; 
 import TipsPage from './stories/pages/Tips/TipsPage'; 
 
@@ -21,6 +23,12 @@ const App = () => {
                     path="/"
                     element={
                             <StartPage />
+                    }
+                />
+                <Route
+                    path="/signup"
+                    element={
+                            <SignUpPage />
                     }
                 />
                 <Route

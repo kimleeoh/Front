@@ -2,29 +2,34 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const TextField = ({ label, value, onChange, disabled, type, width }) => {
-  const [inputValue, setInputValue] = useState(value);
+const TextField = ({ label, value: externalValue, onChange, disabled, type, width, name }) => {
+  const [inputValue, setInputValue] = useState(externalValue || '');
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
-    setInputValue(value);
-  }, [value]);
+    setInputValue(externalValue || '');
+  }, [externalValue]);
 
   const handleChange = (e) => {
-    setInputValue(e.target.value);
-    onChange(e);
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    if (onChange) {
+      onChange({ target: { name, value: newValue } }); // name 속성 추가
+    }
   };
 
   const clearInput = () => {
     setInputValue('');
-    onChange({ target: { value: '' } });
+    if (onChange) {
+      onChange({ target: { name, value: '' } }); // name 속성 추가
+    }
   };
 
   return (
-    <TextFieldWrapper>
+    <TextFieldWrapper width={width}>
       <InputWrapper>
         <StyledLabel
-          hasValue={inputValue}
+          hasValue={inputValue !== ''}
           isFocused={isFocused}
           disabled={disabled}
         >
@@ -37,6 +42,7 @@ const TextField = ({ label, value, onChange, disabled, type, width }) => {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           disabled={disabled}
+          name={name} // name 속성 추가
         />
         {inputValue && !disabled && isFocused && (
           <ClearButton onMouseDown={clearInput}>×</ClearButton>
@@ -48,17 +54,21 @@ const TextField = ({ label, value, onChange, disabled, type, width }) => {
 
 TextField.propTypes = {
   label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
   disabled: PropTypes.bool,
   width: PropTypes.string,
   type: PropTypes.string,
+  name: PropTypes.string, // name prop 추가
 };
 
 TextField.defaultProps = {
+  value: '',
+  onChange: () => {},
   disabled: false,
   width: '310px',
   type: 'text',
+  name: '', // 기본값 추가
 };
 
 export default TextField;
@@ -66,7 +76,7 @@ export default TextField;
 const TextFieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 10px 0;
+  margin: 0;
   width: ${props => props.width};
   height: 50px;
   position: relative;
@@ -94,7 +104,7 @@ const Input = styled.input`
   background-color: #e2e5e9;
   border: none;
   border-radius: 15px;
-  padding: 20px 40px 8px 10px;
+  padding: 15px 40px 5px 10px;
   font-size: 16px;
   width: 100%;
   height: 32px;
@@ -109,11 +119,10 @@ const ClearButton = styled.button`
   right: 3%;
   background: none;
   border: none;
-  font-size: 35px; /* 클리어 버튼 크기를 키웁니다 */
+  font-size: 35px;
   cursor: pointer;
   color: #434b60;
-  padding: 10px; /* 버튼에 패딩을 추가하여 클릭 영역을 키웁니다 */
-
+  padding: 10px;
   transition: color 0.2s ease;
   &:hover {
     color: #000;
