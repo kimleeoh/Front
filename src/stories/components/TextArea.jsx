@@ -45,7 +45,7 @@ const StyledTextArea = styled.textarea`
     margin-top: 20px;
     width: ${props => props.width};
     height: ${props => props.height};
-    padding: 10px;
+    padding: 0px 10px;
     border: none;
 
     background-color: ${props => props.backgroundColor};

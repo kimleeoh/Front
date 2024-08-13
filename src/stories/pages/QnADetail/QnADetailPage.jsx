@@ -13,13 +13,14 @@ const initialQuestionData = [
         id: 1,
         name: '이예진',
         major: '글로벌미디어학부',
-        title: '나이키스트 원리',
+        title: '나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?',
         content: '나이키스트 관련 식 이렇게 이해하면 되나요?',
         subject: '디지털미디어원리',
         time: 5,
         read: 30,
+        like: 20,
         img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
-        limit: 'true'
+        limit: true
     },
     {
         id: 2,
@@ -30,8 +31,9 @@ const initialQuestionData = [
         subject: '컴퓨터시스템개론',
         time: 10,
         read: 88,
+        like: 48,
         img: '/Icons/1607-2.jpg',
-        limit: 'false'
+        limit: false
     },
     {
         id: 3,
@@ -42,8 +44,9 @@ const initialQuestionData = [
         subject: '미디어제작및실습',
         time: 15,
         read: 302,
+        like: 12,
         img: null,
-        limit: 'false'
+        limit: false
     },
     {
         id: 4,
@@ -54,8 +57,9 @@ const initialQuestionData = [
         subject: '디지털미디어원리',
         time: 5,
         read: 30,
+        like: 15,
         img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
-        limit: 'false'
+        limit: false
     },
 ]
 
@@ -65,44 +69,48 @@ const initialAnswerData = [
         name: '오준우',
         level: 15,
         grade: 'A+',
-        figure: 1,
+        figure: 3,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
         content: '1번 답: 01101101',
-        img: "/Icons/1607-2.jpg"
+        img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
+        like: 13,
     },
     {
         id: 2,
         name: '김난슬',
         level: 15,
         grade: 'A+',
-        figure: 1,
+        figure: 3,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
         content: '몰라이씨',
-        img: "/Icons/1607-2.jpg"
+        img: "/Icons/1607-2.jpg",
+        like: 30,
     },
     {
         id: 3,
         name: '이동현',
         level: 15,
         grade: 'A+',
-        figure: 1,
+        figure: 3,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
         content: '채택해 주세요.',
-        img: "/Icons/1607-2.jpg"
+        img: "/Icons/1607-2.jpg",
+        like: 28,
     },
     {
         id: 1,
         name: '이동현',
         level: 15,
         grade: 'A+',
-        figure: 1,
+        figure: 3,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
         content: '채택해 주세요.',
-        img: "/Icons/1607-2.jpg"
+        img: "/Icons/1607-2.jpg",
+        like: 3,
     }
     
 ]
@@ -113,7 +121,7 @@ const initialUserData = [
         name: '이예진',
         level: 13,
         grade: 'A+',
-        figure: 1,
+        figure: 3,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
     }
@@ -149,7 +157,7 @@ const QnADetailPage = () => {
     return (
         <Wrapper>
             <Header showIcon={false} text={""} backButton={true} searchButton={false}/>
-            {questionData.find(question => question.id === Number(id)) && (
+            {currentQuestion && (
                 <QuestionsDetail
                     key={currentQuestion.id}
                     name={currentQuestion.name}
@@ -159,6 +167,7 @@ const QnADetailPage = () => {
                     subject={currentQuestion.subject}
                     time={currentQuestion.time}
                     read={currentQuestion.read}
+                    like={currentQuestion.like}
                     img={currentQuestion.img}
                     limit={currentQuestion.limit}
                 />
@@ -166,21 +175,22 @@ const QnADetailPage = () => {
 
             {answerData
                 .filter(answer => answer.id === Number(id))
-                .map((question) => (
+                .map((answer) => (
                     <AnswersDetail
-                        name={question.name}
-                        level={question.level}
-                        grade={question.grade}
-                        major={question.major}
-                        figure={question.figure}
-                        profileImg={question.profileImg}
-                        content={question.content}
-                        img={question.img}
+                        name={answer.name}
+                        level={answer.level}
+                        grade={answer.grade}
+                        major={answer.major}
+                        figure={answer.figure}
+                        profileImg={answer.profileImg}
+                        content={answer.content}
+                        img={answer.img}
+                        like={answer.like}
                     />
                 ))
             }
 
-            {initialUserData.map((user) => (
+            {currentQuestion && initialUserData.map((user) => (
                 <UserComment
                     name={user.name}
                     level={user.level}
@@ -188,6 +198,7 @@ const QnADetailPage = () => {
                     major={user.major}
                     figure={user.figure}
                     profileImg={user.profileImg}
+                    limit={currentQuestion.limit}
                 />
             ))}
 

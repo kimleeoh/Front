@@ -41,6 +41,7 @@ export default ImageUploader;
 const UploaderWrapper = styled.div`
     display: flex;
     width: 100%;
+    margin-top: 10px;
 `;
 
 const UploadButton = styled.label`

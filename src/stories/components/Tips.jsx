@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Tips = ({ id, name, major, title, content, time, read, img, point }) => {
+const Tips = ({ id, name, major, title, content, time, read, like, img, point }) => {
     return (
         <OutWrapper>
-             <StyledLink to={`/tips/${id}`}>
+            <StyledLink to={`/tips/${id}`}>
                 <Wrapper>
                     <ContentWrapper>
                         <TextWrapper>
@@ -20,8 +20,9 @@ const Tips = ({ id, name, major, title, content, time, read, img, point }) => {
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span> {time}분 전 | {major} {name} | 조회수 {read} </span>
-                        <span style={{marginLeft: 'auto'}}> {point}P </span>
+                        <span style={{color: '#737373'}}> {time}분 전 | {major} {name} | 조회수 {read} </span>
+                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold'}}> {like} </span>
+                        <span style={{marginLeft: 'auto', color: '#737373'}}> {point}P </span>
                     </MetaContainer>
                 </Wrapper>
             </StyledLink>
@@ -38,6 +39,7 @@ Tips.propTypes = {
     content: PropTypes.string.isRequired,
     time: PropTypes.number.isRequired,
     read: PropTypes.number.isRequired,
+    like: PropTypes.number.isRequired,
     img: PropTypes.string,
     point: PropTypes.number.isRequired
 };
@@ -49,6 +51,7 @@ Tips.defaultProps = {
     content: '내용',
     time: 0,
     read: 0,
+    like: 0,
     img: null,
     point: 100
 };
@@ -82,13 +85,13 @@ const ContentWrapper = styled.div`
 
 const TextWrapper = styled.div`
     align-items: flex-start;
+    max-width: 290px;
 `
 
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
-    max-width: 295px;
 
     overflow: hidden;
     white-space: nowrap;
@@ -128,7 +131,8 @@ const ImageContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 15px;
+    margin-left: auto;
+    margin-bottom: auto;
 `;
 
 const Image = styled.img`

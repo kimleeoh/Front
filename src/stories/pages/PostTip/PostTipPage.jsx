@@ -56,7 +56,7 @@ const PostQuestionPage = () => {
             <Header showIcon={false} text="질문 작성하기" backButton={true} searchButton={false}/>
             <TextInput width={'380px'} height={'30px'} fontSize={'15px'} placeholder={'제목 입력'}/>
             <SelectBoard options={boardOptions}/>
-            <BadgeFilter/>
+            <BadgeFilter onFilterChange={() => {}}/>
             <TextArea width={'380px'} height={'300px'} fontSize={'15px'} 
             placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."}/>
             <ImageUploader/>

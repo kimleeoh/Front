@@ -10,7 +10,7 @@ const Tool = ({like, save, notification, report}) => {
                 disabledIconSrc='/Icons/Up.svg'
                 enabledIconSrc='/Icons/Up.svg'
             />
-            <span style={{marginLeft: '5px', marginRight: '5px', color: '#3182F7'}}>{like}</span>
+            <span style={{color: '#3182F7'}}>{like}</span>
             <ToolButton
                 disabledIconSrc='/Icons/Down.svg'
                 enabledIconSrc='/Icons/Down.svg'

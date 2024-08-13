@@ -17,6 +17,7 @@ const initialTipsData = [
         content: '학생분들에게 도움이 되길 바랍니다',
         time: 5,
         read: 30,
+        like: 24,
         img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
         filter: '필기공유'
     },
@@ -29,6 +30,7 @@ const initialTipsData = [
         content: '+ 항상 채워주십니다. 진짜 최고예요 ㅠㅠ',
         time: 10,
         read: 88,
+        like: 18,
         img: '/Icons/1607-2.jpg',
         filter: '수업꿀팁'
     },
@@ -41,6 +43,7 @@ const initialTipsData = [
         content: '숭실대 건물들 화장실의 등급을 나눠봤습니다. 이용하실 때 참고 바랍니다.',
         time: 5,
         read: 30,
+        like: 45,
         img: '/Icons/1607-2.jpg',
         filter: '수업꿀팁'
     },
@@ -87,7 +90,8 @@ const TipsPage = () => {
                     title={tip.title}
                     content={tip.content}
                     time={tip.time}
-                    read={tip.read} 
+                    read={tip.read}
+                    like={tip.like}
                     img={Array.isArray(tip.img) ? tip.img[0] : tip.img} // Only the first image
                 />
             ))}

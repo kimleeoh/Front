@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Questions = ({ id, title, content, subject, time, read, img, limit }) => {
+const Questions = ({ id, title, content, subject, time, read, like, img, limit }) => {
     return (
         <OutWrapper>
             <StyledLink to={`/qna/${id}`}>
@@ -20,8 +20,9 @@ const Questions = ({ id, title, content, subject, time, read, img, limit }) => {
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span> {time}분 전 | {subject} | 조회수 {read} </span>
-                        <span style={{marginLeft: 'auto'}}> {limit === 'true' ? '등급 제한: A' : ''} </span>
+                        <span style={{color: '#737373'}}> {time}분 전 | {subject} | 조회수 {read} </span>
+                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold'}}> {like} </span>
+                        <span style={{marginLeft: 'auto', color: '#737373'}}> {limit === 'true' ? '등급 제한: A' : ''} </span>
                     </MetaContainer>
                 </Wrapper>
             </StyledLink>
@@ -38,6 +39,7 @@ Questions.propTypes = {
     subject: PropTypes.string.isRequired,
     time: PropTypes.number.isRequired,
     read: PropTypes.number.isRequired,
+    like: PropTypes.number.isRequired,
     img: PropTypes.string,
     limit: PropTypes.string.isRequired
 };
@@ -48,6 +50,7 @@ Questions.defaultProps = {
     subject: '과목',
     time: 0,
     read: 0,
+    like: 0,
     img: null,
     limit: 'false'
 };
@@ -96,6 +99,7 @@ const Title = styled.div`
 
 const Content = styled.div`
     font-size: 16px;
+    font-weight: regular;
     margin-bottom: 10px;
 
     display: -webkit-box;
@@ -113,6 +117,7 @@ const Subject = styled.div`
 
 const MetaContainer = styled.div`
     display: flex;
+    align-items: center;
     margin-top: auto;
 
     font-size: 10px;
@@ -128,6 +133,7 @@ const ImageContainer = styled.div`
     justify-content: center;
     align-items: center;
     margin-left: auto;
+    margin-bottom: auto;
 `;
 
 const Image = styled.img`

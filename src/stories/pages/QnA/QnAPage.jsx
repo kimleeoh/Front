@@ -10,11 +10,12 @@ import FixedIcon from '../../components/FixedIcon';
 const initialQuestionData = [
     {
         id: 1,
-        title: '나이키스트 원리llllllllllllllllllllllll;;;;;;;;;;;;;;;;;;;;',
+        title: '나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?',
         content: '나이키스트 관련 식 이렇게 이해하면 되나요?',
         subject: '디지털미디어원리',
         time: 5,
         read: 30,
+        like: 20,
         img: '/Icons/1607-2.jpg',
         limit: 'true'
     },
@@ -25,6 +26,7 @@ const initialQuestionData = [
         subject: '컴퓨터시스템개론',
         time: 10,
         read: 88,
+        like: 48,
         img: '/Icons/1607-2.jpg',
         limit: 'false'
     },
@@ -35,6 +37,7 @@ const initialQuestionData = [
         subject: '미디어제작및실습',
         time: 15,
         read: 302,
+        like: 12,
         img: null,
         limit: 'false'
     },
@@ -77,6 +80,7 @@ const QnAPage = () => {
                     subject={question.subject}
                     time={question.time}
                     read={question.read}
+                    like={question.like}
                     img={question.img}
                     limit={question.limit}
                 />

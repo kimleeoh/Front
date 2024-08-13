@@ -91,39 +91,39 @@ const BoardHome = () => {
 
     return (
         <Wrapper>
-                <Header>게시판</Header>
-                <BoardTitle text={'내가 수강 중인 과목'} edit={true} onEditClick={() => handleEditClick('subject', '내가 수강 중인 과목')} />
-                <SubjectWrapper>
-                    <ScrollableSubjectList>
-                        {subjectData.map((subject) => (
-                            <SubjectList
-                                subject={subject.subject}
-                            />
-                        ))}
-                    </ScrollableSubjectList>
-                </SubjectWrapper>
+            <Header>게시판</Header>
+            <BoardTitle text={'내가 수강 중인 과목'} edit={true} onEditClick={() => handleEditClick('subject', '내가 수강 중인 과목')} />
+            <SubjectWrapper>
+                <ScrollableSubjectList>
+                    {subjectData.map((subject) => (
+                        <SubjectList
+                            subject={subject.subject}
+                        />
+                    ))}
+                </ScrollableSubjectList>
+            </SubjectWrapper>
 
-                <BoardTitle text={'즐겨찾기'} edit={true} onEditClick={() => handleEditClick('bookmark', '즐겨찾기')} />
-                <SubjectWrapper>
-                    <ScrollableSubjectList>
-                        {bookmarkData.map((bookmark) => (
-                            <SubjectList
-                                subject={bookmark.bookmark}
-                            />
-                        ))}
-                    </ScrollableSubjectList>
-                </SubjectWrapper>
+            <BoardTitle text={'즐겨찾기'} edit={true} onEditClick={() => handleEditClick('bookmark', '즐겨찾기')} />
+            <SubjectWrapper>
+                <ScrollableSubjectList>
+                    {bookmarkData.map((bookmark) => (
+                        <SubjectList
+                            subject={bookmark.bookmark}
+                        />
+                    ))}
+                </ScrollableSubjectList>
+            </SubjectWrapper>
 
-                <BoardTitle text={'수강했던 과목'} edit={true} onEditClick={() => handleEditClick('subject2', '수강했던 과목')} />
-                <SubjectWrapper>
-                    <ScrollableSubjectList>
-                        {subjectData2.map((subject) => (
-                            <SubjectList
-                                subject={subject.subject}
-                            />
-                        ))}
-                    </ScrollableSubjectList>
-                </SubjectWrapper>
+            <BoardTitle text={'수강했던 과목'} edit={true} onEditClick={() => handleEditClick('subject2', '수강했던 과목')} />
+            <SubjectWrapper>
+                <ScrollableSubjectList>
+                    {subjectData2.map((subject) => (
+                        <SubjectList
+                            subject={subject.subject}
+                        />
+                    ))}
+                </ScrollableSubjectList>
+            </SubjectWrapper>
             <FixedBottomContainer>
                 <NavBar state='Board' />
             </FixedBottomContainer>
@@ -160,6 +160,7 @@ const Header = styled.div`
     backdrop-filter: blur(5px);
 
     position: fixed; /* 헤더를 페이지 상단에 고정 */
+    text-indent: 10px;
     z-index: 1000;
     top: 0;
 `;
@@ -177,9 +178,6 @@ const SubjectWrapper = styled.div`
 `
 const ScrollableSubjectList = styled.div`
     width: 100%;
-    max-height: 300px; // 최대 높이 설정
+    max-height: 280px; // 최대 높이 설정
     overflow-y: auto; // 세로 스크롤 활성화
-
-
-    
 `;

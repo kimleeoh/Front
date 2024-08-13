@@ -24,6 +24,7 @@ const Header = ({ showIcon, text, backButton, searchButton }) => {
           <span>{text}</span>
         )}
       </CenterContent>
+      
         {searchButton && (
           <RightContent>
             <IconButton src="/Icons/Search.svg"/>
@@ -118,9 +119,10 @@ const RightContent = styled.div`
 const CenterContent = styled.div`
   position: absolute;
   left: 50%;
-  transform: translateX(-65%);
+  transform: translateX(-50%);
   top:35%;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: bold;
   color: #434b60;
+  text-align: center;
 `;

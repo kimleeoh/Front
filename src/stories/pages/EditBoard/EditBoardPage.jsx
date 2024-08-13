@@ -29,6 +29,7 @@ const EditBoardPage = () => {
                         subject={item.subject || item.bookmark}
                         eliminate={true}
                         onDelete={() => handleDelete(index)}
+                        disableLink={true} // Disable the link in edit mode
                     />
                 ))}
                 <Button

@@ -7,7 +7,7 @@ import ImageUploader from './ImageUploader';
 import TextField from '../components/TextField'
 import TextArea from './TextArea';
 
-const User = ({name, level, grade, figure, major, profileImg}) => {
+const User = ({name, level, grade, figure, major, profileImg, limit}) => {
     const [isAnswered, setIsAnswered] = useState(false);
 
     const handleAnswerSubmit = () => {
@@ -26,11 +26,30 @@ const User = ({name, level, grade, figure, major, profileImg}) => {
                         </ProfileContainer>
                         <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} style={{marginLeft: 'auto'}}></Button>
                     </SubWrapper>
-                    <TextArea width={'360px'} height={'300px'} fontSize={'15px'} placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."}/>
+                    <TextAreaWrapper>
+                        <TextArea width={'330px'} height={'100px'} fontSize={'15px'} backgroundColor={'#F0F2F4'} placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."}/>
+                    </TextAreaWrapper>
                     <ImageUploader/>
                 </Wrapper>
             </OutWrapper>
         );
+    }
+
+    if (limit === false) {
+        return (
+            <OutWrapper>
+                <Wrapper>
+                    <SubWrapper>
+                        <img src="/Icons/Profile.svg" />
+                        <ProfileContainer>
+                            <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
+                            <MajorName>{major} {name}<span style={{color: '#3182F7'}}>님은 답변 등록이 가능합니다.</span></MajorName>
+                        </ProfileContainer>
+                    </SubWrapper>
+                    <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} style={{marginLeft: 'auto', marginTop: '5px'}} onClick={handleAnswerSubmit}></Button>
+                </Wrapper>
+            </OutWrapper>
+        )
     }
 
     return (
@@ -44,7 +63,7 @@ const User = ({name, level, grade, figure, major, profileImg}) => {
                             <MajorName><span style={{color: '#ACB2BB'}}>성적 입력 후 답변이 가능합니다.</span></MajorName>
                         </ProfileContainer>
                     </SubWrapper>
-                ) : figure <= 1 ? (
+                ) : figure >= 2 ? (
                     <SubWrapper>
                         <img src="/Icons/Profile.svg" />
                         <ProfileContainer>
@@ -63,7 +82,7 @@ const User = ({name, level, grade, figure, major, profileImg}) => {
                 )}
                 {figure === null ? (
                     <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} disabled={true} style={{marginLeft: 'auto', marginTop: '5px'}}></Button>
-                ) : figure <= 1 ? (
+                ) : figure >= 2 ? (
                     <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} style={{marginLeft: 'auto', marginTop: '5px'}} onClick={handleAnswerSubmit}></Button>
                 ) : (
                     <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} disabled={true} style={{marginLeft: 'auto', marginTop: '5px'}}></Button>
@@ -82,6 +101,7 @@ User.propTypes = {
     figure: PropTypes.number,
     major: PropTypes.string.isRequired,
     profileImg: PropTypes.string.isRequired,
+    limit: PropTypes.bool.isRequired,
 };
 
 User.defaultProps = {
@@ -98,7 +118,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     width: 380px;
-    padding: 20px 10px;
+    padding: 15px 15px;
 
     margin-top: 15px;
 
@@ -163,4 +183,12 @@ const PlaceHolder = styled.div`
     font-size: 12px;
     color: #ACB2BB;
     
+`
+
+const TextAreaWrapper = styled.div`
+    padding: 0px 10px;
+`
+
+const ImageUploaderWrapper = styled.div`
+    width: 280px;
 `

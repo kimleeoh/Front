@@ -3,10 +3,9 @@ import styled from "styled-components";
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const SubjectList = ({ select, subject, eliminate, onDelete}) => {
-    return (
-        <StyledLink to={`/board/${subject}`}>
-            <Wrapper>
+const SubjectList = ({ select, subject, eliminate, onDelete, disableLink }) => {
+    const content = (
+        <Wrapper>
             <SubjectTitle>
                 {select && (
                     <img
@@ -26,8 +25,9 @@ const SubjectList = ({ select, subject, eliminate, onDelete}) => {
                 )}
             </SubjectTitle>
         </Wrapper>
-        </StyledLink>
     );
+
+    return disableLink ? content : <StyledLink to={`/board/${subject}`}>{content}</StyledLink>;
 }
 
 export default SubjectList;
@@ -37,12 +37,14 @@ SubjectList.propTypes = {
     subject: PropTypes.string,
     eliminate: PropTypes.bool,
     onDelete: PropTypes.func.isRequired,
+    disableLink: PropTypes.bool,
 };
 
 SubjectList.defaultProps = {
     select: false,
     subject: 'Subject',
     eliminate: false,
+    disableLink: false,
 };
 
 const StyledLink = styled(Link)`
@@ -60,7 +62,7 @@ const Wrapper = styled.div`
     padding: 5px;
 
     transition: all 0.2s ease;
-    &: active {
+    &:active {
         background-color: #F1F2F4;
         transition: all 0.2s ease;
         scale: 0.98;

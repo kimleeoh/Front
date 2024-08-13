@@ -13,7 +13,7 @@ import PostTipPage from './stories/pages/PostTip/PostTipPage';
 import PostQuestionPage from './stories/pages/PostQuestion/PostQuestionPage';
 import BoardHome from './stories/pages/Board/BoardHome';
 import EditBoardPage from './stories/pages/EditBoard/EditBoardPage';
-import QnABoard from './stories/pages/Board/QnABoard';
+import UnifiedBoard from './stories/pages/Board/UnifiedBoard';
 
 import MenuPage from './stories/pages/Menu/MenuPage';
 
@@ -32,8 +32,9 @@ const App = () => {
                 <Route path="/tips/:id" element={<TipsDetailPage />} />
                 <Route path="/tips/post" element={<PostTipPage />} />
                 <Route path="/board" element={<BoardHome />} />
+                <Route path="/edit-board" element={<EditBoardPage />} />
                 <Route path="/qna/:id" element={<QnADetailPage />} />
-                <Route path="/board/:subject" element={<QnABoard />} />
+                <Route path="/board/:subject" element={<UnifiedBoard />} />
 
                 <Route path="/menu" element={<MenuPage />} />
             </Routes>

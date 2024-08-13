@@ -17,7 +17,7 @@ const BadgeFilter = ({ onFilterChange }) => {
     const badges = ['필기공유', '시험정보', '수업꿀팁'];
 
     return (
-        <div style={{marginTop: '15px'}}>
+        <div style={{height: '40px', marginTop: '15px'}}>
             {badges.map(badge => (
                 <Badge
                     key={badge}
@@ -33,5 +33,6 @@ const BadgeFilter = ({ onFilterChange }) => {
 BadgeFilter.propTypes = {
     onFilterChange: PropTypes.func.isRequired,
 };
+
 
 export default BadgeFilter;
