@@ -3,7 +3,22 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Tips = ({ id, name, major, title, content, time, read, like, img, point }) => {
+const Tips = ({ id, name, major, title, content, time, views, like, img, point }) => {
+    const getTimeElapsed = (createdAt) => {
+        const now = new Date();
+        const createdTime = new Date(createdAt);
+        const diff = now.getTime() - createdTime.getTime();
+    
+        const minutes = Math.floor(diff / (1000 * 60));
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    
+        if (minutes < 1) return '방금 전';
+        if (minutes < 60) return `${minutes}분 전`;
+        if (hours < 24) return `${hours}시간 전`;
+        return `${days}일 전`;
+    };
+
     return (
         <OutWrapper>
             <StyledLink to={`/tips/${id}`}>
@@ -20,7 +35,7 @@ const Tips = ({ id, name, major, title, content, time, read, like, img, point })
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span style={{color: '#737373'}}> {time}분 전 | {major} {name} | 조회수 {read} </span>
+                        <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {major} {name} | 조회수 {views} </span>
                         <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold'}}> {like} </span>
                         <span style={{marginLeft: 'auto', color: '#737373'}}> {point}P </span>
                     </MetaContainer>
@@ -37,8 +52,8 @@ Tips.propTypes = {
     major: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-    time: PropTypes.number.isRequired,
-    read: PropTypes.number.isRequired,
+    time: PropTypes.string.isRequired,
+    views: PropTypes.number.isRequired,
     like: PropTypes.number.isRequired,
     img: PropTypes.string,
     point: PropTypes.number.isRequired
@@ -50,7 +65,7 @@ Tips.defaultProps = {
     title: '제목',
     content: '내용',
     time: 0,
-    read: 0,
+    views: 0,
     like: 0,
     img: null,
     point: 100

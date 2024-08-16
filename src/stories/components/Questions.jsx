@@ -3,7 +3,22 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Questions = ({ id, title, content, subject, time, read, like, img, limit }) => {
+const Questions = ({ id, title, content, subject, time, views, like, img, limit }) => {
+    const getTimeElapsed = (createdAt) => {
+        const now = new Date();
+        const createdTime = new Date(createdAt);
+        const diff = now.getTime() - createdTime.getTime();
+    
+        const minutes = Math.floor(diff / (1000 * 60));
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    
+        if (minutes < 1) return '방금 전';
+        if (minutes < 60) return `${minutes}분 전`;
+        if (hours < 24) return `${hours}시간 전`;
+        return `${days}일 전`;
+    };
+
     return (
         <OutWrapper>
             <StyledLink to={`/qna/${id}`}>
@@ -20,7 +35,7 @@ const Questions = ({ id, title, content, subject, time, read, like, img, limit }
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span style={{color: '#737373'}}> {time}분 전 | {subject} | 조회수 {read} </span>
+                        <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {subject} | 조회수 {views} </span>
                         <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold'}}> {like} </span>
                         <span style={{marginLeft: 'auto', color: '#737373'}}> {limit === 'true' ? '등급 제한: A' : ''} </span>
                     </MetaContainer>
@@ -37,8 +52,8 @@ Questions.propTypes = {
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     subject: PropTypes.string.isRequired,
-    time: PropTypes.number.isRequired,
-    read: PropTypes.number.isRequired,
+    time: PropTypes.string.isRequired,
+    views: PropTypes.number.isRequired,
     like: PropTypes.number.isRequired,
     img: PropTypes.string,
     limit: PropTypes.string.isRequired
@@ -49,7 +64,7 @@ Questions.defaultProps = {
     content: '내용',
     subject: '과목',
     time: 0,
-    read: 0,
+    views: 0,
     like: 0,
     img: null,
     limit: 'false'

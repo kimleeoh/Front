@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Tool from './Tool';
 
-const QuestionsDetail = ({ name, major, title, content, subject, time, read, like, img, limit }) => {
+const QuestionsDetail = ({ id, name, major, title, content, subject, time, views, like, img, limit }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
     const containerRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -22,6 +22,52 @@ const QuestionsDetail = ({ name, major, title, content, subject, time, read, lik
         }
     };
 
+    const getTimeElapsed = (createdAt) => {
+        const now = new Date();
+        const createdTime = new Date(createdAt);
+        const diff = now.getTime() - createdTime.getTime();
+    
+        const minutes = Math.floor(diff / (1000 * 60));
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    
+        if (minutes < 1) return '방금 전';
+        if (minutes < 60) return `${minutes}분 전`;
+        if (hours < 24) return `${hours}시간 전`;
+        return `${days}일 전`;
+    };
+
+    const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
+
+    const handleNotificationToggle = () => {
+        setIsNotificationEnabled(!isNotificationEnabled);
+        if (!isNotificationEnabled) {
+            // Send notification data when enabled
+            sendNotificationData({
+                postId: id,
+            });
+        } else {
+            // Remove notification data when disabled
+            removeNotificationData(id);
+        }
+    };
+
+    const sendNotificationData = (data) => {
+        // This function would send the notification data to your backend or local storage
+        console.log("Notification enabled for post:", data);
+        // Here you would typically make an API call or update local storage
+        // For example:
+        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
+    };
+
+    const removeNotificationData = (postId) => {
+        // This function would remove the notification data
+        console.log("Notification disabled for post:", postId);
+        // Here you would typically make an API call or update local storage
+        // For example:
+        // localStorage.removeItem(`notification_${postId}`);
+    };
+
     return (
         <OutWrapper>
             <Wrapper>
@@ -31,7 +77,7 @@ const QuestionsDetail = ({ name, major, title, content, subject, time, read, lik
                 </Title>
 
                 <MetaContainer>
-                    <span>{time}분 전 | {major} {name} | 조회수 {read}</span>
+                    <span>{getTimeElapsed(time)} | {major} {name} | 조회수 {views}</span>
                 </MetaContainer>
                 <Content>{content}</Content>
 
@@ -70,7 +116,11 @@ const QuestionsDetail = ({ name, major, title, content, subject, time, read, lik
                     </IndexIndicator>
                 )}
 
-                <Tool like={like} report={false} />
+                <Tool 
+                    like={like} 
+                    report={false} 
+                    onNotificationToggle={handleNotificationToggle}
+                />
             </Wrapper>
         </OutWrapper>
     );
@@ -79,13 +129,14 @@ const QuestionsDetail = ({ name, major, title, content, subject, time, read, lik
 export default QuestionsDetail;
 
 QuestionsDetail.propTypes = {
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     major: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     subject: PropTypes.string.isRequired,
-    time: PropTypes.number.isRequired,
-    read: PropTypes.number.isRequired,
+    time: PropTypes.string.isRequired,
+    views: PropTypes.number.isRequired,
     like: PropTypes.number.isRequired,
     img: PropTypes.oneOfType([
         PropTypes.string,
@@ -95,13 +146,14 @@ QuestionsDetail.propTypes = {
 };
 
 QuestionsDetail.defaultProps = {
+    id: 0,
     name: '이름',
     major: '전공',
     title: '제목',
     content: '내용',
     subject: '과목',
     time: 0,
-    read: 0,
+    views: 0,
     like: 0,
     img: null,
     limit: false,

@@ -3,77 +3,80 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const SelectBoard = ({ options, placeholder, onChange }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const dropdownRef = useRef(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedOptions, setSelectedOptions] = useState([]);
+    const dropdownRef = useRef(null);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+    const toggleDropdown = () => setIsOpen(!isOpen);
 
-  const handleOptionClick = (option) => {
-    if (option.subcategories && option.subcategories.length > 0) {
-      setSelectedOptions([...selectedOptions, option]);
-    } else {
-      setSelectedOptions([...selectedOptions, option]);
-      setIsOpen(false);
-      if (onChange) {
-        onChange(option);
-      }
-    }
-  };
-
-  const handleBackClick = () => {
-    setSelectedOptions(selectedOptions.slice(0, -1));
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
+    const handleOptionClick = (option) => {
+        if (option.subcategories && option.subcategories.length > 0) {
+            setSelectedOptions([...selectedOptions, option]);
+        } else {
+            setSelectedOptions([...selectedOptions, option]);
+            setIsOpen(false);
+            if (onChange) {
+                onChange([...selectedOptions, option]);
+            }
+        }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+    const handleBackClick = () => {
+        const newSelectedOptions = selectedOptions.slice(0, -1);
+        setSelectedOptions(newSelectedOptions);
+        if (onChange) {
+            onChange(newSelectedOptions);
+        }
     };
-  }, []);
 
-  // Ensure currentOptions is always an array
-  const currentOptions = selectedOptions.length === 0 
-    ? options 
-    : (selectedOptions[selectedOptions.length - 1]?.subcategories || []);
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
 
-  return (
-    <DropdownContainer ref={dropdownRef}>
-      <DropdownHeader onClick={toggleDropdown}>
-        {selectedOptions.length === 0 
-          ? placeholder 
-          : selectedOptions.map(option => option.label).join(' > ')}
-        <ArrowIcon isOpen={isOpen}><img src='/Icons/Arrow.svg' alt="arrow" /></ArrowIcon>
-      </DropdownHeader>
-      {isOpen && (
-        <DropdownListContainer>
-          <DropdownList>
-            {currentOptions.length > 0 ? (
-              currentOptions.map((option) => (
-                <ListItem
-                  key={option.value}
-                  onClick={() => handleOptionClick(option)}
-                >
-                  {option.label}
-                </ListItem>
-              ))
-            ) : (
-              <ListItem></ListItem>
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const currentOptions = selectedOptions.length === 0 
+        ? options 
+        : (selectedOptions[selectedOptions.length - 1]?.subcategories || []);
+
+    return (
+        <DropdownContainer ref={dropdownRef}>
+            <DropdownHeader onClick={toggleDropdown}>
+                {selectedOptions.length === 0 
+                    ? placeholder 
+                    : selectedOptions.map(option => option.label).join(' > ')}
+                <ArrowIcon isOpen={isOpen}><img src='/Icons/Arrow.svg' alt="arrow" /></ArrowIcon>
+            </DropdownHeader>
+            {isOpen && (
+                <DropdownListContainer>
+                    <DropdownList>
+                        {currentOptions.length > 0 ? (
+                            currentOptions.map((option) => (
+                                <ListItem
+                                    key={option.value}
+                                    onClick={() => handleOptionClick(option)}
+                                >
+                                    {option.label}
+                                </ListItem>
+                            ))
+                        ) : (
+                            <ListItem></ListItem>
+                        )}
+                    </DropdownList>
+                    {selectedOptions.length > 0 && (
+                        <BackButton onClick={handleBackClick}>뒤로 가기</BackButton>
+                    )}
+                </DropdownListContainer>
             )}
-          </DropdownList>
-          {selectedOptions.length > 0 && (
-            <BackButton onClick={handleBackClick}>뒤로 가기</BackButton>
-          )}
-        </DropdownListContainer>
-      )}
-    </DropdownContainer>
-  );
+        </DropdownContainer>
+    );
 };
 
 export default SelectBoard;
@@ -121,43 +124,43 @@ const DropdownHeader = styled.div`
 `;
 
 const ArrowIcon = styled.span`
-  transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
-  transition: transform 0.3s ease;
+    transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+    transition: transform 0.3s ease;
 `;
 
 const DropdownListContainer = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  z-index: 1;
-  border: 1px solid #ddd;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  background-color: white;
-  max-height: 200px;
-  overflow-y: auto;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    background-color: white;
+    max-height: 200px;
+    overflow-y: auto;
 `;
 
 const DropdownList = styled.ul`
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
 `;
 
 const ListItem = styled.li`
-  padding: 10px;
-  cursor: pointer;
+    padding: 10px;
+    cursor: pointer;
 
-  &:hover {
-    background-color: #f0f0f0;
-  }
+    &:hover {
+        background-color: #f0f0f0;
+    }
 `;
 
 const BackButton = styled.div`
-  padding: 10px;
-  cursor: pointer;
-  text-align: center;
-  background-color: #f0f0f0;
-  border-top: 1px solid #ddd;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    background-color: #f0f0f0;
+    border-top: 1px solid #ddd;
 `;

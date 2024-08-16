@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const TextInput = ({ width, height, placeholder, fontColor, backgroundColor, fontSize, onChange}) => {
+const TextInput = ({ width, height, placeholder, fontColor, backgroundColor, fontSize, marginTop, onChange}) => {
     const [content, setContent] = useState('');
     const [isFocused, setIsFocused] = useState(false);
 
@@ -33,6 +33,7 @@ const TextInput = ({ width, height, placeholder, fontColor, backgroundColor, fon
             fontColor={fontColor}
             backgroundColor={backgroundColor}
             fontSize={fontSize}
+            marginTop={marginTop}
             onFocus={handleFocus}
             onBlur={handleBlur}
         />
@@ -47,6 +48,7 @@ const StyledTextInput = styled.input`
     justify-content: center;
     width: ${props => props.width};
     height: ${props => props.height};
+    margin-top: ${props => props.marginTop};
     padding: 10px;
     border: none;
     border-bottom: 1px solid #ACB2BB;
@@ -70,6 +72,7 @@ TextInput.propTypes = {
     fontColor: PropTypes.string,
     backgroundColor: PropTypes.string,
     fontSize: PropTypes.string,
+    marginTop: PropTypes.string,
     onChange: PropTypes.func
 };
 
@@ -77,7 +80,8 @@ TextInput.defaultProps = {
     width: '100%',
     height: '30px',
     placeholder: '내용을 입력하세요.',
-    fontColor: '#000',
+    fontColor: '#434B60',
     backgroundColor: 'white',
-    fontSize: '18px'
+    fontSize: '18px',
+    marginTop: '0px',
 };

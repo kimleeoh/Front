@@ -17,17 +17,26 @@ const initialUserData = [
     {
         id: 1,
         name: '이예진',
-        point: 1020
+        major: '글로벌미디어학부',
+        profileImg: '/Icons/Download.svg',
+        point: 1020,
     }
 ];
 
-const categories = [
-    { name: 'Category 1', subcategories: ['Subcategory 1.1', 'Subcategory 1.2'] },
-    { name: 'Category 2', subcategories: ['Subcategory 2.1', 'Subcategory 2.2'] },
-    // Add more categories and subcategories as needed
-];
-
 const PostQuestionPage = () => {
+    const [formValues, setFormValues] = useState({
+        title: '',
+        board: [],
+        content: '',
+        images: [],
+        point: '',
+        limit: false,
+        time: '',
+    });
+
+    const [isFormValid, setIsFormValid] = useState(false);
+    const [isPointInputDisabled, setIsPointInputDisabled] = useState(false);
+
     const boardOptions = [
         {
             value: '교양선택',
@@ -79,31 +88,90 @@ const PostQuestionPage = () => {
         }
     }, []);
 
-    const handleCategorySelect = (category, subcategory) => {
-        setSelectedCategory(category);
-        setSelectedSubcategory(subcategory);
+    useEffect(() => {
+        const { title, board, content, point } = formValues;
+        const isValid = title.trim() !== '' && 
+                        board.length > 0 && 
+                        content.trim() !== '' && 
+                        point.trim() !== '';
+        setIsFormValid(isValid);
+    }, [formValues]);
+
+    const handleInputChange = (name, value) => {
+        setFormValues({ ...formValues, [name]: value });
+    };
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+
+        const now = new Date().toISOString();
+
+        // Update 'time' first then proceed with form submission
+        setFormValues((prevFormValues) => {
+            const user = userData[0] || {};
+            const updatedFormValues = { ...prevFormValues, name: user.name, major: user.major, profileImg: user.profileImg, time: now };
+            
+            if (isFormValid) {
+                // Add your API call here to send updatedFormValues to the backend.
+                console.log(updatedFormValues);
+            }
+
+                return updatedFormValues;
+        });
+    };
+
+    const handleCheckBarChange = (isChecked) => {
+        handleInputChange('limit', isChecked);
+        setIsPointInputDisabled(isChecked);
     };
 
     return (
         <Wrapper>
             <Header showIcon={false} text="질문 작성하기" backButton={true} searchButton={false} />
-            <TextInput width={'380px'} height={'30px'} fontSize={'15px'} placeholder={'제목 입력'} />
-            <SelectBoard options={boardOptions} />
-            <TextArea width={'380px'} height={'300px'} fontSize={'15px'}
-                placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."} />
-            <ImageUploader />
+            <TextInput 
+                width={'380px'} 
+                height={'30px'} 
+                fontSize={'15px'} 
+                placeholder={'제목 입력'} 
+                marginTop={'10px'}
+                onChange={(value) => handleInputChange('title', value)}
+            />
+            <SelectBoard 
+                options={boardOptions} 
+                onChange={(value) => handleInputChange('board', value)}
+            />
+            <TextArea 
+                width={'380px'} 
+                height={'300px'} 
+                fontSize={'15px'}
+                placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."} 
+                onChange={(value) => handleInputChange('content', value)}
+            />
+            <ImageUploader onChange={(value) => handleInputChange('images', value)}/>
             {initialUserData.map((user) => (
                 <PointInput
                     key={user.id}
                     name={user.name}
                     point={user.point}
+                    onChange={(value) => handleInputChange('point', value)}
+                    disabled={isPointInputDisabled}
                 />
             ))}
-            <CheckBar text={'A 이상의 답변만 받고 싶어요.'} />
+            <CheckBar 
+                text={'A 이상의 답변만 받고 싶어요.'} 
+                onChange={handleCheckBarChange}
+                disabled={formValues.point < 100} 
+            />
             <Condition>
                 <span style={{ fontSize: '10px', color: '#D00303', marginLeft: '20px' }}>100p 이상 입력해야 조건을 제시할 수 있습니다.</span>
             </Condition>
-            <Button label={'등록하기'} width={'380px'} style={{ marginTop: '15px' }} />
+            <Button 
+                label={'등록하기'} 
+                width={'380px'} 
+                style={{ marginTop: '15px' }} 
+                onClick={handleFormSubmit}
+                disabled={!isFormValid}
+            />
         </Wrapper>
     );
 }

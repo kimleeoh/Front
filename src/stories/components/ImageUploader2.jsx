@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-const ImageUploader = () => {
+const ImageUploader = ({ onChange }) => {
     const [files, setFiles] = useState([]);
 
     const handleFileChange = (event) => {
         const selectedFiles = Array.from(event.target.files);
-        if (selectedFiles.length) {
-            setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
+        setFiles(selectedFiles);
+        if (onChange) {
+            onChange(selectedFiles);
         }
     };
 
@@ -16,22 +18,24 @@ const ImageUploader = () => {
             {files.length > 0 ? (
                 <FileName>{files.map(file => file.name).join(', ')}</FileName>
             ) : (
-                <PlaceholderText>
-                    파일첨부
-                </PlaceholderText>
+                <PlaceholderText>파일첨부</PlaceholderText>
             )}
             <UploadButton>
                 <img src="/Icons/Plus.svg" alt="Add"/>
-                <input 
-                    type="file" 
-                    accept="image/*" 
-                    multiple 
-                    onChange={handleFileChange} 
+                <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileChange}
                     style={{ display: 'none' }}
                 />
             </UploadButton>
         </UploaderWrapper>
     );
+};
+
+ImageUploader.propTypes = {
+    onChange: PropTypes.func,
 };
 
 export default ImageUploader;
@@ -68,7 +72,6 @@ const FileName = styled.p`
     color: #ACB2BB;
     font-size: 14px;
     margin: 0 10px 0 0;
-
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

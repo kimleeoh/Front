@@ -23,7 +23,7 @@ const BadgeFilter = ({ onFilterChange }) => {
                     key={badge}
                     label={badge}
                     active={activeBadges.includes(badge)}
-                    onClick={handleBadgeClick}
+                    onClick={()=>handleBadgeClick(badge)}
                 />
             ))}
         </div>

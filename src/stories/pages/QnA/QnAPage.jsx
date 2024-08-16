@@ -9,34 +9,34 @@ import FixedIcon from '../../components/FixedIcon';
 
 const initialQuestionData = [
     {
-        id: 1,
+        id: '463846736919eqk876e4q91b9',
         title: '나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?',
         content: '나이키스트 관련 식 이렇게 이해하면 되나요?',
         subject: '디지털미디어원리',
-        time: 5,
-        read: 30,
+        time: "2024-08-12T10:21:34.123Z",
+        views: 30,
         like: 20,
         img: '/Icons/1607-2.jpg',
         limit: 'true'
     },
     {
-        id: 2,
+        id: '7962156648w19eqk878e268qb',
         title: '자료구조',
         content: '스택이랑 큐의 차이점을 자세히 설명해 주세요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ',
         subject: '컴퓨터시스템개론',
-        time: 10,
-        read: 88,
+        time: "2024-08-13T10:21:34.123Z",
+        views: 88,
         like: 48,
         img: '/Icons/1607-2.jpg',
         limit: 'false'
     },
     {
-        id: 3,
+        id: '46848w9e98w19eqk878e2ea434',
         title: '미디어제작및실습 포토샵',
         content: '포토샵 재학생 인증 어떻게 하나요?? 알려주시면 좋은 행운이 찾아올 거예요~',
         subject: '미디어제작및실습',
-        time: 15,
-        read: 302,
+        time: "2024-08-14T05:45:30.246Z",
+        views: 302,
         like: 12,
         img: null,
         limit: 'false'
@@ -79,7 +79,7 @@ const QnAPage = () => {
                     content={question.content}
                     subject={question.subject}
                     time={question.time}
-                    read={question.read}
+                    views={question.views}
                     like={question.like}
                     img={question.img}
                     limit={question.limit}

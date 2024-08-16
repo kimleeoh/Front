@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-const CheckBar = ({text, onChange}) => {
+const CheckBar = ({text, onChange, disabled}) => {
     return (
         <SubHeader>
             <CheckBox 
@@ -11,21 +11,25 @@ const CheckBar = ({text, onChange}) => {
                 enabledIconSrc='/Icons/CheckBox_e.svg'
                 text={text}
                 onChange={onChange}
+                disabled={disabled}
             />
         </SubHeader>
     )
 }
 
-const CheckBox = ({disabledIconSrc, enabledIconSrc, text, onChange}) => {
+const CheckBox = ({disabledIconSrc, enabledIconSrc, text, onChange, disabled}) => {
     const [isChecked, setIsChecked] = useState(false);
+
     const handleCheckboxClick = () => {
-        const newCheckedState = !isChecked;
-        setIsChecked(newCheckedState);
-        onChange(newCheckedState);
+        if (!disabled) {
+            const newCheckedState = !isChecked;
+            setIsChecked(newCheckedState);
+            onChange(newCheckedState);
+        }
     };
 
     return(
-        <Button onClick={handleCheckboxClick}>
+        <Button onClick={handleCheckboxClick} disabled={disabled}>
             <img src={isChecked ? enabledIconSrc : disabledIconSrc}></img>
             <span style={{color: isChecked ? 'black' : '#ACB2BB', fontSize: '14px', paddingLeft: '5px' }}>{text}</span>
         </Button>
@@ -36,12 +40,14 @@ export default CheckBar;
 
 CheckBar.propTypes = {
     text: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired,
 };
   
 CheckBar.defaultProps = {
     text: '텍스트를 입력하세요',
     onChange: () => {},
+    disabled: false,
 };
 
 const SubHeader = styled.div`
@@ -70,6 +76,8 @@ const Button = styled.button`
 
     cursor: pointer;
 
+    cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
+    opacity: ${props => (props.disabled ? 0.5 : 1)};
     transition: all 0.3s ease;
     &:active {
         transition: all 0.3s ease;

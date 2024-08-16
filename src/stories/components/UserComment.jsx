@@ -2,16 +2,56 @@ import react from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Button from './Button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ImageUploader from './ImageUploader';
 import TextField from '../components/TextField'
 import TextArea from './TextArea';
 
-const User = ({name, level, grade, figure, major, profileImg, limit}) => {
+const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) => {
     const [isAnswered, setIsAnswered] = useState(false);
+    const [formValues, setFormValues] = useState({
+        name: '',
+        level: '',
+        grade: '',
+        figure: '',
+        major: '',
+        profileImg: '',
+        content: '',
+        time: '',
+    });
 
     const handleAnswerSubmit = () => {
         setIsAnswered(true);
+    };
+
+    const [isFormValid, setIsFormValid] = useState(false);
+
+    useEffect(() => {
+        const { content } = formValues;
+        const isValid = content.trim() !== '';
+        setIsFormValid(isValid);
+    }, [formValues]);
+
+    const handleInputChange = (name, value) => {
+        setFormValues({ ...formValues, [name]: value });
+    };
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+
+        const now = new Date().toISOString();
+
+    // Update 'time' first then proceed with form submission
+    setFormValues((prevFormValues) => {
+        const updatedFormValues = { ...prevFormValues, name: name, level: level, grade: grade, figure: figure, major: major, profileImg: profileImg, time: now, post_id: post_id };
+        
+        if (isFormValid) {
+            // Add your API call here to send updatedFormValues to the backend.
+            console.log(updatedFormValues);
+        }
+
+            return updatedFormValues;
+        });
     };
 
     if (isAnswered) {
@@ -24,12 +64,26 @@ const User = ({name, level, grade, figure, major, profileImg, limit}) => {
                             <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
                             <MajorName>{major} {name}</MajorName>
                         </ProfileContainer>
-                        <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} style={{marginLeft: 'auto'}}></Button>
+                        <Button 
+                            fontSize={'10px'}
+                            width={'80px'} 
+                            height={'30px'} 
+                            label={'답변등록'} 
+                            style={{marginLeft: 'auto'}} 
+                            onClick={handleFormSubmit}
+                        />
                     </SubWrapper>
                     <TextAreaWrapper>
-                        <TextArea width={'330px'} height={'100px'} fontSize={'15px'} backgroundColor={'#F0F2F4'} placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."}/>
+                        <TextArea 
+                            width={'330px'} 
+                            height={'100px'} 
+                            fontSize={'15px'} 
+                            backgroundColor={'#F0F2F4'} 
+                            placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."} 
+                            onChange={(value) => handleInputChange('content', value)}
+                        />
                     </TextAreaWrapper>
-                    <ImageUploader/>
+                    <ImageUploader onChange={(value) => handleInputChange('images', value)} />
                 </Wrapper>
             </OutWrapper>
         );
@@ -46,7 +100,14 @@ const User = ({name, level, grade, figure, major, profileImg, limit}) => {
                             <MajorName>{major} {name}<span style={{color: '#3182F7'}}>님은 답변 등록이 가능합니다.</span></MajorName>
                         </ProfileContainer>
                     </SubWrapper>
-                    <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} style={{marginLeft: 'auto', marginTop: '5px'}} onClick={handleAnswerSubmit}></Button>
+                    <Button 
+                        fontSize={'10px'} 
+                        width={'80px'} 
+                        height={'30px'} 
+                        label={'답변등록'} 
+                        style={{marginLeft: 'auto', marginTop: '5px'}} 
+                        onClick={handleAnswerSubmit} 
+                    />
                 </Wrapper>
             </OutWrapper>
         )
@@ -57,7 +118,7 @@ const User = ({name, level, grade, figure, major, profileImg, limit}) => {
             <Wrapper>
                 {figure === null ? (
                     <SubWrapper>
-                        <img src="/Icons/Profile.svg" />
+                        <ProfileImg src="/Icons/1607-2.jpg" />
                         <ProfileContainer>
                             <LevelGrade>Lv. {level} | 미정</LevelGrade>
                             <MajorName><span style={{color: '#ACB2BB'}}>성적 입력 후 답변이 가능합니다.</span></MajorName>
@@ -65,7 +126,7 @@ const User = ({name, level, grade, figure, major, profileImg, limit}) => {
                     </SubWrapper>
                 ) : figure >= 2 ? (
                     <SubWrapper>
-                        <img src="/Icons/Profile.svg" />
+                        <ProfileImg src="/Icons/1607-2.jpg" />
                         <ProfileContainer>
                             <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
                             <MajorName>{major} {name}<span style={{color: '#3182F7'}}>님은 답변 등록이 가능합니다.</span></MajorName>
@@ -73,7 +134,7 @@ const User = ({name, level, grade, figure, major, profileImg, limit}) => {
                     </SubWrapper>
                 ) : (
                     <SubWrapper>
-                        <img src="/Icons/Profile.svg" />
+                        <ProfileImg src="/Icons/1607-2.jpg" />
                         <ProfileContainer>
                             <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
                             <MajorName>{major} {name}<span style={{color: '#ACB2BB'}}>님은 답변 등록이 불가능합니다.</span></MajorName>
@@ -95,6 +156,7 @@ const User = ({name, level, grade, figure, major, profileImg, limit}) => {
 export default User;
 
 User.propTypes = {
+    post_id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     level: PropTypes.number.isRequired,
     grade: PropTypes.string.isRequired,
@@ -105,6 +167,7 @@ User.propTypes = {
 };
 
 User.defaultProps = {
+    post_id: 0,
     name: '이름',
     level: 1,
     grade: null,
@@ -143,6 +206,14 @@ const Subject = styled.div`
 
 const ProfileContainer = styled.div`
     margin-left: 10px;
+`
+
+const ProfileImg = styled.img`
+    width: 29px;
+    height: 29px;
+    border-radius: 100%;
+    object-fit: cover;
+    object-position: center;
 `
 
 const LevelGrade = styled.div`

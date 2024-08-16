@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Tool from './Tool';
 
-const Answers = ({name, level, grade, major, profileImg, content, img, like }) => {
+const Answers = ({id, post_id, name, level, grade, major, profileImg, content, img, like }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
     const containerRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -80,6 +80,8 @@ const Answers = ({name, level, grade, major, profileImg, content, img, like }) =
 export default Answers;
 
 Answers.propTypes = {
+    id: PropTypes.string.isRequired,
+    post_id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     level: PropTypes.number.isRequired,
     grade: PropTypes.string.isRequired,
@@ -94,6 +96,8 @@ Answers.propTypes = {
 };
 
 Answers.defaultProps = {
+    id: 0,
+    post_id: 0,
     name: '이름',
     level: 1,
     grade: '성적',

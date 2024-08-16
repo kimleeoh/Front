@@ -10,53 +10,53 @@ import UserComment from '../../components/UserComment';
 
 const initialQuestionData = [
     {
-        id: 1,
+        id: '463846736919eqk876e4q91b9',
         name: '이예진',
         major: '글로벌미디어학부',
         title: '나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?',
         content: '나이키스트 관련 식 이렇게 이해하면 되나요?',
         subject: '디지털미디어원리',
-        time: 5,
-        read: 30,
+        time: "2024-08-12T10:21:34.123Z",
+        views: 30,
         like: 20,
         img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
         limit: true
     },
     {
-        id: 2,
+        id: '7962156648w19eqk878e268qb',
         name: '오준우',
         major: '글로벌미디어학부',
         title: '자료구조',
         content: '스택이랑 큐의 차이점을 자세히 설명해 주세요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ',
         subject: '컴퓨터시스템개론',
-        time: 10,
-        read: 88,
+        time: "2024-08-13T10:21:34.123Z",
+        views: 88,
         like: 48,
         img: '/Icons/1607-2.jpg',
         limit: false
     },
     {
-        id: 3,
+        id: '46848w9e98w19eqk878e2ea434',
         name: '이동현',
         major: '글로벌미디어학부',
         title: '미디어제작및실습 포토샵',
         content: '포토샵 재학생 인증 어떻게 하나요?? 알려주시면 좋은 행운이 찾아올 거예요~',
         subject: '미디어제작및실습',
-        time: 15,
-        read: 302,
+        time: "2024-08-14T05:45:30.246Z",
+        views: 302,
         like: 12,
         img: null,
         limit: false
     },
     {
-        id: 4,
+        id: '7998wkf68451n9eqk877614wsb',
         name: '이예진',
         major: '글로벌미디어학부',
         title: '표본화 양자화 부호화',
         content: '각각을 한 문장으로 정리할 수 있다면?',
         subject: '디지털미디어원리',
-        time: 5,
-        read: 30,
+        time: "2024-08-14T05:45:30.246Z",
+        views: 30,
         like: 15,
         img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
         limit: false
@@ -65,7 +65,8 @@ const initialQuestionData = [
 
 const initialAnswerData = [
     {
-        id: 1,
+        id: '7196584we6456e481q770q23b9',
+        post_id: '463846736919eqk876e4q91b9',
         name: '오준우',
         level: 15,
         grade: 'A+',
@@ -77,7 +78,8 @@ const initialAnswerData = [
         like: 13,
     },
     {
-        id: 2,
+        id: '451491268qqdvsdf8728qb',
+        post_id: '7962156648w19eqk878e268qb',
         name: '김난슬',
         level: 15,
         grade: 'A+',
@@ -89,7 +91,8 @@ const initialAnswerData = [
         like: 30,
     },
     {
-        id: 3,
+        id: '13adfw6215415aqkaffsd434',
+        post_id: '46848w9e98w19eqk878e2ea434',
         name: '이동현',
         level: 15,
         grade: 'A+',
@@ -101,7 +104,8 @@ const initialAnswerData = [
         like: 28,
     },
     {
-        id: 1,
+        id: '131634wifg36ei54973q469',
+        post_id: '463846736919eqk876e4q91b9',
         name: '이동현',
         level: 15,
         grade: 'A+',
@@ -152,7 +156,7 @@ const QnADetailPage = () => {
         }
     }, []);
 
-    const currentQuestion = questionData.find((question) => question.id === Number(id));
+    const currentQuestion = questionData.find((question) => question.id === String(id));
     
     return (
         <Wrapper>
@@ -160,13 +164,14 @@ const QnADetailPage = () => {
             {currentQuestion && (
                 <QuestionsDetail
                     key={currentQuestion.id}
+                    id={currentQuestion.id}
                     name={currentQuestion.name}
                     major={currentQuestion.major}
                     title={currentQuestion.title}
                     content={currentQuestion.content}
                     subject={currentQuestion.subject}
                     time={currentQuestion.time}
-                    read={currentQuestion.read}
+                    views={currentQuestion.views}
                     like={currentQuestion.like}
                     img={currentQuestion.img}
                     limit={currentQuestion.limit}
@@ -174,9 +179,11 @@ const QnADetailPage = () => {
             )}
 
             {answerData
-                .filter(answer => answer.id === Number(id))
+                .filter(answer => answer.post_id === String(id))
                 .map((answer) => (
                     <AnswersDetail
+                        id={answer.id}
+                        post_id={answer.post_id}
                         name={answer.name}
                         level={answer.level}
                         grade={answer.grade}
@@ -192,6 +199,7 @@ const QnADetailPage = () => {
 
             {currentQuestion && initialUserData.map((user) => (
                 <UserComment
+                    post_id={currentQuestion.id}
                     name={user.name}
                     level={user.level}
                     grade={user.grade}

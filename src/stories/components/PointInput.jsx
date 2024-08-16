@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const PointInput = ({ width, height, placeholder, fontColor, backgroundColor, fontSize, onChange, point}) => {
+const PointInput = ({ width, height, placeholder, fontColor, backgroundColor, fontSize, onChange, point, disabled}) => {
     const [content, setContent] = useState('');
     const [isFocused, setIsFocused] = useState(false);
 
     const handleChange = (e) => {
-        setContent(e.target.value);
-        if (onChange) {
-        onChange(e.target.value);
+        const value = e.target.value;
+        if (/^\d*$/.test(value)) {
+            setContent(value);
+            if (onChange) {
+                onChange(value);
+            }
         }
     };
 
@@ -39,12 +42,36 @@ const PointInput = ({ width, height, placeholder, fontColor, backgroundColor, fo
                 fontSize={fontSize}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
+                disabled={disabled}
             />
         </>
     );
 };
 
 export default PointInput;
+
+PointInput.propTypes = {
+    width: PropTypes.string,
+    height: PropTypes.string,
+    placeholder: PropTypes.string,
+    fontColor: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    fontSize: PropTypes.string,
+    onChange: PropTypes.func,
+    point: PropTypes.number,
+    disabled: PropTypes.bool,
+};
+
+PointInput.defaultProps = {
+    width: '380px',
+    height: '50px',
+    placeholder: '포인트를 입력하세요. ',
+    fontColor: '#000',
+    backgroundColor: '#F0F2F4',
+    fontSize: '16px',
+    point: 0,
+    disabled: false,
+};
 
 const StyledPointInput = styled.input`
     display: flex;
@@ -68,24 +95,3 @@ const StyledPointInput = styled.input`
         font-size: ${props => props.fontSize};
     }
 `;
-
-PointInput.propTypes = {
-    width: PropTypes.string,
-    height: PropTypes.string,
-    placeholder: PropTypes.string,
-    fontColor: PropTypes.string,
-    backgroundColor: PropTypes.string,
-    fontSize: PropTypes.string,
-    onChange: PropTypes.func,
-    point: PropTypes.number
-};
-
-PointInput.defaultProps = {
-    width: '380px',
-    height: '50px',
-    placeholder: '포인트를 입력하세요. ',
-    fontColor: '#000',
-    backgroundColor: '#F0F2F4',
-    fontSize: '16px',
-    point: 0
-};

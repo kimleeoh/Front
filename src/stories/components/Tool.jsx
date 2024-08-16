@@ -3,29 +3,53 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-const Tool = ({like, save, notification, report}) => {
+const Tool = ({like, save, notification, report, onNotificationToggle, onSaveToggle}) => {
+    const [likesCount, setLikesCount] = useState(like);
+    const [isUpClicked, setIsUpClicked] = useState(false);
+    const [isDownClicked, setIsDownClicked] = useState(false);
+
+    const handleUpClick = () => {
+        if (!isUpClicked) {
+            setLikesCount(likesCount + 1);
+            setIsUpClicked(true);
+            setIsDownClicked(false); // Enable down button
+        }
+    };
+
+    const handleDownClick = () => {
+        if (!isDownClicked && likesCount > 0) {
+            setLikesCount(likesCount - 1);
+            setIsDownClicked(true);
+            setIsUpClicked(false); // Enable up button
+        }
+    };
+
     return(
         <Wrapper>
-            <ToolButton 
-                disabledIconSrc='/Icons/Up.svg'
-                enabledIconSrc='/Icons/Up.svg'
+            <LikeButton
+                onClick={handleUpClick}
+                disabled={isUpClicked}
+                Icon='/Icons/Up.svg'
             />
-            <span style={{color: '#3182F7'}}>{like}</span>
-            <ToolButton
-                disabledIconSrc='/Icons/Down.svg'
-                enabledIconSrc='/Icons/Down.svg'
+            <span style={{color: '#3182F7'}}>{likesCount}</span>
+            <LikeButton
+                onClick={handleDownClick}
+                disabled={isDownClicked}
+                Icon='/Icons/Down.svg'
             />
             {save && (
                 <ToolButton
-                disabledIconSrc='/Icons/Save_d.svg'
-                enabledIconSrc='/Icons/Save_e.svg'
-            />
+                    disabledIconSrc='/Icons/Save_d.svg'
+                    enabledIconSrc='/Icons/Save_e.svg'
+                    onClick={onSaveToggle}
+                />
             )}
             {notification && (
                 <ToolButton
-                disabledIconSrc='/Icons/Notification_d.svg'
-                enabledIconSrc='/Icons/Notification_e.svg'
-            />
+                    disabledIconSrc='/Icons/Notification_d.svg'
+                    enabledIconSrc='/Icons/Notification_e.svg'
+                    onClick={onNotificationToggle}
+                />
             )}
             {report && (
                 <Button style={{marginLeft: 'auto'}}><img src="/Icons/report.svg"></img></Button>
@@ -34,24 +58,34 @@ const Tool = ({like, save, notification, report}) => {
     )
 }
 
-const ToolButton = ({disabledIconSrc, enabledIconSrc}) => {
+const ToolButton = ({disabledIconSrc, enabledIconSrc, onClick, disabled}) => {
     const [isChecked, setIsChecked] = useState(false);
     const handleToolButtonClick = () => {
-        setIsChecked(isChecked === 'true' ? 'false' : 'true');
+        setIsChecked(!isChecked);
+        if (onClick) onClick();
     };
     return (
         <Button onClick={handleToolButtonClick}>
-            <img src={isChecked === 'true' ? enabledIconSrc : disabledIconSrc} />
+            <img src={isChecked ? enabledIconSrc : disabledIconSrc} />
         </Button>
     )
 }
+
+const LikeButton = ({ onClick, disabled, Icon }) => {
+    return (
+        <Button onClick={onClick} disabled={disabled}>
+            <img src={Icon} alt="tool icon" />
+        </Button>
+    );
+};
 
 Tool.propTypes = {
     like: PropTypes.number.isRequired,
     save: PropTypes.bool.isRequired,
     notification: PropTypes.bool.isRequired,
     report: PropTypes.bool.isRequired,
-
+    onNotificationToggle: PropTypes.func,
+    onSaveToggle: PropTypes.func,
 };
   
 Tool.defaultProps = {
@@ -59,6 +93,8 @@ Tool.defaultProps = {
     save: true,
     notification: true,
     report: true,
+    onNotificationToggle: () => {},
+    onSaveToggle: () => {},
 };
 
 export default Tool;

@@ -13,8 +13,40 @@ import CheckBar from '../../components/CheckBar';
 import Button from '../../components/Button'
 import BadgeFilter from '../../components/BadgeFilter';
 
+const initialUserData = [
+    {
+        id: 1,
+        name: '이예진',
+        major: '글로벌미디어학부',
+        point: 1020,
+    }
+];
 
 const PostQuestionPage = () => {
+    const [formValues, setFormValues] = useState({
+        title: '',
+        board: [],
+        tags: [],
+        content: '',
+        images: [],
+        time: '',
+    });
+
+    const [isFormValid, setIsFormValid] = useState(false);
+
+    const [userData, setUserData] = useState([]);
+    useEffect(() => {
+        // Local storage operations for user data
+        localStorage.removeItem('userData');
+        const userData = localStorage.getItem('userData');
+        if (userData) {
+            setUserData(JSON.parse(userData));
+        } else {
+            localStorage.setItem('userData', JSON.stringify(initialUserData));
+            setUserData(initialUserData);
+        }
+    }, []);
+    
     const boardOptions = [
         {
             value: '교양선택',
@@ -50,24 +82,76 @@ const PostQuestionPage = () => {
         },
     ];
 
+    useEffect(() => {
+        const { title, board, tags, content } = formValues;
+        const isValid = title.trim() !== '' && 
+                        board.length > 0 && 
+                        tags.length > 0 &&
+                        content.trim() !== '';
+        setIsFormValid(isValid);
+    }, [formValues]);
+
+    const handleInputChange = (name, value) => {
+        setFormValues({ ...formValues, [name]: value });
+    };
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+
+        const now = new Date().toISOString();
+
+        // Update 'time' first then proceed with form submission
+        setFormValues((prevFormValues) => {
+            const user = userData[0] || {};
+            const updatedFormValues = { ...prevFormValues, name: user.name, major: user.major, time: now };
+            
+            if (isFormValid) {
+                // Add your API call here to send updatedFormValues to the backend.
+                console.log(updatedFormValues);
+            }
+
+            return updatedFormValues;
+        });
+    };
+
 
     return (
         <Wrapper>
-            <Header showIcon={false} text="질문 작성하기" backButton={true} searchButton={false}/>
-            <TextInput width={'380px'} height={'30px'} fontSize={'15px'} placeholder={'제목 입력'}/>
-            <SelectBoard options={boardOptions}/>
-            <BadgeFilter onFilterChange={() => {}}/>
-            <TextArea width={'380px'} height={'300px'} fontSize={'15px'} 
-            placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."}/>
-            <ImageUploader/>
+            <Header showIcon={false} text="글 작성하기" backButton={true} searchButton={false}/>
+            <TextInput 
+                width={'380px'} 
+                height={'30px'} 
+                fontSize={'15px'} 
+                placeholder={'제목 입력'}  
+                onChange={(value) => handleInputChange('title', value)}
+            />
+            <SelectBoard 
+                options={boardOptions} 
+                onChange={(value) => handleInputChange('board', value)}
+            />
+            <BadgeFilter onFilterChange={(value) => handleInputChange('tags', value)} />
+            <TextArea 
+                width={'380px'} 
+                height={'300px'} 
+                fontSize={'15px'} 
+                placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."} 
+                onChange={(value) => handleInputChange('content', value)}
+            />
+            <ImageUploader onChange={(value) => handleInputChange('images', value)}/>
             <StyledDiv>
                 <span>일정 포인트를 자동으로 지급해줘요.</span>
             </StyledDiv>
-            <CheckBar text={'A 이상의 답변만 받고 싶어요.'}/>
+            {/* <CheckBar text={'A 이상의 답변만 받고 싶어요.'}/>
             <Condition>
                 <span style={{fontSize: '10px', color: '#D00303', marginLeft: '20px'}}>100p 이상 입력해야 조건을 제시할 수 있습니다.</span>
-            </Condition>
-            <Button label={'등록하기'} width={'380px'} style={{marginTop: '15px'}}/>
+            </Condition> */}
+            <Button 
+                label={'등록하기'} 
+                width={'380px'} 
+                style={{marginTop: '15px'}} 
+                onClick={handleFormSubmit}
+                disabled={!isFormValid}
+            />
         </Wrapper>
     )
 }
