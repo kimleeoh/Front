@@ -20,7 +20,7 @@ const MyPage = () => {
         <ProfileName></ProfileName>
       </Header>
       <Profile>
-        <img src="/logo512.png" alt="프로필" width='100px' height='100px' style={{ borderRadius: '50%' }}/>
+        <img src="/TempProfile.jpg" alt="프로필" width='100px' height='100px' style={{ borderRadius: '50%' }}/>
         <ProfileInfo>
           우치하 사스케
           <InfoBox>
@@ -32,7 +32,7 @@ const MyPage = () => {
       </Profile>
       <Introduction>
         소개
-        <IntroductionBox>fdjsklfjdsklfs</IntroductionBox>
+        <IntroductionBox>지금까지 느껴보지않았던 감각이야! 썩어빠진 닌자세계와 우치하를 결별시키는 감각! 내가 바라는 것은 너희들이 줄곧 바라던 것이다! 너희들의 바람대로 우치하를 너희 기억에서 없애주지! 나뭇잎도 모든 것도 전부 죽여버리는 것으로 말이야! 그것이 바로 우치하 일족의 부흥이다!</IntroductionBox>
       </Introduction>
       <TabNavigation 
         tabs={['프로필', '활동']} 
@@ -192,7 +192,8 @@ const IntroductionBox = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 340px;
-  padding: 10px 20px;
+  padding: 15px 20px;
+  font-weight: 500;
 `;
 
 const Content = styled.div`

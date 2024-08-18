@@ -11,36 +11,33 @@ const MenuPage = () => {
             <Header>
                 전체 메뉴
             </Header>
-            <Link to="/menu/mypage" style={{ textDecoration: 'none' }}> {/* Link로 MyPage로 이동하도록 설정 */}
+            <Link to="/mypage" style={{ textDecoration: 'none' }}>
                 <MyPage>
                     <Profile>
-                        <img src='/Icons/1607-2.jpg' alt='profile' width='62px' height='62px'/>
+                        <img src='/TempProfile.jpg' alt='profile' width='62px' height='62px' style={{ borderRadius: '50%' }}/>
                         우치하 사스케
                     </Profile>
                     <MyPageArrow>
                         마이페이지
-                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="16" viewBox="0 0 9 16" fill="none">
-                            <path d="M1.25 1.75L7.5 8L1.25 14.25" stroke="#ACB2BB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
                     </MyPageArrow>
                 </MyPage>
             </Link>
 
             <Section>
-                <MenuList> 내 성적 </MenuList>
-                <MenuList> 내 포인트 </MenuList>
+                <MenuList to="/grades"> 내 성적 </MenuList>
+                <MenuList to="/points"> 내 포인트 </MenuList>
                 <Title> 게시물 </Title>
-                <MenuList> 내가 쓴 글 </MenuList>
-                <MenuList> 북마크 </MenuList>
-                <MenuList> 최근 본 글 </MenuList>
+                <MenuList to="/myboard"> 내가 쓴 글 </MenuList>
+                <MenuList to="/bookmarks"> 북마크 </MenuList>
+                <MenuList to="/history"> 최근 본 글 </MenuList>
                 <Title> 도움말 </Title>
-                <MenuList> 공지사항 </MenuList>
-                <MenuList> 문의하기 </MenuList>
+                <MenuList to="/notices"> 공지사항 </MenuList>
+                <MenuList to="/contact"> 문의하기 </MenuList>
                 <Title> 기타 </Title>
-                <MenuList> 이용약관 </MenuList>
-                <MenuList> 개인정보 처리방침 </MenuList>
-                <MenuList> 운영정책 </MenuList>
-                <MenuList> 로그아웃 </MenuList>
+                <MenuList to="/terms"> 이용약관 </MenuList>
+                <MenuList to="/privacy"> 개인정보 처리방침 </MenuList>
+                <MenuList to="/policies"> 운영정책 </MenuList>
+                <MenuList to="/logout"> 로그아웃 </MenuList>
             </Section>
 
             <FixedBottomContainer>
@@ -95,7 +92,6 @@ const MyPage = styled.div`
     background: #F0F2F4;
     transition: all 0.3s ease;
     &:active {
-        transition: all 0.3s ease;
         scale: 0.95;
     }
     cursor: pointer;

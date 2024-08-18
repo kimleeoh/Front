@@ -56,7 +56,7 @@ const TopLayout = styled.div`
   top: 0;
   width: 380px;
   background: rgba(240, 242, 244, 0.30);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -108,7 +108,7 @@ const RightContent = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: #acb2bb;
+    background-color: rgba(172, 178, 187, 0.3);
     transition: all 0.3s ease;
   }
     &:active {

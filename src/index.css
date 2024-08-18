@@ -26,3 +26,10 @@ code {
 body {
   font-family: 'Inter', sans-serif;
 }
+
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}

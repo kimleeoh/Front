@@ -1,4 +1,5 @@
 import React from 'react';
+import './index.css';
 import { BrowserRouter as Router, Routes, Route, useLocation, Switch  } from 'react-router-dom';
 import StartPage from './stories/pages/OnBoarding/StartPage'; // 스토리북 페이지 컴포넌트
 import SignUpPage from './stories/pages/OnBoarding/SignUpPage'; // 스토리북 페이지 컴포넌트
@@ -17,6 +18,10 @@ import UnifiedBoard from './stories/pages/Board/UnifiedBoard';
 
 import MenuPage from './stories/pages/Menu/MenuPage';
 import MyPage from './stories/pages/Menu/Mypage';
+import MyBoard from './stories/pages/Menu/MyBoard';
+import Bookmarks from './stories/pages/Menu/Bookmarks';
+import History from './stories/pages/Menu/History';
+import TermsOfServicePage from './stories/pages/Menu/TermsOfServicePage';
 
 import Error from './stories/pages/Error';
 
@@ -40,7 +45,11 @@ const App = () => {
                 <Route path="/board/:subject" element={<UnifiedBoard />} />
 
                 <Route path="/menu" element={<MenuPage />} />
-                <Route path="/menu/mypage" element={<MyPage />} />
+                <Route path="/mypage" element={<MyPage />} />
+                <Route path="/myboard" element={<MyBoard />} />
+                <Route path="/bookmarks" element={<Bookmarks />} />
+                <Route path="/history" element={<History />} />
+                <Route path="/terms" element={<TermsOfServicePage />} />
 
                 <Route path="/*" element={<Error />} />
             </Routes>
