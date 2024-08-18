@@ -73,13 +73,14 @@ export default MyPage;
 // Styled Components
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 100px;
-  margin-bottom: 100px;
-  gap: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* 페이지가 전체 화면을 채우도록 설정 */
+    position: relative; /* 헤더를 페이지 상단에 고정하기 위해 필요 */
+    padding-top: 100px; /* 헤더 공간만큼 패딩 추가 */
+    padding-bottom: 100px; /* 하단 패딩 추가 */
 `;
 
 const Header = styled.div`
@@ -128,9 +129,9 @@ const ProfileName = styled.div`
 `;
 
 const Profile = styled.div`
-  width: 340px;
+  width: 370px;
   height: 100px;
-  padding: 0 20px;
+  padding: 0 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -198,6 +199,7 @@ const IntroductionBox = styled.div`
 
 const Content = styled.div`
   width: 380px;
+  height: 800px;
   text-align: left;
   gap: 20px;
 `;

@@ -59,6 +59,6 @@ const Button = styled.button`
     }
     &:active {
         transition: all 0.3s ease;
-        scale: 0.95;
+        scale: 0.9;
     }
 `

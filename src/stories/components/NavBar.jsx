@@ -124,6 +124,7 @@ const Button = styled.button`
     border: 0;
     background-color: #fff;
     font-size: 16px;
+    font-weight: ${(props) => (props.isActive ? '550' : '500')};
     color: ${(props) => (props.isActive ? '#434b60' : '#acb2bb')};
     cursor: pointer;
     transition: all 0.3s ease;
@@ -155,10 +156,13 @@ const Button = styled.button`
 const BottomLayout = styled.div`
     position: fixed;
     gap: 10px;
-    width: 100%;
+    width: 380px;
     height: 80px;
     display: flex;
     justify-content: center;
     background-color: #fff;
     z-index: 1000;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 5px 0px 10px 0px;
 `;
