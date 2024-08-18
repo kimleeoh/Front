@@ -16,6 +16,9 @@ import EditBoardPage from './stories/pages/EditBoard/EditBoardPage';
 import UnifiedBoard from './stories/pages/Board/UnifiedBoard';
 
 import MenuPage from './stories/pages/Menu/MenuPage';
+import MyPage from './stories/pages/Menu/Mypage';
+
+import Error from './stories/pages/Error';
 
 const App = () => {
     return (
@@ -37,6 +40,9 @@ const App = () => {
                 <Route path="/board/:subject" element={<UnifiedBoard />} />
 
                 <Route path="/menu" element={<MenuPage />} />
+                <Route path="/menu/mypage" element={<MyPage />} />
+
+                <Route path="/*" element={<Error />} />
             </Routes>
         </Router>
     );

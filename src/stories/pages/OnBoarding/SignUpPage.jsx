@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import TextField from '../../components/TextField'; // TextField 컴포넌트를 가져옵니다.
-import Button from '../../components/Button'; // Button 컴포넌트를 가져옵니다.
+import TextField from '../../components/TextField';
+import Button from '../../components/Button';
+import DiscreteProgressBar from './DiscreteProgressBar'; // DiscreteProgressBar 컴포넌트 가져오기
+import Logo from './Logo';
 
 const SignUpPage = () => {
   const [step, setStep] = useState(1);
@@ -10,7 +12,7 @@ const SignUpPage = () => {
     department: '',
     studentId: '',
     email: '',
-    confirmEmail: '', // 이메일 인증을 위한 추가 필드
+    confirmEmail: '',
     password: '',
     confirmPassword: '',
   });
@@ -21,7 +23,7 @@ const SignUpPage = () => {
   };
 
   const handleNext = () => {
-    if (validateStep()) { // 입력 데이터 검증 추가
+    if (validateStep()) {
       setStep(prevStep => prevStep + 1);
     }
   };
@@ -43,18 +45,21 @@ const SignUpPage = () => {
       case 2:
         return formData.department.trim() !== '';
       case 3:
-        return formData.studentId.trim() !== '';
+        // studentId가 숫자인지 확인
+        return !isNaN(Number(formData.studentId)) && formData.studentId.trim() !== '';
       case 4:
-        return formData.email.trim() !== '' && formData.confirmEmail.trim() !== ''; // 이메일과 인증번호 검증
+        return formData.email.trim() !== '' && formData.confirmEmail.trim() !== '';
       case 5:
-        return formData.password.trim() !== '' && formData.password === formData.confirmPassword; // 비밀번호와 확인 비밀번호 검증
+        return formData.password.trim() !== '' && formData.password === formData.confirmPassword;
       default:
         return false;
     }
   };
+  
 
   const renderButtons = () => {
-    // 버튼의 개수에 따라 버튼을 렌더링
+    const isStepValid = validateStep(); // Check if the current step is valid
+  
     if (step === 1) {
       return (
         <ButtonWrapper buttonCount={1}>
@@ -64,10 +69,12 @@ const SignUpPage = () => {
             backgroundColor="#434B60"
             hoverBackgroundColor="#5A6480"
             width="100%"
+            disabled={!isStepValid} // Disable button if step is not valid
           />
         </ButtonWrapper>
       );
     }
+  
     if (step === 5) {
       return (
         <ButtonWrapper buttonCount={2}>
@@ -84,10 +91,12 @@ const SignUpPage = () => {
             backgroundColor="#434B60"
             hoverBackgroundColor="#5A6480"
             width="48%"
+            disabled={!isStepValid} // Disable button if step is not valid
           />
         </ButtonWrapper>
       );
     }
+  
     return (
       <ButtonWrapper buttonCount={2}>
         <Button
@@ -103,10 +112,12 @@ const SignUpPage = () => {
           backgroundColor="#434B60"
           hoverBackgroundColor="#5A6480"
           width="48%"
+          disabled={!isStepValid} // Disable button if step is not valid
         />
       </ButtonWrapper>
     );
   };
+  
 
   const renderStepContent = () => {
     switch (step) {
@@ -174,7 +185,6 @@ const SignUpPage = () => {
               onChange={handleChange}
               name="confirmEmail"
             />
-            {/* 이메일 인증 로직을 추가하세요 */}
           </>
         );
       case 5:
@@ -208,9 +218,17 @@ const SignUpPage = () => {
   return (
     <Wrapper>
       <FormWrapper>
+        <DiscreteProgressBar 
+          totalSteps={5} 
+          currentStep={step} 
+          width="100%" 
+          height="8px" 
+          gap={4} 
+        />
         {renderStepContent()}
-        {renderButtons()}
       </FormWrapper>
+      
+      {renderButtons()}
     </Wrapper>
   );
 };
@@ -227,6 +245,8 @@ const Wrapper = styled.div`
 `;
 
 const FormWrapper = styled.div`
+position: fixed;
+top: 15%;
   width: 100%;
   max-width: 400px;
   display: flex;
@@ -237,31 +257,33 @@ const FormWrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
+position: fixed;
+bottom: 15%;
   display: flex;
   justify-content: ${({ buttonCount }) => (buttonCount === 1 ? 'center' : 'space-between')};
   margin-top: 20px;
   width: 400px;
-  gap: 10px; /* 버튼 간의 간격 설정 */
+  gap: 10px;
 
   button {
-    width: ${({ buttonCount }) => (buttonCount === 1 ? '400px' : '48%')}; /* 버튼 너비 설정 */
+    width: ${({ buttonCount }) => (buttonCount === 1 ? '400px' : '48%')};
   }
 `;
 
 const StepDescription = styled.div`
   width: 100%;
-  text-align: left; /* 좌측 정렬 */
+  text-align: left;
   margin-bottom: 20px;
 `;
 
 const Title = styled.h2`
-  font-size: 24px; /* 제목 폰트 크기 확대 */
+  font-size: 24px;
   margin: 0;
   color: #434B60;
 `;
 
 const Subtitle = styled.p`
-  font-size: 18px; /* 소제목 폰트 크기 확대 */
+  font-size: 18px;
   margin: 0;
   color: #6c757d;
 `;

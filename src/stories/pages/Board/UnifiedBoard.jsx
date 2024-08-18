@@ -107,41 +107,25 @@ const initialTipsData = [
 
 const UnifiedBoard = () => {
     const { subject } = useParams();
-    // QnA 관련
     const [questionData, setQuestionData] = useState([]);
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
-
-    // Tips 관련
-    const [TipsData, setTipsData] = useState([]);
+    const [tipsData, setTipsData] = useState([]);
     const [filteredTips, setFilteredTips] = useState([]);
-
     const [activeTab, setActiveTab] = useState('QnA');
 
     useEffect(() => {
-        // QnA
-        localStorage.removeItem('questionData');
-        const questionData = localStorage.getItem('questionData');
-        if (questionData) {
-            setQuestionData(JSON.parse(questionData));
-        } else {
-            localStorage.setItem('questionData', JSON.stringify(initialQuestionData));
-            setQuestionData(initialQuestionData);
-        }
+        // 데이터 로딩 로직
+        const loadData = () => {
+            const questionData = localStorage.getItem('questionData');
+            setQuestionData(questionData ? JSON.parse(questionData) : initialQuestionData);
 
-        // Tips
-        localStorage.removeItem('TipsData');
-        const TipsData = localStorage.getItem('TipsData');
-        if (TipsData) {
-            setTipsData(JSON.parse(TipsData));
-            setFilteredTips(JSON.parse(TipsData)); // Initialize filteredTips with all tips
-        } else {
-            localStorage.setItem('TipsData', JSON.stringify(initialTipsData));
-            setTipsData(initialTipsData);
-            setFilteredTips(initialTipsData); // Initialize filteredTips with all tips
-        }
+            const tipsData = localStorage.getItem('TipsData');
+            setTipsData(tipsData ? JSON.parse(tipsData) : initialTipsData);
+            setFilteredTips(tipsData ? JSON.parse(tipsData) : initialTipsData);
+        };
+        loadData();
     }, []);
 
-    // QnA 관련
     const handleCheckBarChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
     };
@@ -154,20 +138,21 @@ const UnifiedBoard = () => {
         ? questionData.filter(question => question.limit === 'true')
         : questionData;
 
-    // Tips 관련
     const handleFilterChange = (activeBadges) => {
         if (activeBadges.length === 0) {
-            setFilteredTips(TipsData); // Show all tips if no filter is selected
+            setFilteredTips(tipsData);
         } else {
-            const filtered = TipsData.filter(tip => activeBadges.includes(tip.filter));
+            const filtered = tipsData.filter(tip => activeBadges.includes(tip.filter));
             setFilteredTips(filtered);
         }
     };
 
+    const tabs = ['QnA', 'Tips']; // 탭 목록을 동적으로 관리합니다.
+
     return (
         <Wrapper>
             <Header showIcon={false} text={subject} backButton={true} searchButton={true}/>
-            <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
+            <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
             {activeTab === 'QnA' && (
                 <>
                     <CheckBar text={'A등급 제한'} onChange={handleCheckBarChange} />
@@ -189,17 +174,13 @@ const UnifiedBoard = () => {
                         ))
                     }
                     <FixedIcon src="/Icons/Question.svg" url={"/qna/post"}/>
-                    <FixedBottomContainer>
-                        <NavBar state='QnA' />
-                    </FixedBottomContainer>
                 </>
             )}
-
             {activeTab === 'Tips' && (
                 <>
                     <BadgeFilter onFilterChange={handleFilterChange} />
                     {filteredTips
-                        .filter(tips => tips.subject === subject)
+                        .filter(tip => tip.subject === subject)
                         .map((tip) => (
                             <Tips
                                 key={tip.id}
@@ -212,19 +193,19 @@ const UnifiedBoard = () => {
                                 time={tip.time}
                                 views={tip.views}
                                 like={tip.like}
-                                img={Array.isArray(tip.img) ? tip.img[0] : tip.img} // Only the first image
+                                img={Array.isArray(tip.img) ? tip.img[0] : tip.img}
                             />
                         ))
                     }
                     <FixedIcon src="/Icons/Pen.svg" url={'/tips/post'}/>
-                    <FixedBottomContainer>
-                        <NavBar state='Board' />
-                    </FixedBottomContainer>
                 </>
             )}
+            <FixedBottomContainer>
+                <NavBar state='Board' />
+            </FixedBottomContainer>
         </Wrapper>
     );
-}
+};
 
 export default UnifiedBoard;
 

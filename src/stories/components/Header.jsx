@@ -81,9 +81,10 @@ const LeftContent = styled.div`
 
   border-radius: 16px;
   cursor: pointer;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #acb2bb;
+    background-color: rgba(172, 178, 187, 0.3);
     transition: all 0.3s ease;
   }
     &:active {

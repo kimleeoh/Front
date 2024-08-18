@@ -1,4 +1,5 @@
-import react from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom'; // Link 컴포넌트를 import합니다.
 import styled from 'styled-components';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
@@ -10,18 +11,20 @@ const MenuPage = () => {
             <Header>
                 전체 메뉴
             </Header>
-            <MyPage>
-                <Profile>
-                    <img src='/Icons/1607-2.jpg' alt='profile' width='62px' height='62px'/>
-                    우치하 사스케
-                </Profile>
-                <MyPageArrow>
+            <Link to="/menu/mypage" style={{ textDecoration: 'none' }}> {/* Link로 MyPage로 이동하도록 설정 */}
+                <MyPage>
+                    <Profile>
+                        <img src='/Icons/1607-2.jpg' alt='profile' width='62px' height='62px'/>
+                        우치하 사스케
+                    </Profile>
+                    <MyPageArrow>
                         마이페이지
                         <svg xmlns="http://www.w3.org/2000/svg" width="9" height="16" viewBox="0 0 9 16" fill="none">
-  <path d="M1.25 1.75L7.5 8L1.25 14.25" stroke="#ACB2BB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                            <path d="M1.25 1.75L7.5 8L1.25 14.25" stroke="#ACB2BB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
                     </MyPageArrow>
-            </MyPage>
+                </MyPage>
+            </Link>
 
             <Section>
                 <MenuList> 내 성적 </MenuList>
@@ -38,29 +41,26 @@ const MenuPage = () => {
                 <MenuList> 개인정보 처리방침 </MenuList>
                 <MenuList> 운영정책 </MenuList>
                 <MenuList> 로그아웃 </MenuList>
-
             </Section>
 
             <FixedBottomContainer>
                 <NavBar state='menu' />
             </FixedBottomContainer>
-
         </Wrapper>
     );
 };
 
 export default MenuPage;
 
+// Styled Components
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     margin-top: 110px;
     margin-bottom: 100px;
     gap: 20px;
-    
 `;
 
 const Header = styled.div`
@@ -71,17 +71,13 @@ const Header = styled.div`
     justify-content: space-between;
     align-items: flex-end;
     flex-shrink: 0;
-
-
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(3px);
-
     color: #434B60;
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-
     position: fixed;
     top: 0;
     z-index: 1000;
@@ -95,30 +91,26 @@ const MyPage = styled.div`
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
-
     border-radius: 24px;
     background: #F0F2F4;
-
     transition: all 0.3s ease;
     &:active {
         transition: all 0.3s ease;
         scale: 0.95;
     }
-
     cursor: pointer;
 `;
 
 const Profile = styled.div`
     display: flex;
-align-items: center;
-gap: 15px;
-
-color: #434B60;
-font-family: Inter;
-font-size: 18px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
+    align-items: center;
+    gap: 15px;
+    color: #434B60;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 `;
 
 const MyPageArrow = styled.div`
@@ -126,11 +118,11 @@ const MyPageArrow = styled.div`
     align-items: center;
     gap: 15px;
     color: #ACB2BB;
-font-family: Inter;
-font-size: 12px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 `;
 
 const Section = styled.div`
@@ -146,7 +138,6 @@ const Title = styled.div`
     flex-direction: column;
     justify-content: center;
     flex-shrink: 0;
-
     color: #434B60;
     font-family: Inter;
     font-size: 16px;

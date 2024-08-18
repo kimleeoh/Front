@@ -97,7 +97,7 @@ const StyledButton = styled.button`
   padding: 11px 20px;
   border: none;
   border-radius: 16px;
-  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+  cursor: ${(props) => (props.disabled ? '' : 'pointer')};
   color: ${(props) => props.color};
   background-color: ${(props) => props.backgroundColor};
   width: ${(props) => props.width};
