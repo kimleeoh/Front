@@ -38,6 +38,7 @@ const QuestionsDetail = ({ id, name, major, title, content, subject, time, views
     };
 
     const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
+    const [isSaveEnabled, setIsSaveEnabled] = useState(false);
 
     const handleNotificationToggle = () => {
         setIsNotificationEnabled(!isNotificationEnabled);
@@ -63,6 +64,35 @@ const QuestionsDetail = ({ id, name, major, title, content, subject, time, views
     const removeNotificationData = (postId) => {
         // This function would remove the notification data
         console.log("Notification disabled for post:", postId);
+        // Here you would typically make an API call or update local storage
+        // For example:
+        // localStorage.removeItem(`notification_${postId}`);
+    };
+
+    const handleSaveToggle = () => {
+        setIsSaveEnabled(!isSaveEnabled);
+        if (!isSaveEnabled) {
+            // Send notification data when enabled
+            sendSaveData({
+                postId: id,
+            });
+        } else {
+            // Remove notification data when disabled
+            removeSaveData(id);
+        }
+    };
+
+    const sendSaveData = (data) => {
+        // This function would send the notification data to your backend or local storage
+        console.log("Save enabled for post:", data);
+        // Here you would typically make an API call or update local storage
+        // For example:
+        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
+    };
+
+    const removeSaveData = (postId) => {
+        // This function would remove the notification data
+        console.log("Save disabled for post:", postId);
         // Here you would typically make an API call or update local storage
         // For example:
         // localStorage.removeItem(`notification_${postId}`);
@@ -119,6 +149,7 @@ const QuestionsDetail = ({ id, name, major, title, content, subject, time, views
                 <Tool 
                     like={like} 
                     report={false} 
+                    onSaveToggle={handleSaveToggle}
                     onNotificationToggle={handleNotificationToggle}
                 />
             </Wrapper>
