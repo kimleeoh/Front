@@ -4,6 +4,8 @@ import TextField from '../../components/TextField';
 import Button from '../../components/Button';
 import DiscreteProgressBar from './DiscreteProgressBar'; // DiscreteProgressBar 컴포넌트 가져오기
 import Logo from './Logo';
+import SignUpHandler from '../../../axioses/SignUpHandler';
+
 
 const SignUpPage = () => {
   const [step, setStep] = useState(1);
@@ -24,6 +26,7 @@ const SignUpPage = () => {
 
   const handleNext = () => {
     if (validateStep()) {
+      SignUpHandler(step, formData);
       setStep(prevStep => prevStep + 1);
     }
   };
@@ -35,6 +38,7 @@ const SignUpPage = () => {
   const handleSubmit = async () => {
     // 서버로 데이터를 전송하는 로직을 추가할 수 있습니다.
     // 예: await fetch('/api/signup', { method: 'POST', body: JSON.stringify(formData) });
+    SignUpHandler(step, formData);
     console.log('제출된 데이터:', formData);
   };
 
