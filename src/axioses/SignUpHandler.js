@@ -22,14 +22,13 @@ function encryptAES(text, key,iv) {
     const KEY = CryptoJS.lib.WordArray.create(key); 
     const IV = CryptoJS.lib.WordArray.create(iv); // 16-byte IV in hex format
     //console.log(text,keyUtf8,IV);
-    console.log("key:",KEY,"iv:",IV);
+    //console.log("key:",KEY,"iv:",IV);
     const encrypted = CryptoJS.AES.encrypt(text, KEY, {
         iv: IV,
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7
     });
-    console.log(encrypted);
-    console.log(encrypted.toString());
+    
     return encrypted.toString(); // Return encrypted text
 }
 
@@ -42,7 +41,7 @@ function decryptAES(encryptedText, key,iv) {
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7
     });
-    console.log(decrypted);
+   
 
     return CryptoJS.enc.Utf8.stringify(decrypted);
 }
@@ -54,6 +53,12 @@ const sensitiveInfo = (()=>{
     let cipher = null;
     let decipher = null;
     return {
+        isNotFilled: ()=>twoKey == "",
+        setLoginKey: (iv, key)=>{
+            twoKey = key;
+            cipher = (text)=>encryptAES(text, key, iv);
+            decipher = (text)=>decryptAES(text, key, iv);
+        },
         setKey: (iv, key, id)=>{
             twoKey = key;
             cipher = (text)=>encryptAES(text, key, iv);
@@ -71,6 +76,41 @@ const sensitiveInfo = (()=>{
     }
 })();
 
+const LoginHandler = async(formData) => {
+    let idempotencyKey = localStorage.getItem('idempotencyKey');
+    if (!idempotencyKey) {
+        const randomBytes = forge.random.getBytesSync(16);
+        idempotencyKey = forge.util.bytesToHex(randomBytes); // Generate a unique idempotency key
+        localStorage.setItem('idempotencyKey', idempotencyKey);
+    }
+    try{
+
+    const passData = {
+        pub: publicKeyPem
+    };
+    const response = await BaseAxios.post('/api/login/key', passData, {headers: {'idempotency-key': idempotencyKey}});
+
+    const iv = Buffer.from(decrypt(Buffer.from(response.data.iv)),'binary');
+    const key = Buffer.from(decrypt(Buffer.from(response.data.key.data)),'binary');
+
+    sensitiveInfo.setLoginKey(iv, key);
+    
+    formData.password = sensitiveInfo.encrypt(formData.password);
+    const result = await BaseAxios.post('/api/login', formData, {headers: {'idempotency-key': idempotencyKey}});
+
+    if(result.status === 200){
+    localStorage.removeItem('idempotencyKey'); // Remove the key on successful login
+    return {status:200};
+    }   
+    }catch(e){
+        console.log(e);
+        const error = e.response.data.message;
+        const status = e.response.status;
+        
+        return {error, status};
+    }
+}
+
 const SignUpHandler = async (step, formData) => {
     switch (step) {
         case 1:{
@@ -78,13 +118,13 @@ const SignUpHandler = async (step, formData) => {
                 name: formData.name,
                 pub: publicKeyPem
             };
-            console.log(passData);
+            
             const response = await BaseAxios.post('/api/register/page/1', passData);
-            console.log(response.data);
+            
             const iv = Buffer.from(decrypt(Buffer.from(response.data.iv)),'binary');
             const key = Buffer.from(decrypt(Buffer.from(response.data.key.data)),'binary');
             const id = decrypt(Buffer.from(response.data.id.data));
-            console.log("id-",id,"key-", key);
+            
             sensitiveInfo.setKey(iv, key, id);
             break;
         }
@@ -93,19 +133,19 @@ const SignUpHandler = async (step, formData) => {
                 id : sensitiveInfo.getEncryptSessionID(), 
                 hakbu : formData.department
             };
-            console.log(passData);
+            
             const response = await BaseAxios.post('/api/register/page/2', passData);
             //response 검사해서 오류 코드 뜨면 navigate하는 함수
             //if(response.status !== 200){}
             break;
         }
         case 3:{
-            console.log(sensitiveInfo.getEncryptSessionID());
+            
             const passData = {
                 id : sensitiveInfo.getEncryptSessionID(), 
                 hakbun : Number(formData.studentId)
             };
-            console.log(passData);
+            
             const response = await BaseAxios.post('/api/register/page/3', passData);
             //response 검사해서 오류 코드 뜨면 navigate하는 함수
             //if(response.status !== 200){}
@@ -116,7 +156,7 @@ const SignUpHandler = async (step, formData) => {
                 id : sensitiveInfo.getEncryptSessionID(), 
                 email : sensitiveInfo.encrypt(formData.email)
             };
-            console.log(passData);
+            
             const response = await BaseAxios.post('/api/register/page/4', passData);
             //response 검사해서 오류 코드 뜨면 navigate하는 함수
             //if(response.status !== 200){}
@@ -127,7 +167,7 @@ const SignUpHandler = async (step, formData) => {
                 id : sensitiveInfo.getEncryptSessionID(), 
                 bibun : sensitiveInfo.encrypt(formData.password)
             };
-            console.log(passData);
+            
             const response = await BaseAxios.post('/api/register/page/5', passData);
             //response 검사해서 오류 코드 뜨면 navigate하는 함수
             //if(response.status !== 200){}
@@ -136,4 +176,4 @@ const SignUpHandler = async (step, formData) => {
     }
 }
 
-export default SignUpHandler;
+export {SignUpHandler,LoginHandler};

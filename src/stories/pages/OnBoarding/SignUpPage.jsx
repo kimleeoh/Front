@@ -4,7 +4,7 @@ import TextField from '../../components/TextField';
 import Button from '../../components/Button';
 import DiscreteProgressBar from './DiscreteProgressBar'; // DiscreteProgressBar 컴포넌트 가져오기
 import Logo from './Logo';
-import SignUpHandler from '../../../axioses/SignUpHandler';
+import {SignUpHandler} from '../../../axioses/SignUpHandler';
 
 
 const SignUpPage = () => {

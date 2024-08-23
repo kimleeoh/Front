@@ -4,16 +4,38 @@ import styled from 'styled-components';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField';
 import Logo from './Logo'
+import { LoginHandler } from '../../../axioses/SignUpHandler';
 
 const StartPage = () => {
     const [isLoginMode, setIsLoginMode] = useState(false);
+    const [formData, setFormData] = useState({
+        username: '',
+        password: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevData => ({ ...prevData, [name]: value }));
+    };
+
     const navigate = useNavigate(); // Initialize useNavigate
 
-    const handleLoginClick = () => {
+    const handleActualLogin = async () => {
+        const res = await LoginHandler(formData);
+        if (res.status === 200){
+            navigate('/home');
+        }else{
+            alert(`Error during login: ${res.error}`);
+            // 프론트 분들 이 에러 데이터 받아서 Error.jsx페이지에 넣으려면 어떻게 하면 될까요 
+            // 코드 수정해주시면 감사합니다
+        }
+    };
+
+    const handleNavigateLogin = () => {
         setIsLoginMode(true);
     };
 
-    const handleSignUpClick = () => {
+    const handleNavigateSignUp = () => {
         navigate('/signup'); // Navigate to the signup page
     };
 
@@ -27,15 +49,17 @@ const StartPage = () => {
                     <LoginWrapper>
                         <TextField
                             label="아이디"
-                            value=""
-                            onChange={() => {}}
+                            name="username"
+                            value={formData.username}
+                            onChange= {handleChange}
                             width="300px"
                         />
                         <TextField
                             label="비밀번호"
+                            name="password"
                             type="password"
-                            value=""
-                            onChange={() => {}}
+                            value={formData.password}
+                            onChange={handleChange}
                             width="300px"
                         />
                     </LoginWrapper>
@@ -47,7 +71,7 @@ const StartPage = () => {
                         <StartButtonWrapper>
                             <Button
                                 label="시작하기"
-                                onClick={handleSignUpClick} // Use navigation function
+                                onClick={handleNavigateSignUp} // Use navigation function
                             />
                         </StartButtonWrapper>
                     </>
@@ -58,7 +82,7 @@ const StartPage = () => {
                     label="로그인"
                     backgroundColor="#434B60"
                     hoverBackgroundColor="#5A6480"
-                    onClick={isLoginMode ? () => console.log('로그인 버튼 클릭') : handleLoginClick}
+                    onClick={isLoginMode ? handleActualLogin : handleNavigateLogin}
                 />
             </ButtonWrapper>
             {isLoginMode && (
@@ -71,7 +95,7 @@ const StartPage = () => {
                         hoverColor="#434B60"
                         backgroundColor="transparent"
                         hoverBackgroundColor="#ACB2BB"
-                        onClick={handleSignUpClick} // Use navigation function
+                        onClick={handleNavigateSignUp} // Use navigation function
                     />
                 </CreateAccountButtonWrapper>
             )}
