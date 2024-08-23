@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
 import DiscreteProgressBar from './DiscreteProgressBar'; // DiscreteProgressBar 컴포넌트 가져오기
-import Logo from './Logo';
 
 const SignUpPage = () => {
   const [step, setStep] = useState(1);
@@ -16,6 +16,11 @@ const SignUpPage = () => {
     password: '',
     confirmPassword: '',
   });
+  const navigate = useNavigate();
+
+  const handleSigninClick = () => {
+    navigate('/home');
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -115,6 +120,7 @@ const SignUpPage = () => {
           disabled={!isStepValid} // Disable button if step is not valid
         />
       </ButtonWrapper>
+      
     );
   };
   
@@ -173,6 +179,7 @@ const SignUpPage = () => {
               <Title>이메일 입력 및 인증</Title>
               <Subtitle>이메일 주소를 입력하고 인증번호를 확인해 주세요.</Subtitle>
             </StepDescription>
+            <TextFieldsWrapper>
             <TextField
               label="이메일"
               value={formData.email}
@@ -185,6 +192,7 @@ const SignUpPage = () => {
               onChange={handleChange}
               name="confirmEmail"
             />
+            </TextFieldsWrapper>
           </>
         );
       case 5:
@@ -194,6 +202,7 @@ const SignUpPage = () => {
               <Title>비밀번호 입력 및 확인</Title>
               <Subtitle>비밀번호와 확인 비밀번호를 입력해 주세요.</Subtitle>
             </StepDescription>
+            <TextFieldsWrapper>
             <TextField
               label="비밀번호"
               type="password"
@@ -208,6 +217,7 @@ const SignUpPage = () => {
               onChange={handleChange}
               name="confirmPassword"
             />
+            </TextFieldsWrapper>
           </>
         );
       default:
@@ -229,6 +239,18 @@ const SignUpPage = () => {
       </FormWrapper>
       
       {renderButtons()}
+      <SigninWrapper>
+        
+      <Button label="이미 계정이 있으신가요?" 
+                        width="200px"
+                        height="40px"
+                        color="#434B60"
+                        hoverColor="#434B60"
+                        backgroundColor="transparent"
+                        hoverBackgroundColor="#ACB2BB" 
+                        onclick={handleSigninClick}
+                        />
+      </SigninWrapper>
     </Wrapper>
   );
 };
@@ -253,7 +275,7 @@ top: 15%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 40px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -268,6 +290,12 @@ bottom: 15%;
   button {
     width: ${({ buttonCount }) => (buttonCount === 1 ? '400px' : '48%')};
   }
+`;
+
+const SigninWrapper = styled.div`
+  position: fixed;
+  bottom: 15%;
+  margin-bottom: -70px;
 `;
 
 const StepDescription = styled.div`
@@ -286,4 +314,10 @@ const Subtitle = styled.p`
   font-size: 18px;
   margin: 0;
   color: #6c757d;
+`;
+
+const TextFieldsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;

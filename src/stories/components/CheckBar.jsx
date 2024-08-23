@@ -31,7 +31,7 @@ const CheckBox = ({disabledIconSrc, enabledIconSrc, text, onChange, disabled}) =
     return(
         <Button onClick={handleCheckboxClick} disabled={disabled}>
             <img src={isChecked ? enabledIconSrc : disabledIconSrc}></img>
-            <span style={{color: isChecked ? 'black' : '#ACB2BB', fontSize: '14px', paddingLeft: '5px' }}>{text}</span>
+            <span style={{color: isChecked ? '#434B60' : '#ACB2BB', fontSize: '14px',fontWeight: '500', paddingLeft: '5px' }}>{text}</span>
         </Button>
     )
 }
@@ -64,13 +64,14 @@ const SubHeader = styled.div`
 const Button = styled.button`
     display: flex;
     align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
 
     img{
         width: 20px;
         height: 20px;
-        transition: all 0.3s ease;
     }
-    border-radius: 0px;
     border: 0px;
     background-color: white;
 
@@ -80,7 +81,7 @@ const Button = styled.button`
     opacity: ${props => (props.disabled ? 0.5 : 1)};
     transition: all 0.3s ease;
     &:active {
-        transition: all 0.3s ease;
         scale: 0.95;
+        background-color: #e2e5e9;
     }
 `

@@ -208,7 +208,8 @@ const DownloadContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-    border: 1px solid #D9D9D9;
+    border: 1px solid #ACB2BB;
+    border-radius: 8px;
     padding: 10px 10px;
     gap: 10px; /* Add space between each file item */
 `;
@@ -220,13 +221,13 @@ const FileContainer = styled.div`
 `;
 
 const FileName = styled.span`
-    color: #737373;
+    color: #434B60;
     font-size: 14px;
 `;
 
 const DownloadLink = styled.a`
     font-size: 14px;
-    color: #007BFF;
+    color: #434B60;
     margin-left: auto;
     display: flex;
     align-items: center;

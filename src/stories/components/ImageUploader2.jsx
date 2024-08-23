@@ -45,8 +45,8 @@ const UploaderWrapper = styled.div`
     align-items: center;
     width: 360px;
     height: 40px;
-    border: 2px solid #F1F2F4;
-    border-radius: 50px;
+    border: 1px solid #ACB2BB;
+    border-radius: 16px;
     padding: 0 20px;
     font-size: 14px;
     flex-wrap: wrap;
@@ -59,10 +59,15 @@ const UploadButton = styled.label`
     cursor: pointer;
     font-size: 14px;
     margin-left: auto;
+    transition: all 0.3s ease;
+
+    &:active {
+        transform: scale(0.9);
+    }
 `;
 
 const PlaceholderText = styled.div`
-    color: #999;
+    color: #ACB2BB;
     font-size: 14px;
     display: flex;
     align-items: center;
