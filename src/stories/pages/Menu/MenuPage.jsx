@@ -1,11 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; // Link 컴포넌트를 import합니다.
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import MenuList from './MenuList';
+import Button from '../../components/Button';
 
 const MenuPage = () => {
+    const [isModalOpen, setModalOpen] = useState(false);
+
+    const handleLogoutClick = () => {
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+    };
+
+    const confirmLogout = () => {
+        // 로그아웃 로직을 여기에 추가합니다.
+        setModalOpen(false);
+        // 예를 들어, 로그아웃 API를 호출하거나, 로그인 페이지로 이동
+    };
+
     return (
         <Wrapper>
             <Header>
@@ -37,12 +54,22 @@ const MenuPage = () => {
                 <MenuList to="/terms"> 이용약관 </MenuList>
                 <MenuList to="/privacy"> 개인정보 처리방침 </MenuList>
                 <MenuList to="/policies"> 운영정책 </MenuList>
-                <MenuList to="/logout"> 로그아웃 </MenuList>
+                <MenuList onClick={handleLogoutClick}> 로그아웃 </MenuList>
             </Section>
 
             <FixedBottomContainer>
                 <NavBar state='menu' />
             </FixedBottomContainer>
+
+            {isModalOpen && (
+                <ModalOverlay onClick={closeModal}>
+                    <ModalContent onClick={(e) => e.stopPropagation()}>
+                        정말 로그아웃 하시겠습니까?
+                            <Button onClick={confirmLogout} label='로그아웃' width ='130px' />
+                            <Button onClick={closeModal} label='돌아가기' width ='130px' />
+                    </ModalContent>
+                </ModalOverlay>
+            )}
         </Wrapper>
     );
 };
@@ -135,9 +162,39 @@ const Title = styled.div`
     justify-content: center;
     flex-shrink: 0;
     color: #434B60;
-    font-family: Inter;
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+`;
+
+const ModalOverlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    color: #434B60;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    gap: 10px;
 `;

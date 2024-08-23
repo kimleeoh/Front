@@ -18,6 +18,7 @@ import UnifiedBoard from './stories/pages/Board/UnifiedBoard';
 
 import MenuPage from './stories/pages/Menu/MenuPage';
 import MyPage from './stories/pages/Menu/Mypage';
+import Grades from './stories/pages/Menu/Grades';
 import MyBoard from './stories/pages/Menu/MyBoard';
 import Bookmarks from './stories/pages/Menu/Bookmarks';
 import History from './stories/pages/Menu/History';
@@ -46,6 +47,7 @@ const App = () => {
 
                 <Route path="/menu" element={<MenuPage />} />
                 <Route path="/mypage" element={<MyPage />} />
+                <Route path="/grades" element={<Grades />} />
                 <Route path="/myboard" element={<MyBoard />} />
                 <Route path="/bookmarks" element={<Bookmarks />} />
                 <Route path="/history" element={<History />} />

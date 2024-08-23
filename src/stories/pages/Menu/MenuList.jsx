@@ -3,11 +3,15 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom'; // useNavigate를 import합니다.
 import PropTypes from 'prop-types';
 
-const MenuList = ({ children, to }) => {
-    const navigate = useNavigate(); // navigate 함수를 가져옵니다.
+const MenuList = ({ children, to, onClick }) => {
+    const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(to); // 클릭 시 navigate를 호출하여 페이지 이동
+        if (to) {
+            navigate(to);
+        } else if (onClick) {
+            onClick();  // 전달받은 onClick 핸들러 실행
+        }
     };
 
     return (
@@ -22,11 +26,13 @@ const MenuList = ({ children, to }) => {
 
 MenuList.propTypes = {
     children: PropTypes.node.isRequired,
-    to: PropTypes.string.isRequired,
+    to: PropTypes.string,
+    onClick: PropTypes.func,
 };
 
 MenuList.defaultProps = {
-    to: '/',
+    to: null,  // 기본값을 null로 설정
+    onClick: null,
 };
 
 export default MenuList;

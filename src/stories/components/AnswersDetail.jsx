@@ -212,7 +212,7 @@ const IndexIndicator = styled.div`
     color: #434B60;
 `;
 
-const ArrowButtonLeft = styled.button`
+const ArrowButtonLeft = `
     display: flex;
     align-items: center;
     position: absolute;
@@ -233,7 +233,7 @@ const ArrowButtonLeft = styled.button`
     }
 `;
 
-const ArrowButtonRight = styled.button`
+const ArrowButtonRight = `
     display: flex;
     align-items: center;
     position: absolute;
