@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 const BoardTitle = ({text, edit, onEditClick }) => {
     return (
         <Wrapper>
-            <span>{text}</span>
-            {edit && (
-              <img src="/Icons/Edit.svg"  style={{marginLeft: 'auto', marginRight: '5px', cursor: 'pointer'}}  onClick={onEditClick} />  
-            )}
+            {text}
+            {edit &&
+            <Button  onClick={onEditClick} >
+              <img src="/Icons/Edit.svg" />  
+            </Button>
+            }
         </Wrapper>
     );
 }
@@ -28,9 +30,12 @@ BoardTitle.defaultProps = {
 
 const Wrapper = styled.div`
     width: 370px;
+    height: 20px;
 
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    align-self: center;
 
     color: #434B60;
     font-size: 16px;
@@ -38,4 +43,27 @@ const Wrapper = styled.div`
     
     padding: 10px;
     margin-top: 15px;
+`
+
+const Button = styled.button`
+    width: 35px;
+    height: 35px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+
+    transition: all 0.3s ease;
+    
+  &:hover {
+    background-color: rgba(172, 178, 187, 0.3);
+  }
+    &:active {
+    scale: 0.95;
+  }
 `

@@ -42,6 +42,7 @@ const UploaderWrapper = styled.div`
     display: flex;
     width: 100%;
     margin-top: 10px;
+    gap: 7px;
 `;
 
 const UploadButton = styled.label`
@@ -51,18 +52,27 @@ const UploadButton = styled.label`
     justify-content: center;
 
     width: 20%;
-    background-color: #737373;
+    background-color: #434B60;
     color: white;
-    border-radius: 0px;
+    border-radius: 16px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
+    transition: all 0.3s ease;
+
+
+    &:hover {
+        background-color: #5E6C84;
+    }
+    &:active {
+        transform: scale(0.95);
+    }
 `;
 
 const FileAddArea = styled.div`
     width: 80%;
     height: 30px;
-    border: 2px solid #ccc;
-    border-radius: 0px;
+    border: 2px solid #ACB2BB;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -72,12 +82,12 @@ const FileAddArea = styled.div`
 `;
 
 const PlaceholderText = styled.p`
-    color: #999;
+    color: #ACB2BB;
     font-size: 14px;
 `;
 
 const FileName = styled.p`
-    color: #333;
+    color: #ACB2BB;
     font-size: 14px;
     margin: 0;
 

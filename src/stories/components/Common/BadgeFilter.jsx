@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import Badge from './Badge';
 import PropTypes from 'prop-types';
+
+const Container = styled.div`
+    height: 40px;
+    width: 380px;
+    padding: 0 10px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+`;
 
 const BadgeFilter = ({ onFilterChange }) => {
     const [activeBadges, setActiveBadges] = useState([]);
@@ -17,22 +29,21 @@ const BadgeFilter = ({ onFilterChange }) => {
     const badges = ['필기공유', '시험정보', '수업꿀팁'];
 
     return (
-        <div style={{height: '40px', marginTop: '15px'}}>
+        <Container>
             {badges.map(badge => (
                 <Badge
                     key={badge}
                     label={badge}
                     active={activeBadges.includes(badge)}
-                    onClick={()=>handleBadgeClick(badge)}
+                    onClick={() => handleBadgeClick(badge)}
                 />
             ))}
-        </div>
+        </Container>
     );
 };
 
 BadgeFilter.propTypes = {
     onFilterChange: PropTypes.func.isRequired,
 };
-
 
 export default BadgeFilter;

@@ -125,22 +125,16 @@ const Button = styled.button`
 
     border: 0px;
     background-color: white;
+    transition: all 0.3s ease;
 
     img{
-        width: 20px;
-        height: 20px;
-        transition: all 0.3s ease;
+        width: 25px;
+        height: 25px;
     }
 
     cursor: pointer;
 
-
-    &:hover {
-        transition: all 0.3s ease;
-    }
-
     &:active {
-        transition: all 0.3s ease;
-        scale: 0.95;
+        scale: 0.85;
     }
 `
