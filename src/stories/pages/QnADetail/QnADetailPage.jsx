@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import QuestionsDetail from '../../components/QuestionsDetail'
+import QuestionsDetail from './QuestionsDetail'
 import Header from '../../components/Header';
-import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
-import AnswersDetail from '../../components/AnswersDetail';
-import UserComment from '../../components/UserComment';
+import AnswersDetail from './AnswersDetail';
+import UserComment from './UserComment';
 
 const initialQuestionData = [
     {
@@ -49,7 +48,7 @@ const initialQuestionData = [
         limit: false
     },
     {
-        id: '7998wkf68451n9eqk877614wsb',
+        id: '2039920a89jbs25k8394abd46',
         name: '이예진',
         major: '글로벌미디어학부',
         title: '표본화 양자화 부호화',
@@ -128,6 +127,7 @@ const initialUserData = [
         figure: 3,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
+        likePost: ['463846736919eqk876e4q91b9']
     }
 ]
 
@@ -157,6 +157,7 @@ const QnADetailPage = () => {
     }, []);
 
     const currentQuestion = questionData.find((question) => question.id === String(id));
+    const currentUser = initialUserData[0];
     
     return (
         <Wrapper>
@@ -175,6 +176,7 @@ const QnADetailPage = () => {
                     like={currentQuestion.like}
                     img={currentQuestion.img}
                     limit={currentQuestion.limit}
+                    likePost={currentUser.likePost}
                 />
             )}
 

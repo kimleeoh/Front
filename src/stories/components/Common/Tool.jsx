@@ -3,16 +3,19 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-const Tool = ({like, save, notification, report, onNotificationToggle, onSaveToggle}) => {
+const Tool = ({like, save, notification, report, onNotificationToggle, onSaveToggle, onReportToggle, isLikedPost,  handleLike, handleUnlike}) => {
     const [likesCount, setLikesCount] = useState(like);
     const [isUpClicked, setIsUpClicked] = useState(false);
     const [isDownClicked, setIsDownClicked] = useState(false);
 
+    const [isLiked, setIsLiked] = useState(isLikedPost);
+
     const handleUpClick = () => {
-        if (!isUpClicked) {
+        if (!isUpClicked && !isLiked) {
             setLikesCount(likesCount + 1);
             setIsUpClicked(true);
             setIsDownClicked(false); // Enable down button
+            handleLike();
         }
     };
 
@@ -21,6 +24,7 @@ const Tool = ({like, save, notification, report, onNotificationToggle, onSaveTog
             setLikesCount(likesCount - 1);
             setIsDownClicked(true);
             setIsUpClicked(false); // Enable up button
+            handleUnlike();
         }
     };
 
@@ -52,7 +56,7 @@ const Tool = ({like, save, notification, report, onNotificationToggle, onSaveTog
                 />
             )}
             {report && (
-                <Button style={{marginLeft: 'auto'}}><img src="/Icons/report.svg"></img></Button>
+                <Button style={{marginLeft: 'auto'}} onClick={onReportToggle}><img src="/Icons/report.svg"></img></Button>
             )}
         </Wrapper>
     )
@@ -80,21 +84,29 @@ const LikeButton = ({ onClick, disabled, Icon }) => {
 };
 
 Tool.propTypes = {
+    isLikedPost: PropTypes.bool.isRequired,
     like: PropTypes.number.isRequired,
     save: PropTypes.bool.isRequired,
     notification: PropTypes.bool.isRequired,
     report: PropTypes.bool.isRequired,
     onNotificationToggle: PropTypes.func,
     onSaveToggle: PropTypes.func,
+    onReportToggle: PropTypes.func,
+    handleLike: PropTypes.func,
+    handleUnlike: PropTypes.func,
 };
   
 Tool.defaultProps = {
+    isLikedPost: false,
     like: 0,
     save: true,
     notification: true,
     report: true,
     onNotificationToggle: () => {},
     onSaveToggle: () => {},
+    onReportToggle: () => {},
+    handleLike: () => {},
+    handleUnlike: () => {},
 };
 
 export default Tool;

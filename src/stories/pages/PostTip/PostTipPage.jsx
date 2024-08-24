@@ -4,14 +4,14 @@ import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import TextField from '../../components/TextField';
-import TextInput from '../../components/TextInput';
-import TextArea from '../../components/TextArea';
-import SelectBoard from '../../components/SelectBoard';
-import ImageUploader from '../../components/ImageUploader2';
-import PointInput from '../../components/PointInput';
-import CheckBar from '../../components/CheckBar';
+import TextInput from '../../components/Common/TextInput';
+import TextArea from '../../components/Common/TextArea';
+import SelectBoard from '../../components/Common/SelectBoard';
+import ImageUploader from '../../components/Common/ImageUploader2';
+import PointInput from '../PostQuestion/PointInput';
+import CheckBar from '../../components/Common/CheckBar';
 import Button from '../../components/Button'
-import BadgeFilter from '../../components/BadgeFilter';
+import BadgeFilter from '../../components/Common/BadgeFilter';
 
 const initialUserData = [
     {
@@ -125,11 +125,14 @@ const PostQuestionPage = () => {
                 placeholder={'제목 입력'}  
                 onChange={(value) => handleInputChange('title', value)}
             />
+            {!formValues.title.trim() && <HelperText>제목 입력이 필요합니다.</HelperText>}
             <SelectBoard 
                 options={boardOptions} 
                 onChange={(value) => handleInputChange('board', value)}
             />
+            {formValues.board.length === 0 && <HelperText>게시판 선택이 필요합니다.</HelperText>}
             <BadgeFilter onFilterChange={(value) => handleInputChange('tags', value)} />
+            {formValues.tags.length === 0 && <HelperText>필터 선택이 필요합니다.</HelperText>}
             <TextArea 
                 width={'380px'} 
                 height={'300px'} 
@@ -137,6 +140,7 @@ const PostQuestionPage = () => {
                 placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."} 
                 onChange={(value) => handleInputChange('content', value)}
             />
+            {!formValues.content.trim() && <HelperText>내용 입력이 필요합니다.</HelperText>}
             <ImageUploader onChange={(value) => handleInputChange('images', value)}/>
             <StyledDiv>
                 <span>일정 포인트를 자동으로 지급해줘요.</span>
@@ -185,3 +189,10 @@ const StyledDiv = styled.div`
 
     margin-top: 10px;
 `
+
+const HelperText = styled.span`
+    color: #D00303;
+    font-size: 10px;
+    margin-top: 5px;
+    display: flex;
+`;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate  } from 'react-router-dom';
 import styled from "styled-components";
-import BoardTitle from "../../components/BoardTitle";
-import SubjectList from "../../components/SubjectList";
+import BoardTitle from "../../components/Common/BoardTitle";
+import SubjectList from "./SubjectList";
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 

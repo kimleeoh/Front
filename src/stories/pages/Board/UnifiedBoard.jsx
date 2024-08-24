@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
-import Questions from '../../components/Questions';
-import CheckBar from '../../components/CheckBar';
-import FixedIcon from '../../components/FixedIcon';
-import TabNavigation from '../../components/TabNavigation';
-import BadgeFilter from '../../components/BadgeFilter';
-import Tips from '../../components/Tips';
+import Questions from '../../components/Common/Questions';
+import CheckBar from '../../components/Common/CheckBar';
+import FixedIcon from '../../components/Common/FixedIcon';
+import TabNavigation from '../../components/Common/TabNavigation';
+import BadgeFilter from '../../components/Common/BadgeFilter';
+import Tips from '../Tips/Tips';
 
 const initialQuestionData = [
     {
@@ -116,9 +116,11 @@ const UnifiedBoard = () => {
     useEffect(() => {
         // 데이터 로딩 로직
         const loadData = () => {
+            localStorage.removeItem('questionData');
             const questionData = localStorage.getItem('questionData');
             setQuestionData(questionData ? JSON.parse(questionData) : initialQuestionData);
 
+            localStorage.removeItem('TipsData');
             const tipsData = localStorage.getItem('TipsData');
             setTipsData(tipsData ? JSON.parse(tipsData) : initialTipsData);
             setFilteredTips(tipsData ? JSON.parse(tipsData) : initialTipsData);

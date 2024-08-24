@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
-import Tips from '../../components/Tips';
-import FixedIcon from '../../components/FixedIcon';
+import Tips from './Tips';
+import FixedIcon from '../../components/Common/FixedIcon';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
-import BadgeFilter from '../../components/BadgeFilter';
+import BadgeFilter from '../../components/Common/BadgeFilter';
 
 const initialTipsData = [
     {

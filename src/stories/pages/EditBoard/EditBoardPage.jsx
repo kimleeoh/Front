@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import SubjectList from "../../components/SubjectList";
+import SubjectList from "../Board/SubjectList";
 import Header from '../../components/Header';
-import BoardTitle from '../../components/BoardTitle';
+import BoardTitle from '../../components/Common/BoardTitle';
 import Button from '../../components/Button';
 
 const EditBoardPage = () => {
