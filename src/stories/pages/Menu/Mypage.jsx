@@ -4,7 +4,7 @@ import TabNavigation from "../../components/Common/TabNavigation";
 import { useNavigate } from 'react-router-dom';
 import ProgressBar from "../../components/Common/ProgressBar";
 import BoardTitle from "../../components/Common/BoardTitle";
-import SubjectList from "../Board/SubjectList";
+import SubjectList from "../../components/Common/SubjectList";
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState("프로필");

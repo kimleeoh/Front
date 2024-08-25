@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 import BoardTitle from "../../components/Common/BoardTitle";
-import SubjectList from "../Board/SubjectList";
+import SubjectList from "../../components/Common/SubjectList";
 import Modal from "../../components/Common/Modal";
 import Picker from "../../components/Common/Picker";
 
