@@ -5,6 +5,7 @@ import StartPage from './stories/pages/OnBoarding/StartPage'; // 스토리북 �
 import SignUpPage from './stories/pages/OnBoarding/SignUpPage'; // 스토리북 페이지 컴포넌트
 
 import HomePage from './stories/pages/Home/HomePage';
+import AlertPage from './stories/pages/Home/AlertPage';
 import QnAPage from './stories/pages/QnA/QnAPage'; 
 import TipsPage from './stories/pages/Tips/TipsPage'; 
 
@@ -33,6 +34,7 @@ const App = () => {
                 <Route path="/signup" element={<SignUpPage />} />
                 
                 <Route path="/home" element={<HomePage />} />
+                <Route path="/alert" element={<AlertPage />} />
                 <Route path="/qna" element={<QnAPage />} />
                 <Route path="/qna/:id" element={<QnADetailPage />} />
                 <Route path="/qna/post" element={<PostQuestionPage />} />
