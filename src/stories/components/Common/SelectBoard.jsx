@@ -136,10 +136,11 @@ const DropdownListContainer = styled.div`
     z-index: 1;
     border: 1px solid #ddd;
     border-top: none;
-    border-radius: 0 0 4px 4px;
+    border-radius: 0 0 16px 16px;
     background-color: white;
     max-height: 200px;
     overflow-y: auto;
+    transition: all 0.3s ease;
 `;
 
 const DropdownList = styled.ul`
@@ -151,16 +152,20 @@ const DropdownList = styled.ul`
 const ListItem = styled.li`
     padding: 10px;
     cursor: pointer;
+    transition: all 0.3s ease;
 
     &:hover {
-        background-color: #f0f0f0;
+        background-color: #E2E5E9;
     }
+    &:active {
+        transform: scale(0.98);
+        }
 `;
 
 const BackButton = styled.div`
-    padding: 10px;
+    padding: 10px 0;
     cursor: pointer;
     text-align: center;
-    background-color: #f0f0f0;
-    border-top: 1px solid #ddd;
+    background-color: #E2E5E9;
+    border-top: 1px solid #E2E5E9;
 `;

@@ -66,7 +66,7 @@ PointInput.defaultProps = {
     width: '380px',
     height: '50px',
     placeholder: '포인트를 입력하세요. ',
-    fontColor: '#000',
+    fontColor: '#434B60',
     backgroundColor: '#F0F2F4',
     fontSize: '16px',
     point: 0,

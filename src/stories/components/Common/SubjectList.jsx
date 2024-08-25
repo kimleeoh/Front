@@ -20,7 +20,7 @@ const SubjectList = ({ select, subject, eliminate, onDelete, disableLink }) => {
                         src="/Icons/Delete.svg"
                         alt="Delete"
                         style={{ marginLeft: 'auto', marginRight: '5px', cursor: 'pointer' }}
-                        onClick={onDelete} // Call delete function on click
+                        onClick={onDelete}
                     />
                 )}
             </SubjectTitle>

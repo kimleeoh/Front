@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Tool from './Tool';
+import Tool from '../../components/Common/Tool';
 
 const TipsDetail = ({ id, name, major, title, subject, content, time, views, like, img }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
@@ -33,7 +33,9 @@ const TipsDetail = ({ id, name, major, title, subject, content, time, views, lik
             });
         } else {
             // Remove notification data when disabled
-            removeNotificationData(id);
+            removeNotificationData({
+                postId: id
+            });
         }
     };
 
@@ -62,7 +64,9 @@ const TipsDetail = ({ id, name, major, title, subject, content, time, views, lik
             });
         } else {
             // Remove notification data when disabled
-            removeSaveData(id);
+            removeSaveData({
+                postId: id}
+            );
         }
     };
 
@@ -80,6 +84,11 @@ const TipsDetail = ({ id, name, major, title, subject, content, time, views, lik
         // Here you would typically make an API call or update local storage
         // For example:
         // localStorage.removeItem(`notification_${postId}`);
+    };
+
+    const handleReport = () => {
+        console.log("Reported post:", id);
+        alert(`Post with ID: ${id} has been reported.`);
     };
 
     return (
@@ -123,6 +132,7 @@ const TipsDetail = ({ id, name, major, title, subject, content, time, views, lik
                     report={true} 
                     onSaveToggle={handleSaveToggle}
                     onNotificationToggle={handleNotificationToggle}
+                    onReportToggle={handleReport}
                 />
             </Wrapper>
         </OutWrapper>
@@ -208,7 +218,8 @@ const DownloadContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-    border: 1px solid #D9D9D9;
+    border: 1px solid #ACB2BB;
+    border-radius: 8px;
     padding: 10px 10px;
     gap: 10px; /* Add space between each file item */
 `;
@@ -220,13 +231,13 @@ const FileContainer = styled.div`
 `;
 
 const FileName = styled.span`
-    color: #737373;
+    color: #434B60;
     font-size: 14px;
 `;
 
 const DownloadLink = styled.a`
     font-size: 14px;
-    color: #007BFF;
+    color: #434B60;
     margin-left: auto;
     display: flex;
     align-items: center;

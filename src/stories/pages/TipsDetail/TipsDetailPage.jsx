@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import QuestionsDetail from '../../components/QuestionsDetail';
 import Header from '../../components/Header';
-import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
-import AnswersDetail from '../../components/AnswersDetail';
-import UserComment from '../../components/UserComment';
-import TipsDetail from '../../components/TipsDetail';
+import TipsDetail from './TipsDetail';
 
 const initialTipsData = [
     {
@@ -45,7 +41,7 @@ const initialTipsData = [
         content: '숭실대 건물들 화장실의 등급을 나눠봤습니다. 이용하실 때 참고 바랍니다.',
         time: "2024-08-14T05:45:30.246Z",
         views: 30,
-        like: 18,
+        like: 45,
         img: '/Icons/1607-2.jpg',
         filter: '수업꿀팁'
     },

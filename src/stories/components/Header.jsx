@@ -85,12 +85,10 @@ const LeftContent = styled.div`
 
   &:hover {
     background-color: rgba(172, 178, 187, 0.3);
-    transition: all 0.3s ease;
   }
     &:active {
-    transition: all 0.3s ease;
     scale: 0.95;
-}
+  }
 `;
 
 const RightContent = styled.div`

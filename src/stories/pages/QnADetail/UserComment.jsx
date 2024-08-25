@@ -1,11 +1,10 @@
 import react from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Button from './Button';
+import Button from '../../components/Button';
 import { useState, useEffect } from 'react';
 import ImageUploader from './ImageUploader';
-import TextField from '../components/TextField'
-import TextArea from './TextArea';
+import TextArea from '../../components/Common/TextArea';
 
 const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) => {
     const [isAnswered, setIsAnswered] = useState(false);
@@ -59,7 +58,7 @@ const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) =
             <OutWrapper>
                 <Wrapper>
                     <SubWrapper>
-                        <img src="/Icons/Profile.svg" />
+                        <ProfileImg src={profileImg} />
                         <ProfileContainer>
                             <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
                             <MajorName>{major} {name}</MajorName>
@@ -94,7 +93,7 @@ const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) =
             <OutWrapper>
                 <Wrapper>
                     <SubWrapper>
-                        <img src="/Icons/Profile.svg" />
+                        <ProfileImg src={profileImg} />
                         <ProfileContainer>
                             <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
                             <MajorName>{major} {name}<span style={{color: '#3182F7'}}>님은 답변 등록이 가능합니다.</span></MajorName>
@@ -118,7 +117,7 @@ const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) =
             <Wrapper>
                 {figure === null ? (
                     <SubWrapper>
-                        <ProfileImg src="/Icons/1607-2.jpg" />
+                        <ProfileImg src={profileImg} />
                         <ProfileContainer>
                             <LevelGrade>Lv. {level} | 미정</LevelGrade>
                             <MajorName><span style={{color: '#ACB2BB'}}>성적 입력 후 답변이 가능합니다.</span></MajorName>
@@ -126,7 +125,7 @@ const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) =
                     </SubWrapper>
                 ) : figure >= 2 ? (
                     <SubWrapper>
-                        <ProfileImg src="/Icons/1607-2.jpg" />
+                        <ProfileImg src={profileImg} />
                         <ProfileContainer>
                             <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
                             <MajorName>{major} {name}<span style={{color: '#3182F7'}}>님은 답변 등록이 가능합니다.</span></MajorName>
@@ -134,7 +133,7 @@ const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) =
                     </SubWrapper>
                 ) : (
                     <SubWrapper>
-                        <ProfileImg src="/Icons/1607-2.jpg" />
+                        <ProfileImg src={profileImg} />
                         <ProfileContainer>
                             <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
                             <MajorName>{major} {name}<span style={{color: '#ACB2BB'}}>님은 답변 등록이 불가능합니다.</span></MajorName>
