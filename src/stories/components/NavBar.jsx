@@ -133,7 +133,7 @@ const Button = styled.button`
     ${({ isAnimating }) =>
         isAnimating &&
         css`
-            animation: ${jellyAnimation} 0.25s ease forwards;
+            animation: ${jellyAnimation} 0.3s ease forwards;
         `}
 
     img {
