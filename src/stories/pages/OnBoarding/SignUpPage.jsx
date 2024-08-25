@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
 import DiscreteProgressBar from './DiscreteProgressBar';
+import { SignUpHandler } from '../../../axioses/SignUpHandler';
 
 const SignUpPage = () => {
   const [step, setStep] = useState(1);
@@ -73,6 +74,7 @@ const SignUpPage = () => {
   };
 
   const handleSubmit = async () => {
+    SignUphandler(step, formData);
     console.log('제출된 데이터:', formData);
   };
 

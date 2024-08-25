@@ -141,18 +141,22 @@ const DropdownListContainer = styled.div`
     max-height: 200px;
     overflow-y: auto;
     transition: all 0.3s ease;
+    
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
 const DropdownList = styled.ul`
     padding: 0;
     margin: 0;
     list-style-type: none;
+    
 `;
 
 const ListItem = styled.li`
     padding: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
+    border-radius: 8px;
 
     &:hover {
         background-color: #E2E5E9;

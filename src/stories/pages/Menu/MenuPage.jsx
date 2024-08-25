@@ -5,6 +5,7 @@ import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import MenuList from './MenuList';
 import Modal from '../../components/Common/Modal';
+import Button from '../../components/Button';
 
 const MenuPage = () => {
     const modalRef = useRef();
@@ -57,11 +58,11 @@ const MenuPage = () => {
                 <NavBar state='menu' />
             </FixedBottomContainer>
 
-            <Modal ref={modalRef}>
-                <p>정말 로그아웃 하시겠습니까?</p>
+            <Modal ref={modalRef} width='300px'>
+                <span style={{fontSize: '16px'}}>정말 로그아웃 하시겠습니까?</span>
                 <ButtonWrapper>
-                    <button onClick={confirmLogout}>예</button>
-                    <button onClick={() => modalRef.current.close()}>아니오</button>
+                    <Button onClick={confirmLogout} label={'예'} backgroundColor={'#FF3C3C'} hoverBackgroundColor={'red'} width={'130px'}/>
+                    <Button onClick={() => modalRef.current.close()} label={'아니요'} backgroundColor={'#434B60'} hoverBackgroundColor={'#ACB2BB'} width={'130px'}/>
                 </ButtonWrapper>
             </Modal>
         </Wrapper>
@@ -166,11 +167,6 @@ const ButtonWrapper = styled.div`
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
+    gap: 10px;
 
-    button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
 `;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import PropTypes from "prop-types";
 
-const Picker = ({ items, selectedItem, onChange, placeholder, width}) => {
+const Picker = ({ items, selectedItem, onChange, placeholder, width }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = () => setIsOpen(!isOpen);
@@ -21,16 +21,19 @@ const Picker = ({ items, selectedItem, onChange, placeholder, width}) => {
                 </ArrowIcon>
             </PickerButton>
             {isOpen && (
-                <Dropdown>
-                    {items.map((item, index) => (
-                        <DropdownItem
-                            key={index}
-                            onClick={() => handleSelect(item)}
-                        >
-                            {item}
-                        </DropdownItem>
-                    ))}
-                </Dropdown>
+                <DropdownContainer>
+                    <Dropdown>
+                        {items.map((item, index) => (
+                            <DropdownItem
+                                key={index}
+                                onClick={() => handleSelect(item)}
+                                isSelected={item === selectedItem}
+                            >
+                                {item}
+                            </DropdownItem>
+                        ))}
+                    </Dropdown>
+                </DropdownContainer>
             )}
         </PickerContainer>
     );
@@ -73,14 +76,55 @@ const ArrowIcon = styled.div`
     transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
 `;
 
-const Dropdown = styled.div`
+const dropdownAnimation = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+        scaleX(0.5);
+        scaleY(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
+
+const DropdownContainer = styled.div`
     position: absolute;
     width: 100%;
-    border: 1px solid #ccc;
     border-radius: 5px;
+    overflow: hidden;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
     z-index: 1;
+    max-height: calc(6.8 * 40px);  // 6.8개 항목을 기준으로 최대 높이 설정
+    overflow-y: auto;
+    animation: ${dropdownAnimation} 0.3s ease forwards;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 20px;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    &::before {
+        top: 0;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    }
+
+    &::after {
+        bottom: 0;
+        background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    }
+`;
+
+const Dropdown = styled.div`
+    overflow-y: auto;
 `;
 
 const DropdownItem = styled.div`
@@ -89,6 +133,7 @@ const DropdownItem = styled.div`
     cursor: pointer;
     border-bottom: 1px solid #f1f1f1;
     transition: all 0.3s ease;
+    color: ${({ isSelected }) => (isSelected ? '#3182F7' : 'black')};  // 선택된 아이템 강조
 
     &:hover {
         background-color: #f1f1f1;
