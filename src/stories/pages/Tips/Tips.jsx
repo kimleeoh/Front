@@ -8,15 +8,19 @@ const Tips = ({ id, name, major, title, content, time, views, like, img, point }
         const now = new Date();
         const createdTime = new Date(createdAt);
         const diff = now.getTime() - createdTime.getTime();
-    
+
         const minutes = Math.floor(diff / (1000 * 60));
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
+        const months = Math.floor(days / 30); // Rough estimate of 30 days per month
+        const years = Math.floor(days / 365); // Rough estimate of 365 days per year
+
         if (minutes < 1) return '방금 전';
         if (minutes < 60) return `${minutes}분 전`;
         if (hours < 24) return `${hours}시간 전`;
-        return `${days}일 전`;
+        if (days < 30) return `${days}일 전`;
+        if (months < 12) return `${months}개월 전`;
+        return `${years}년 전`;
     };
 
     return (
@@ -24,7 +28,7 @@ const Tips = ({ id, name, major, title, content, time, views, like, img, point }
             <StyledLink to={`/tips/${id}`}>
                 <Wrapper>
                     <ContentWrapper>
-                        <TextWrapper>
+                        <TextWrapper hasImage={Boolean(img)}>
                             <Title>{title}</Title>
                             <Content>{content}</Content>
                         </TextWrapper>
@@ -99,7 +103,7 @@ const ContentWrapper = styled.div`
 
 const TextWrapper = styled.div`
     align-items: flex-start;
-    max-width: 290px;
+    max-width: ${(props) => (props.hasImage ? '290px' : '380px')};
 `
 
 const Title = styled.div`

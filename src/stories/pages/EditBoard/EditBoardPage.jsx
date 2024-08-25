@@ -52,7 +52,7 @@ const EditBoardPage = () => {
                                         {...provided.dragHandleProps}
                                     >
                                         <SubjectList
-                                            subject={item.subject}
+                                            subject={item.subject || item.bookmark}
                                             onClick={() => console.log("Edit mode, no navigation")}
                                             actions={[
                                                 { icon: "/Icons/Delete.svg", alt: "Delete", marginLeft: "auto", onClick: handleSubjectDelete }
