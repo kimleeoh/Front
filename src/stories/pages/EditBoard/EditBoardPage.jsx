@@ -16,8 +16,8 @@ const EditBoardPage = () => {
         id: item.id || `subject-${index}`
     })));
 
-    const handleDelete = (index) => {
-        const updatedSubjects = subjects.filter((_, i) => i !== index);
+    const handleSubjectDelete = (subject) => {
+        const updatedSubjects = subjects.filter(item => item.subject !== subject);
         setSubjects(updatedSubjects);
     };
 
@@ -39,7 +39,6 @@ const EditBoardPage = () => {
         <Wrapper>
             <Header showIcon={false} text="게시판 편집" backButton={true} searchButton={false} />
             <BoardTitle text={title} edit={false} />
-            
             <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="subjectlist">
                 {(provided) => (
@@ -53,11 +52,11 @@ const EditBoardPage = () => {
                                         {...provided.dragHandleProps}
                                     >
                                         <SubjectList
-                                            select={true}
-                                            subject={item.subject || item.bookmark}
-                                            eliminate={true}
-                                            onDelete={() => handleDelete(index)}
-                                            disableLink={true}
+                                            subject={item.subject}
+                                            onClick={() => console.log("Edit mode, no navigation")}
+                                            actions={[
+                                                { icon: "/Icons/Delete.svg", alt: "Delete", marginLeft: "auto", onClick: handleSubjectDelete }
+                                            ]}
                                             isDragging={snapshot.isDragging}
                                             provided={provided}
                                         />
