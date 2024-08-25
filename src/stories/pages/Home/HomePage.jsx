@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate  } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import Carousel from "../../components/Common/Carousel";
 
 const HomePage = () => {
-    const items  = [
-        <Page>게시물 1</Page>,
-        <Page>게시물 2</Page>,
-        <Page>게시물 3</Page>,
-    ];
+    const navigate = useNavigate();
 
     return (
         <Wrapper>
             <Header>
-                <img src='/Logo_darkgray.svg' width={'150px'}/>
+                <Logo src="/Logo_darkgray.svg" alt="Logo" />
+                <NotificationIcon
+                    src="/Icons/Bellnactive.svg"
+                    alt="Notification"
+                    onClick={() => navigate('/alert')}
+                />
             </Header>
             <Content>
-                <Title>내가 답할 수 있는 가능성이 있는 새 게시물</Title>
-                <Carousel items={items} />
-                <Title>내 게시판에서 현재 인기 있는 게시물</Title>
+                {/* 여기에 홈 페이지의 메인 콘텐츠를 추가합니다 */}
             </Content>
             <FixedBottomContainer>
-                <NavBar initialState="Home"/>
+                <NavBar initialState="Home" />
             </FixedBottomContainer>
         </Wrapper>
     );
@@ -36,65 +35,41 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #f0f2f4; /* 전체 배경 색상 설정 */
-    min-height: 100vh; /* 페이지가 전체 화면을 채우도록 설정 */
-    position: relative; /* 헤더를 페이지 상단에 고정하기 위해 필요 */
-    padding-top: 10px; /* 헤더 공간만큼 패딩 추가 */
-    padding-bottom: 100px; /* 하단 패딩 추가 */
-`;
-
-const Content = styled.div`
-    top: 88px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 370px;
-    padding: 24px;
-    gap: 16px;
+    background-color: #f0f2f4;
+    min-height: 100vh;
+    position: relative;
+    padding-top: 88px; /* 헤더 공간만큼 패딩 추가 */
+    padding-bottom: 100px;
 `;
 
 const Header = styled.div`
-    width: 393px;
+    width: 100%;
+    max-width: 393px;
     height: 88px;
     padding: 10px 20px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-
-    font-weight: bold;
-    font-size: 24px;
-    color: #434B60;
     background: rgba(240, 242, 244, 0.30);
     backdrop-filter: blur(5px);
-
-    position: fixed; /* 헤더를 페이지 상단에 고정 */
+    position: fixed;
     z-index: 1000;
     top: 0;
 `;
 
-const Title = styled.div`
-  display: flex;
-  width: 100%;
-  height: 38px;
-  flex-direction: column;
-  justify-content: center;
-  flex-shrink: 0;
-  color: #434B60;
-  font-family: Inter;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+const Logo = styled.img`
+    width: 120px;
+    cursor: pointer;
 `;
 
-const Page = styled.div`
-    display: flex;
-width: 314px;
-height: 93px;
-padding: 16px;
-flex-direction: column;
-align-items: flex-start;
-gap: 2px;
+const NotificationIcon = styled.img`
+    width: 30px;
+    cursor: pointer;
+`;
 
-border-radius: 18px;
-background: #FFF;
+const Content = styled.div`
+    width: 100%;
+    max-width: 393px;
+    padding: 20px;
+    text-align: center;
 `;

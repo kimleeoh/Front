@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from 'prop-types';
 
+<<<<<<< HEAD:src/stories/pages/Board/SubjectList.jsx
 const SubjectList = ({ subject, actions, onClick, rate }) => {
     const handleClick = () => {
         if (onClick) {
@@ -36,6 +37,30 @@ const SubjectList = ({ subject, actions, onClick, rate }) => {
                     {rate && <Rate>{rate}</Rate>}
             </Wrapper>
         </Line>
+=======
+const SubjectList = ({ select, subject, eliminate, onDelete, disableLink }) => {
+    const content = (
+        <Wrapper>
+            <SubjectTitle>
+                {select && (
+                    <img
+                        src="/Icons/Select.svg"
+                        alt="Select"
+                        style={{ marginLeft: '5px', cursor: 'pointer' }}
+                    />
+                )}
+                <span style={{ marginLeft: '10px' }}>{subject}</span>
+                {eliminate && (
+                    <img
+                        src="/Icons/Delete.svg"
+                        alt="Delete"
+                        style={{ marginLeft: 'auto', marginRight: '5px', cursor: 'pointer' }}
+                        onClick={onDelete}
+                    />
+                )}
+            </SubjectTitle>
+        </Wrapper>
+>>>>>>> ef9a6d9edb1fc7e9684c9fb557cfc8e839d2584a:src/stories/components/Common/SubjectList.jsx
     );
 };
 
