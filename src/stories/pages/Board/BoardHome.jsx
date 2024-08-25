@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate  } from 'react-router-dom';
 import styled from "styled-components";
 import BoardTitle from "../../components/Common/BoardTitle";
-import SubjectList from "./SubjectList";
+import SubjectList from "../../components/Common/SubjectList";
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 
