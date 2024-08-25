@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import TabNavigation from "../../components/Common/TabNavigation";
 import { useNavigate } from 'react-router-dom';
+import ProgressBar from "../../components/Common/ProgressBar";
+import BoardTitle from "../../components/Common/BoardTitle";
+import SubjectList from "../Board/SubjectList";
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState("프로필");
@@ -50,18 +53,46 @@ const MyPage = () => {
                 <BadgeBox />
                 <BadgeBox />
             </BadgeContainer>
-            <Title>성적</Title>
-            <div>성적 내용</div>
+            <BoardTitle text="성적"></BoardTitle>
+            <SubjectWrapper>
+                <ScrollableSubjectList>
+                    <SubjectList
+                        subject={'디지털미디어원리'}
+                        disableLink={true}
+                        rate={'A+'}
+                    />
+                    <SubjectList
+                        subject={'영상편집론'}
+                        disableLink={true}
+                        rate={'A-'}
+                    />
+                    {/* ...다른 과목들도 추가 */}
+                </ScrollableSubjectList>
+            </SubjectWrapper>
             <Title>인기게시글</Title>
             <div>인기게시글 내용</div>
         </Content>
       )}
       {activeTab === "활동" && (
         <Content>
+            <Title>명성</Title>
+              <Reputation>
+                1800
+                <ProgressBarContainer>
+                  다음 단계까지 700점 남음
+                  <ProgressBar totalSteps={1000} currentStep={300} width={'250px'}/>
+                </ProgressBarContainer>
+              </Reputation>
+              <div style={{padding: '0px 20px 20px'}}>
+              <InfoBox>
+                <DetailInfo>받은 투표수<Measurement>20</Measurement></DetailInfo>
+                <DetailInfo>스크랩수<Measurement>20</Measurement></DetailInfo>
+                <DetailInfo>채택수<Measurement>4</Measurement></DetailInfo>
+                <DetailInfo>총 조회수<Measurement>1000</Measurement></DetailInfo>
+              </InfoBox>
+              </div>
             <Title>최근 작성한 게시글</Title>
             <div>최근 작성한 게시글 내용</div>
-            <Title>명성</Title>
-            <div>명성 내용</div>
         </Content>
       )}
     </Wrapper>
@@ -81,6 +112,8 @@ const Wrapper = styled.div`
     position: relative; /* 헤더를 페이지 상단에 고정하기 위해 필요 */
     padding-top: 100px; /* 헤더 공간만큼 패딩 추가 */
     padding-bottom: 100px; /* 하단 패딩 추가 */
+    
+    background-color: #f0f2f4;
 `;
 
 const Header = styled.div`
@@ -143,7 +176,7 @@ const ProfileInfo = styled.div`
   width: 223px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 18px;
+  gap: 13px;
   color: #434B60;
   font-family: Inter, sans-serif;
   font-size: 18px;
@@ -167,7 +200,7 @@ const DetailInfo = styled.div`
   line-height: normal;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 `;
 
 const Measurement = styled.div`
@@ -179,6 +212,7 @@ const Measurement = styled.div`
 `;
 
 const Introduction = styled.div`
+  padding: 10px 0px;
   color: #434B60;
   font-family: Inter, sans-serif;
   font-size: 16px;
@@ -206,9 +240,9 @@ const Content = styled.div`
 
 const Title = styled.div`
   display: flex;
-  width: 184px;
+  width: 100%;
   height: 38px;
-  padding: 0px 10px;
+  padding: 15px 10px;
   flex-direction: column;
   justify-content: center;
   flex-shrink: 0;
@@ -251,7 +285,7 @@ const BadgeBox = styled.div`
   width: 100px; /* 고정된 너비 */
   height: 100px; /* 고정된 높이 */
   border-radius: 10px;
-  background-color: #F0F2F4;
+  background-color: white;
   flex-shrink: 0; /* 크기 축소 방지 */
 
   transition: all 0.3s ease;
@@ -262,4 +296,52 @@ const BadgeBox = styled.div`
   &: active {
     transform: scale(0.9);
   }
+`;
+
+const Reputation = styled.div`
+  display: flex;
+  height: 80px;
+  padding: 0px 20px;
+  margin-top: -10px;
+  justify-content: space-between;
+  align-items: center;
+
+  color: #434B60;
+
+text-align: center;
+font-family: Inter;
+font-size: 24px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+`;
+
+const ProgressBarContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: end;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+  color: #ACB2BB;
+
+  gap: 5px;
+
+`;
+
+const SubjectWrapper = styled.div`
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 24px;
+    margin-top: 10px;
+`;
+
+const ScrollableSubjectList = styled.div`
+    width: 100%;
+    max-height: 280px;
+    overflow-y: auto;
 `;

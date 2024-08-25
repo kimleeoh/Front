@@ -1,73 +1,83 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
-const SubjectList = ({ select, subject, eliminate, onDelete, disableLink }) => {
-    const content = (
-        <Wrapper>
-            <SubjectTitle>
-                {select && (
-                    <img
-                        src="/Icons/Select.svg"
-                        alt="Select"
-                        style={{ marginLeft: '5px', cursor: 'pointer' }}
-                    />
-                )}
-                <span style={{ marginLeft: '10px' }}>{subject}</span>
-                {eliminate && (
-                    <img
-                        src="/Icons/Delete.svg"
-                        alt="Delete"
-                        style={{ marginLeft: 'auto', marginRight: '5px', cursor: 'pointer' }}
-                        onClick={onDelete} // Call delete function on click
-                    />
-                )}
-            </SubjectTitle>
-        </Wrapper>
+const SubjectList = ({ subject, actions, onClick, rate }) => {
+    const handleClick = () => {
+        if (onClick) {
+            onClick(subject); // 부모 컴포넌트에서 전달된 onClick 함수 호출
+        }
+    };
+
+    return (
+        <Line onClick={handleClick}>
+            <Wrapper>
+                <SubjectTitle>
+                    <span style={{ marginLeft: '10px' }}>{subject}</span>
+                </SubjectTitle>
+                    {actions?.map((action, index) => (
+                        <ActionButton 
+                            key={index} 
+                            onClick={(e) => {
+                                e.stopPropagation(); // 이벤트 버블링 방지
+                                if (action.onClick) {
+                                    action.onClick(subject); // 각 액션에 대한 onClick 함수 호출
+                                }
+                            }}
+                            style={{ marginLeft: action.marginLeft || '5px' }}
+                        >
+                            <img
+                                src={action.icon}
+                                alt={action.alt}
+                                style={{ cursor: 'pointer' }}
+                            />
+                        </ActionButton>
+                    ))}
+                    {rate && <Rate>{rate}</Rate>}
+            </Wrapper>
+        </Line>
     );
-
-    return disableLink ? content : <StyledLink to={`/board/${subject}`}>{content}</StyledLink>;
-}
+};
 
 export default SubjectList;
 
 SubjectList.propTypes = {
-    select: PropTypes.bool,
-    subject: PropTypes.string,
-    eliminate: PropTypes.bool,
-    onDelete: PropTypes.func.isRequired,
-    disableLink: PropTypes.bool,
+    subject: PropTypes.string.isRequired,
+    actions: PropTypes.arrayOf(
+        PropTypes.shape({
+            icon: PropTypes.string.isRequired,
+            alt: PropTypes.string.isRequired,
+            onClick: PropTypes.func,  // 액션에 대한 onClick 핸들러
+            marginLeft: PropTypes.string,
+        })
+    ),
+    onClick: PropTypes.func,  // SubjectList 전체에 대한 onClick 핸들러
 };
 
 SubjectList.defaultProps = {
-    select: false,
-    subject: 'Subject',
-    eliminate: false,
-    disableLink: false,
+    actions: [],
 };
 
-const StyledLink = styled(Link)`
-    text-decoration: none;
-    color: black;
-`;
-  
 const Wrapper = styled.div`
     width: 370px;
     height: 40px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     border: none;
-    border-bottom: 1px solid #F1F2F4;
+    border-radius: 15px;
     padding: 5px;
-
+    cursor: pointer;
     transition: all 0.2s ease;
     &:active {
         background-color: #F1F2F4;
         transition: all 0.2s ease;
         scale: 0.98;
-        border-radius: 0px;
     }
+`;
+
+const Line = styled.div`
+    border-bottom: 1px solid #F1F2F4;
 `;
 
 const SubjectTitle = styled.div`
@@ -76,4 +86,24 @@ const SubjectTitle = styled.div`
     font-size: 14px;
     color: #434B60;
     width: 100%;
+`;
+
+const ActionButton = styled.button`
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+        background-color: #F1F7Fd;
+    }
+    &:active {
+        scale: 0.95;
+    }
+`;
+
+const Rate = styled.div`
+    font-size: 14px;
+    color: #434B60;
+    margin-right: 10px;
 `;

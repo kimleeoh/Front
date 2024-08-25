@@ -12,8 +12,8 @@ const EditBoardPage = () => {
 
     const [subjects, setSubjects] = useState(listData);
 
-    const handleDelete = (index) => {
-        const updatedSubjects = subjects.filter((_, i) => i !== index);
+    const handleSubjectDelete = (subject) => {
+        const updatedSubjects = subjects.filter(item => item.subject !== subject);
         setSubjects(updatedSubjects);
     };
 
@@ -22,14 +22,14 @@ const EditBoardPage = () => {
             <Header showIcon={false} text="게시판 편집" backButton={true} searchButton={false} />
             <BoardTitle text={title} edit={false} />
             <SubjectListWrapper>
-                {subjects.map((item, index) => (
+                {subjects.map((item) => (
                     <SubjectList
-                        key={index}
-                        select={true}
-                        subject={item.subject || item.bookmark}
-                        eliminate={true}
-                        onDelete={() => handleDelete(index)}
-                        disableLink={true} // Disable the link in edit mode
+                        key={item.subject}
+                        subject={item.subject}
+                        onClick={() => console.log("Edit mode, no navigation")}
+                        actions={[
+                            { icon: "/Icons/Delete.svg", alt: "Delete", marginLeft: "auto", onClick: handleSubjectDelete }
+                        ]}
                     />
                 ))}
                 <Button

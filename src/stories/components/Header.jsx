@@ -56,7 +56,7 @@ const TopLayout = styled.div`
   top: 0;
   width: 380px;
   background: rgba(240, 242, 244, 0.30);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;

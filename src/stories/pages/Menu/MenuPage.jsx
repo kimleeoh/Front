@@ -1,25 +1,21 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import MenuList from './MenuList';
-import Button from '../../components/Button';
+import Modal from '../../components/Common/Modal';
 
 const MenuPage = () => {
-    const [isModalOpen, setModalOpen] = useState(false);
+    const modalRef = useRef();
 
     const handleLogoutClick = () => {
-        setModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setModalOpen(false);
+        modalRef.current.open();
     };
 
     const confirmLogout = () => {
         // 로그아웃 로직을 여기에 추가합니다.
-        setModalOpen(false);
+        modalRef.current.close();
         // 예를 들어, 로그아웃 API를 호출하거나, 로그인 페이지로 이동
     };
 
@@ -61,15 +57,13 @@ const MenuPage = () => {
                 <NavBar state='menu' />
             </FixedBottomContainer>
 
-            {isModalOpen && (
-                <ModalOverlay onClick={closeModal}>
-                    <ModalContent onClick={(e) => e.stopPropagation()}>
-                        정말 로그아웃 하시겠습니까?
-                            <Button onClick={confirmLogout} label='로그아웃' width ='130px' />
-                            <Button onClick={closeModal} label='돌아가기' width ='130px' />
-                    </ModalContent>
-                </ModalOverlay>
-            )}
+            <Modal ref={modalRef}>
+                <p>정말 로그아웃 하시겠습니까?</p>
+                <ButtonWrapper>
+                    <button onClick={confirmLogout}>예</button>
+                    <button onClick={() => modalRef.current.close()}>아니오</button>
+                </ButtonWrapper>
+            </Modal>
         </Wrapper>
     );
 };
@@ -168,33 +162,15 @@ const Title = styled.div`
     line-height: normal;
 `;
 
-const ModalOverlay = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+const ButtonWrapper = styled.div`
     display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-`;
+    justify-content: space-around;
+    margin-top: 20px;
 
-const ModalContent = styled.div`
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    color: #434B60;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    gap: 10px;
+    button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 `;

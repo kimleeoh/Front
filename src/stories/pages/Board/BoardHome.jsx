@@ -34,7 +34,6 @@ const BoardHome = () => {
     const [subjectData2, setSubjectData2] = useState([]);
 
     useEffect(() => {
-        //로컬 스토리지에서 질문 데이터 로드 또는 초기화
         localStorage.removeItem('subjectData');
         localStorage.removeItem('bookmarkData');
         localStorage.removeItem('subjectData2');
@@ -67,6 +66,12 @@ const BoardHome = () => {
 
     const navigate = useNavigate();
 
+    const handleSubjectClick = (subject) => {
+        // 과목 클릭 시 부모 컴포넌트에서 처리
+        console.log("Subject clicked:", subject);
+        navigate(`/board/${subject}`);
+    };
+
     const handleEditClick = (listType, title) => {
         let listData = [];
         switch (listType) {
@@ -85,6 +90,7 @@ const BoardHome = () => {
             default:
                 listData = [];
         }
+    
 
         navigate('/edit-board', {state: {listData, title}});
     };
@@ -97,7 +103,10 @@ const BoardHome = () => {
                 <ScrollableSubjectList>
                     {subjectData.map((subject) => (
                         <SubjectList
+                            key={subject.subject}
                             subject={subject.subject}
+                            onClick={handleSubjectClick}
+                            actions={[]} // 필요 시 액션 추가
                         />
                     ))}
                 </ScrollableSubjectList>
@@ -108,7 +117,10 @@ const BoardHome = () => {
                 <ScrollableSubjectList>
                     {bookmarkData.map((bookmark) => (
                         <SubjectList
+                            key={bookmark.bookmark}
                             subject={bookmark.bookmark}
+                            onClick={handleSubjectClick}
+                            actions={[]} // 필요 시 액션 추가
                         />
                     ))}
                 </ScrollableSubjectList>
@@ -119,7 +131,10 @@ const BoardHome = () => {
                 <ScrollableSubjectList>
                     {subjectData2.map((subject) => (
                         <SubjectList
+                            key={subject.subject}
                             subject={subject.subject}
+                            onClick={handleSubjectClick}
+                            actions={[]} // 필요 시 액션 추가
                         />
                     ))}
                 </ScrollableSubjectList>
@@ -174,7 +189,7 @@ const SubjectWrapper = styled.div`
     background-color: white;
     border-radius: 24px;
 
-    margin-top: 10px;
+    margin-bottom: 10px;
 `
 const ScrollableSubjectList = styled.div`
     width: 100%;
