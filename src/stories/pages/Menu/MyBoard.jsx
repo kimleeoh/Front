@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../../components/Header';
-import Questions from '../../components/Questions';
-import CheckBar from '../../components/CheckBar';
-import TabNavigation from '../../components/TabNavigation';
-import BadgeFilter from '../../components/BadgeFilter';
-import Tips from '../../components/Tips';
+import Questions from '../../components/Common/Questions';
+import CheckBar from '../../components/Common/CheckBar';
+import TabNavigation from '../../components/Common/TabNavigation';
+import BadgeFilter from '../../components/Common/BadgeFilter';
+import Tips from '../Tips/Tips';
 
 const initialQuestionData = [
 ]

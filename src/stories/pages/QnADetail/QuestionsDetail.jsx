@@ -1,26 +1,54 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Tool from './Tool';
+import Tool from '../../components/Common/Tool';
 
-const QuestionsDetail = ({ id, name, major, title, content, subject, time, views, like, img, limit }) => {
+const QuestionsDetail = ({ id, name, major, title, content, subject, time, views, like, img, limit, likePost }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
     const containerRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const handleNext = () => {
-        if (currentIndex < images.length - 1) {
-            setCurrentIndex(currentIndex + 1);
-            containerRef.current.scrollBy({ left: containerRef.current.offsetWidth, behavior: 'smooth' });
-        }
+    const [isDragging, setIsDragging] = useState(false);
+    const [startPosition, setStartPosition] = useState(0);
+    const [dragDistance, setDragDistance] = useState(0);
+    const [dragStart, setDragStart] = useState(0);
+    const [dragOffset, setDragOffset] = useState(0);
+
+    const handleDragStart = (e) => {
+        setIsDragging(true);
+        setDragStart(e.clientX || e.touches[0].clientX);
     };
 
-    const handlePrevious = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1);
-            containerRef.current.scrollBy({ left: -containerRef.current.offsetWidth, behavior: 'smooth' });
-        }
+    const handleDragMove = (e) => {
+        if (!isDragging) return;
+        const currentPosition = e.clientX || e.touches[0].clientX;
+        const diff = dragStart - currentPosition;
+        setDragOffset(diff);
     };
+
+    const handleDragEnd = () => {
+        if (!isDragging) return;
+        setIsDragging(false);
+        
+        const threshold = containerRef.current.offsetWidth * 0.1; // 10% of container width
+        if (Math.abs(dragOffset) > threshold) {
+            if (dragOffset > 0 && currentIndex < images.length - 1) {
+                setCurrentIndex(currentIndex + 1);
+            } else if (dragOffset < 0 && currentIndex > 0) {
+                setCurrentIndex(currentIndex - 1);
+            }
+        }
+        setDragOffset(0);
+    };
+
+    useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollTo({
+                left: currentIndex * containerRef.current.offsetWidth,
+                behavior: 'smooth',
+            });
+        }
+    }, [currentIndex]);
 
     const getTimeElapsed = (createdAt) => {
         const now = new Date();
@@ -49,7 +77,9 @@ const QuestionsDetail = ({ id, name, major, title, content, subject, time, views
             });
         } else {
             // Remove notification data when disabled
-            removeNotificationData(id);
+            removeNotificationData({
+                postId: id
+            });
         }
     };
 
@@ -78,7 +108,9 @@ const QuestionsDetail = ({ id, name, major, title, content, subject, time, views
             });
         } else {
             // Remove notification data when disabled
-            removeSaveData(id);
+            removeSaveData({
+                postId: id
+            });
         }
     };
 
@@ -98,6 +130,27 @@ const QuestionsDetail = ({ id, name, major, title, content, subject, time, views
         // localStorage.removeItem(`notification_${postId}`);
     };
 
+    const [isLiked, setIsLiked] = useState(false);
+    const [likePostId, setLikePost] = useState(likePost);
+
+    useEffect(() => {
+        if (likePost.includes(id)) {
+            setIsLiked(true);
+            console.log('확인')
+        }
+    }, [id, likePost]);
+
+    const handleLike = () => {
+        setLikePost([...likePost, id]);
+        console.log("Post liked:", id);
+        // Additional logic to update likes on the backend or state could go here
+    };
+
+    const handleUnlike = () => {
+        setLikePost(likePost.filter(postId => postId !== id));
+        console.log("Post unliked:", id);
+    }
+
     return (
         <OutWrapper>
             <Wrapper>
@@ -112,38 +165,32 @@ const QuestionsDetail = ({ id, name, major, title, content, subject, time, views
                 <Content>{content}</Content>
 
                 {images.length > 0 && (
-                    <ImageWrapper>
-                        {/* Only show the left arrow if there are multiple images */}
-                        {images.length > 1 && (
-                            <ArrowButtonLeft onClick={handlePrevious} disabled={currentIndex === 0}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-left-fill" viewBox="0 0 16 16">
-                                    <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
-                                </svg>
-                            </ArrowButtonLeft>
-                        )}
-
+                    <ImageWrapper
+                        onMouseDown={handleDragStart}
+                        onMouseMove={handleDragMove}
+                        onMouseUp={handleDragEnd}
+                        onMouseLeave={handleDragEnd}
+                        onTouchStart={handleDragStart}
+                        onTouchMove={handleDragMove}
+                        onTouchEnd={handleDragEnd}
+                    >
                         <ImageContainer ref={containerRef}>
                             {images.map((image, index) => (
-                                <Image key={index} src={image} />
+                                <Image key={index} src={image} draggable="false" />
                             ))}
                         </ImageContainer>
-
-                        {/* Only show the right arrow if there are multiple images */}
-                        {images.length > 1 && (
-                            <ArrowButtonRight onClick={handleNext} disabled={currentIndex === images.length - 1}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-                                </svg>
-                            </ArrowButtonRight>
+                        {images.length >= 2 && (
+                            <DotContainer>
+                                {images.map((_, index) => (
+                                    <Dot 
+                                        key={index} 
+                                        isActive={index === currentIndex} 
+                                        onClick={() => setCurrentIndex(index)}
+                                    />
+                                ))}
+                            </DotContainer>
                         )}
                     </ImageWrapper>
-                )}
-
-                {/* Only show the index indicator if there are multiple images */}
-                {images.length > 1 && (
-                    <IndexIndicator>
-                        {currentIndex + 1} / {images.length}
-                    </IndexIndicator>
                 )}
 
                 <Tool 
@@ -151,6 +198,9 @@ const QuestionsDetail = ({ id, name, major, title, content, subject, time, views
                     report={false} 
                     onSaveToggle={handleSaveToggle}
                     onNotificationToggle={handleNotificationToggle}
+                    handleLike={handleLike}
+                    handleUnlike={handleUnlike}
+                    isLikedPost={isLiked}
                 />
             </Wrapper>
         </OutWrapper>
@@ -173,7 +223,11 @@ QuestionsDetail.propTypes = {
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string),
     ]),
-    limit: PropTypes.bool.isRequired
+    limit: PropTypes.bool.isRequired,
+    likePost: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+    ]),
 };
 
 QuestionsDetail.defaultProps = {
@@ -188,6 +242,7 @@ QuestionsDetail.defaultProps = {
     like: 0,
     img: null,
     limit: false,
+    likePost: [],
 };
 
 const Wrapper = styled.div`
@@ -242,13 +297,17 @@ const ImageWrapper = styled.div`
     margin-top: 20px;
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    cursor: grab;
+    user-select: none;
 `;
 
 const ImageContainer = styled.div`
     display: flex;
-    overflow-x: hidden;
     width: 100%;
+    overflow: hidden;
+    
 `;
 
 const Image = styled.img`
@@ -257,55 +316,21 @@ const Image = styled.img`
     object-fit: cover;
     object-position: center;
     border-radius: 8px;
-    transition: transform 0.2s;
+    flex-shrink: 0;
 `;
 
-const IndexIndicator = styled.div`
+const DotContainer = styled.div`
+    display: flex;
+    justify-content: center;
     margin-top: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    color: #434B60;
 `;
 
-const ArrowButtonLeft = styled.button`
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    border: none;
-    color: white;
-    padding: 10px;
+const Dot = styled.div`
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+    background-color: ${props => props.isActive ? '#007bff' : '#bbb'};
+    border-radius: 50%;
     cursor: pointer;
-    z-index: 1;
-    border-radius: 100%;
-
-    &:disabled {
-        background-color: rgba(0, 0, 0, 0.3);
-        cursor: not-allowed;
-    }
-`;
-
-const ArrowButtonRight = styled.button`
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    border: none;
-    color: white;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 1;
-    border-radius: 100%;
-
-    &:disabled {
-        background-color: rgba(0, 0, 0, 0.3);
-        cursor: not-allowed;
-    }
+    transition: background-color 0.3s ease;
 `;

@@ -5,6 +5,7 @@ import StartPage from './stories/pages/OnBoarding/StartPage'; // 스토리북 �
 import SignUpPage from './stories/pages/OnBoarding/SignUpPage'; // 스토리북 페이지 컴포넌트
 
 import HomePage from './stories/pages/Home/HomePage';
+import AlertPage from './stories/pages/Home/AlertPage';
 import QnAPage from './stories/pages/QnA/QnAPage'; 
 import TipsPage from './stories/pages/Tips/TipsPage'; 
 
@@ -18,6 +19,7 @@ import UnifiedBoard from './stories/pages/Board/UnifiedBoard';
 
 import MenuPage from './stories/pages/Menu/MenuPage';
 import MyPage from './stories/pages/Menu/Mypage';
+import Grades from './stories/pages/Menu/Grades';
 import MyBoard from './stories/pages/Menu/MyBoard';
 import Bookmarks from './stories/pages/Menu/Bookmarks';
 import History from './stories/pages/Menu/History';
@@ -33,6 +35,7 @@ const App = () => {
                 <Route path="/signup" element={<SignUpPage />} />
                 
                 <Route path="/home" element={<HomePage />} />
+                <Route path="/alert" element={<AlertPage />} />
                 <Route path="/qna" element={<QnAPage />} />
                 <Route path="/qna/:id" element={<QnADetailPage />} />
                 <Route path="/qna/post" element={<PostQuestionPage />} />
@@ -46,6 +49,7 @@ const App = () => {
 
                 <Route path="/menu" element={<MenuPage />} />
                 <Route path="/mypage" element={<MyPage />} />
+                <Route path="/grades" element={<Grades />} />
                 <Route path="/myboard" element={<MyBoard />} />
                 <Route path="/bookmarks" element={<Bookmarks />} />
                 <Route path="/history" element={<History />} />

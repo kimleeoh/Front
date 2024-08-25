@@ -56,7 +56,7 @@ const TopLayout = styled.div`
   top: 0;
   width: 380px;
   background: rgba(240, 242, 244, 0.30);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,12 +85,10 @@ const LeftContent = styled.div`
 
   &:hover {
     background-color: rgba(172, 178, 187, 0.3);
-    transition: all 0.3s ease;
   }
     &:active {
-    transition: all 0.3s ease;
     scale: 0.95;
-}
+  }
 `;
 
 const RightContent = styled.div`

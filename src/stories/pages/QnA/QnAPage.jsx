@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
-import Questions from '../../components/Questions';
-import CheckBar from '../../components/CheckBar';
-import FixedIcon from '../../components/FixedIcon';
+import Questions from '../../components/Common/Questions';
+import CheckBar from '../../components/Common/CheckBar';
+import FixedIcon from '../../components/Common/FixedIcon';
 
 const initialQuestionData = [
     {

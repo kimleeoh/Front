@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate  } from 'react-router-dom';
 import styled from "styled-components";
-import BoardTitle from "../../components/BoardTitle";
-import SubjectList from "../../components/SubjectList";
+import BoardTitle from "../../components/Common/BoardTitle";
+import SubjectList from "../../components/Common/SubjectList";
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 
@@ -34,7 +34,6 @@ const BoardHome = () => {
     const [subjectData2, setSubjectData2] = useState([]);
 
     useEffect(() => {
-        //로컬 스토리지에서 질문 데이터 로드 또는 초기화
         localStorage.removeItem('subjectData');
         localStorage.removeItem('bookmarkData');
         localStorage.removeItem('subjectData2');
@@ -67,6 +66,12 @@ const BoardHome = () => {
 
     const navigate = useNavigate();
 
+    const handleSubjectClick = (subject) => {
+        // 과목 클릭 시 부모 컴포넌트에서 처리
+        console.log("Subject clicked:", subject);
+        navigate(`/board/${subject}`);
+    };
+
     const handleEditClick = (listType, title) => {
         let listData = [];
         switch (listType) {
@@ -85,6 +90,7 @@ const BoardHome = () => {
             default:
                 listData = [];
         }
+    
 
         navigate('/edit-board', {state: {listData, title}});
     };
@@ -97,7 +103,10 @@ const BoardHome = () => {
                 <ScrollableSubjectList>
                     {subjectData.map((subject) => (
                         <SubjectList
+                            key={subject.subject}
                             subject={subject.subject}
+                            onClick={handleSubjectClick}
+                            actions={[]} // 필요 시 액션 추가
                         />
                     ))}
                 </ScrollableSubjectList>
@@ -108,7 +117,10 @@ const BoardHome = () => {
                 <ScrollableSubjectList>
                     {bookmarkData.map((bookmark) => (
                         <SubjectList
+                            key={bookmark.bookmark}
                             subject={bookmark.bookmark}
+                            onClick={handleSubjectClick}
+                            actions={[]} // 필요 시 액션 추가
                         />
                     ))}
                 </ScrollableSubjectList>
@@ -119,7 +131,10 @@ const BoardHome = () => {
                 <ScrollableSubjectList>
                     {subjectData2.map((subject) => (
                         <SubjectList
+                            key={subject.subject}
                             subject={subject.subject}
+                            onClick={handleSubjectClick}
+                            actions={[]} // 필요 시 액션 추가
                         />
                     ))}
                 </ScrollableSubjectList>
@@ -142,7 +157,7 @@ const Wrapper = styled.div`
     background-color: #f0f2f4; /* 전체 배경 색상 설정 */
     min-height: 100vh; /* 페이지가 전체 화면을 채우도록 설정 */
     position: relative; /* 헤더를 페이지 상단에 고정하기 위해 필요 */
-    padding-top: 10px; /* 헤더 공간만큼 패딩 추가 */
+    padding-top: 30px; /* 헤더 공간만큼 패딩 추가 */
     padding-bottom: 100px; /* 하단 패딩 추가 */
 `;
 
@@ -174,7 +189,7 @@ const SubjectWrapper = styled.div`
     background-color: white;
     border-radius: 24px;
 
-    margin-top: 10px;
+    margin-bottom: 10px;
 `
 const ScrollableSubjectList = styled.div`
     width: 100%;

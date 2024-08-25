@@ -1,11 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; // Link 컴포넌트를 import합니다.
+import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import MenuList from './MenuList';
+import Modal from '../../components/Common/Modal';
+import Button from '../../components/Button';
 
 const MenuPage = () => {
+    const modalRef = useRef();
+
+    const handleLogoutClick = () => {
+        modalRef.current.open();
+    };
+
+    const confirmLogout = () => {
+        // 로그아웃 로직을 여기에 추가합니다.
+        modalRef.current.close();
+        // 예를 들어, 로그아웃 API를 호출하거나, 로그인 페이지로 이동
+    };
+
     return (
         <Wrapper>
             <Header>
@@ -37,12 +51,20 @@ const MenuPage = () => {
                 <MenuList to="/terms"> 이용약관 </MenuList>
                 <MenuList to="/privacy"> 개인정보 처리방침 </MenuList>
                 <MenuList to="/policies"> 운영정책 </MenuList>
-                <MenuList to="/logout"> 로그아웃 </MenuList>
+                <MenuList onClick={handleLogoutClick}> 로그아웃 </MenuList>
             </Section>
 
             <FixedBottomContainer>
                 <NavBar state='menu' />
             </FixedBottomContainer>
+
+            <Modal ref={modalRef} width='300px'>
+                <span style={{fontSize: '16px'}}>정말 로그아웃 하시겠습니까?</span>
+                <ButtonWrapper>
+                    <Button onClick={confirmLogout} label={'예'} backgroundColor={'#FF3C3C'} hoverBackgroundColor={'red'} width={'130px'}/>
+                    <Button onClick={() => modalRef.current.close()} label={'아니요'} backgroundColor={'#434B60'} hoverBackgroundColor={'#ACB2BB'} width={'130px'}/>
+                </ButtonWrapper>
+            </Modal>
         </Wrapper>
     );
 };
@@ -135,9 +157,16 @@ const Title = styled.div`
     justify-content: center;
     flex-shrink: 0;
     color: #434B60;
-    font-family: Inter;
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+`;
+
+const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    gap: 10px;
+
 `;

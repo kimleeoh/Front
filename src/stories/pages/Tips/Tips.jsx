@@ -1,43 +1,47 @@
-import React from 'react';
+import react from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Questions = ({ id, title, content, subject, time, views, like, img, limit }) => {
+const Tips = ({ id, name, major, title, content, time, views, like, img, point }) => {
     const getTimeElapsed = (createdAt) => {
         const now = new Date();
         const createdTime = new Date(createdAt);
         const diff = now.getTime() - createdTime.getTime();
-    
+
         const minutes = Math.floor(diff / (1000 * 60));
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
+        const months = Math.floor(days / 30); // Rough estimate of 30 days per month
+        const years = Math.floor(days / 365); // Rough estimate of 365 days per year
+
         if (minutes < 1) return '방금 전';
         if (minutes < 60) return `${minutes}분 전`;
         if (hours < 24) return `${hours}시간 전`;
-        return `${days}일 전`;
+        if (days < 30) return `${days}일 전`;
+        if (months < 12) return `${months}개월 전`;
+        return `${years}년 전`;
     };
 
     return (
         <OutWrapper>
-            <StyledLink to={`/qna/${id}`}>
+            <StyledLink to={`/tips/${id}`}>
                 <Wrapper>
                     <ContentWrapper>
-                        <TextWrapper>
+                        <TextWrapper hasImage={Boolean(img)}>
                             <Title>{title}</Title>
                             <Content>{content}</Content>
                         </TextWrapper>
 
                         {img && <ImageContainer>
-                            <Image src={img}/>
+                            <Image src={img} />
                         </ImageContainer>}
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {subject} | 조회수 {views} </span>
+                        <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {major} {name} | 조회수 {views} </span>
                         <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold'}}> {like} </span>
-                        <span style={{marginLeft: 'auto', color: '#737373'}}> {limit === 'true' ? '등급 제한: A' : ''} </span>
+                        <span style={{marginLeft: 'auto', color: '#737373'}}> {point}P </span>
                     </MetaContainer>
                 </Wrapper>
             </StyledLink>
@@ -45,29 +49,30 @@ const Questions = ({ id, title, content, subject, time, views, like, img, limit 
     );
 }
 
-export default Questions;
+export default Tips;
 
-Questions.propTypes = {
-    id: PropTypes.number.isRequired, // id prop을 추가합니다.
+Tips.propTypes = {
+    name: PropTypes.string.isRequired,
+    major: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-    subject: PropTypes.string.isRequired,
     time: PropTypes.string.isRequired,
     views: PropTypes.number.isRequired,
     like: PropTypes.number.isRequired,
     img: PropTypes.string,
-    limit: PropTypes.string.isRequired
+    point: PropTypes.number.isRequired
 };
 
-Questions.defaultProps = {
+Tips.defaultProps = {
+    name: '이름',
+    major: '전공',
     title: '제목',
     content: '내용',
-    subject: '과목',
     time: 0,
     views: 0,
     like: 0,
     img: null,
-    limit: 'false'
+    point: 100
 };
 
 const StyledLink = styled(Link)`
@@ -82,14 +87,13 @@ const Wrapper = styled.div`
     width: 380px;
     height: 140px;
     padding: 20px 10px;
-    border-radius: 10px;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.2s ease;
     &:active {
         background-color: #F1F7Fd;
         transition: all 0.2s ease;
         scale: 0.98;
-        border-radius: 0px;
     }
 `;
 
@@ -99,7 +103,7 @@ const ContentWrapper = styled.div`
 
 const TextWrapper = styled.div`
     align-items: flex-start;
-    max-width: 290px;
+    max-width: ${(props) => (props.hasImage ? '290px' : '380px')};
 `
 
 const Title = styled.div`
@@ -114,13 +118,12 @@ const Title = styled.div`
 
 const Content = styled.div`
     font-size: 16px;
-    font-weight: regular;
     margin-bottom: 10px;
 
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-
+    
     text-overflow: ellipsis;
     overflow: hidden;
 `;
@@ -132,9 +135,8 @@ const Subject = styled.div`
 
 const MetaContainer = styled.div`
     display: flex;
-    align-items: center;
     margin-top: auto;
-
+    
     font-size: 10px;
 `
 

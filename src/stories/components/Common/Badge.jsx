@@ -29,15 +29,15 @@ const StyledBadge = styled.div`
     padding: 5px 10px;
     margin: 5px;
     border-radius: 20px;
-    border: 1px solid #ACB2BB;
-    background-color: ${props => (props.active ? '#ACB2BB' : 'transparent')};
-    color: ${props => (props.active ? 'white' : '#ACB2BB')};
-    font-size: 16px;
+    border: 1px solid #434B60;
+    background-color: ${props => (props.active ? '#434B60' : 'transparent')};
+    color: ${props => (props.active ? 'white' : '#434B60')};
+    font-size: 15px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition: all 0.3s ease;
 
-    &:hover {
-        background-color: #ACB2BB;
+    &:active {
+        background-color: #434B60;
         color: white;
     }
 `;
