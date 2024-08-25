@@ -83,14 +83,13 @@ const Wrapper = styled.div`
     width: 380px;
     height: 140px;
     padding: 20px 10px;
-    border-radius: 10px;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.2s ease;
     &:active {
         background-color: #F1F7Fd;
         transition: all 0.2s ease;
         scale: 0.98;
-        border-radius: 0px;
     }
 `;
 

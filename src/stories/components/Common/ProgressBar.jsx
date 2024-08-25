@@ -7,25 +7,25 @@ const ProgressBarContainer = styled.div`
   display: flex;
   background-color: #d9d9d9;
   border-radius: 5px;
-  width: 100%;
+  width: ${props => props.width};  // 기본값을 props로 전달
   height: 10px;
   overflow: hidden;
 `;
 
 // 진행 상태를 표시하는 부분
 const ProgressFill = styled.div`
-  background-color: ${props => props.color || '#495EF6'};
+  background-color: ${props => props.color || '#3182F7'};
   height: 100%;
   width: ${props => props.progress}%;
   transition: width 0.5s ease-in-out;
 `;
 
-const ProgressBar = ({ totalSteps, currentStep, color }) => {
+const ProgressBar = ({ totalSteps, currentStep, color, width }) => {
   const progress = (currentStep / totalSteps) * 100;
 
   return (
-    <ProgressBarContainer>
-      <ProgressFill color={color} progress={progress} />
+    <ProgressBarContainer width={width}>
+      <ProgressFill color={color} progress={progress}/>
     </ProgressBarContainer>
   );
 };
@@ -34,10 +34,12 @@ ProgressBar.propTypes = {
   totalSteps: PropTypes.number.isRequired,
   currentStep: PropTypes.number.isRequired,
   color: PropTypes.string,
+  width: PropTypes.string,  // width의 propTypes 추가
 };
 
 ProgressBar.defaultProps = {
-  color: '#495EF6',
+  color: '#3182F7',
+  width: '100%',  // 기본값을 설정
 };
 
 export default ProgressBar;
