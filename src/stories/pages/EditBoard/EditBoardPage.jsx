@@ -38,7 +38,7 @@ const EditBoardPage = () => {
     return (
         <Wrapper>
             <Header showIcon={false} text="게시판 편집" backButton={true} searchButton={false} />
-            <BoardTitle text={title} edit={false} />
+            <BoardTitle text={title}/>
             <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="subjectlist">
                 {(provided) => (

@@ -90,6 +90,7 @@ const dropdownAnimation = keyframes`
 `;
 
 const DropdownContainer = styled.div`
+    margin-top: 2px;
     position: absolute;
     width: 100%;
     border-radius: 5px;

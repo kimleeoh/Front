@@ -12,6 +12,7 @@ const Grades = () => {
     const [subjectGrades, setSubjectGrades] = useState({});
     const [currentSubject, setCurrentSubject] = useState("");
     const modalRef = useRef(null);
+    const verifyModalRef = useRef(null);
 
     useEffect(() => {
         // 로컬 스토리지에서 과목 성적 불러오기
@@ -36,10 +37,16 @@ const Grades = () => {
         }
     };
 
+    const handleVerifyClick = () => {
+        if (verifyModalRef.current) {
+            verifyModalRef.current.open();
+        }
+    };
+
     return (
         <Wrapper>
-            <Header text="내 성적" searchButton={false}>내 성적</Header>
-            <BoardTitle text="2024학년도 1학기" />
+            <Header text="내 성적" searchButton={false}><Verify onClick={handleVerifyClick}>인증</Verify></Header>
+            <BoardTitle text="2024학년도 1학기" type={'add'}/>
             <SubjectWrapper>
                 <ScrollableSubjectList>
                     <SubjectList
@@ -57,7 +64,7 @@ const Grades = () => {
                     {/* ...다른 과목들도 추가 */}
                 </ScrollableSubjectList>
             </SubjectWrapper>
-            <BoardTitle text="2024학년도 2학기" />
+            <BoardTitle text="2024학년도 2학기" type={'add'}/>
             <SubjectWrapper>
                 <ScrollableSubjectList>
                     <SubjectList
@@ -107,6 +114,20 @@ const Grades = () => {
                     style={{ marginTop: '20px' }}
                 />
             </Modal>
+
+            <Modal ref={verifyModalRef} height={'200px'} background={'#f0f2f4'}>
+                <h2>성적 인증하기</h2>
+                <p>성적을 인증하시겠습니까?</p>
+                <Button
+                    label="인증하기"
+                    onClick={handleVerifyClick}
+                    width="100%"
+                    color="#fff"
+                    backgroundColor="#007bff"
+                    hoverBackgroundColor="#0056b3"
+                    style={{ marginTop: '20px' }}
+                />
+            </Modal>
         </Wrapper>
     );
 }
@@ -148,4 +169,31 @@ const EditSubject = styled.div`
     align-items: center;
     width: 360px;
     padding: 10px;
+`;
+
+const Verify = styled.button`
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba(172, 178, 187, 0.3);
+  }
+
+  &:active {
+    scale: 0.95;
+  }
+
+    
+  font-size: 16px;
+  font-weight: bold;
+  color: #434b60;
+  text-align: center;
 `;

@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-const Modal = forwardRef(({ children, width = '400px', height = '300px' }, ref) => {
+const Modal = forwardRef(({ children, width = '400px', height = '300px', background = 'white' }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
 
     useImperativeHandle(ref, () => ({
@@ -19,7 +19,7 @@ const Modal = forwardRef(({ children, width = '400px', height = '300px' }, ref) 
 
     return (
         <ModalOverlay onClick={handleOverlayClick}>
-            <ModalContent onClick={handleContentClick} width={width} height={height}>
+            <ModalContent onClick={handleContentClick} width={width} height={height} background={background}>
                 {children}
             </ModalContent>
         </ModalOverlay>
@@ -54,8 +54,8 @@ const modalFadeIn = keyframes`
 `;
 
 const ModalContent = styled.div`
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(2px);
+    background: ${props => props.background};
+    backdrop-filter: blur(4px);
     padding: 20px;
     border-radius: 10px;
     text-align: center;

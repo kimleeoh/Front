@@ -53,7 +53,7 @@ const MyPage = () => {
                 <BadgeBox />
                 <BadgeBox />
             </BadgeContainer>
-            <BoardTitle text="성적"></BoardTitle>
+            <BoardTitle text="성적"/>
             <SubjectWrapper>
                 <ScrollableSubjectList>
                     <SubjectList
