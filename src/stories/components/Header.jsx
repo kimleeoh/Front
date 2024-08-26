@@ -6,6 +6,15 @@ import { useNavigate } from 'react-router-dom';
 const Header = forwardRef(({ showIcon, text, backButton, searchButton, children }, ref) => {
   const navigate = useNavigate();
 
+  const handleBackClick = (e) => {
+    e.preventDefault();
+    if (onClick) {
+      onClick();
+    } else {
+      navigate(-1);
+    }
+  };
+
   return (
     <TopLayout>
       <Head>
@@ -52,6 +61,7 @@ Header.defaultProps = {
   showIcon: false,
   text: 'Q&A',
   backButton: true,
+  searchButton: true,
   searchButton: true,
 };
 
