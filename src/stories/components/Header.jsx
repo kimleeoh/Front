@@ -3,8 +3,17 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const Header = ({ showIcon, text, backButton, searchButton }) => {
+const Header = ({ showIcon, text, backButton, searchButton, onClick }) => {
   const navigate = useNavigate();
+
+  const handleBackClick = (e) => {
+    e.preventDefault();
+    if (onClick) {
+      onClick();
+    } else {
+      navigate(-1);
+    }
+  };
 
   return (
     <TopLayout>
@@ -12,7 +21,7 @@ const Header = ({ showIcon, text, backButton, searchButton }) => {
         <LeftContent>
           <IconButton
             src="/Icons/Icon_arrow.svg"
-            onClick={() => navigate(-1)}
+            onClick={handleBackClick}
           />
         </LeftContent>
       )}
@@ -40,13 +49,14 @@ Header.propTypes = {
   text: PropTypes.string.isRequired,
   backButton: PropTypes.bool.isRequired,
   searchButton: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 Header.defaultProps = {
   showIcon: false,
   text: 'Q&A',
   backButton: true,
-  searchButton: true
+  searchButton: true,
 };
 
 export default Header;

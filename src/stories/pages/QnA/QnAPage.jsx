@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import BaseAxios from '../../../axioses/BaseAxios';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
@@ -46,6 +47,10 @@ const initialQuestionData = [
 const QnAPage = () => {
     const [questionData, setQuestionData] = useState([]);
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
+
+    BaseAxios.get('/api/qna').then((result)=>{
+        console.log(result.data)
+    })
 
     useEffect(() => {
         //로컬 스토리지에서 질문 데이터 로드 또는 초기화
