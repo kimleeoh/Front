@@ -1,19 +1,20 @@
 // components/Logo.js
 import React, { useState, useCallback } from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import PropTypes from 'prop-types';
 
 // 애니메이션 정의
 const jellyAnimation = keyframes`
     0% {
         transform: scaleX(1) scaleY(1);
     }
-    25% {
+    12% {
         transform: scaleX(1.05) scaleY(0.95); // 가로로 늘어나기
     }
-    50% {
+    25% {
         transform: scaleX(1) scaleY(1); // 원래 상태로 돌아오기
     }
-    75% {
+    37% {
         transform: scaleX(0.9) scaleY(1.1); // 세로로 늘어나기
     }
     100% {
@@ -22,7 +23,7 @@ const jellyAnimation = keyframes`
 `;
 
 // Logo 컴포넌트
-const Logo = () => {
+const Logo = ({ width, theme }) => {
     const [animationKey, setAnimationKey] = useState(0);
 
     const handleClick = useCallback(() => {
@@ -30,26 +31,49 @@ const Logo = () => {
         setAnimationKey(prevKey => prevKey + 1);
     }, []);
 
+    // 테마에 따른 로고 이미지 경로 설정
+    const getLogoSrc = () => {
+        switch (theme) {
+            case 'darkgray':
+                return '/Logo_darkgray.svg';
+            case 'main':
+            default:
+                return '/Logo_main.svg';
+        }
+    };
+
     return (
-        <LogoWrapper key={animationKey} onClick={handleClick}>
-            <img src="/Logo_main.svg" alt="Logo" />
+        <LogoWrapper key={animationKey} width={width} onClick={handleClick}>
+            <img src={getLogoSrc()} alt="Logo" />
         </LogoWrapper>
     );
+};
+
+// PropTypes 정의
+Logo.propTypes = {
+    width: PropTypes.string,   // 로고의 넓이를 설정할 수 있는 prop
+    theme: PropTypes.oneOf(['main', 'darkgray'])  // 로고의 테마를 설정할 수 있는 선택형 prop
+};
+
+// 기본 prop 값
+Logo.defaultProps = {
+    width: '334px',
+    theme: 'main'
 };
 
 export default Logo;
 
 // 스타일 정의
 const LogoWrapper = styled.div`
-    width: 334px;
-    height: 100px;
+    width: ${({ width }) => width};  // width prop에 따라 넓이 설정
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: transform 0.3s ease;
 
-    animation: ${jellyAnimation} 0.25s ease forwards;
+    animation: ${jellyAnimation} 0.5s ease forwards;
 
     img {
         max-width: 100%;

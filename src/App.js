@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './index.css';
-import { BrowserRouter as Router, Routes, Route, useLocation, Switch  } from 'react-router-dom';
-import StartPage from './stories/pages/OnBoarding/StartPage'; // 스토리북 페이지 컴포넌트
-import SignUpPage from './stories/pages/OnBoarding/SignUpPage'; // 스토리북 페이지 컴포넌트
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import StartPage from './stories/pages/OnBoarding/StartPage'; 
+import SignUpPage from './stories/pages/OnBoarding/SignUpPage'; 
 
 import HomePage from './stories/pages/Home/HomePage';
 import AlertPage from './stories/pages/Home/AlertPage';
@@ -26,8 +26,30 @@ import History from './stories/pages/Menu/History';
 import TermsOfServicePage from './stories/pages/Menu/TermsOfServicePage';
 
 import Error from './stories/pages/Error';
+import Loading from './stories/pages/Loading';
 
 const App = () => {
+    const [loading, setLoading] = React.useState(true);
+
+    const mainApi = async () => {
+        try {
+            // 여기에 API 호출 코드를 작성합니다.
+            
+        } catch (error) {
+            window.alert('API 호출에 실패했습니다.');
+        } finally {
+            setLoading(false); // API 호출이 끝나면 로딩 상태를 false로 설정
+        }
+    };
+
+    useEffect(() => {
+        mainApi();
+    }, []);
+
+    if (loading) {
+        return <Loading />; // 로딩 중일 때 Loading 컴포넌트를 표시
+    }
+
     return (
         <Router>
             <Routes>
@@ -35,7 +57,7 @@ const App = () => {
                 <Route path="/signup" element={<SignUpPage />} />
                 
                 <Route path="/home" element={<HomePage />} />
-                <Route path="/alert" element={<AlertPage />} />
+                <Route path="/notification" element={<AlertPage />} />
                 <Route path="/qna" element={<QnAPage />} />
                 <Route path="/qna/:id" element={<QnADetailPage />} />
                 <Route path="/qna/post" element={<PostQuestionPage />} />

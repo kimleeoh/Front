@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
-import Carousel from "../../components/Common/Carousel";
+import Logo from "../OnBoarding/Logo";
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -11,12 +11,15 @@ const HomePage = () => {
     return (
         <Wrapper>
             <Header>
-                <Logo src="/Logo_darkgray.svg" alt="Logo" />
-                <NotificationIcon
-                    src="/Icons/Bellnactive.svg"
-                    alt="Notification"
-                    onClick={() => navigate('/alert')}
-                />
+                <div style={{marginBottom: '10px'}}>
+                <Logo width="150px" theme="darkgray" /> </div>
+                <PointButton onClick={() => navigate('/point')}>내 포인트: 3500P</PointButton>
+                <NotificationButton onClick={() => navigate('/notification')}>
+                    <img
+                        src="/Icons/Bellnactive.svg"
+                        alt="Notification"
+                    />
+                </NotificationButton>
             </Header>
             <Content>
                 {/* 여기에 홈 페이지의 메인 콘텐츠를 추가합니다 */}
@@ -49,7 +52,7 @@ const Header = styled.div`
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     background: rgba(240, 242, 244, 0.30);
     backdrop-filter: blur(5px);
     position: fixed;
@@ -57,13 +60,46 @@ const Header = styled.div`
     top: 0;
 `;
 
-const Logo = styled.img`
-    width: 120px;
+const PointButton = styled.button`
+    display: flex;
+    width: 110px;
+    height: 40px;
+    white-space: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 11px;
+    color: #434B60;
+    text-align: center;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-decoration-line: underline;
     cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:active {
+        transform: scale(0.95);
+        background: rgba(0, 0, 0, 0.1);
+    }
 `;
 
-const NotificationIcon = styled.img`
-    width: 30px;
+const NotificationButton = styled.button`
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+
+    &:active {
+        transform: scale(0.95);
+        background: rgba(0, 0, 0, 0.1);
+    }
     cursor: pointer;
 `;
 
