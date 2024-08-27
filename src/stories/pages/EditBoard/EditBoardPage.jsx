@@ -68,7 +68,11 @@ const EditBoardPage = () => {
 
     return (
         <Wrapper>
-            <Header showIcon={false} text="게시판 편집" backButton={true} searchButton={false} onClick={handleBackClick}/>
+            <Header showIcon={false} text="게시판 편집" backButton={true} searchButton={false} onClick={handleBackClick}>
+                {saveChanges &&(
+                <Save onClick={handleSave}>저장</Save>
+                )}
+            </Header>
             <BoardTitle text={title} edit={false} />
             <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="subjectlist">
@@ -109,18 +113,6 @@ const EditBoardPage = () => {
                 hoverBackgroundColor={'#E5E9F2'}
                 style={{ marginTop: '20px' }}
             />
-            {saveChanges && (
-                <Button 
-                    label={'저장'} 
-                    width={'23%'}
-                    color={'#ACB2BB'}
-                    backgroundColor={'#F1F2F4'}
-                    hoverColor={'#ACB2BB'}
-                    hoverBackgroundColor={'#E5E9F2'}
-                    onClick={handleSave}
-                    style={{ marginTop: '10px' }}
-                />
-            )}
 
             <Modal ref={modalRef} width='300px'>
                 <span style={{fontSize: '16px'}}>저장하시겠습니까?</span>
@@ -160,4 +152,31 @@ const ButtonWrapper = styled.div`
     margin-top: 20px;
     gap: 10px;
 
+`;
+
+const Save = styled.button`
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba(172, 178, 187, 0.3);
+  }
+
+  &:active {
+    scale: 0.95;
+  }
+
+    
+  font-size: 16px;
+  font-weight: bold;
+  color: #434b60;
+  text-align: center;
 `;

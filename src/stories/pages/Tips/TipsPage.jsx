@@ -5,7 +5,7 @@ import Tips from './Tips';
 import FixedIcon from '../../components/Common/FixedIcon';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
-import BadgeFilter from '../../components/Common/BadgeFilter';
+import ChipFilter from '../../components/Common/ChipFilter';
 
 const initialTipsData = [
     {
@@ -67,11 +67,11 @@ const TipsPage = () => {
         }
     }, []);
 
-    const handleFilterChange = (activeBadges) => {
-        if (activeBadges.length === 0) {
+    const handleFilterChange = (activeChips) => {
+        if (activeChips.length === 0) {
             setFilteredTips(TipsData); // Show all tips if no filter is selected
         } else {
-            const filtered = TipsData.filter(tip => activeBadges.includes(tip.filter));
+            const filtered = TipsData.filter(tip => activeChips.includes(tip.filter));
             setFilteredTips(filtered);
         }
     };
@@ -79,7 +79,7 @@ const TipsPage = () => {
     return (
         <Wrapper>
             <Header showIcon={false} text="Tips" backButton={false} searchButton={true}/>
-            <BadgeFilter onFilterChange={handleFilterChange} />
+            <ChipFilter onFilterChange={handleFilterChange} />
             {filteredTips.map((tip) => (
                 <Tips
                     key={tip.id}

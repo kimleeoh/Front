@@ -5,7 +5,7 @@ import Header from '../../components/Header';
 import Questions from '../../components/Common/Questions';
 import CheckBar from '../../components/Common/CheckBar';
 import TabNavigation from '../../components/Common/TabNavigation';
-import BadgeFilter from '../../components/Common/BadgeFilter';
+import ChipFilter from '../../components/Common/ChipFilter';
 import Tips from '../Tips/Tips';
 
 const initialQuestionData = [
@@ -47,11 +47,11 @@ const History = () => {
         ? questionData.filter(question => question.limit === 'true')
         : questionData;
 
-    const handleFilterChange = (activeBadges) => {
-        if (activeBadges.length === 0) {
+    const handleFilterChange = (activeChips) => {
+        if (activeChips.length === 0) {
             setFilteredTips(tipsData);
         } else {
-            const filtered = tipsData.filter(tip => activeBadges.includes(tip.filter));
+            const filtered = tipsData.filter(tip => activeChips.includes(tip.filter));
             setFilteredTips(filtered);
         }
     };
@@ -107,7 +107,7 @@ const History = () => {
             )}
             {activeTab === 'Tips' && (
                 <>
-                    <BadgeFilter onFilterChange={handleFilterChange} />
+                    <ChipFilter onFilterChange={handleFilterChange} />
                     {filteredTips
                         .filter(tip => tip.subject === subject)
                         .map((tip) => (
