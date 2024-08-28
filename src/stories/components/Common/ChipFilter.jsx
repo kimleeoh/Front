@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Badge from './Badge';
+import Chip from './Chip';
 import PropTypes from 'prop-types';
 
 const Container = styled.div`
@@ -14,16 +14,16 @@ const Container = styled.div`
     justify-content: flex-start;
 `;
 
-const BadgeFilter = ({ onFilterChange }) => {
-    const [activeBadges, setActiveBadges] = useState([]);
+const ChipFilter = ({ onFilterChange }) => {
+    const [activeChips, setActiveChips] = useState([]);
 
-    const handleBadgeClick = (label) => {
-        const updatedBadges = activeBadges.includes(label)
-            ? activeBadges.filter(badge => badge !== label)
-            : [...activeBadges, label];
+    const handleChipClick = (label) => {
+        const updatedChips = activeChips.includes(label)
+            ? activeChips.filter(badge => badge !== label)
+            : [...activeChips, label];
 
-        setActiveBadges(updatedBadges);
-        onFilterChange(updatedBadges); // Pass the updated badges to the parent component
+        setActiveChips(updatedChips);
+        onFilterChange(updatedChips); // Pass the updated badges to the parent component
     };
 
     const badges = ['필기공유', '시험정보', '수업꿀팁'];
@@ -31,19 +31,19 @@ const BadgeFilter = ({ onFilterChange }) => {
     return (
         <Container>
             {badges.map(badge => (
-                <Badge
+                <Chip
                     key={badge}
                     label={badge}
-                    active={activeBadges.includes(badge)}
-                    onClick={() => handleBadgeClick(badge)}
+                    active={activeChips.includes(badge)}
+                    onClick={() => handleChipClick(badge)}
                 />
             ))}
         </Container>
     );
 };
 
-BadgeFilter.propTypes = {
+ChipFilter.propTypes = {
     onFilterChange: PropTypes.func.isRequired,
 };
 
-export default BadgeFilter;
+export default ChipFilter;

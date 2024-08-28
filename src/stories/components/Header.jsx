@@ -21,7 +21,7 @@ const Header = forwardRef(({ showIcon, text, backButton, searchButton, onClick, 
         {backButton && (
           <LeftContent>
             <IconButton
-              onClick={(handleBackClick)}
+              onClick={handleBackClick}
             >
               <img src="/Icons/Icon_arrow.svg" alt="Back" />
             </IconButton>

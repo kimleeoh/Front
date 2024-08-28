@@ -54,10 +54,12 @@ const PickerContainer = styled.div`
 
 const PickerButton = styled.button`
     width: 100%;
-    padding: 10px;
+    height: 40px;
+    padding: 5px 10px;
     font-size: 16px;
+    color: #434B60;
     border: none;
-    border-radius: 15px;
+    border-radius: 16px;
     background-color: #f1f1f1;
     cursor: pointer;
     text-align: left;
@@ -93,7 +95,7 @@ const DropdownContainer = styled.div`
     margin-top: 2px;
     position: absolute;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 16px;
     overflow: hidden;
     background-color: white;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
@@ -134,7 +136,7 @@ const DropdownItem = styled.div`
     cursor: pointer;
     border-bottom: 1px solid #f1f1f1;
     transition: all 0.3s ease;
-    color: ${({ isSelected }) => (isSelected ? '#3182F7' : 'black')};  // 선택된 아이템 강조
+    color: ${({ isSelected }) => (isSelected ? '#3182F7' : '#434b60')};  // 선택된 아이템 강조
 
     &:hover {
         background-color: #f1f1f1;

@@ -11,7 +11,7 @@ import ImageUploader from '../../components/Common/ImageUploader2';
 import PointInput from '../PostQuestion/PointInput';
 import CheckBar from '../../components/Common/CheckBar';
 import Button from '../../components/Button'
-import BadgeFilter from '../../components/Common/BadgeFilter';
+import ChipFilter from '../../components/Common/ChipFilter';
 
 const initialUserData = [
     {
@@ -131,7 +131,7 @@ const PostQuestionPage = () => {
                 onChange={(value) => handleInputChange('board', value)}
             />
             {formValues.board.length === 0 && <HelperText>게시판 선택이 필요합니다.</HelperText>}
-            <BadgeFilter onFilterChange={(value) => handleInputChange('tags', value)} />
+            <ChipFilter onFilterChange={(value) => handleInputChange('tags', value)} />
             {formValues.tags.length === 0 && <HelperText>필터 선택이 필요합니다.</HelperText>}
             <TextArea 
                 width={'380px'} 
