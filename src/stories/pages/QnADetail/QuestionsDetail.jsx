@@ -2,68 +2,56 @@ import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Tool from '../../components/Common/Tool';
+import CarouselTemp from '../../components/Common/CarouselTemp';
+import getTimeElapsed from '../../components/Common/getTimeElapsed';
+import CategoryPath from '../../components/Common/CategoryPath';
 
-const QuestionsDetail = ({ id, name, major, title, content, subject, time, views, like, img, limit, likePost }) => {
+const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views, like, img, limit, likePost }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
-    const containerRef = useRef(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    // const containerRef = useRef(null);
+    // const [currentIndex, setCurrentIndex] = useState(0);
 
-    const [isDragging, setIsDragging] = useState(false);
-    const [startPosition, setStartPosition] = useState(0);
-    const [dragDistance, setDragDistance] = useState(0);
-    const [dragStart, setDragStart] = useState(0);
-    const [dragOffset, setDragOffset] = useState(0);
+    // const [isDragging, setIsDragging] = useState(false);
+    // const [startPosition, setStartPosition] = useState(0);
+    // const [dragDistance, setDragDistance] = useState(0);
+    // const [dragStart, setDragStart] = useState(0);
+    // const [dragOffset, setDragOffset] = useState(0);
 
-    const handleDragStart = (e) => {
-        setIsDragging(true);
-        setDragStart(e.clientX || e.touches[0].clientX);
-    };
+    // const handleDragStart = (e) => {
+    //     setIsDragging(true);
+    //     setDragStart(e.clientX || e.touches[0].clientX);
+    // };
 
-    const handleDragMove = (e) => {
-        if (!isDragging) return;
-        const currentPosition = e.clientX || e.touches[0].clientX;
-        const diff = dragStart - currentPosition;
-        setDragOffset(diff);
-    };
+    // const handleDragMove = (e) => {
+    //     if (!isDragging) return;
+    //     const currentPosition = e.clientX || e.touches[0].clientX;
+    //     const diff = dragStart - currentPosition;
+    //     setDragOffset(diff);
+    // };
 
-    const handleDragEnd = () => {
-        if (!isDragging) return;
-        setIsDragging(false);
+    // const handleDragEnd = () => {
+    //     if (!isDragging) return;
+    //     setIsDragging(false);
         
-        const threshold = containerRef.current.offsetWidth * 0.1; // 10% of container width
-        if (Math.abs(dragOffset) > threshold) {
-            if (dragOffset > 0 && currentIndex < images.length - 1) {
-                setCurrentIndex(currentIndex + 1);
-            } else if (dragOffset < 0 && currentIndex > 0) {
-                setCurrentIndex(currentIndex - 1);
-            }
-        }
-        setDragOffset(0);
-    };
+    //     const threshold = containerRef.current.offsetWidth * 0.1; // 10% of container width
+    //     if (Math.abs(dragOffset) > threshold) {
+    //         if (dragOffset > 0 && currentIndex < images.length - 1) {
+    //             setCurrentIndex(currentIndex + 1);
+    //         } else if (dragOffset < 0 && currentIndex > 0) {
+    //             setCurrentIndex(currentIndex - 1);
+    //         }
+    //     }
+    //     setDragOffset(0);
+    // };
 
-    useEffect(() => {
-        if (containerRef.current) {
-            containerRef.current.scrollTo({
-                left: currentIndex * containerRef.current.offsetWidth,
-                behavior: 'smooth',
-            });
-        }
-    }, [currentIndex]);
-
-    const getTimeElapsed = (createdAt) => {
-        const now = new Date();
-        const createdTime = new Date(createdAt);
-        const diff = now.getTime() - createdTime.getTime();
-    
-        const minutes = Math.floor(diff / (1000 * 60));
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
-        if (minutes < 1) return '방금 전';
-        if (minutes < 60) return `${minutes}분 전`;
-        if (hours < 24) return `${hours}시간 전`;
-        return `${days}일 전`;
-    };
+    // useEffect(() => {
+    //     if (containerRef.current) {
+    //         containerRef.current.scrollTo({
+    //             left: currentIndex * containerRef.current.offsetWidth,
+    //             behavior: 'smooth',
+    //         });
+    //     }
+    // }, [currentIndex]);
 
     const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
     const [isSaveEnabled, setIsSaveEnabled] = useState(false);
@@ -73,12 +61,12 @@ const QuestionsDetail = ({ id, name, major, title, content, subject, time, views
         if (!isNotificationEnabled) {
             // Send notification data when enabled
             sendNotificationData({
-                postId: id,
+                postId: _id,
             });
         } else {
             // Remove notification data when disabled
             removeNotificationData({
-                postId: id
+                postId: _id
             });
         }
     };
@@ -104,12 +92,12 @@ const QuestionsDetail = ({ id, name, major, title, content, subject, time, views
         if (!isSaveEnabled) {
             // Send notification data when enabled
             sendSaveData({
-                postId: id,
+                postId: _id,
             });
         } else {
             // Remove notification data when disabled
             removeSaveData({
-                postId: id
+                postId: _id
             });
         }
     };
@@ -134,63 +122,60 @@ const QuestionsDetail = ({ id, name, major, title, content, subject, time, views
     const [likePostId, setLikePost] = useState(likePost);
 
     useEffect(() => {
-        if (likePost.includes(id)) {
+        if (likePost.includes(_id)) {
             setIsLiked(true);
             console.log('확인')
         }
-    }, [id, likePost]);
+    }, [_id, likePost]);
 
     const handleLike = () => {
-        setLikePost([...likePost, id]);
-        console.log("Post liked:", id);
+        setLikePost([...likePost, _id]);
+        console.log("Post liked:", _id);
         // Additional logic to update likes on the backend or state could go here
     };
 
     const handleUnlike = () => {
-        setLikePost(likePost.filter(postId => postId !== id));
-        console.log("Post unliked:", id);
+        setLikePost(likePost.filter(postId => postId !== _id));
+        console.log("Post unliked:", _id);
     }
+
+    const handleReport = () => {
+        console.log(`Reported post with ID: ${_id}`);
+        alert(`Post with ID: ${_id} has been reported.`);
+    };
 
     return (
         <OutWrapper>
             <Wrapper>
+                <TopBar>
+                    <CategoryPath categories={subject} />
+                    <Button onClick={handleReport} style={{marginLeft: 'auto'}} ><img src="/Icons/report.svg" /></Button>
+                </TopBar>
                 <Title>
                     <img src="/Icons/Q.svg" alt="Q icon" />
                     <span>{title}</span>
                 </Title>
 
                 <MetaContainer>
-                    <span>{getTimeElapsed(time)} | {major} {name} | 조회수 {views}</span>
+                    <span>{getTimeElapsed(time)} | {user_main} | 조회수 {views}</span>
                 </MetaContainer>
                 <Content>{content}</Content>
 
                 {images.length > 0 && (
-                    <ImageWrapper
-                        onMouseDown={handleDragStart}
-                        onMouseMove={handleDragMove}
-                        onMouseUp={handleDragEnd}
-                        onMouseLeave={handleDragEnd}
-                        onTouchStart={handleDragStart}
-                        onTouchMove={handleDragMove}
-                        onTouchEnd={handleDragEnd}
-                    >
-                        <ImageContainer ref={containerRef}>
+                    <CarouselWrapper>
+                        <CarouselTemp
+                            width="380px"
+                            height="380px"
+                            autoPlay={false}
+                            showBullets={true}
+                            showFraction={true}
+                            infinite={true}
+                        >
                             {images.map((image, index) => (
                                 <Image key={index} src={image} draggable="false" />
                             ))}
-                        </ImageContainer>
-                        {images.length >= 2 && (
-                            <DotContainer>
-                                {images.map((_, index) => (
-                                    <Dot 
-                                        key={index} 
-                                        isActive={index === currentIndex} 
-                                        onClick={() => setCurrentIndex(index)}
-                                    />
-                                ))}
-                            </DotContainer>
-                        )}
-                    </ImageWrapper>
+                        </CarouselTemp>
+                    </CarouselWrapper>
                 )}
 
                 <Tool 
@@ -211,7 +196,7 @@ export default QuestionsDetail;
 
 QuestionsDetail.propTypes = {
     id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+    user_main: PropTypes.string.isRequired,
     major: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
@@ -223,7 +208,7 @@ QuestionsDetail.propTypes = {
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string),
     ]),
-    limit: PropTypes.bool.isRequired,
+    limit: PropTypes.number.isRequired,
     likePost: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string),
@@ -232,7 +217,7 @@ QuestionsDetail.propTypes = {
 
 QuestionsDetail.defaultProps = {
     id: 0,
-    name: '이름',
+    user_main: '이름',
     major: '전공',
     title: '제목',
     content: '내용',
@@ -241,7 +226,7 @@ QuestionsDetail.defaultProps = {
     views: 0,
     like: 0,
     img: null,
-    limit: false,
+    limit: 0,
     likePost: [],
 };
 
@@ -253,6 +238,11 @@ const Wrapper = styled.div`
     padding: 20px 10px;
     border-bottom: 1px solid #F1F2F4;
 `;
+
+const TopBar = styled.div`
+    display: flex;
+    align-items: center;
+`
 
 const Title = styled.div`
     font-size: 20px;
@@ -334,3 +324,27 @@ const Dot = styled.div`
     cursor: pointer;
     transition: background-color 0.3s ease;
 `;
+
+const CarouselWrapper = styled.div`
+    margin-top: 20px;
+    width: 100%;
+`;
+
+const Button = styled.button`
+    display: flex;
+
+    border: 0px;
+    background-color: white;
+    transition: all 0.3s ease;
+
+    img{
+        width: 25px;
+        height: 25px;
+    }
+
+    cursor: pointer;
+
+    &:active {
+        scale: 0.85;
+    }
+`

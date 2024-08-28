@@ -24,7 +24,7 @@ const ImageUploader = ({ onChange }) => {
                 <img src="/Icons/Plus.svg" alt="Add"/>
                 <input
                     type="file"
-                    accept="image/*"
+                    accept="image/*,application/pdf,application/zip"
                     multiple
                     onChange={handleFileChange}
                     style={{ display: 'none' }}

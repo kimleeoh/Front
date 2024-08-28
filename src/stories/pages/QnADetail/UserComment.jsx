@@ -6,13 +6,11 @@ import { useState, useEffect } from 'react';
 import ImageUploader from './ImageUploader';
 import TextArea from '../../components/Common/TextArea';
 
-const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) => {
+const User = ({post_id, name, level, major, profileImg, limit}) => {
     const [isAnswered, setIsAnswered] = useState(false);
     const [formValues, setFormValues] = useState({
         name: '',
         level: '',
-        grade: '',
-        figure: '',
         major: '',
         profileImg: '',
         content: '',
@@ -42,7 +40,7 @@ const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) =
 
     // Update 'time' first then proceed with form submission
     setFormValues((prevFormValues) => {
-        const updatedFormValues = { ...prevFormValues, name: name, level: level, grade: grade, figure: figure, major: major, profileImg: profileImg, time: now, post_id: post_id };
+        const updatedFormValues = { ...prevFormValues, name: name, level: level, major: major, profileImg: profileImg, time: now, post_id: post_id };
         
         if (isFormValid) {
             // Add your API call here to send updatedFormValues to the backend.
@@ -60,7 +58,7 @@ const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) =
                     <SubWrapper>
                         <ProfileImg src={profileImg} />
                         <ProfileContainer>
-                            <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
+                            <LevelGrade>Lv. {level} | A 등급</LevelGrade>
                             <MajorName>{major} {name}</MajorName>
                         </ProfileContainer>
                         <Button 
@@ -88,14 +86,14 @@ const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) =
         );
     }
 
-    if (limit === false) {
+    if (limit === 0) {
         return (
             <OutWrapper>
                 <Wrapper>
                     <SubWrapper>
                         <ProfileImg src={profileImg} />
                         <ProfileContainer>
-                            <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
+                            <LevelGrade>Lv. {level} | A 등급</LevelGrade>
                             <MajorName>{major} {name}<span style={{color: '#3182F7'}}>님은 답변 등록이 가능합니다.</span></MajorName>
                         </ProfileContainer>
                     </SubWrapper>
@@ -115,7 +113,7 @@ const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) =
     return (
         <OutWrapper>
             <Wrapper>
-                {figure === null ? (
+                {limit === null ? (
                     <SubWrapper>
                         <ProfileImg src={profileImg} />
                         <ProfileContainer>
@@ -123,11 +121,11 @@ const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) =
                             <MajorName><span style={{color: '#ACB2BB'}}>성적 입력 후 답변이 가능합니다.</span></MajorName>
                         </ProfileContainer>
                     </SubWrapper>
-                ) : figure >= 2 ? (
+                ) : limit >= 2 ? (
                     <SubWrapper>
                         <ProfileImg src={profileImg} />
                         <ProfileContainer>
-                            <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
+                            <LevelGrade>Lv. {level} | A 등급</LevelGrade>
                             <MajorName>{major} {name}<span style={{color: '#3182F7'}}>님은 답변 등록이 가능합니다.</span></MajorName>
                         </ProfileContainer>
                     </SubWrapper>
@@ -135,14 +133,14 @@ const User = ({post_id, name, level, grade, figure, major, profileImg, limit}) =
                     <SubWrapper>
                         <ProfileImg src={profileImg} />
                         <ProfileContainer>
-                            <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
+                            <LevelGrade>Lv. {level} | A 등급</LevelGrade>
                             <MajorName>{major} {name}<span style={{color: '#ACB2BB'}}>님은 답변 등록이 불가능합니다.</span></MajorName>
                         </ProfileContainer>
                     </SubWrapper>
                 )}
-                {figure === null ? (
+                {limit === null ? (
                     <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} disabled={true} style={{marginLeft: 'auto', marginTop: '5px'}}></Button>
-                ) : figure >= 2 ? (
+                ) : limit >= 2 ? (
                     <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} style={{marginLeft: 'auto', marginTop: '5px'}} onClick={handleAnswerSubmit}></Button>
                 ) : (
                     <Button fontSize={'10px'} width={'80px'} height={'30px'} label={'답변등록'} disabled={true} style={{marginLeft: 'auto', marginTop: '5px'}}></Button>
@@ -158,19 +156,15 @@ User.propTypes = {
     post_id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     level: PropTypes.number.isRequired,
-    grade: PropTypes.string.isRequired,
-    figure: PropTypes.number,
     major: PropTypes.string.isRequired,
     profileImg: PropTypes.string.isRequired,
-    limit: PropTypes.bool.isRequired,
+    limit: PropTypes.number.isRequired,
 };
 
 User.defaultProps = {
     post_id: 0,
     name: '이름',
     level: 1,
-    grade: null,
-    figure: null,
     major: '전공',
     profileImg: '/Icons/profile.svg'
 };

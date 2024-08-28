@@ -2,57 +2,14 @@ import react, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Tool from '../../components/Common/Tool';
+import CarouselTemp from '../../components/Common/CarouselTemp';
 
-const Answers = ({id, post_id, name, level, grade, major, profileImg, content, img, like }) => {
+const Answers = ({_id, name, level, user_grade, major, content, img, like }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
-    const containerRef = useRef(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    const [isDragging, setIsDragging] = useState(false);
-    const [startPosition, setStartPosition] = useState(0);
-    const [dragDistance, setDragDistance] = useState(0);
-    const [dragStart, setDragStart] = useState(0);
-    const [dragOffset, setDragOffset] = useState(0);
-
-    const handleDragStart = (e) => {
-        setIsDragging(true);
-        setDragStart(e.clientX || e.touches[0].clientX);
-    };
-
-    const handleDragMove = (e) => {
-        if (!isDragging) return;
-        const currentPosition = e.clientX || e.touches[0].clientX;
-        const diff = dragStart - currentPosition;
-        setDragOffset(diff);
-    };
-
-    const handleDragEnd = () => {
-        if (!isDragging) return;
-        setIsDragging(false);
-        
-        const threshold = containerRef.current.offsetWidth * 0.1; // 10% of container width
-        if (Math.abs(dragOffset) > threshold) {
-            if (dragOffset > 0 && currentIndex < images.length - 1) {
-                setCurrentIndex(currentIndex + 1);
-            } else if (dragOffset < 0 && currentIndex > 0) {
-                setCurrentIndex(currentIndex - 1);
-            }
-        }
-        setDragOffset(0);
-    };
-
-    useEffect(() => {
-        if (containerRef.current) {
-            containerRef.current.scrollTo({
-                left: currentIndex * containerRef.current.offsetWidth,
-                behavior: 'smooth',
-            });
-        }
-    }, [currentIndex]);
 
     const handleReport = () => {
-        console.log(`Reported post with ID: ${id}`);
-        alert(`Post with ID: ${id} has been reported.`);
+        console.log(`Reported post with ID: ${_id}`);
+        alert(`Post with ID: ${_id} has been reported.`);
     };
     
     return (
@@ -62,7 +19,7 @@ const Answers = ({id, post_id, name, level, grade, major, profileImg, content, i
                     <Title><img src="/Icons/A.svg" /></Title>
                     <img src="/Icons/Profile.svg" />
                     <ProfileContainer>
-                        <LevelGrade>Lv. {level} | {grade} 등급</LevelGrade>
+                        <LevelGrade>Lv. {level} | {user_grade} 등급</LevelGrade>
                         <MajorName>{major} {name}</MajorName>
                      </ProfileContainer>
                      <Button style={{marginLeft: 'auto'}}><img src="/Icons/report.svg" onClick={handleReport} /></Button>
@@ -70,32 +27,20 @@ const Answers = ({id, post_id, name, level, grade, major, profileImg, content, i
                 <Content>{content}</Content>
 
                 {images.length > 0 && (
-                    <ImageWrapper
-                        onMouseDown={handleDragStart}
-                        onMouseMove={handleDragMove}
-                        onMouseUp={handleDragEnd}
-                        onMouseLeave={handleDragEnd}
-                        onTouchStart={handleDragStart}
-                        onTouchMove={handleDragMove}
-                        onTouchEnd={handleDragEnd}
-                    >
-                        <ImageContainer ref={containerRef}>
+                    <CarouselWrapper>
+                        <CarouselTemp
+                            width="380px"
+                            height="380px"
+                            autoPlay={false}
+                            showBullets={true}
+                            showFraction={true}
+                            infinite={true}
+                        >
                             {images.map((image, index) => (
                                 <Image key={index} src={image} draggable="false" />
                             ))}
-                        </ImageContainer>
-                        {images.length >= 2 && (
-                            <DotContainer>
-                                {images.map((_, index) => (
-                                    <Dot 
-                                        key={index} 
-                                        isActive={index === currentIndex} 
-                                        onClick={() => setCurrentIndex(index)}
-                                    />
-                                ))}
-                            </DotContainer>
-                        )}
-                    </ImageWrapper>
+                        </CarouselTemp>
+                    </CarouselWrapper>
                 )}
 
                 <Tool like={like} save={false} notification={false} report={false}/>
@@ -107,11 +52,11 @@ const Answers = ({id, post_id, name, level, grade, major, profileImg, content, i
 export default Answers;
 
 Answers.propTypes = {
-    id: PropTypes.string.isRequired,
-    post_id: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+    Rqna: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     level: PropTypes.number.isRequired,
-    grade: PropTypes.string.isRequired,
+    user_grade: PropTypes.string.isRequired,
     major: PropTypes.string.isRequired,
     profileImg: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
@@ -123,11 +68,11 @@ Answers.propTypes = {
 };
 
 Answers.defaultProps = {
-    id: 0,
+    _id: 0,
     post_id: 0,
     name: '이름',
     level: 1,
-    grade: '성적',
+    user_grade: '성적',
     major: '전공',
     profileImg: '/Icons/profile.svg',
     content: '내용',
@@ -191,8 +136,8 @@ const Button = styled.button`
     background-color: white;
 
     img{
-        width: 20px;
-        height: 20px;
+        width: 25px;
+        height: 25px;
         transition: all 0.3s ease;
     }
 
@@ -250,4 +195,9 @@ const Dot = styled.div`
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease;
+`;
+
+const CarouselWrapper = styled.div`
+    margin-top: 20px;
+    width: 100%;
 `;

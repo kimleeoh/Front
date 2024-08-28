@@ -59,14 +59,13 @@ const App = () => {
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/notification" element={<AlertPage />} />
                 <Route path="/qna" element={<QnAPage />} />
-                <Route path="/qna/:id" element={<QnADetailPage />} />
+                <Route path="/qna/:_id" element={<QnADetailPage />} />
                 <Route path="/qna/post" element={<PostQuestionPage />} />
                 <Route path="/tips" element={ <TipsPage />} />
-                <Route path="/tips/:id" element={<TipsDetailPage />} />
+                <Route path="/tips/:_id" element={<TipsDetailPage />} />
                 <Route path="/tips/post" element={<PostTipPage />} />
                 <Route path="/board" element={<BoardHome />} />
                 <Route path="/edit-board" element={<EditBoardPage />} />
-                <Route path="/qna/:id" element={<QnADetailPage />} />
                 <Route path="/board/:subject" element={<UnifiedBoard />} />
 
                 <Route path="/menu" element={<MenuPage />} />

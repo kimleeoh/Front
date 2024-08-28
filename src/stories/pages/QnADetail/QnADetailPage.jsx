@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import BaseAxios from '../../../axioses/BaseAxios';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import QuestionsDetail from './QuestionsDetail'
@@ -8,81 +9,127 @@ import AnswersDetail from './AnswersDetail';
 import UserComment from './UserComment';
 
 const initialQuestionData = [
+    // {
+    //     _id: '463846736919eqk876e4q91b9',
+    //     restricted_type: 1,
+    //     user_main: '글로벌미디어학부 이예진',
+    //     user_img: '',
+    //     user_badge_img: '',
+    //     Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
+    //     Ruser: "66add0ecd802d72c8a54be3d",
+    //     answer_list: [
+    //         {user_grade: 'A+', _id: "66add0ecd802d72c8a54be41"}
+    //     ],
+    //     title: '나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?',
+    //     content: '나이키스트 관련 식 이렇게 이해하면 되나요?',
+    //     img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg', '/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg','/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg','/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg', '/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
+    //     now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '디지털미디어원리'],
+    //     picked_index: 0,
+    //     scrap: 0,
+    //     time: "2024-08-12T10:21:34.123Z",
+    //     views: 30,
+    //     like: 20,
+    //     warn: 0
+    // },
+    // {
+    //     _id: '7962156648w19eqk878e268qb',
+    //     restricted_type: 2,
+    //     user_main: '글로벌미디어학부 오준우',
+    //     user_img: '',
+    //     user_badge_img: '',
+    //     Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
+    //     Ruser: "66add0ecd802d72c8a54be3d",
+    //     answer_list: [
+    //         {user_grade: 'A+', _id: "66add0ecd802d72c8a54be41"}
+    //     ],
+    //     title: '자료구조',
+    //     content: '스택이랑 큐의 차이점을 자세히 설명해 주세요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ',
+    //     img: '/Icons/1607-2.jpg',
+    //     now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '컴퓨터시스템개론'],
+    //     picked_index: 0,
+    //     scrap: 0,
+    //     time: "2024-08-13T10:21:34.123Z",
+    //     views: 88,
+    //     like: 48,
+    //     warn: 0
+    // },
+    // {
+    //     _id: '46848w9e98w19eqk878e2ea434',
+    //     restricted_type: 0,
+    //     user_main: '글로벌미디어학부 이동현',
+    //     user_img: '',
+    //     user_badge_img: '',
+    //     Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
+    //     Ruser: "66add0ecd802d72c8a54be3d",
+    //     answer_list: [
+    //         {user_grade: 'A+', _id: "66add0ecd802d72c8a54be41"}
+    //     ],
+    //     title: '미디어제작및실습 포토샵',
+    //     content: '포토샵 재학생 인증 어떻게 하나요?? 알려주시면 좋은 행운이 찾아올 거예요~',
+    //     img: '',
+    //     now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '미디어제작및실습'],
+    //     picked_index: 0,
+    //     scrap: 0,
+    //     time: "2024-08-14T05:45:30.246Z",
+    //     views: 302,
+    //     like: 12,
+    //     warn: 0
+    // },
     {
-        id: '463846736919eqk876e4q91b9',
-        name: '이예진',
-        major: '글로벌미디어학부',
-        title: '나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?',
-        content: '나이키스트 관련 식 이렇게 이해하면 되나요?',
-        subject: '디지털미디어원리',
-        time: "2024-08-12T10:21:34.123Z",
-        views: 30,
-        like: 20,
-        img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
-        limit: true
-    },
-    {
-        id: '7962156648w19eqk878e268qb',
-        name: '오준우',
-        major: '글로벌미디어학부',
-        title: '자료구조',
-        content: '스택이랑 큐의 차이점을 자세히 설명해 주세요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ',
-        subject: '컴퓨터시스템개론',
-        time: "2024-08-13T10:21:34.123Z",
-        views: 88,
-        like: 48,
-        img: '/Icons/1607-2.jpg',
-        limit: false
-    },
-    {
-        id: '46848w9e98w19eqk878e2ea434',
-        name: '이동현',
-        major: '글로벌미디어학부',
-        title: '미디어제작및실습 포토샵',
-        content: '포토샵 재학생 인증 어떻게 하나요?? 알려주시면 좋은 행운이 찾아올 거예요~',
-        subject: '미디어제작및실습',
-        time: "2024-08-14T05:45:30.246Z",
-        views: 302,
-        like: 12,
-        img: null,
-        limit: false
-    },
-    {
-        id: '2039920a89jbs25k8394abd46',
-        name: '이예진',
-        major: '글로벌미디어학부',
-        title: '표본화 양자화 부호화',
-        content: '각각을 한 문장으로 정리할 수 있다면?',
-        subject: '디지털미디어원리',
-        time: "2024-08-14T05:45:30.246Z",
-        views: 30,
-        like: 15,
-        img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
-        limit: false
-    },
-]
+        _id: '66add0ecd802d72c8a54be3c',
+        restricted_type: 0,
+        user_main: '글로벌미디어학부 김난슬',
+        user_img: '',
+        user_badge_img: '',
+        Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
+        Ruser: "66add0ecd802d72c8a54be3d",
+        answer_list: [
+            {
+                Ranswer: "66cc7d1889bbc9e6894e3710",
+                QNAcategory: ['전공선택별', 'IT대', '글로벌미디어학부', '디지털미디어원리'],
+                content: "답변입니다",
+                hakbu: "글로벌미디어학부",
+                img_list: [],
+                level: 0,
+                like: 2,
+                name: '김연서',
+                user_grade: "A+",
+            }
+        ],
+        content: '내용',
+        img: ['/Icons/22376525_6628724.jpg', '/Icons/1607-2.jpg'],
+        like: 0,
+        now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '디지털미디어원리'],
+        picked_index: 0,
+        scrap: 0,
+        time: "2024-08-03T06:40:44.828Z",
+        title: '몰라',
+        views: 0,
+        warn: 0,
+    }
+];
 
 const initialAnswerData = [
     {
-        id: '7196584we6456e481q770q23b9',
-        post_id: '463846736919eqk876e4q91b9',
+        _id: '7196584we6456e481q770q23b9',
+        QNAcategory: ['IT대학', '컴퓨터공학과'],
+        QNAtitle: '나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?',
+        Rqna: '463846736919eqk876e4q91b9',
+        content: '1번 답: 01101101',
+        img_list: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
+        like: 13,
         name: '오준우',
         level: 15,
         grade: 'A+',
-        figure: 3,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
-        content: '1번 답: 01101101',
-        img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
-        like: 13,
     },
     {
-        id: '451491268qqdvsdf8728qb',
+        _id: '451491268qqdvsdf8728qb',
         post_id: '7962156648w19eqk878e268qb',
         name: '김난슬',
         level: 15,
         grade: 'A+',
-        figure: 3,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
         content: '몰라이씨',
@@ -90,12 +137,11 @@ const initialAnswerData = [
         like: 30,
     },
     {
-        id: '13adfw6215415aqkaffsd434',
+        _id: '13adfw6215415aqkaffsd434',
         post_id: '46848w9e98w19eqk878e2ea434',
         name: '이동현',
         level: 15,
         grade: 'A+',
-        figure: 3,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
         content: '채택해 주세요.',
@@ -103,12 +149,11 @@ const initialAnswerData = [
         like: 28,
     },
     {
-        id: '131634wifg36ei54973q469',
+        _id: '131634wifg36ei54973q469',
         post_id: '463846736919eqk876e4q91b9',
         name: '이동현',
         level: 15,
         grade: 'A+',
-        figure: 3,
         major: '글로벌미디어학부',
         profileImg: '/Icons/Pen.svg',
         content: '채택해 주세요.',
@@ -132,31 +177,36 @@ const initialUserData = [
 ]
 
 const QnADetailPage = () => {
-    const { id } = useParams();
+    const { _id } = useParams();
     const [questionData, setQuestionData] = useState([]);
-    const [answerData, setAnswerData] = useState([]);
 
     useEffect(() => {
         //로컬 스토리지에서 질문 데이터 로드 또는 초기화
         localStorage.removeItem('questionData');
-        localStorage.removeItem('answerData');
         const questionData = localStorage.getItem('questionData');
-        const answerData = localStorage.getItem('answerData');
         if (questionData) {
             setQuestionData(JSON.parse(questionData));
         } else {
             localStorage.setItem('questionData', JSON.stringify(initialQuestionData));
             setQuestionData(initialQuestionData);
         }
-        if (answerData) {
-            setAnswerData(JSON.parse(answerData));
-        } else {
-            localStorage.setItem('answerData', JSON.stringify(initialAnswerData));
-            setAnswerData(initialAnswerData);
-        }
     }, []);
 
-    const currentQuestion = questionData.find((question) => question.id === String(id));
+    // const fetchData = async () => {
+    //     try {
+    //         const result = await BaseAxios.get('/api/dummy/qna');
+    //         setQuestionData([result.data]);
+    //         console.log(result.data)
+    //     } catch (error) {
+    //         console.error('Error fetching question data:', error);
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     fetchData()
+    // }, []);
+
+    const currentQuestion = questionData.find((question) => question._id === String(_id));
     const currentUser = initialUserData[0];
     
     return (
@@ -164,51 +214,44 @@ const QnADetailPage = () => {
             <Header showIcon={false} text={""} backButton={true} searchButton={false}/>
             {currentQuestion && (
                 <QuestionsDetail
-                    key={currentQuestion.id}
-                    id={currentQuestion.id}
-                    name={currentQuestion.name}
-                    major={currentQuestion.major}
+                    key={currentQuestion._id}
+                    _id={currentQuestion._id}
+                    user_main={currentQuestion.user_main}
                     title={currentQuestion.title}
                     content={currentQuestion.content}
-                    subject={currentQuestion.subject}
+                    subject={currentQuestion.now_category_list}
                     time={currentQuestion.time}
                     views={currentQuestion.views}
                     like={currentQuestion.like}
                     img={currentQuestion.img}
-                    limit={currentQuestion.limit}
+                    limit={currentQuestion.restricted_type}
                     likePost={currentUser.likePost}
                 />
             )}
 
-            {answerData
-                .filter(answer => answer.post_id === String(id))
-                .map((answer) => (
-                    <AnswersDetail
-                        id={answer.id}
-                        post_id={answer.post_id}
-                        name={answer.name}
-                        level={answer.level}
-                        grade={answer.grade}
-                        major={answer.major}
-                        figure={answer.figure}
-                        profileImg={answer.profileImg}
-                        content={answer.content}
-                        img={answer.img}
-                        like={answer.like}
-                    />
-                ))
-            }
+            {currentQuestion && currentQuestion.answer_list && currentQuestion.answer_list.map((answer) => (
+                <AnswersDetail
+                    key={answer.Ranswer}
+                    _id={answer.Ranswer}
+                    major={answer.hakbu}
+                    name={answer.name}
+                    level={answer.level}
+                    user_grade={answer.user_grade}
+                    content={answer.content}
+                    img={answer.img_list}
+                    like={answer.like}
+                />
+            ))}
 
             {currentQuestion && initialUserData.map((user) => (
                 <UserComment
-                    post_id={currentQuestion.id}
+                    post_id={currentQuestion._id}
                     name={user.name}
                     level={user.level}
                     grade={user.grade}
                     major={user.major}
-                    figure={user.figure}
                     profileImg={user.profileImg}
-                    limit={currentQuestion.limit}
+                    limit={currentQuestion.restricted_type}
                 />
             ))}
 

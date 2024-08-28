@@ -2,77 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import getTimeElapsed from './getTimeElapsed';
 
-const Questions = ({ id, title, content, subject, time, views, like, img, limit }) => {
-    const getTimeElapsed = (createdAt) => {
-        const now = new Date();
-        const createdTime = new Date(createdAt);
-        const diff = now.getTime() - createdTime.getTime();
-
-        const minutes = Math.floor(diff / (1000 * 60));
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const months = Math.floor(days / 30); // Rough estimate of 30 days per month
-        const years = Math.floor(days / 365); // Rough estimate of 365 days per year
-
-        if (minutes < 1) return '방금 전';
-        if (minutes < 60) return `${minutes}분 전`;
-        if (hours < 24) return `${hours}시간 전`;
-        if (days < 30) return `${days}일 전`;
-        if (months < 12) return `${months}개월 전`;
-        return `${years}년 전`;
-    };
-
-    return (
-        <OutWrapper>
-            <StyledLink to={`/qna/${id}`}>
-                <Wrapper>
-                    <ContentWrapper>
-                        <TextWrapper hasImage={Boolean(img)}>
-                            <Title>{title}</Title>
-                            <Content>{content}</Content>
-                        </TextWrapper>
-
-                        {img && <ImageContainer>
-                            <Image src={img}/>
-                        </ImageContainer>}
-                    </ContentWrapper>
-
-                    <MetaContainer>
-                        <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {subject} | 조회수 {views} </span>
-                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold'}}> {like} </span>
-                        <span style={{marginLeft: 'auto', color: '#737373'}}> {limit === 'true' ? '등급 제한: A' : ''} </span>
-                    </MetaContainer>
-                </Wrapper>
-            </StyledLink>
-        </OutWrapper>
-    );
-}
-
-export default Questions;
-
-Questions.propTypes = {
-    id: PropTypes.number.isRequired, // id prop을 추가합니다.
-    title: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
-    subject: PropTypes.string.isRequired,
-    time: PropTypes.string.isRequired,
-    views: PropTypes.number.isRequired,
-    like: PropTypes.number.isRequired,
-    img: PropTypes.string,
-    limit: PropTypes.string.isRequired
-};
-
-Questions.defaultProps = {
-    title: '제목',
-    content: '내용',
-    subject: '과목',
-    time: 0,
-    views: 0,
-    like: 0,
-    img: null,
-    limit: 'false'
-};
+const OutWrapper = styled.div`
+    border-bottom: 1px solid #ACB2BB;
+    width: 400px;
+`;
 
 const StyledLink = styled(Link)`
     text-decoration: none;
@@ -141,11 +76,6 @@ const MetaContainer = styled.div`
     font-size: 10px;
 `
 
-const OutWrapper = styled.div`
-    border-bottom: 1px solid #ACB2BB;
-    width: 400px;
-`;
-
 const ImageContainer = styled.div`
     display: flex;
     justify-content: center;
@@ -161,3 +91,56 @@ const Image = styled.img`
     object-position: center;
     border-radius: 8px;
 `;
+
+const Questions = ({ _id, title, content, subject, time, views, like, img, limit }) => {
+    return (
+        <OutWrapper>
+            <StyledLink to={`/qna/${_id}`}>
+                <Wrapper>
+                    <ContentWrapper>
+                        <TextWrapper hasImage={Boolean(img)}>
+                            <Title>{title}</Title>
+                            <Content>{content}</Content>
+                        </TextWrapper>
+
+                        {img && <ImageContainer>
+                            <Image src={img}/>
+                        </ImageContainer>}
+                    </ContentWrapper>
+
+                    <MetaContainer>
+                        <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {subject} | 조회수 {views} </span>
+                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold'}}> {like} </span>
+                        <span style={{marginLeft: 'auto', color: '#737373'}}> {limit > 0 ? '등급 제한: A' : ''} </span>
+                    </MetaContainer>
+                </Wrapper>
+            </StyledLink>
+        </OutWrapper>
+    );
+}
+
+export default Questions;
+
+Questions.propTypes = {
+    _id: PropTypes.number.isRequired, // id prop을 추가합니다.
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    subject: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired,
+    views: PropTypes.number.isRequired,
+    like: PropTypes.number.isRequired,
+    img: PropTypes.array,
+    limit: PropTypes.number.isRequired
+};
+
+Questions.defaultProps = {
+    title: '제목',
+    content: '내용',
+    subject: '과목',
+    time: 0,
+    views: 0,
+    like: 0,
+    img: null,
+    limit: 0
+};
+

@@ -2,24 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Tool from '../../components/Common/Tool';
+import getTimeElapsed from '../../components/Common/getTimeElapsed';
 
 const TipsDetail = ({ id, name, major, title, subject, content, time, views, like, img }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
-
-    const getTimeElapsed = (createdAt) => {
-        const now = new Date();
-        const createdTime = new Date(createdAt);
-        const diff = now.getTime() - createdTime.getTime();
-    
-        const minutes = Math.floor(diff / (1000 * 60));
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
-        if (minutes < 1) return '방금 전';
-        if (minutes < 60) return `${minutes}분 전`;
-        if (hours < 24) return `${hours}시간 전`;
-        return `${days}일 전`;
-    };
 
     const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
     const [isSaveEnabled, setIsSaveEnabled] = useState(false);

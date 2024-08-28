@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const Header = forwardRef(({ showIcon, text, backButton, searchButton, children }, ref) => {
+const Header = forwardRef(({ showIcon, text, backButton, searchButton, onClick, children }, ref) => {
   const navigate = useNavigate();
 
   const handleBackClick = (e) => {
@@ -21,7 +21,7 @@ const Header = forwardRef(({ showIcon, text, backButton, searchButton, children 
         {backButton && (
           <LeftContent>
             <IconButton
-              onClick={() => navigate(-1)}
+              onClick={(handleBackClick)}
             >
               <img src="/Icons/Icon_arrow.svg" alt="Back" />
             </IconButton>
@@ -54,6 +54,7 @@ Header.propTypes = {
   text: PropTypes.string.isRequired,
   backButton: PropTypes.bool.isRequired,
   searchButton: PropTypes.bool.isRequired,
+  onClick: PropTypes.func,
   children: PropTypes.node,
 };
 
@@ -61,7 +62,6 @@ Header.defaultProps = {
   showIcon: false,
   text: 'Q&A',
   backButton: true,
-  searchButton: true,
   searchButton: true,
 };
 

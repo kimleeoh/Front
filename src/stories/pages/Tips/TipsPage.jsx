@@ -6,10 +6,11 @@ import FixedIcon from '../../components/Common/FixedIcon';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import BadgeFilter from '../../components/Common/BadgeFilter';
+import BaseAxios from '../../../axioses/BaseAxios';
 
 const initialTipsData = [
     {
-        id: '48578979aeb59a6b4e9668',
+        _id: '48578979aeb59a6b4e9668',
         name: '김난슬',
         major: '글로벌미디어학부',
         subject: '디지털미디어원리',
@@ -22,7 +23,7 @@ const initialTipsData = [
         filter: '필기공유'
     },
     {
-        id: '789516539dib587bb4e9w88',
+        _id: '789516539dib587bb4e9w88',
         name: '오준우',
         major: '글로벌미디어학부',
         subject: '컴퓨터시스템개론',
@@ -35,7 +36,7 @@ const initialTipsData = [
         filter: '수업꿀팁'
     },
     {
-        id: '1297268189apq577bb4e609e',
+        _id: '1297268189apq577bb4e609e',
         name: '이예진',
         major: '글로벌미디어학부',
         subject: '화장실론',
@@ -47,11 +48,29 @@ const initialTipsData = [
         img: '/Icons/1607-2.jpg',
         filter: '수업꿀팁'
     },
+    // {
+    //     _id: "66adba28edf9ee3930e54570",
+    //     Rfile: "66adbacbd44fdc72c7e842bc",
+    //     Rnotifyusers_list: [],
+    //     Ruser: "66adbab3d44fdc72c7e842bb",
+    //     content: "어쩌구",
+    //     help_good: 0,
+    //     point: 0,
+    //     preview_img: "",
+    //     time: "2024-12-31T15:00:00.000Z",
+    //     title: "제목",
+    //     views: 0,
+    //     warn: 0
+    // }
 ];
 
 const TipsPage = () => {
     const [TipsData, setTipsData] = useState([]);
     const [filteredTips, setFilteredTips] = useState([]);
+
+    BaseAxios.get('/api/dummy/tip').then((result)=>{
+        console.log(result.data)
+    })
 
     useEffect(() => {
         // Load TipsData from localStorage or initialize it
@@ -82,8 +101,8 @@ const TipsPage = () => {
             <BadgeFilter onFilterChange={handleFilterChange} />
             {filteredTips.map((tip) => (
                 <Tips
-                    key={tip.id}
-                    id={tip.id}
+                    key={tip._id}
+                    id={tip._id}
                     name={tip.name}
                     major={tip.major}
                     subject={tip.subject}

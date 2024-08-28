@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import BaseAxios from '../../../axioses/BaseAxios';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../../components/Header';
@@ -13,58 +14,94 @@ import Tips from '../Tips/Tips';
 
 const initialQuestionData = [
     {
-        id: '463846736919eqk876e4q91b9',
-        name: '이예진',
-        major: '글로벌미디어학부',
+        _id: '463846736919eqk876e4q91b9',
+        restricted_type: 1,
+        user_main: '글로벌미디어학부 이예진',
+        user_img: '',
+        user_badge_img: '',
+        Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
+        Ruser: "66add0ecd802d72c8a54be3d",
+        answer_list: [
+            {Ranswer: '66add0ecd802d72c8a54be3e', Ruser: '66add0ecd802d72c8a54be3f', user_grade: 'A+', _id: "66add0ecd802d72c8a54be41"}
+        ],
         title: '나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?',
         content: '나이키스트 관련 식 이렇게 이해하면 되나요?',
-        subject: '디지털미디어원리',
+        img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg', '/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg','/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg','/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg', '/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
+        now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '디지털미디어원리'],
+        picked_index: 0,
+        scrap: 0,
         time: "2024-08-12T10:21:34.123Z",
         views: 30,
         like: 20,
-        img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
-        limit: 'true'
+        warn: 0
     },
     {
-        id: '7962156648w19eqk878e268qb',
-        name: '오준우',
-        major: '글로벌미디어학부',
+        _id: '7962156648w19eqk878e268qb',
+        restricted_type: 2,
+        user_main: '글로벌미디어학부 오준우',
+        user_img: '',
+        user_badge_img: '',
+        Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
+        Ruser: "66add0ecd802d72c8a54be3d",
+        answer_list: [
+            {Ranswer: '66add0ecd802d72c8a54be3e', Ruser: '66add0ecd802d72c8a54be3f', user_grade: 'A+', _id: "66add0ecd802d72c8a54be41"}
+        ],
         title: '자료구조',
         content: '스택이랑 큐의 차이점을 자세히 설명해 주세요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ',
-        subject: '컴퓨터시스템개론',
+        img: '/Icons/1607-2.jpg',
+        now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '컴퓨터시스템개론'],
+        picked_index: 0,
+        scrap: 0,
         time: "2024-08-13T10:21:34.123Z",
         views: 88,
         like: 48,
-        img: '/Icons/1607-2.jpg',
-        limit: 'false'
+        warn: 0
     },
     {
-        id: '46848w9e98w19eqk878e2ea434',
-        name: '이동현',
-        major: '글로벌미디어학부',
+        _id: '46848w9e98w19eqk878e2ea434',
+        restricted_type: 0,
+        user_main: '글로벌미디어학부 이동현',
+        user_img: '',
+        user_badge_img: '',
+        Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
+        Ruser: "66add0ecd802d72c8a54be3d",
+        answer_list: [
+            {Ranswer: '66add0ecd802d72c8a54be3e', Ruser: '66add0ecd802d72c8a54be3f', user_grade: 'A+', _id: "66add0ecd802d72c8a54be41"}
+        ],
         title: '미디어제작및실습 포토샵',
         content: '포토샵 재학생 인증 어떻게 하나요?? 알려주시면 좋은 행운이 찾아올 거예요~',
-        subject: '미디어제작및실습',
+        img: '',
+        now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '미디어제작및실습'],
+        picked_index: 0,
+        scrap: 0,
         time: "2024-08-14T05:45:30.246Z",
         views: 302,
         like: 12,
-        img: null,
-        limit: 'false'
+        warn: 0
     },
     {
-        id: '2039920a89jbs25k8394abd46',
-        name: '이예진',
-        major: '글로벌미디어학부',
-        title: '표본화 양자화 부호화',
-        content: '각각을 한 문장으로 정리할 수 있다면?',
-        subject: '디지털미디어원리',
-        time: "2024-08-14T05:45:30.246Z",
-        views: 30,
-        like: 15,
-        img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
-        limit: 'false'
-    },
-]
+        _id: '66add0ecd802d72c8a54be3c',
+        restricted_type: 0,
+        user_main: '글로벌미디어학부 김난슬',
+        user_img: '',
+        user_badge_img: '',
+        Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
+        Ruser: "66add0ecd802d72c8a54be3d",
+        answer_list: [
+            {Ranswer: '66add0ecd802d72c8a54be3e', Ruser: '66add0ecd802d72c8a54be3f', user_grade: 'A+', _id: "66add0ecd802d72c8a54be41"}
+        ],
+        content: '내용',
+        img: ['/Icons/22376525_6628724.jpg', '/Icons/1607-2.jpg'],
+        like: 0,
+        now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '디지털미디어원리'],
+        picked_index: 0,
+        scrap: 0,
+        time: "2024-08-03T06:40:44.828Z",
+        title: '몰라',
+        views: 0,
+        warn: 0,
+    }
+];
 
 const initialTipsData = [
     {
@@ -128,6 +165,20 @@ const UnifiedBoard = () => {
         loadData();
     }, []);
 
+    // const fetchData = async () => {
+    //     try {
+    //         const result = await BaseAxios.get('/api/dummy/qna');
+    //         setQuestionData([result.data]);
+    //         console.log(result.data)
+    //     } catch (error) {
+    //         console.error('Error fetching question data:', error);
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     fetchData()
+    // }, []);
+
     const handleCheckBarChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
     };
@@ -137,7 +188,7 @@ const UnifiedBoard = () => {
     };
 
     const filteredQuestions = isAGradeOnly
-        ? questionData.filter(question => question.limit === 'true')
+        ? questionData.filter(question => question.restricted_type > 0)
         : questionData;
 
     const handleFilterChange = (activeBadges) => {
@@ -159,21 +210,25 @@ const UnifiedBoard = () => {
                 <>
                     <CheckBar text={'A등급 제한'} onChange={handleCheckBarChange} />
                     {filteredQuestions
-                        .filter(question => question.subject === subject)
-                        .map((question) => (
-                            <Questions
-                                key={question.id}
-                                id={question.id}
-                                title={question.title}
-                                content={question.content}
-                                subject={question.subject}
-                                time={question.time}
-                                views={question.views}
-                                like={question.like}
-                                img={Array.isArray(question.img) ? question.img[0] : question.img}
-                                limit={question.limit}
-                            />
-                        ))
+                        .filter(question => question.now_category_list[question.now_category_list.length - 1] === subject)
+                        .map((question) => {
+                            const img = Array.isArray(question.img) ? question.img[0] : question.img;
+
+                            return (
+                                <Questions
+                                    key={question._id}
+                                    id={question._id}
+                                    title={question.title}
+                                    content={question.content}
+                                    subject={question.now_category_list[question.now_category_list.length - 1]}
+                                    time={question.time}
+                                    views={question.views}
+                                    like={question.like}
+                                    img={img}
+                                    limit={question.restricted_type}
+                                />
+                            )
+                        })
                     }
                     <FixedIcon src="/Icons/Question.svg" url={"/qna/post"}/>
                 </>

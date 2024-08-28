@@ -7,7 +7,7 @@ import TipsDetail from './TipsDetail';
 
 const initialTipsData = [
     {
-        id: '48578979aeb59a6b4e9668',
+        _id: '48578979aeb59a6b4e9668',
         name: '김난슬',
         major: '글로벌미디어학부',
         subject: '디지털미디어원리',
@@ -20,7 +20,7 @@ const initialTipsData = [
         filter: '필기공유'
     },
     {
-        id: '789516539dib587bb4e9w88',
+        _id: '789516539dib587bb4e9w88',
         name: '오준우',
         major: '글로벌미디어학부',
         subject: '컴퓨터시스템개론',
@@ -33,7 +33,7 @@ const initialTipsData = [
         filter: '수업꿀팁'
     },
     {
-        id: '1297268189apq577bb4e609e',
+        _id: '1297268189apq577bb4e609e',
         name: '이예진',
         major: '글로벌미디어학부',
         subject: '화장실론',
@@ -48,7 +48,7 @@ const initialTipsData = [
 ];
 
 const TipsDetailPage = () => {
-    const { id } = useParams();
+    const { _id } = useParams();
     const [tipData, setTipData] = useState([]);
 
     useEffect(() => {
@@ -63,12 +63,12 @@ const TipsDetailPage = () => {
             setTipData(initialTipsData);
         }
     }, []);
-    const currentTip = tipData.find((tip) => tip.id === String(id));
+    const currentTip = tipData.find((tip) => tip._id === String(_id));
 
     return (
         <Wrapper>
             <Header showIcon={false} text={""} backButton={true} searchButton={false}/>
-            {tipData.find(tip => tip.id === String(id)) && (
+            {tipData.find(tip => tip._id === String(_id)) && (
                 <TipsDetail
                     key={currentTip.id}
                     id={currentTip.id}
