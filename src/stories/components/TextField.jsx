@@ -103,7 +103,7 @@ const InputWrapper = styled.div`
 const Input = styled.input`
   background-color: #e2e5e9;
   border: none;
-  border-radius: 15px;
+  border-radius: 16px;
   padding: 15px 40px 5px 10px;
   font-size: 16px;
   width: 100%;

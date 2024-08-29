@@ -31,7 +31,7 @@ const CheckBox = ({disabledIconSrc, enabledIconSrc, text, onChange, disabled}) =
     return(
         <Button onClick={handleCheckboxClick} disabled={disabled}>
             <img src={isChecked ? enabledIconSrc : disabledIconSrc}></img>
-            <span style={{color: isChecked ? '#434B60' : '#ACB2BB', fontSize: '14px',fontWeight: '500', paddingLeft: '5px' }}>{text}</span>
+            <span style={{color: isChecked ? '#434B60' : '#ACB2BB', fontSize: '16px',fontWeight: '500', paddingLeft: '5px' }}>{text}</span>
         </Button>
     )
 }
@@ -66,7 +66,7 @@ const Button = styled.button`
     align-items: center;
     justify-content: center;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 16px;
 
     img{
         width: 20px;
