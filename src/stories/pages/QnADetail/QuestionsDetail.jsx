@@ -8,50 +8,7 @@ import CategoryPath from '../../components/Common/CategoryPath';
 
 const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views, like, img, limit, likePost }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
-    // const containerRef = useRef(null);
-    // const [currentIndex, setCurrentIndex] = useState(0);
 
-    // const [isDragging, setIsDragging] = useState(false);
-    // const [startPosition, setStartPosition] = useState(0);
-    // const [dragDistance, setDragDistance] = useState(0);
-    // const [dragStart, setDragStart] = useState(0);
-    // const [dragOffset, setDragOffset] = useState(0);
-
-    // const handleDragStart = (e) => {
-    //     setIsDragging(true);
-    //     setDragStart(e.clientX || e.touches[0].clientX);
-    // };
-
-    // const handleDragMove = (e) => {
-    //     if (!isDragging) return;
-    //     const currentPosition = e.clientX || e.touches[0].clientX;
-    //     const diff = dragStart - currentPosition;
-    //     setDragOffset(diff);
-    // };
-
-    // const handleDragEnd = () => {
-    //     if (!isDragging) return;
-    //     setIsDragging(false);
-        
-    //     const threshold = containerRef.current.offsetWidth * 0.1; // 10% of container width
-    //     if (Math.abs(dragOffset) > threshold) {
-    //         if (dragOffset > 0 && currentIndex < images.length - 1) {
-    //             setCurrentIndex(currentIndex + 1);
-    //         } else if (dragOffset < 0 && currentIndex > 0) {
-    //             setCurrentIndex(currentIndex - 1);
-    //         }
-    //     }
-    //     setDragOffset(0);
-    // };
-
-    // useEffect(() => {
-    //     if (containerRef.current) {
-    //         containerRef.current.scrollTo({
-    //             left: currentIndex * containerRef.current.offsetWidth,
-    //             behavior: 'smooth',
-    //         });
-    //     }
-    // }, [currentIndex]);
 
     const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
     const [isSaveEnabled, setIsSaveEnabled] = useState(false);
@@ -169,7 +126,6 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
                             autoPlay={false}
                             showBullets={true}
                             showFraction={true}
-                            infinite={true}
                         >
                             {images.map((image, index) => (
                                 <Image key={index} src={image} draggable="false" />

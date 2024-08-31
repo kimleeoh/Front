@@ -10,7 +10,6 @@ const CarouselTemp = ({
     autoPlayInterval = 5000,
     showBullets = true,
     showFraction = true,
-    infinite = true
   }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
@@ -40,6 +39,10 @@ const CarouselTemp = ({
     const handleMouseDown = (e) => {
       setIsDragging(true);
       setStartX(e.pageX - translateX);
+    };
+
+    const handleMouseLeave = () => {
+      setIsDragging(false);
     };
   
     const handleMouseMove = (e) => {

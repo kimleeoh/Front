@@ -9,72 +9,102 @@ import AnswersDetail from './AnswersDetail';
 import UserComment from './UserComment';
 
 const initialQuestionData = [
-    // {
-    //     _id: '463846736919eqk876e4q91b9',
-    //     restricted_type: 1,
-    //     user_main: '글로벌미디어학부 이예진',
-    //     user_img: '',
-    //     user_badge_img: '',
-    //     Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
-    //     Ruser: "66add0ecd802d72c8a54be3d",
-    //     answer_list: [
-    //         {user_grade: 'A+', _id: "66add0ecd802d72c8a54be41"}
-    //     ],
-    //     title: '나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?',
-    //     content: '나이키스트 관련 식 이렇게 이해하면 되나요?',
-    //     img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg', '/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg','/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg','/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg', '/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
-    //     now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '디지털미디어원리'],
-    //     picked_index: 0,
-    //     scrap: 0,
-    //     time: "2024-08-12T10:21:34.123Z",
-    //     views: 30,
-    //     like: 20,
-    //     warn: 0
-    // },
-    // {
-    //     _id: '7962156648w19eqk878e268qb',
-    //     restricted_type: 2,
-    //     user_main: '글로벌미디어학부 오준우',
-    //     user_img: '',
-    //     user_badge_img: '',
-    //     Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
-    //     Ruser: "66add0ecd802d72c8a54be3d",
-    //     answer_list: [
-    //         {user_grade: 'A+', _id: "66add0ecd802d72c8a54be41"}
-    //     ],
-    //     title: '자료구조',
-    //     content: '스택이랑 큐의 차이점을 자세히 설명해 주세요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ',
-    //     img: '/Icons/1607-2.jpg',
-    //     now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '컴퓨터시스템개론'],
-    //     picked_index: 0,
-    //     scrap: 0,
-    //     time: "2024-08-13T10:21:34.123Z",
-    //     views: 88,
-    //     like: 48,
-    //     warn: 0
-    // },
-    // {
-    //     _id: '46848w9e98w19eqk878e2ea434',
-    //     restricted_type: 0,
-    //     user_main: '글로벌미디어학부 이동현',
-    //     user_img: '',
-    //     user_badge_img: '',
-    //     Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
-    //     Ruser: "66add0ecd802d72c8a54be3d",
-    //     answer_list: [
-    //         {user_grade: 'A+', _id: "66add0ecd802d72c8a54be41"}
-    //     ],
-    //     title: '미디어제작및실습 포토샵',
-    //     content: '포토샵 재학생 인증 어떻게 하나요?? 알려주시면 좋은 행운이 찾아올 거예요~',
-    //     img: '',
-    //     now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '미디어제작및실습'],
-    //     picked_index: 0,
-    //     scrap: 0,
-    //     time: "2024-08-14T05:45:30.246Z",
-    //     views: 302,
-    //     like: 12,
-    //     warn: 0
-    // },
+    {
+        _id: '463846736919eqk876e4q91b9',
+        restricted_type: 1,
+        user_main: '글로벌미디어학부 이예진',
+        user_img: '',
+        user_badge_img: '',
+        Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
+        Ruser: "66add0ecd802d72c8a54be3d",
+        answer_list: [
+            {
+                Ranswer: '463846736919eqk876e4q91b9',
+                QNAcategory: ['전공선택별', 'IT대', '글로벌미디어학부', '디지털미디어원리'],
+                content: '1번 답: 01101101',
+                hakbu: "글로벌미디어학부",
+                img_list: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
+                level: 15,
+                like: 13,
+                name: '오준우',
+                user_grade: "A+",
+            }
+        ],
+        title: '나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?',
+        content: '나이키스트 관련 식 이렇게 이해하면 되나요?',
+        img: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg', '/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg','/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg','/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg', '/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
+        now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '디지털미디어원리'],
+        picked_index: 0,
+        scrap: 0,
+        time: "2024-08-12T10:21:34.123Z",
+        views: 30,
+        like: 20,
+        warn: 0
+    },
+    {
+        _id: '7962156648w19eqk878e268qb',
+        restricted_type: 2,
+        user_main: '글로벌미디어학부 오준우',
+        user_img: '',
+        user_badge_img: '',
+        Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
+        Ruser: "66add0ecd802d72c8a54be3d",
+        answer_list: [
+            {
+                Ranswer: '7962156648w19eqk878e268qb',
+                QNAcategory: ['전공선택별', 'IT대', '글로벌미디어학부', '컴퓨터시스템개론'],
+                content: '몰라이씨',
+                hakbu: "글로벌미디어학부",
+                img_list: ["/Icons/1607-2.jpg"],
+                level: 15,
+                like: 30,
+                name: '김난슬',
+                user_grade: 'A+',
+            }
+        ],
+        title: '자료구조',
+        content: '스택이랑 큐의 차이점을 자세히 설명해 주세요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ',
+        img: '/Icons/1607-2.jpg',
+        now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '컴퓨터시스템개론'],
+        picked_index: 0,
+        scrap: 0,
+        time: "2024-08-13T10:21:34.123Z",
+        views: 88,
+        like: 48,
+        warn: 0
+    },
+    {
+        _id: '46848w9e98w19eqk878e2ea434',
+        restricted_type: 0,
+        user_main: '글로벌미디어학부 이동현',
+        user_img: '',
+        user_badge_img: '',
+        Rnotifyusers_list: ['66add0ecd802d72c8a54be40'],
+        Ruser: "66add0ecd802d72c8a54be3d",
+        answer_list: [
+            {
+                Ranswer: '46848w9e98w19eqk878e2ea434',
+                QNAcategory: ['전공선택별', 'IT대', '글로벌미디어학부', '미디어제작및실습'],
+                content: '채택해 주세요.',
+                hakbu: "글로벌미디어학부",
+                img_list: ["/Icons/1607-2.jpg"],
+                level: 15,
+                like: 28,
+                name: '이동현',
+                user_grade: 'A+', 
+            }
+        ],
+        title: '미디어제작및실습 포토샵',
+        content: '포토샵 재학생 인증 어떻게 하나요?? 알려주시면 좋은 행운이 찾아올 거예요~',
+        img: '',
+        now_category_list: ['전공선택별', 'IT대', '글로벌미디어학부', '미디어제작및실습'],
+        picked_index: 0,
+        scrap: 0,
+        time: "2024-08-14T05:45:30.246Z",
+        views: 302,
+        like: 12,
+        warn: 0
+    },
     {
         _id: '66add0ecd802d72c8a54be3c',
         restricted_type: 0,
@@ -108,60 +138,6 @@ const initialQuestionData = [
         warn: 0,
     }
 ];
-
-const initialAnswerData = [
-    {
-        _id: '7196584we6456e481q770q23b9',
-        QNAcategory: ['IT대학', '컴퓨터공학과'],
-        QNAtitle: '나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?',
-        Rqna: '463846736919eqk876e4q91b9',
-        content: '1번 답: 01101101',
-        img_list: ['/Icons/1607-2.jpg', '/Icons/22376525_6628724.jpg'],
-        like: 13,
-        name: '오준우',
-        level: 15,
-        grade: 'A+',
-        major: '글로벌미디어학부',
-        profileImg: '/Icons/Pen.svg',
-    },
-    {
-        _id: '451491268qqdvsdf8728qb',
-        post_id: '7962156648w19eqk878e268qb',
-        name: '김난슬',
-        level: 15,
-        grade: 'A+',
-        major: '글로벌미디어학부',
-        profileImg: '/Icons/Pen.svg',
-        content: '몰라이씨',
-        img: "/Icons/1607-2.jpg",
-        like: 30,
-    },
-    {
-        _id: '13adfw6215415aqkaffsd434',
-        post_id: '46848w9e98w19eqk878e2ea434',
-        name: '이동현',
-        level: 15,
-        grade: 'A+',
-        major: '글로벌미디어학부',
-        profileImg: '/Icons/Pen.svg',
-        content: '채택해 주세요.',
-        img: "/Icons/1607-2.jpg",
-        like: 28,
-    },
-    {
-        _id: '131634wifg36ei54973q469',
-        post_id: '463846736919eqk876e4q91b9',
-        name: '이동현',
-        level: 15,
-        grade: 'A+',
-        major: '글로벌미디어학부',
-        profileImg: '/Icons/Pen.svg',
-        content: '채택해 주세요.',
-        img: "/Icons/1607-2.jpg",
-        like: 3,
-    }
-    
-]
 
 const initialUserData = [
     {
