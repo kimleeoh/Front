@@ -157,7 +157,7 @@ const QnAPage = () => {
 
     // const fetchData = async () => {
     //     try {
-    //         const result = await BaseAxios.get('/api/dummy/qna');
+    //         const result = await BaseAxios.get('/api/dummy/testqna');
     //         setQuestionData([result.data]);
     //         console.log(result.data)
     //     } catch (error) {

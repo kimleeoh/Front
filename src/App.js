@@ -25,6 +25,10 @@ import Bookmarks from "./stories/pages/Menu/Bookmarks";
 import History from "./stories/pages/Menu/History";
 import TermsOfServicePage from "./stories/pages/Menu/TermsOfServicePage";
 
+import Confirmationpage from "./stories/pages/Confirmation/ConfirmationPage";
+import Submit from "./stories/pages/Confirmation/Submit"
+import Alert from "./stories/pages/Confirmation/Alert";
+
 import Error from "./stories/pages/Error";
 import Loading from "./stories/pages/Loading";
 
@@ -74,6 +78,12 @@ const App = () => {
         <Route path="/bookmarks" element={<Bookmarks />} />
         <Route path="/history" element={<History />} />
         <Route path="/terms" element={<TermsOfServicePage />} />
+
+        <Route path="/confirm" element={<Confirmationpage />} />
+        <Route path="/confirm/newComer" element={<Submit />} />
+        <Route path="/confirm/registeredStudent" element={<Submit />} />
+        <Route path="/confirm/graduate" element={<Submit />} />
+        <Route path="/verify" element={<Alert />} />
 
         <Route path="/*" element={<Error />} />
       </Routes>

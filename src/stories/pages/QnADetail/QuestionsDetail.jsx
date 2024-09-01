@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Tool from '../../components/Common/Tool';
 import CarouselTemp from '../../components/Common/CarouselTemp';
+import CarouselTemp2 from '../../components/Common/CarouselTemp2'
 import getTimeElapsed from '../../components/Common/getTimeElapsed';
 import CategoryPath from '../../components/Common/CategoryPath';
 
@@ -118,7 +119,7 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
                 </MetaContainer>
                 <Content>{content}</Content>
 
-                {images.length > 0 && (
+                {/* {images.length > 0 && (
                     <CarouselWrapper>
                         <CarouselTemp
                             width="380px"
@@ -132,7 +133,14 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
                             ))}
                         </CarouselTemp>
                     </CarouselWrapper>
-                )}
+                )} */}
+                <CarouselTemp2 
+                    images={images} 
+                    width={'400px'} 
+                    slideWidth={100}
+                    showBullets={false} 
+                    floatingArrows={false} 
+                />
 
                 <Tool 
                     like={like} 
