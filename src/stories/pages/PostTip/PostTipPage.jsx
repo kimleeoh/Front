@@ -33,6 +33,7 @@ const PostQuestionPage = () => {
     });
 
     const [isFormValid, setIsFormValid] = useState(false);
+    const [showValidationMessages, setShowValidationMessages] = useState(false);
 
     const [userData, setUserData] = useState([]);
     useEffect(() => {
@@ -100,18 +101,43 @@ const PostQuestionPage = () => {
 
         const now = new Date().toISOString();
 
-        // Update 'time' first then proceed with form submission
-        setFormValues((prevFormValues) => {
-            const user = userData[0] || {};
-            const updatedFormValues = { ...prevFormValues, name: user.name, major: user.major, time: now };
-            
-            if (isFormValid) {
-                // Add your API call here to send updatedFormValues to the backend.
-                console.log(updatedFormValues);
-            }
+        const user = userData[0] || {};
+        const updatedFormValues = { 
+            ...formValues, 
+            name: user.name, 
+            major: user.major, 
+            profileImg: user.profileImg, 
+            time: now 
+        };
 
-            return updatedFormValues;
-        });
+        const { title, board, tags, content } = formValues;
+        const isFormValid = title.trim() !== '' && board.length > 0 && tags.length > 0 && content.trim() !== '';
+
+        if (isFormValid) {
+            // Add your API call here to send updatedFormValues to the backend.
+            console.log(updatedFormValues);
+        } else {
+            setShowValidationMessages(true);
+        }
+    };
+
+    const renderValidationMessages = () => {
+        const { title, board, tags, content } = formValues;
+
+        if (title.trim() === '') {
+            return <ValidationMessage> 제목을 입력해 주세요.</ValidationMessage>;
+        }
+        if (board.length === 0) {
+            return <ValidationMessage> 게시판을 선택해 주세요.</ValidationMessage>;
+        }
+        if (tags.length === 0) {
+            return <ValidationMessage> 카테고리를 선택해 주세요.</ValidationMessage>;
+        }
+        if (content.trim() === '') {
+            return <ValidationMessage>내용을 입력해 주세요.</ValidationMessage>;
+        }
+    
+        return null;
     };
 
 
@@ -125,14 +151,11 @@ const PostQuestionPage = () => {
                 placeholder={'제목 입력'}  
                 onChange={(value) => handleInputChange('title', value)}
             />
-            {!formValues.title.trim() && <HelperText>제목 입력이 필요합니다.</HelperText>}
             <SelectBoard 
                 options={boardOptions} 
                 onChange={(value) => handleInputChange('board', value)}
             />
-            {formValues.board.length === 0 && <HelperText>게시판 선택이 필요합니다.</HelperText>}
             <ChipFilter onFilterChange={(value) => handleInputChange('tags', value)} />
-            {formValues.tags.length === 0 && <HelperText>필터 선택이 필요합니다.</HelperText>}
             <TextArea 
                 width={'380px'} 
                 height={'300px'} 
@@ -140,22 +163,17 @@ const PostQuestionPage = () => {
                 placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."} 
                 onChange={(value) => handleInputChange('content', value)}
             />
-            {!formValues.content.trim() && <HelperText>내용 입력이 필요합니다.</HelperText>}
             <ImageUploader onChange={(value) => handleInputChange('images', value)}/>
             <StyledDiv>
                 <span>일정 포인트를 자동으로 지급해줘요.</span>
             </StyledDiv>
-            {/* <CheckBar text={'A 이상의 답변만 받고 싶어요.'}/>
-            <Condition>
-                <span style={{fontSize: '10px', color: '#D00303', marginLeft: '20px'}}>100p 이상 입력해야 조건을 제시할 수 있습니다.</span>
-            </Condition> */}
             <Button 
                 label={'등록하기'} 
                 width={'380px'} 
                 style={{marginTop: '15px'}} 
                 onClick={handleFormSubmit}
-                disabled={!isFormValid}
             />
+            {showValidationMessages && renderValidationMessages()}
         </Wrapper>
     )
 }
@@ -183,16 +201,15 @@ const StyledDiv = styled.div`
     width: 380px;
     padding: 10px;
     border: none;
-    border-radius: 10px;
+    border-radius: 15px;
     color: #434B60;
     background-color: #F0F2F4;
 
     margin-top: 10px;
 `
 
-const HelperText = styled.span`
+const ValidationMessage = styled.div`
     color: #D00303;
-    font-size: 10px;
+    font-size: 12px;
     margin-top: 5px;
-    display: flex;
 `;

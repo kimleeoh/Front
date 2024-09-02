@@ -65,6 +65,14 @@ const StyledTextInput = styled.input`
     }
 `;
 
+const Asterisk = styled.img`
+    position: relative;
+    right: 120px;
+    bottom: 35px;
+    width: 8px;
+    height: 8px;
+`
+
 TextInput.propTypes = {
     width: PropTypes.string,
     height: PropTypes.string,
@@ -73,7 +81,7 @@ TextInput.propTypes = {
     backgroundColor: PropTypes.string,
     fontSize: PropTypes.string,
     marginTop: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
 };
 
 TextInput.defaultProps = {
