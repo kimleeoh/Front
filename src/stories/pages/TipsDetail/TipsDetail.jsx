@@ -4,78 +4,8 @@ import PropTypes from 'prop-types';
 import Tool from '../../components/Common/Tool';
 import getTimeElapsed from '../../components/Common/getTimeElapsed';
 
-const TipsDetail = ({ id, name, major, title, subject, content, time, views, like, img }) => {
+const TipsDetail = ({ _id, name, major, title, subject, content, time, views, like, img }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
-
-    const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
-    const [isSaveEnabled, setIsSaveEnabled] = useState(false);
-
-    const handleNotificationToggle = () => {
-        setIsNotificationEnabled(!isNotificationEnabled);
-        if (!isNotificationEnabled) {
-            // Send notification data when enabled
-            sendNotificationData({
-                postId: id,
-            });
-        } else {
-            // Remove notification data when disabled
-            removeNotificationData({
-                postId: id
-            });
-        }
-    };
-
-    const sendNotificationData = (data) => {
-        // This function would send the notification data to your backend or local storage
-        console.log("Notification enabled for post:", data);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
-    };
-
-    const removeNotificationData = (postId) => {
-        // This function would remove the notification data
-        console.log("Notification disabled for post:", postId);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.removeItem(`notification_${postId}`);
-    };
-
-    const handleSaveToggle = () => {
-        setIsSaveEnabled(!isSaveEnabled);
-        if (!isSaveEnabled) {
-            // Send notification data when enabled
-            sendSaveData({
-                postId: id,
-            });
-        } else {
-            // Remove notification data when disabled
-            removeSaveData({
-                postId: id}
-            );
-        }
-    };
-
-    const sendSaveData = (data) => {
-        // This function would send the notification data to your backend or local storage
-        console.log("Save enabled for post:", data);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
-    };
-
-    const removeSaveData = (postId) => {
-        // This function would remove the notification data
-        console.log("Save disabled for post:", postId);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.removeItem(`notification_${postId}`);
-    };
-
-    const handleReport = () => {
-        console.log("Reported post:", id);
-        alert(`Post with ID: ${id} has been reported.`);
-    };
 
     return (
         <OutWrapper>
@@ -116,9 +46,7 @@ const TipsDetail = ({ id, name, major, title, subject, content, time, views, lik
                 <Tool 
                     like={like} 
                     report={true} 
-                    onSaveToggle={handleSaveToggle}
-                    onNotificationToggle={handleNotificationToggle}
-                    onReportToggle={handleReport}
+                    _id={_id}
                 />
             </Wrapper>
         </OutWrapper>
@@ -128,7 +56,7 @@ const TipsDetail = ({ id, name, major, title, subject, content, time, views, lik
 export default TipsDetail;
 
 TipsDetail.propTypes = {
-    id: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     major: PropTypes.string.isRequired,
     subject: PropTypes.string.isRequired,
@@ -141,7 +69,7 @@ TipsDetail.propTypes = {
 };
 
 TipsDetail.defaultProps = {
-    id: 0,
+    _id: 0,
     name: '이름',
     major: '전공',
     title: '제목',

@@ -22,12 +22,6 @@ const Submit = () => {
     const handleSubmit = () => {
         // Implement the submission logic here
         console.log("File submitted:", selectedFile);
-        BaseAxios.post('/api/warn', {
-            warnWhy: 0 // 신고 사유에 따라 달라짐
-        })
-        .then(function(response) {
-            console.log(response)
-        })
         navigate('/verify');
         // Navigate to another page or show a success message
     };

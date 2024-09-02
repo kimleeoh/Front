@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Tool from '../../components/Common/Tool';
+import Report from '../../components/Common/Report';
 import CarouselTemp from '../../components/Common/CarouselTemp';
 import CarouselTemp2 from '../../components/Common/CarouselTemp2'
 import getTimeElapsed from '../../components/Common/getTimeElapsed';
@@ -9,72 +10,6 @@ import CategoryPath from '../../components/Common/CategoryPath';
 
 const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views, like, img, limit, likePost }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
-
-
-    const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
-    const [isSaveEnabled, setIsSaveEnabled] = useState(false);
-
-    const handleNotificationToggle = () => {
-        setIsNotificationEnabled(!isNotificationEnabled);
-        if (!isNotificationEnabled) {
-            // Send notification data when enabled
-            sendNotificationData({
-                postId: _id,
-            });
-        } else {
-            // Remove notification data when disabled
-            removeNotificationData({
-                postId: _id
-            });
-        }
-    };
-
-    const sendNotificationData = (data) => {
-        // This function would send the notification data to your backend or local storage
-        console.log("Notification enabled for post:", data);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
-    };
-
-    const removeNotificationData = (postId) => {
-        // This function would remove the notification data
-        console.log("Notification disabled for post:", postId);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.removeItem(`notification_${postId}`);
-    };
-
-    const handleSaveToggle = () => {
-        setIsSaveEnabled(!isSaveEnabled);
-        if (!isSaveEnabled) {
-            // Send notification data when enabled
-            sendSaveData({
-                postId: _id,
-            });
-        } else {
-            // Remove notification data when disabled
-            removeSaveData({
-                postId: _id
-            });
-        }
-    };
-
-    const sendSaveData = (data) => {
-        // This function would send the notification data to your backend or local storage
-        console.log("Save enabled for post:", data);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
-    };
-
-    const removeSaveData = (postId) => {
-        // This function would remove the notification data
-        console.log("Save disabled for post:", postId);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.removeItem(`notification_${postId}`);
-    };
 
     const [isLiked, setIsLiked] = useState(false);
     const [likePostId, setLikePost] = useState(likePost);
@@ -97,17 +32,12 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
         console.log("Post unliked:", _id);
     }
 
-    const handleReport = () => {
-        console.log(`Reported post with ID: ${_id}`);
-        alert(`Post with ID: ${_id} has been reported.`);
-    };
-
     return (
         <OutWrapper>
             <Wrapper>
                 <TopBar>
                     <CategoryPath categories={subject} />
-                    <Button onClick={handleReport} style={{marginLeft: 'auto'}} ><img src="/Icons/report.svg" /></Button>
+                    <Button onClick={() => Report(_id={_id})} style={{marginLeft: 'auto'}} ><img src="/Icons/report.svg" /></Button>
                 </TopBar>
                 <Title>
                     <img src="/Icons/Q.svg" alt="Q icon" />
@@ -145,11 +75,9 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
                 <Tool 
                     like={like} 
                     report={false} 
-                    onSaveToggle={handleSaveToggle}
-                    onNotificationToggle={handleNotificationToggle}
                     handleLike={handleLike}
                     handleUnlike={handleUnlike}
-                    isLikedPost={isLiked}
+                    _id={_id}
                 />
             </Wrapper>
         </OutWrapper>

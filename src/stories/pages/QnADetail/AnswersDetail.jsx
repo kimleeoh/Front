@@ -1,16 +1,12 @@
 import react, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import Report from '../../components/Common/Report'
 import Tool from '../../components/Common/Tool';
 import CarouselTemp from '../../components/Common/CarouselTemp';
 
 const Answers = ({_id, name, level, user_grade, major, content, img, like }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
-
-    const handleReport = () => {
-        console.log(`Reported post with ID: ${_id}`);
-        alert(`Post with ID: ${_id} has been reported.`);
-    };
     
     return (
         <OutWrapper>
@@ -22,7 +18,7 @@ const Answers = ({_id, name, level, user_grade, major, content, img, like }) => 
                         <LevelGrade>Lv. {level} | {user_grade} 등급</LevelGrade>
                         <MajorName>{major} {name}</MajorName>
                      </ProfileContainer>
-                     <Button style={{marginLeft: 'auto'}}><img src="/Icons/report.svg" onClick={handleReport} /></Button>
+                     <Button style={{marginLeft: 'auto'}}><img src="/Icons/report.svg" onClick={() => Report(_id={_id})} /></Button>
                 </SubWrapper>
                 <Content>{content}</Content>
 
@@ -43,7 +39,7 @@ const Answers = ({_id, name, level, user_grade, major, content, img, like }) => 
                     </CarouselWrapper>
                 )}
 
-                <Tool like={like} save={false} notification={false} report={false}/>
+                <Tool like={like} save={false} notification={false} report={false} _id={_id}/>
             </Wrapper>
         </OutWrapper>
     );
