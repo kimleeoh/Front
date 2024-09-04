@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const SearchField = ({ placeholder, onSearch }) => {
+const SearchField = ({ placeholder, onSearch, width }) => {
     const [query, setQuery] = useState('');
+    const [isFocused, setIsFocused] = useState(false);
 
     const handleInputChange = (e) => {
         setQuery(e.target.value);
@@ -23,8 +24,16 @@ const SearchField = ({ placeholder, onSearch }) => {
         setQuery('');
     };
 
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+
+    const handleBlur = () => {
+        setIsFocused(false);
+    };
+
     return (
-        <SearchContainer>
+        <SearchContainer width={width}>
             <SearchButton onClick={handleSearch}>
                 <img src="/Icons/Search.svg" alt="Search" />
             </SearchButton>
@@ -33,10 +42,12 @@ const SearchField = ({ placeholder, onSearch }) => {
                 value={query}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
                 placeholder={placeholder || "검색어를 입력하세요"}
             />
-            {query && (
-                <ClearButton onClick={clearSearch}>
+            {query && isFocused && (
+                <ClearButton onMouseDown={clearSearch}>
                     ×
                 </ClearButton>
             )}
@@ -47,6 +58,7 @@ const SearchField = ({ placeholder, onSearch }) => {
 SearchField.propTypes = {
     placeholder: PropTypes.string,
     onSearch: PropTypes.func.isRequired,  // 검색 작업을 처리할 함수
+    width: PropTypes.string,
 };
 
 export default SearchField;
@@ -54,7 +66,7 @@ export default SearchField;
 const SearchContainer = styled.div`
     display: flex;
     align-items: center;
-    width: 100%;
+    width: ${({ width }) => width || '100%'};
     height: 40px;
     max-width: 400px;
     border: none;
@@ -62,8 +74,7 @@ const SearchContainer = styled.div`
     overflow: hidden;
     background-color: #e2e5e9;
     padding: 5px 0px;
-
-    
+    transition: all 0.3s ease;
 `;
 
 const SearchInput = styled.input`
@@ -90,6 +101,6 @@ const ClearButton = styled.button`
     cursor: pointer;
     outline: none;
     
-    font-size: 30px;
+    font-size: 35px;
     color: #434b60;
 `;

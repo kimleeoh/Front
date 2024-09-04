@@ -8,6 +8,7 @@ import HomePage from './stories/pages/Home/HomePage';
 import AlertPage from './stories/pages/Home/AlertPage';
 import QnAPage from './stories/pages/QnA/QnAPage'; 
 import TipsPage from './stories/pages/Tips/TipsPage'; 
+import Searching from './stories/pages/Searching';
 
 import QnADetailPage from './stories/pages/QnADetail/QnADetailPage';
 import TipsDetailPage from './stories/pages/TipsDetail/TipsDetailPage';
@@ -20,6 +21,7 @@ import UnifiedBoard from './stories/pages/Board/UnifiedBoard';
 import MenuPage from './stories/pages/Menu/MenuPage';
 import MyPage from './stories/pages/Menu/Mypage';
 import Grades from './stories/pages/Menu/Grades';
+import GradeRegister from './stories/pages/Menu/GradeRegister';
 import MyBoard from './stories/pages/Menu/MyBoard';
 import Bookmarks from './stories/pages/Menu/Bookmarks';
 import History from './stories/pages/Menu/History';
@@ -55,6 +57,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<StartPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
+                <Route path="/search" element={<Searching />} />
                 
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/notification" element={<AlertPage />} />
@@ -71,6 +74,7 @@ const App = () => {
                 <Route path="/menu" element={<MenuPage />} />
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/grades" element={<Grades />} />
+                <Route path="/grades/verify" element={<GradeRegister />} />
                 <Route path="/myboard" element={<MyBoard />} />
                 <Route path="/bookmarks" element={<Bookmarks />} />
                 <Route path="/history" element={<History />} />

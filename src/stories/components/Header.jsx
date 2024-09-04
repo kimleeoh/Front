@@ -15,6 +15,10 @@ const Header = forwardRef(({ showIcon, text, backButton, searchButton, onClick, 
     }
   };
 
+  const handleSearchClick = () => {
+    navigate('/search');
+  };
+
   return (
     <TopLayout>
       <Head>
@@ -38,7 +42,7 @@ const Header = forwardRef(({ showIcon, text, backButton, searchButton, onClick, 
         
         <RightContent ref={ref}>
           {searchButton && !children && (
-            <IconButton>
+            <IconButton onClick={handleSearchClick}>
               <img src="/Icons/Search.svg" alt="Search" />
             </IconButton>
           )}
@@ -121,6 +125,8 @@ const LeftContent = styled.div`
 
 const RightContent = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: row;
   right: 15px;
   top: 50%;
   transform: translateY(-50%);

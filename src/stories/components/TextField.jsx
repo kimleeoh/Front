@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const TextField = ({ label, value: externalValue, onChange, disabled, type, width, name }) => {
   const [inputValue, setInputValue] = useState(externalValue || '');
   const [isFocused, setIsFocused] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // 1. 상태 추가
 
   useEffect(() => {
     setInputValue(externalValue || '');
@@ -25,6 +26,10 @@ const TextField = ({ label, value: externalValue, onChange, disabled, type, widt
     }
   };
 
+  const togglePasswordVisibility = () => { // 2. 토글 핸들러 추가
+    setIsPasswordVisible(prev => !prev);
+  };
+
   return (
     <TextFieldWrapper width={width}>
       <InputWrapper>
@@ -36,7 +41,7 @@ const TextField = ({ label, value: externalValue, onChange, disabled, type, widt
           {label}
         </StyledLabel>
         <Input
-          type={type}
+          type={type === 'password' && isPasswordVisible ? 'text' : type} // 2. 타입 변경
           value={inputValue}
           onChange={handleChange}
           onFocus={() => setIsFocused(true)}
@@ -44,8 +49,18 @@ const TextField = ({ label, value: externalValue, onChange, disabled, type, widt
           disabled={disabled}
           name={name} // name 속성 추가
         />
-        {inputValue && !disabled && isFocused && (
-          <ClearButton onMouseDown={clearInput}>×</ClearButton>
+        {inputValue && !disabled && isFocused && ( // 3. 조건부 렌더링
+          type === 'password' ? (
+            <ToggleButton 
+              onMouseDown={togglePasswordVisibility} 
+              type="button" 
+              aria-label={isPasswordVisible ? '비밀번호 숨기기' : '비밀번호 보기'}
+            >
+              {isPasswordVisible ? '🙈' : '👁️'}
+            </ToggleButton>
+          ) : (
+            <ClearButton onMouseDown={clearInput}>×</ClearButton>
+          )
         )}
       </InputWrapper>
     </TextFieldWrapper>
@@ -73,6 +88,7 @@ TextField.defaultProps = {
 
 export default TextField;
 
+// 기존 스타일 컴포넌트 유지
 const TextFieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -120,6 +136,22 @@ const ClearButton = styled.button`
   background: none;
   border: none;
   font-size: 35px;
+  cursor: pointer;
+  color: #434b60;
+  padding: 10px;
+  transition: color 0.2s ease;
+  &:hover {
+    color: #000;
+  }
+`;
+
+// 4. ToggleButton 추가
+const ToggleButton = styled.button`
+  position: absolute;
+  right: 3%;
+  background: none;
+  border: none;
+  font-size: 20px;
   cursor: pointer;
   color: #434b60;
   padding: 10px;
