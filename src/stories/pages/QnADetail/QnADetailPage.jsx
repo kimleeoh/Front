@@ -19,7 +19,7 @@ const initialQuestionData = [
         Ruser: "66add0ecd802d72c8a54be3d",
         answer_list: [
             {
-                Ranswer: '463846736919eqk876e4q91b9',
+                Ranswer: '2049682058edks8skfe4195b9',
                 QNAcategory: ['전공선택별', 'IT대', '글로벌미디어학부', '디지털미디어원리'],
                 content: '1번 답: 01101101',
                 hakbu: "글로벌미디어학부",

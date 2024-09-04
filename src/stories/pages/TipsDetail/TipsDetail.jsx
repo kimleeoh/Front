@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Tool from '../../components/Common/Tool';
 import getTimeElapsed from '../../components/Common/getTimeElapsed';
+import ImageDownloadList from './ImageDownloadList';
 
 const TipsDetail = ({ _id, name, major, title, subject, content, time, views, like, img }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
@@ -19,29 +20,13 @@ const TipsDetail = ({ _id, name, major, title, subject, content, time, views, li
 
                 {images.length > 0 && (
                     <ImageContainer>
-                        {/*여러 개 이미지 보이게 하기*/}
-                        {/* {images.map((image, index) => (
-                            <Image key={index} src={image} />
-                        ))} */}
-
                         {/*이미지 하나만 보이게 하기*/}
                         <Image src={images[0]} />
                     </ImageContainer>
                 )}
 
                 {/* Download section for multiple images */}
-                {images.length > 0 && (
-                    <DownloadContainer>
-                        {images.map((image, index) => (
-                            <FileContainer key={index}>
-                                <FileName>{`Image ${index + 1}`}</FileName>
-                                <DownloadLink href={image} download={`image${index + 1}`}>
-                                    <img src="/Icons/Download.svg" alt="Download icon"/>
-                                </DownloadLink>
-                            </FileContainer>
-                        ))}
-                    </DownloadContainer>
-                )}
+                <ImageDownloadList images={images}/>
 
                 <Tool 
                     like={like} 

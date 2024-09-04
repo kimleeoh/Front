@@ -177,22 +177,6 @@ const Image = styled.img`
     flex-shrink: 0;
 `;
 
-const DotContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-`;
-
-const Dot = styled.div`
-    width: 8px;
-    height: 8px;
-    margin: 0 4px;
-    background-color: ${props => props.isActive ? '#007bff' : '#bbb'};
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-`;
-
 const CarouselWrapper = styled.div`
     margin-top: 20px;
     width: 100%;

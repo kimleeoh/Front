@@ -49,7 +49,7 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
                 </MetaContainer>
                 <Content>{content}</Content>
 
-                {/* {images.length > 0 && (
+                {images.length > 0 && (
                     <CarouselWrapper>
                         <CarouselTemp
                             width="380px"
@@ -63,14 +63,7 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
                             ))}
                         </CarouselTemp>
                     </CarouselWrapper>
-                )} */}
-                <CarouselTemp2 
-                    images={images} 
-                    width={'400px'} 
-                    slideWidth={100}
-                    showBullets={false} 
-                    floatingArrows={false} 
-                />
+                )}
 
                 <Tool 
                     like={like} 
