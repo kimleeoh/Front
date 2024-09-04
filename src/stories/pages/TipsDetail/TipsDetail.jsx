@@ -3,79 +3,10 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Tool from '../../components/Common/Tool';
 import getTimeElapsed from '../../components/Common/getTimeElapsed';
+import ImageDownloadList from './ImageDownloadList';
 
-const TipsDetail = ({ id, name, major, title, subject, content, time, views, like, img }) => {
+const TipsDetail = ({ _id, name, major, title, subject, content, time, views, like, img }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
-
-    const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
-    const [isSaveEnabled, setIsSaveEnabled] = useState(false);
-
-    const handleNotificationToggle = () => {
-        setIsNotificationEnabled(!isNotificationEnabled);
-        if (!isNotificationEnabled) {
-            // Send notification data when enabled
-            sendNotificationData({
-                postId: id,
-            });
-        } else {
-            // Remove notification data when disabled
-            removeNotificationData({
-                postId: id
-            });
-        }
-    };
-
-    const sendNotificationData = (data) => {
-        // This function would send the notification data to your backend or local storage
-        console.log("Notification enabled for post:", data);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
-    };
-
-    const removeNotificationData = (postId) => {
-        // This function would remove the notification data
-        console.log("Notification disabled for post:", postId);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.removeItem(`notification_${postId}`);
-    };
-
-    const handleSaveToggle = () => {
-        setIsSaveEnabled(!isSaveEnabled);
-        if (!isSaveEnabled) {
-            // Send notification data when enabled
-            sendSaveData({
-                postId: id,
-            });
-        } else {
-            // Remove notification data when disabled
-            removeSaveData({
-                postId: id}
-            );
-        }
-    };
-
-    const sendSaveData = (data) => {
-        // This function would send the notification data to your backend or local storage
-        console.log("Save enabled for post:", data);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
-    };
-
-    const removeSaveData = (postId) => {
-        // This function would remove the notification data
-        console.log("Save disabled for post:", postId);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.removeItem(`notification_${postId}`);
-    };
-
-    const handleReport = () => {
-        console.log("Reported post:", id);
-        alert(`Post with ID: ${id} has been reported.`);
-    };
 
     return (
         <OutWrapper>
@@ -89,36 +20,18 @@ const TipsDetail = ({ id, name, major, title, subject, content, time, views, lik
 
                 {images.length > 0 && (
                     <ImageContainer>
-                        {/*여러 개 이미지 보이게 하기*/}
-                        {/* {images.map((image, index) => (
-                            <Image key={index} src={image} />
-                        ))} */}
-
                         {/*이미지 하나만 보이게 하기*/}
                         <Image src={images[0]} />
                     </ImageContainer>
                 )}
 
                 {/* Download section for multiple images */}
-                {images.length > 0 && (
-                    <DownloadContainer>
-                        {images.map((image, index) => (
-                            <FileContainer key={index}>
-                                <FileName>{`Image ${index + 1}`}</FileName>
-                                <DownloadLink href={image} download={`image${index + 1}`}>
-                                    <img src="/Icons/Download.svg" alt="Download icon"/>
-                                </DownloadLink>
-                            </FileContainer>
-                        ))}
-                    </DownloadContainer>
-                )}
+                <ImageDownloadList images={images}/>
 
                 <Tool 
                     like={like} 
                     report={true} 
-                    onSaveToggle={handleSaveToggle}
-                    onNotificationToggle={handleNotificationToggle}
-                    onReportToggle={handleReport}
+                    _id={_id}
                 />
             </Wrapper>
         </OutWrapper>
@@ -128,7 +41,7 @@ const TipsDetail = ({ id, name, major, title, subject, content, time, views, lik
 export default TipsDetail;
 
 TipsDetail.propTypes = {
-    id: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     major: PropTypes.string.isRequired,
     subject: PropTypes.string.isRequired,
@@ -141,7 +54,7 @@ TipsDetail.propTypes = {
 };
 
 TipsDetail.defaultProps = {
-    id: 0,
+    _id: 0,
     name: '이름',
     major: '전공',
     title: '제목',

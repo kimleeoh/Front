@@ -105,7 +105,7 @@ const initialQuestionData = [
 
 const initialTipsData = [
     {
-        id: '48578979aeb59a6b4e9668',
+        _id: '48578979aeb59a6b4e9668',
         name: '김난슬',
         major: '글로벌미디어학부',
         subject: '디지털미디어원리',
@@ -117,7 +117,7 @@ const initialTipsData = [
         filter: '필기공유'
     },
     {
-        id: '789516539dib587bb4e9w88',
+        _id: '789516539dib587bb4e9w88',
         name: '오준우',
         major: '글로벌미디어학부',
         subject: '컴퓨터시스템개론',
@@ -129,7 +129,7 @@ const initialTipsData = [
         filter: '수업꿀팁'
     },
     {
-        id: '1297268189apq577bb4e609e',
+        _id: '1297268189apq577bb4e609e',
         name: '이예진',
         major: '글로벌미디어학부',
         subject: '화장실론',
@@ -217,7 +217,7 @@ const UnifiedBoard = () => {
                             return (
                                 <Questions
                                     key={question._id}
-                                    id={question._id}
+                                    _id={question._id}
                                     title={question.title}
                                     content={question.content}
                                     subject={question.now_category_list[question.now_category_list.length - 1]}
@@ -240,8 +240,8 @@ const UnifiedBoard = () => {
                         .filter(tip => tip.subject === subject)
                         .map((tip) => (
                             <Tips
-                                key={tip.id}
-                                id={tip.id}
+                                key={tip._id}
+                                _id={tip._id}
                                 name={tip.name}
                                 major={tip.major}
                                 subject={tip.subject}

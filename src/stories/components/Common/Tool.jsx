@@ -1,14 +1,18 @@
 import react from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import BaseAxios from '../../../axioses/BaseAxios';
 import { useState } from 'react';
 
-const Tool = ({like, save, notification, report, onNotificationToggle, onSaveToggle, onReportToggle, isLikedPost,  handleLike, handleUnlike}) => {
+const Tool = ({like, save, notification, report, isLikedPost,  handleLike, handleUnlike, _id}) => {
     const [likesCount, setLikesCount] = useState(like);
     const [isUpClicked, setIsUpClicked] = useState(false);
     const [isDownClicked, setIsDownClicked] = useState(false);
 
     const [isLiked, setIsLiked] = useState(isLikedPost);
+
+    const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
+    const [isSaveEnabled, setIsSaveEnabled] = useState(false);
 
     const handleUpClick = () => {
         if (!isUpClicked && !isLiked) {
@@ -28,6 +32,79 @@ const Tool = ({like, save, notification, report, onNotificationToggle, onSaveTog
         }
     };
 
+    const handleNotificationToggle = () => {
+        setIsNotificationEnabled(!isNotificationEnabled);
+        if (!isNotificationEnabled) {
+            // Send notification data when enabled
+            sendNotificationData({
+                postId: _id,
+            });
+        } else {
+            // Remove notification data when disabled
+            removeNotificationData({
+                postId: _id
+            });
+        }
+    };
+
+    const sendNotificationData = (data) => {
+        // This function would send the notification data to your backend or local storage
+        console.log("Notification enabled for post:", data);
+        // Here you would typically make an API call or update local storage
+        // For example:
+        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
+    };
+
+    const removeNotificationData = (postId) => {
+        // This function would remove the notification data
+        console.log("Notification disabled for post:", postId);
+        // Here you would typically make an API call or update local storage
+        // For example:
+        // localStorage.removeItem(`notification_${postId}`);
+    };
+
+    const handleSaveToggle = () => {
+        setIsSaveEnabled(!isSaveEnabled);
+        if (!isSaveEnabled) {
+            // Send notification data when enabled
+            sendSaveData({
+                postId: _id,
+            });
+        } else {
+            // Remove notification data when disabled
+            removeSaveData({
+                postId: _id
+            });
+        }
+    };
+
+    const sendSaveData = (data) => {
+        // This function would send the notification data to your backend or local storage
+        console.log("Save enabled for post:", data);
+        // Here you would typically make an API call or update local storage
+        // For example:
+        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
+    };
+
+    const removeSaveData = (postId) => {
+        // This function would remove the notification data
+        console.log("Save disabled for post:", postId);
+        // Here you would typically make an API call or update local storage
+        // For example:
+        // localStorage.removeItem(`notification_${postId}`);
+    };
+
+    const handleReport = () => {
+        console.log(`Reported post with ID: ${_id}`);
+        alert(`Post with ID: ${_id} has been reported.`);
+        BaseAxios.post('/api/warn', {
+            warnWhy: 0 // 신고 사유에 따라 달라짐
+        })
+        .then(function(response) {
+            console.log(response)
+        })
+    };
+
     return(
         <Wrapper>
             <LikeButton
@@ -45,18 +122,18 @@ const Tool = ({like, save, notification, report, onNotificationToggle, onSaveTog
                 <ToolButton
                     disabledIconSrc='/Icons/Save_d.svg'
                     enabledIconSrc='/Icons/Save_e.svg'
-                    onClick={onSaveToggle}
+                    onClick={handleSaveToggle}
                 />
             )}
             {notification && (
                 <ToolButton
                     disabledIconSrc='/Icons/Notification_d.svg'
                     enabledIconSrc='/Icons/Notification_e.svg'
-                    onClick={onNotificationToggle}
+                    onClick={handleNotificationToggle}
                 />
             )}
             {report && (
-                <Button style={{marginLeft: 'auto'}} onClick={onReportToggle}><img src="/Icons/report.svg"></img></Button>
+                <Button style={{marginLeft: 'auto'}} onClick={handleReport}><img src="/Icons/report.svg"></img></Button>
             )}
         </Wrapper>
     )
@@ -89,11 +166,9 @@ Tool.propTypes = {
     save: PropTypes.bool.isRequired,
     notification: PropTypes.bool.isRequired,
     report: PropTypes.bool.isRequired,
-    onNotificationToggle: PropTypes.func,
-    onSaveToggle: PropTypes.func,
-    onReportToggle: PropTypes.func,
     handleLike: PropTypes.func,
     handleUnlike: PropTypes.func,
+    _id: PropTypes.string
 };
   
 Tool.defaultProps = {
@@ -102,11 +177,9 @@ Tool.defaultProps = {
     save: true,
     notification: true,
     report: true,
-    onNotificationToggle: () => {},
-    onSaveToggle: () => {},
-    onReportToggle: () => {},
     handleLike: () => {},
     handleUnlike: () => {},
+    _id: 0,
 };
 
 export default Tool;

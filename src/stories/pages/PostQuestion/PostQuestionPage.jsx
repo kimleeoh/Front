@@ -10,7 +10,7 @@ import SelectBoard from '../../components/Common/SelectBoard';
 import ImageUploader from '../../components/Common/ImageUploader2';
 import PointInput from './PointInput';
 import CheckBar from '../../components/Common/CheckBar';
-import Button from '../../components/Button'
+import Button from '../../components/Button';
 
 const initialUserData = [
     {
@@ -33,7 +33,7 @@ const PostQuestionPage = () => {
         time: '',
     });
 
-    const [isFormValid, setIsFormValid] = useState(false);
+    const [showValidationMessages, setShowValidationMessages] = useState(false);
     const [isPointInputDisabled, setIsPointInputDisabled] = useState(false);
 
     const boardOptions = [
@@ -48,7 +48,7 @@ const PostQuestionPage = () => {
                         {value: '문화&예술', label: '문화&예술'},
                         {value: '사회&정치&경제', label: '사회&정치&경제'},
                         {value: '인간&언어', label: '인간&언어'},
-                        {value: '자기개발&진로탐색', lable: '자기개발&진로탐색'},
+                        {value: '자기개발&진로탐색', label: '자기개발&진로탐색'},
                     ]},
                 { value: '기독교과목', label: '기독교과목' },
             ],
@@ -72,8 +72,6 @@ const PostQuestionPage = () => {
     ];
 
     const [userData, setUserData] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
     useEffect(() => {
         // Local storage operations for user data
@@ -87,41 +85,56 @@ const PostQuestionPage = () => {
         }
     }, []);
 
-    useEffect(() => {
-        const { title, board, content, point } = formValues;
-        const isValid = title.trim() !== '' && 
-                        board.length > 0 && 
-                        content.trim() !== '' && 
-                        point.trim() !== '';
-        setIsFormValid(isValid);
-    }, [formValues]);
-
     const handleInputChange = (name, value) => {
         setFormValues({ ...formValues, [name]: value });
     };
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-
         const now = new Date().toISOString();
 
-        // Update 'time' first then proceed with form submission
-        setFormValues((prevFormValues) => {
-            const user = userData[0] || {};
-            const updatedFormValues = { ...prevFormValues, name: user.name, major: user.major, profileImg: user.profileImg, time: now };
-            
-            if (isFormValid) {
-                // Add your API call here to send updatedFormValues to the backend.
-                console.log(updatedFormValues);
-            }
+        const user = userData[0] || {};
+        const updatedFormValues = { 
+            ...formValues, 
+            name: user.name, 
+            major: user.major, 
+            profileImg: user.profileImg, 
+            time: now 
+        };
 
-                return updatedFormValues;
-        });
+        const { title, board, content, point } = formValues;
+        const isFormValid = title.trim() !== '' && board.length > 0 && content.trim() !== '' && point.trim() !== '';
+
+        if (isFormValid) {
+            // Add your API call here to send updatedFormValues to the backend.
+            console.log(updatedFormValues);
+        } else {
+            setShowValidationMessages(true);
+        }
     };
 
     const handleCheckBarChange = (isChecked) => {
         handleInputChange('limit', isChecked);
         setIsPointInputDisabled(isChecked);
+    };
+
+    const renderValidationMessages = () => {
+        const { title, board, content, point } = formValues;
+
+        if (title.trim() === '') {
+            return <ValidationMessage> 제목을 입력해 주세요.</ValidationMessage>;
+        }
+        if (board.length === 0) {
+            return <ValidationMessage> 게시판을 선택해 주세요.</ValidationMessage>;
+        }
+        if (content.trim() === '') {
+            return <ValidationMessage>내용을 입력해 주세요.</ValidationMessage>;
+        }
+        if (point.trim() === '') {
+            return <ValidationMessage>포인트를 입력해 주세요.</ValidationMessage>;
+        }
+    
+        return null;
     };
 
     return (
@@ -132,51 +145,51 @@ const PostQuestionPage = () => {
                 height={'30px'} 
                 fontSize={'15px'} 
                 placeholder={'제목 입력'} 
-                marginTop={'10px'}
+                marginTop={'20px'}
                 onChange={(value) => handleInputChange('title', value)}
             />
-            {!formValues.title.trim() && <HelperText>제목 입력이 필요합니다.</HelperText>}
             <SelectBoard 
                 options={boardOptions} 
+                placeholder={'게시판 선택'}
                 onChange={(value) => handleInputChange('board', value)}
             />
-            {formValues.board.length === 0 && <HelperText>게시판 선택이 필요합니다.</HelperText>}
             <TextArea 
                 width={'380px'} 
                 height={'300px'} 
                 fontSize={'15px'}
-                placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."} 
+                placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요.*"} 
                 onChange={(value) => handleInputChange('content', value)}
             />
-            {!formValues.content.trim() && <HelperText>내용 입력이 필요합니다.</HelperText>}
             <ImageUploader onChange={(value) => handleInputChange('images', value)}/>
             {initialUserData.map((user) => (
-                <>
-                    <PointInput
-                        key={user.id}
-                        name={user.name}
-                        point={user.point}
-                        onChange={(value) => handleInputChange('point', value)}
-                        disabled={isPointInputDisabled}
-                    />
-                    {!formValues.point.trim() && <HelperText>포인트 입력이 필요합니다.</HelperText>}
-                </>
+                <PointInput
+                    key={user.id}
+                    name={user.name}
+                    point={user.point}
+                    onChange={(value) => handleInputChange('point', value)}
+                    disabled={isPointInputDisabled}
+                    placeholder={'포인트를 입력해 주세요'}
+                />
             ))}
             <CheckBar 
                 text={'A 이상의 답변만 받고 싶어요.'} 
                 onChange={handleCheckBarChange}
                 disabled={formValues.point < 100} 
             />
-            <Condition>
-                <span style={{ fontSize: '10px', color: '#D00303', marginLeft: '20px' }}>100p 이상 입력해야 조건을 제시할 수 있습니다.</span>
-            </Condition>
+            {formValues.point < 100 && (
+                <Condition>
+                    <span style={{ fontSize: '10px', color: '#D00303', marginLeft: '20px' }}>
+                        100p 이상 입력해야 조건을 제시할 수 있습니다.
+                    </span>
+                </Condition>
+            )}
             <Button 
                 label={'등록하기'} 
                 width={'380px'} 
                 style={{ marginTop: '15px' }} 
                 onClick={handleFormSubmit}
-                disabled={!isFormValid}
             />
+            {showValidationMessages && renderValidationMessages()}
         </Wrapper>
     );
 }
@@ -198,10 +211,8 @@ const Condition = styled.div`
     width: 380px;
 `;
 
-const HelperText = styled.span`
-    // width: 380px;
+const ValidationMessage = styled.div`
     color: #D00303;
-    font-size: 10px;
+    font-size: 12px;
     margin-top: 5px;
-    display: flex;
 `;

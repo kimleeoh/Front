@@ -37,6 +37,19 @@ const initialTipsData = [
     },
     {
         _id: '1297268189apq577bb4e609e',
+        Rfile: '19dfjakdf35gdi45892949',
+        Rnotifyusers_list: [],
+        Ruser: '5029ajd295anlf391030de',
+        content: '숭실대 건물들 화장실의 등급을 나눠봤습니다. 이용하실 때 참고 바랍니다.',
+        help_good: 45,
+        point: 0,
+        preview_img: '/Icons/1607-2.jpg',
+        time: "2024-08-14T05:45:30.246Z",
+        title: '숭실대 화장실 등급',
+        views: 30,
+        warn: 0,
+        filter: '수업꿀팁',
+
         name: '이예진',
         major: '글로벌미디어학부',
         subject: '화장실론',
@@ -68,7 +81,7 @@ const TipsPage = () => {
     const [TipsData, setTipsData] = useState([]);
     const [filteredTips, setFilteredTips] = useState([]);
 
-    BaseAxios.get('/api/dummy/tip').then((result)=>{
+    BaseAxios.get('/api/dummy/testtips').then((result)=>{
         console.log(result.data)
     })
 
@@ -102,7 +115,7 @@ const TipsPage = () => {
             {filteredTips.map((tip) => (
                 <Tips
                     key={tip._id}
-                    id={tip._id}
+                    _id={tip._id}
                     name={tip.name}
                     major={tip.major}
                     subject={tip.subject}

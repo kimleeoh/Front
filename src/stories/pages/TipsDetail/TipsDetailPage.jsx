@@ -70,8 +70,8 @@ const TipsDetailPage = () => {
             <Header showIcon={false} text={""} backButton={true} searchButton={false}/>
             {tipData.find(tip => tip._id === String(_id)) && (
                 <TipsDetail
-                    key={currentTip.id}
-                    id={currentTip.id}
+                    key={currentTip._id}
+                    _id={currentTip._id}
                     name={currentTip.name}
                     major={currentTip.major}
                     title={currentTip.title}
