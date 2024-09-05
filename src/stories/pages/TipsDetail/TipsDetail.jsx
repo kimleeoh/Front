@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Tool from '../../components/Common/Tool';
+import { Votes, Scrap, Notification, MeatballMenu } from '../../components/Common/Tool';
 import getTimeElapsed from '../../components/Common/getTimeElapsed';
 import ImageDownloadList from './ImageDownloadList';
 
@@ -28,11 +28,7 @@ const TipsDetail = ({ _id, name, major, title, subject, content, time, views, li
                 {/* Download section for multiple images */}
                 <ImageDownloadList images={images}/>
 
-                <Tool 
-                    like={like} 
-                    report={true} 
-                    _id={_id}
-                />
+                <Votes like={like} />
             </Wrapper>
         </OutWrapper>
     );

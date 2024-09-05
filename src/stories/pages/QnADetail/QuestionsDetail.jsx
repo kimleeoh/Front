@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Tool from '../../components/Common/Tool';
+import { Votes, Scrap, Notification, MeatballMenu } from '../../components/Common/Tool';
 import Report from '../../components/Common/Report';
 import CarouselTemp from '../../components/Common/CarouselTemp';
 import CarouselTemp2 from '../../components/Common/CarouselTemp2'
@@ -13,6 +13,8 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
 
     const [isLiked, setIsLiked] = useState(false);
     const [likePostId, setLikePost] = useState(likePost);
+    const [isSaved, setIsSaved] = useState(false);  // Scrap 상태 관리
+    const [isNotified, setIsNotified] = useState(false);  // Notification 상태 관리
 
     useEffect(() => {
         if (likePost.includes(_id)) {
@@ -31,13 +33,24 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
         setLikePost(likePost.filter(postId => postId !== _id));
         console.log("Post unliked:", _id);
     }
+    // Scrap 토글 핸들러
+    const handleSaveToggle = () => {
+        setIsSaved(!isSaved);
+        console.log("Scrap toggled:", isSaved);
+    };
+
+    // Notification 토글 핸들러
+    const handleNotificationToggle = () => {
+        setIsNotified(!isNotified);
+        console.log("Notification toggled:", isNotified);
+    };
 
     return (
         <OutWrapper>
             <Wrapper>
                 <TopBar>
                     <CategoryPath categories={subject} />
-                    <Button onClick={() => Report(_id={_id})} style={{marginLeft: 'auto'}} ><img src="/Icons/report.svg" /></Button>
+                    <MeatballMenu _id={_id} />
                 </TopBar>
                 <Title>
                     <img src="/Icons/Q.svg" alt="Q icon" />
@@ -65,13 +78,24 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
                     </CarouselWrapper>
                 )}
 
-                <Tool 
-                    like={like} 
-                    report={false} 
-                    handleLike={handleLike}
-                    handleUnlike={handleUnlike}
-                    _id={_id}
-                />
+                <BottomBar>
+                    <Votes
+                        like={like}
+                        handleLike={handleLike}
+                        handleUnlike={handleUnlike}
+                    />
+                    <div>
+                    <Notification
+                        isNotificationEnabled={isNotified}
+                        handleNotificationToggle={handleNotificationToggle}
+                    />
+                    <Scrap
+                        isSaveEnabled={isSaved}
+                        handleSaveToggle={handleSaveToggle}
+                    />
+                    </div>
+                </BottomBar>
+
             </Wrapper>
         </OutWrapper>
     );
@@ -129,6 +153,13 @@ const TopBar = styled.div`
     align-items: center;
 `
 
+const BottomBar = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+`;
+
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
@@ -167,24 +198,6 @@ const OutWrapper = styled.div`
     width: 400px;
 `;
 
-const ImageWrapper = styled.div`
-    position: relative;
-    margin-top: 20px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: grab;
-    user-select: none;
-`;
-
-const ImageContainer = styled.div`
-    display: flex;
-    width: 100%;
-    overflow: hidden;
-    
-`;
-
 const Image = styled.img`
     width: 380px;
     height: 380px;
@@ -194,42 +207,7 @@ const Image = styled.img`
     flex-shrink: 0;
 `;
 
-const DotContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-`;
-
-const Dot = styled.div`
-    width: 8px;
-    height: 8px;
-    margin: 0 4px;
-    background-color: ${props => props.isActive ? '#007bff' : '#bbb'};
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-`;
-
 const CarouselWrapper = styled.div`
     margin-top: 20px;
     width: 100%;
 `;
-
-const Button = styled.button`
-    display: flex;
-
-    border: 0px;
-    background-color: white;
-    transition: all 0.3s ease;
-
-    img{
-        width: 25px;
-        height: 25px;
-    }
-
-    cursor: pointer;
-
-    &:active {
-        scale: 0.85;
-    }
-`

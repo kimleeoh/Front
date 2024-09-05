@@ -2,7 +2,7 @@ import react, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Report from '../../components/Common/Report'
-import Tool from '../../components/Common/Tool';
+import { Votes, Scrap, Notification, MeatballMenu } from '../../components/Common/Tool';
 import CarouselTemp from '../../components/Common/CarouselTemp';
 
 const Answers = ({_id, name, level, user_grade, major, content, img, like }) => {
@@ -39,7 +39,8 @@ const Answers = ({_id, name, level, user_grade, major, content, img, like }) => 
                     </CarouselWrapper>
                 )}
 
-                <Tool like={like} save={false} notification={false} report={false} _id={_id}/>
+                <Votes like={like} />
+
             </Wrapper>
         </OutWrapper>
     );

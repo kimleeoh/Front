@@ -1,213 +1,228 @@
-import react from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import Popup from '../Popup';
 import BaseAxios from '../../../axioses/BaseAxios';
-import { useState } from 'react';
 
-const Tool = ({like, save, notification, report, isLikedPost,  handleLike, handleUnlike, _id}) => {
+export const Votes = ({ like, handleLike, handleUnlike }) => {
     const [likesCount, setLikesCount] = useState(like);
-    const [isUpClicked, setIsUpClicked] = useState(false);
-    const [isDownClicked, setIsDownClicked] = useState(false);
-
-    const [isLiked, setIsLiked] = useState(isLikedPost);
-
-    const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
-    const [isSaveEnabled, setIsSaveEnabled] = useState(false);
+    const [voteStatus, setVoteStatus] = useState(null); // null: no vote, 'up': upvoted, 'down': downvoted
 
     const handleUpClick = () => {
-        if (!isUpClicked && !isLiked) {
-            setLikesCount(likesCount + 1);
-            setIsUpClicked(true);
-            setIsDownClicked(false); // Enable down button
+        if (voteStatus === 'up') {
+            setLikesCount(likesCount - 1); // undo upvote
+            setVoteStatus(null);
+            handleUnlike();
+        } else {
+            setLikesCount(voteStatus === 'down' ? likesCount + 2 : likesCount + 1); // if downvoted before, add 2
+            setVoteStatus('up');
             handleLike();
         }
     };
 
     const handleDownClick = () => {
-        if (!isDownClicked && likesCount > 0) {
-            setLikesCount(likesCount - 1);
-            setIsDownClicked(true);
-            setIsUpClicked(false); // Enable up button
+        if (voteStatus === 'down') {
+            setLikesCount(likesCount + 1); // undo downvote
+            setVoteStatus(null);
+            handleUnlike();
+        } else {
+            setLikesCount(voteStatus === 'up' ? likesCount - 2 : likesCount - 1); // if upvoted before, subtract 2
+            setVoteStatus('down');
             handleUnlike();
         }
     };
 
-    const handleNotificationToggle = () => {
-        setIsNotificationEnabled(!isNotificationEnabled);
-        if (!isNotificationEnabled) {
-            // Send notification data when enabled
-            sendNotificationData({
-                postId: _id,
-            });
-        } else {
-            // Remove notification data when disabled
-            removeNotificationData({
-                postId: _id
-            });
-        }
-    };
-
-    const sendNotificationData = (data) => {
-        // This function would send the notification data to your backend or local storage
-        console.log("Notification enabled for post:", data);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
-    };
-
-    const removeNotificationData = (postId) => {
-        // This function would remove the notification data
-        console.log("Notification disabled for post:", postId);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.removeItem(`notification_${postId}`);
-    };
-
-    const handleSaveToggle = () => {
-        setIsSaveEnabled(!isSaveEnabled);
-        if (!isSaveEnabled) {
-            // Send notification data when enabled
-            sendSaveData({
-                postId: _id,
-            });
-        } else {
-            // Remove notification data when disabled
-            removeSaveData({
-                postId: _id
-            });
-        }
-    };
-
-    const sendSaveData = (data) => {
-        // This function would send the notification data to your backend or local storage
-        console.log("Save enabled for post:", data);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.setItem(`notification_${data.postId}`, JSON.stringify(data));
-    };
-
-    const removeSaveData = (postId) => {
-        // This function would remove the notification data
-        console.log("Save disabled for post:", postId);
-        // Here you would typically make an API call or update local storage
-        // For example:
-        // localStorage.removeItem(`notification_${postId}`);
-    };
-
-    const handleReport = () => {
-        console.log(`Reported post with ID: ${_id}`);
-        alert(`Post with ID: ${_id} has been reported.`);
-        BaseAxios.post('/api/warn', {
-            warnWhy: 0 // 신고 사유에 따라 달라짐
-        })
-        .then(function(response) {
-            console.log(response)
-        })
-    };
-
-    return(
-        <Wrapper>
-            <LikeButton
-                onClick={handleUpClick}
-                disabled={isUpClicked}
-                Icon='/Icons/Up.svg'
-            />
-            <span style={{color: '#3182F7'}}>{likesCount}</span>
-            <LikeButton
-                onClick={handleDownClick}
-                disabled={isDownClicked}
-                Icon='/Icons/Down.svg'
-            />
-            {save && (
-                <ToolButton
-                    disabledIconSrc='/Icons/Save_d.svg'
-                    enabledIconSrc='/Icons/Save_e.svg'
-                    onClick={handleSaveToggle}
-                />
-            )}
-            {notification && (
-                <ToolButton
-                    disabledIconSrc='/Icons/Notification_d.svg'
-                    enabledIconSrc='/Icons/Notification_e.svg'
-                    onClick={handleNotificationToggle}
-                />
-            )}
-            {report && (
-                <Button style={{marginLeft: 'auto'}} onClick={handleReport}><img src="/Icons/report.svg"></img></Button>
-            )}
-        </Wrapper>
-    )
-}
-
-const ToolButton = ({disabledIconSrc, enabledIconSrc, onClick, disabled}) => {
-    const [isChecked, setIsChecked] = useState(false);
-    const handleToolButtonClick = () => {
-        setIsChecked(!isChecked);
-        if (onClick) onClick();
-    };
     return (
-        <Button onClick={handleToolButtonClick}>
-            <img src={isChecked ? enabledIconSrc : disabledIconSrc} />
-        </Button>
-    )
-}
-
-const LikeButton = ({ onClick, disabled, Icon }) => {
-    return (
-        <Button onClick={onClick} disabled={disabled}>
-            <img src={Icon} alt="tool icon" />
-        </Button>
+        <VotesWrapper>
+            <VoteButton onClick={handleUpClick}>
+                <img
+                    src={voteStatus === 'up' ? '/Icons/Arrow_vote_on.svg' : '/Icons/Arrow_vote.svg'}
+                    alt="Upvote"
+                />
+            </VoteButton>
+            <VoteCount voted={voteStatus !== null}>{likesCount}</VoteCount>
+            <VoteButton onClick={handleDownClick}>
+                <img
+                    src={voteStatus === 'down' ? '/Icons/Arrow_vote_on.svg' : '/Icons/Arrow_vote.svg'}
+                    alt="Downvote"
+                    style={{ transform: 'rotate(180deg)' }}
+                />
+            </VoteButton>
+        </VotesWrapper>
     );
 };
 
-Tool.propTypes = {
-    isLikedPost: PropTypes.bool.isRequired,
+export const Scrap = () => {
+    const [isSaved, setIsSaved] = useState(false);
+
+    const handleSaveToggle = () => {
+        setIsSaved(!isSaved);
+        console.log('Scrap toggled:', isSaved ? 'Unsaved' : 'Saved');
+    };
+
+    return (
+        <ToolButton onClick={handleSaveToggle}>
+            <img
+                src={isSaved ? '/Icons/Save_e.svg' : '/Icons/Save_d.svg'}
+                alt="Scrap"
+            />
+        </ToolButton>
+    );
+};
+
+export const Notification = () => {
+    const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
+
+    const handleNotificationToggle = () => {
+        setIsNotificationEnabled(!isNotificationEnabled);
+        console.log('Notification toggled:', isNotificationEnabled ? 'Disabled' : 'Enabled');
+    };
+
+    return (
+        <ToolButton onClick={handleNotificationToggle}>
+            <img
+                src={isNotificationEnabled ? '/Icons/Notification_e.svg' : '/Icons/Notification_d.svg'}
+                alt="Notification"
+            />
+        </ToolButton>
+    );
+};
+
+export const MeatballMenu = React.forwardRef(({ _id, menuItems }, ref) => {
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
+    const menuRef = useRef(null);
+
+    const togglePopup = () => {
+        if (menuRef.current) {
+            const rect = menuRef.current.getBoundingClientRect();
+            setPopupPosition({
+                top: rect.bottom + window.scrollY, // 버튼 바로 아래에 위치
+                left: rect.left + window.scrollX,  // 버튼의 왼쪽에 맞춰 위치
+            });
+        }
+        setIsPopupVisible(!isPopupVisible);
+    };
+
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            setIsPopupVisible(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    return (
+        <>
+            <MenuButton ref={menuRef} onClick={togglePopup}>
+                <img src="/Icons/meatballs.svg" alt="Meatball Menu" />
+            </MenuButton>
+            {isPopupVisible && (
+                <Popup 
+                    title="Menu" 
+                    onClose={() => setIsPopupVisible(false)} 
+                    position={popupPosition} // 팝업 위치 전달
+                >
+                    {menuItems}
+                </Popup>
+            )}
+        </>
+    );
+});
+
+// PropTypes
+Votes.propTypes = {
     like: PropTypes.number.isRequired,
-    save: PropTypes.bool.isRequired,
-    notification: PropTypes.bool.isRequired,
-    report: PropTypes.bool.isRequired,
-    handleLike: PropTypes.func,
-    handleUnlike: PropTypes.func,
-    _id: PropTypes.string
-};
-  
-Tool.defaultProps = {
-    isLikedPost: false,
-    like: 0,
-    save: true,
-    notification: true,
-    report: true,
-    handleLike: () => {},
-    handleUnlike: () => {},
-    _id: 0,
+    handleLike: PropTypes.func.isRequired,
+    handleUnlike: PropTypes.func.isRequired,
 };
 
-export default Tool;
+Scrap.propTypes = {
+    isSaveEnabled: PropTypes.bool,
+    handleSaveToggle: PropTypes.func,
+};
 
-const Wrapper = styled.div`
+Notification.propTypes = {
+    isNotificationEnabled: PropTypes.bool,
+    handleNotificationToggle: PropTypes.func,
+};
+
+MeatballMenu.propTypes = {
+    _id: PropTypes.string.isRequired,
+    menuItems: PropTypes.node, // 메뉴 아이템을 동적으로 전달
+};
+
+// Styled Components
+const VotesWrapper = styled.div`
     display: flex;
+    width: 100px;
+    justify-content: space-between;
     align-items: center;
-    width: 380px;
-    height: 30px;
+`;
 
-    margin-top: 15px;
-`
-
-const Button = styled.button`
-    display: flex;
-
-    border: 0px;
-    background-color: white;
+const VoteButton = styled.button`
+    border: none;
+    background: transparent;
+    cursor: pointer;
     transition: all 0.3s ease;
 
-    img{
+    img {
+        width: 25px;
+        height: 25px;
+        transition: all 0.3s ease;
+    }
+
+    &:active {
+        transform: scale(0.9);
+    }
+`;
+
+const VoteCount = styled.span`
+    color: ${(props) => (props.voted ? '#3182F7' : '#434B60')};
+    font-size: 16px;
+    transition: color 0.3s ease;
+    width: 30px;
+    text-align: center;
+`;
+
+const ToolButton = styled.button`
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    img {
         width: 25px;
         height: 25px;
     }
 
-    cursor: pointer;
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
 
     &:active {
-        scale: 0.85;
+        transform: scale(0.9);
     }
-`
+`;
+
+const MenuButton = styled.button`
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    margin-left: auto;
+
+    img {
+        width: 25px;
+        height: 25px;
+    }
+
+    &:active {
+        transform: scale(0.9);
+    }
+`;
