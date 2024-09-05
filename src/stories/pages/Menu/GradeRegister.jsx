@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
-import Modal from '../../components/Common/Modal';
 import Button from '../../components/Button';
 import Picker from '../../components/Common/Picker';
+import Modal from '../../components/Common/Modal';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
+import Checker from '../../components/Common/Checker';
 
 const GradeRegister = () => {
+    const Years = ["2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"];
+    const Terms = ["1", "2"];
     const Grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "F"];
     const modalRef = useRef();
 
@@ -16,25 +19,16 @@ const GradeRegister = () => {
         }
     };
 
+
     const [selectedYear, setSelectedYear] = useState("");
     const [selectedTerm, setSelectedTerm] = useState("");
     const [subjectGrades, setSubjectGrades] = useState({});
     const [subjects, setSubjects] = useState([]);
-    const [years, setYears] = useState([]);
-    const [terms, setTerms] = useState([]);
 
     useEffect(() => {
         // 로컬 스토리지에서 과목 성적 불러오기
         const savedGrades = JSON.parse(localStorage.getItem("subjectGrades")) || {};
         setSubjectGrades(savedGrades);
-
-        // 로컬 스토리지에서 사용 가능한 연도와 학기를 불러오기
-        const availableYearsTerms = Object.keys(savedGrades).map(key => key.split('-'));
-        const uniqueYears = [...new Set(availableYearsTerms.map(([year]) => year))];
-        const uniqueTerms = [...new Set(availableYearsTerms.map(([, term]) => term))];
-        
-        setYears(uniqueYears);
-        setTerms(uniqueTerms);
     }, []);
 
     useEffect(() => {
@@ -64,21 +58,21 @@ const GradeRegister = () => {
     return (
         <Wrapper>
             <Header text="성적 등록하기">
-                <Verify onClick={handleVerifyClick}>인증</Verify>
+                <Verify>인증</Verify>
             </Header>
             <TermPickerWrapper>
-                <Picker items={years} selectedItem={selectedYear} onChange={setSelectedYear} />
+                <Picker items={Years} selectedItem={selectedYear} onChange={setSelectedYear} placeholder={'XXXX'}/>
                 학년도
-                <Picker width='55px' items={terms} selectedItem={selectedTerm} onChange={setSelectedTerm} />
+                <Picker items={Terms} selectedItem={selectedTerm} onChange={setSelectedTerm} placeholder={'X'}/>
                 학기
             </TermPickerWrapper>
+            <Checker text="인증되지 않음" readOnly={true} type={'check'}/>
             {subjects.length > 0 && (
                 <SubjectWrapper>
                     {subjects.map(subject => (
                         <SubjectItem key={subject}>
                             <SubjectName>{subject}</SubjectName>
                             <Picker
-                                width='65px'
                                 items={Grades}
                                 selectedItem={subjectGrades[subject]}
                                 onChange={(grade) => handleGradeChange(subject, grade)}
@@ -91,6 +85,8 @@ const GradeRegister = () => {
             <FixedBottomContainer>
             <Button
                 label="저장"
+                onClick={() => alert("성적이 저장되었습니다.")}
+                width="380px"
                 color="#fff"
                 backgroundColor="#007bff"
                 hoverBackgroundColor="#0056b3"
@@ -110,9 +106,6 @@ const GradeRegister = () => {
 };
 
 export default GradeRegister;
-
-// 스타일링 부분은 동일하게 유지
-
 
 const Wrapper = styled.div`
     display: flex;

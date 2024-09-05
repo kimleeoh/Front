@@ -246,21 +246,18 @@ const SignUpPage = () => {
                 <Checker
                   text="비밀번호는 8~12자 이내로 입력하세요."
                   type="check"
-                  disabled={true}
                   readOnly={true}
                   checked={passwordValid.lengthValid}
                 />
                 <Checker
                   text="숫자를 포함하세요."
                   type="check"
-                  disabled={true}
                   readOnly={true}
                   checked={passwordValid.hasNumber}
                 />
                 <Checker
                   text="특수문자를 포함하세요."
                   type="check"
-                  disabled={true}
                   readOnly={true}
                   checked={passwordValid.hasSpecialChar}
                 />

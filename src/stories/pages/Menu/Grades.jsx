@@ -17,7 +17,7 @@ const Grades = () => {
     }, []);
 
     const handleVerifyClick = () => {
-        navigate("/grades/verify");
+        navigate("/grades/register");
     };
 
     return (

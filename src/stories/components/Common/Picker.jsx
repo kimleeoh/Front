@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import PropTypes from "prop-types";
 
 const Picker = ({ items, selectedItem, onChange, placeholder, width }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isScrollableTop, setIsScrollableTop] = useState(false);
+    const [isScrollableBottom, setIsScrollableBottom] = useState(false);
+    const dropdownRef = useRef(null);
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -11,6 +14,22 @@ const Picker = ({ items, selectedItem, onChange, placeholder, width }) => {
         onChange(item);
         setIsOpen(false); // 선택 후 드롭다운 닫기
     };
+
+    const checkScroll = () => {
+        if (dropdownRef.current) {
+            const { scrollTop, scrollHeight, clientHeight } = dropdownRef.current;
+            setIsScrollableTop(scrollTop > 0);
+            setIsScrollableBottom(scrollTop + clientHeight < scrollHeight);
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            checkScroll();
+            window.addEventListener("scroll", checkScroll);
+            return () => window.removeEventListener("scroll", checkScroll);
+        }
+    }, [isOpen]);
 
     return (
         <PickerContainer width={width}>
@@ -22,7 +41,8 @@ const Picker = ({ items, selectedItem, onChange, placeholder, width }) => {
             </PickerButton>
             {isOpen && (
                 <DropdownContainer>
-                    <Dropdown>
+                    <ScrollHintTop isScrollable={isScrollableTop} />
+                    <Dropdown ref={dropdownRef} onScroll={checkScroll}>
                         {items.map((item, index) => (
                             <DropdownItem
                                 key={index}
@@ -33,6 +53,7 @@ const Picker = ({ items, selectedItem, onChange, placeholder, width }) => {
                             </DropdownItem>
                         ))}
                     </Dropdown>
+                    <ScrollHintBottom isScrollable={isScrollableBottom} />
                 </DropdownContainer>
             )}
         </PickerContainer>
@@ -101,32 +122,12 @@ const DropdownContainer = styled.div`
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
     z-index: 1;
     max-height: calc(6.8 * 40px);  // 6.8개 항목을 기준으로 최대 높이 설정
-    overflow-y: auto;
     animation: ${dropdownAnimation} 0.3s ease forwards;
-
-    &::before,
-    &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        height: 20px;
-        pointer-events: none;
-        z-index: 2;
-    }
-
-    &::before {
-        top: 0;
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-    }
-
-    &::after {
-        bottom: 0;
-        background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-    }
+    overflow: hidden;
 `;
 
 const Dropdown = styled.div`
+    max-height: calc(6.8 * 40px); // 드롭다운의 최대 높이
     overflow-y: auto;
 `;
 
@@ -149,6 +150,28 @@ const DropdownItem = styled.div`
     &:active {
         transform: scale(0.95);
     }
+`;
+
+const ScrollHintTop = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    pointer-events: none;
+    background: ${({ isScrollable }) => (isScrollable ? 'linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))' : 'transparent')};
+    z-index: 2;
+`;
+
+const ScrollHintBottom = styled.div`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    pointer-events: none;
+    background: ${({ isScrollable }) => (isScrollable ? 'linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))' : 'transparent')};
+    z-index: 2;
 `;
 
 export default Picker;

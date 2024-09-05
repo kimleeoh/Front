@@ -7,7 +7,6 @@ const Popup = ({ children, title, onClose, position }) => {
         <PopupWrapper style={{ top: position.top, left: position.left }}>
             <Header>
                 <Title>{title}</Title>
-                <CloseButton onClick={onClose}>×</CloseButton>
             </Header>
             <Content>{children}</Content>
         </PopupWrapper>
@@ -27,8 +26,9 @@ Popup.propTypes = {
 const PopupWrapper = styled.div`
     position: absolute; /* 팝업 위치를 동적으로 조정 */
     width: 195px;
-    background: #fff;
-    box-shadow: 8px 8px 10px 0px rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 6px 6px 8px 0px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
     z-index: 100;
     transition: all 0.3s ease;
