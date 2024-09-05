@@ -9,7 +9,7 @@ import TextArea from '../../components/Common/TextArea';
 import SelectBoard from '../../components/Common/SelectBoard';
 import ImageUploader from '../../components/Common/ImageUploader2';
 import PointInput from '../PostQuestion/PointInput';
-import CheckBar from '../../components/Common/CheckBar';
+import Checker from '../../components/Common/Checker';
 import Button from '../../components/Button'
 import ChipFilter from '../../components/Common/ChipFilter';
 

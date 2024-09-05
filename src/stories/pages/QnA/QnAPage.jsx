@@ -5,7 +5,7 @@ import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import Questions from '../../components/Common/Questions';
-import CheckBar from '../../components/Common/CheckBar';
+import Checker from '../../components/Common/Checker';
 import FixedIcon from '../../components/Common/FixedIcon';
 
 const initialQuestionData = [
@@ -169,7 +169,7 @@ const QnAPage = () => {
     //     fetchData()
     // }, []);
 
-    const handleCheckBarChange = (isChecked) => {
+    const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
     };
 
@@ -180,7 +180,7 @@ const QnAPage = () => {
     return (
         <Wrapper>
             <Header showIcon={false} text="Q&A" backButton={false} searchButton={true}/>
-            <CheckBar text={'A등급 제한'} onChange={handleCheckBarChange} />
+            <Checker text={'A등급 제한'} onChange={handleCheckerChange}/>
             {filteredQuestions.map((question) => {
                 const img = Array.isArray(question.img) ? question.img[0] : question.img;
 

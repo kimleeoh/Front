@@ -6,7 +6,7 @@ import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import Questions from '../../components/Common/Questions';
-import CheckBar from '../../components/Common/CheckBar';
+import Checker from '../../components/Common/Checker';
 import FixedIcon from '../../components/Common/FixedIcon';
 import TabNavigation from '../../components/Common/TabNavigation';
 import ChipFilter from '../../components/Common/ChipFilter';
@@ -179,7 +179,7 @@ const UnifiedBoard = () => {
     //     fetchData()
     // }, []);
 
-    const handleCheckBarChange = (isChecked) => {
+    const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
     };
 
@@ -208,7 +208,7 @@ const UnifiedBoard = () => {
             <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
             {activeTab === 'QnA' && (
                 <>
-                    <CheckBar text={'A등급 제한'} onChange={handleCheckBarChange} />
+                    <Checker text={'A등급 제한'} onChange={handleCheckerChange} />
                     {filteredQuestions
                         .filter(question => question.now_category_list[question.now_category_list.length - 1] === subject)
                         .map((question) => {

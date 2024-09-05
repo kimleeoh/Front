@@ -9,7 +9,7 @@ import TextArea from '../../components/Common/TextArea';
 import SelectBoard from '../../components/Common/SelectBoard';
 import ImageUploader from '../../components/Common/ImageUploader2';
 import PointInput from './PointInput';
-import CheckBar from '../../components/Common/CheckBar';
+import Checker from '../../components/Common/Checker';
 import Button from '../../components/Button';
 
 const initialUserData = [
@@ -113,7 +113,7 @@ const PostQuestionPage = () => {
         }
     };
 
-    const handleCheckBarChange = (isChecked) => {
+    const handleCheckerChange = (isChecked) => {
         handleInputChange('limit', isChecked);
         setIsPointInputDisabled(isChecked);
     };
@@ -171,9 +171,9 @@ const PostQuestionPage = () => {
                     placeholder={'포인트를 입력해 주세요'}
                 />
             ))}
-            <CheckBar 
+            <Checker 
                 text={'A 이상의 답변만 받고 싶어요.'} 
-                onChange={handleCheckBarChange}
+                onChange={handleCheckerChange}
                 disabled={formValues.point < 100} 
             />
             {formValues.point < 100 && (

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import Questions from '../../components/Common/Questions';
-import CheckBar from '../../components/Common/CheckBar';
+import Checker from '../../components/Common/Checker';
 import TabNavigation from '../../components/Common/TabNavigation';
 import ChipFilter from '../../components/Common/ChipFilter';
 import Tips from '../Tips/Tips';
@@ -35,7 +35,7 @@ const MyBoard = () => {
         loadData();
     }, []);
 
-    const handleCheckBarChange = (isChecked) => {
+    const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
     };
 
@@ -85,7 +85,7 @@ const MyBoard = () => {
             )}
             {activeTab === 'QnA' && (
                 <>
-                    <CheckBar text={'A등급 제한'} onChange={handleCheckBarChange} />
+                    <Checker text={'A등급 제한'} onChange={handleCheckerChange} />
                     {filteredQuestions
                         .filter(question => question.subject === subject)
                         .map((question) => (
