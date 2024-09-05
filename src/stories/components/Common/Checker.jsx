@@ -75,7 +75,7 @@ const Button = styled.button`
     }
     border: 0px;
     background-color: white;
-    cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
+    cursor: ${props => (props.disabled ? '' : 'pointer')};
     opacity: ${props => (props.disabled ? 0.5 : 1)};
     transition: all 0.3s ease;
 

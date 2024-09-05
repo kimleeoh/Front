@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
-
+import Checker from '../../components/Common/Checker';
 import DiscreteProgressBar from './DiscreteProgressBar';
 import { SignUpHandler } from '../../../axioses/SignUpHandler';
 
@@ -19,6 +19,11 @@ const SignUpPage = () => {
     password: '',
     confirmPassword: '',
   });
+  const [passwordValid, setPasswordValid] = useState({
+    lengthValid: false,
+    hasNumber: false,
+    hasSpecialChar: false,
+  });
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
@@ -29,41 +34,37 @@ const SignUpPage = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevData => ({ ...prevData, [name]: value }));
-
-    // 이메일 형식 검사
+  
     if (name === 'email') {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if(value===''){
-          setErrorMessage('');
-        }
-        else {
-        if (!emailPattern.test(value)) {
-            setErrorMessage('유효한 이메일 주소를 입력해 주세요.');
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setErrorMessage(value === '' ? '' : !emailPattern.test(value) ? '유효한 이메일 주소를 입력해 주세요.' : '');
+    }
+  
+    if (name === 'password' || name === 'confirmPassword') {
+      const { password, confirmPassword } = { ...formData, [name]: value };
+  
+      if (name === 'password') {
+        const { lengthValid, hasNumber, hasSpecialChar } = validatePassword(value);
+        setPasswordValid({ lengthValid, hasNumber, hasSpecialChar });
+      }
+  
+      if (name === 'confirmPassword') {
+        if (password !== confirmPassword) {
+          setErrorMessage('비밀번호가 일치하지 않습니다.');
         } else {
-            setErrorMessage('');
+          setErrorMessage('');
         }
       }
     }
-
-    // 비밀번호와 비밀번호 확인 검사
-    if (name === 'confirmPassword' || name === 'password') {
-        const { password, confirmPassword } = { ...formData, [name]: value };
-
-        // 1. 비밀번호 확인 필드에 값이 있는지 확인
-        if (confirmPassword) {
-            // 2. 비밀번호 확인의 값이 비밀번호 값과 같은지 확인
-            if (password !== confirmPassword) {
-                setErrorMessage('비밀번호가 일치하지 않습니다.');
-            } else {
-                setErrorMessage('');
-            }
-        } else {
-            setErrorMessage(''); // 비밀번호 확인 필드가 비어있다면 에러 아님
-        }
-    }
-};
+  };
 
 
+  const validatePassword = (password) => {
+    const lengthValid = password.length >= 8 && password.length <= 12;
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    return { lengthValid, hasNumber, hasSpecialChar };
+  };
 
   const handleNext = () => {
     if (validateStep()) {
@@ -241,6 +242,29 @@ const SignUpPage = () => {
                 name="confirmPassword"
               />
               {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+              <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                <Checker
+                  text="비밀번호는 8~12자 이내로 입력하세요."
+                  type="check"
+                  disabled={true}
+                  readOnly={true}
+                  checked={passwordValid.lengthValid}
+                />
+                <Checker
+                  text="숫자를 포함하세요."
+                  type="check"
+                  disabled={true}
+                  readOnly={true}
+                  checked={passwordValid.hasNumber}
+                />
+                <Checker
+                  text="특수문자를 포함하세요."
+                  type="check"
+                  disabled={true}
+                  readOnly={true}
+                  checked={passwordValid.hasSpecialChar}
+                />
+              </div>
             </TextFieldsWrapper>
           </>
         );
