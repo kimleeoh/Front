@@ -19,6 +19,7 @@ const decrypt = (encryptedData) => {
   };
 
 function encryptAES(text, key,iv) {
+
     const KEY = CryptoJS.lib.WordArray.create(key); 
     const IV = CryptoJS.lib.WordArray.create(iv); // 16-byte IV in hex format
     //console.log(text,keyUtf8,IV);
@@ -63,7 +64,6 @@ const sensitiveInfo = (()=>{
             twoKey = key;
             cipher = (text)=>encryptAES(text, key, iv);
             decipher = (text)=>decryptAES(text, key, iv);
-           
             sessionID = cipher(id);
         },
         decrypt: (data)=>{
@@ -75,6 +75,7 @@ const sensitiveInfo = (()=>{
         },
     }
 })();
+
 
 const LoginHandler = async(formData) => {
     let idempotencyKey = localStorage.getItem('idempotencyKey');
@@ -92,7 +93,7 @@ const LoginHandler = async(formData) => {
 
     const iv = Buffer.from(decrypt(Buffer.from(response.data.iv)),'binary');
     const key = Buffer.from(decrypt(Buffer.from(response.data.key.data)),'binary');
-
+    
     sensitiveInfo.setLoginKey(iv, key);
     
     formData.password = sensitiveInfo.encrypt(formData.password);
@@ -131,7 +132,7 @@ const SignUpHandler = async (step, formData) => {
         case 2:{
             const passData = {
                 id : sensitiveInfo.getEncryptSessionID(), 
-                hakbu : formData.department
+                hakbu : formData.department,
             };
             
             const response = await BaseAxios.post('/api/register/page/2', passData);
@@ -143,7 +144,7 @@ const SignUpHandler = async (step, formData) => {
             
             const passData = {
                 id : sensitiveInfo.getEncryptSessionID(), 
-                hakbun : Number(formData.studentId)
+                hakbun : Number(formData.studentId),
             };
             
             const response = await BaseAxios.post('/api/register/page/3', passData);
@@ -154,7 +155,7 @@ const SignUpHandler = async (step, formData) => {
         case 4:{
             const passData = {
                 id : sensitiveInfo.getEncryptSessionID(), 
-                email : sensitiveInfo.encrypt(formData.email)
+                email : sensitiveInfo.encrypt(formData.email),
             };
             
             const response = await BaseAxios.post('/api/register/page/4', passData);
@@ -165,7 +166,7 @@ const SignUpHandler = async (step, formData) => {
         case 5:{
             const passData = {
                 id : sensitiveInfo.getEncryptSessionID(), 
-                bibun : sensitiveInfo.encrypt(formData.password)
+                bibun : sensitiveInfo.encrypt(formData.password),
             };
             
             const response = await BaseAxios.post('/api/register/page/5', passData);
