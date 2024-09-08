@@ -28,8 +28,8 @@ const MenuPage = () => {
             <Link to="/mypage" style={{ textDecoration: 'none' }}>
                 <MyPage>
                     <Profile>
-                        <img src='/TempProfile.jpg' alt='profile' width='62px' height='62px' style={{ borderRadius: '50%' }}/>
-                        우치하 사스케
+                        <img src='/Profile.svg' alt='profile' width='62px' height='62px' style={{ borderRadius: '50%' }}/>
+                        Guest
                     </Profile>
                     <MyPageArrow>
                         마이페이지

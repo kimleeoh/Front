@@ -88,52 +88,60 @@ export const Notification = () => {
     );
 };
 
-export const MeatballMenu = React.forwardRef(({ _id, menuItems }, ref) => {
-    const [isPopupVisible, setIsPopupVisible] = useState(false);
+export const MeatballMenu = () => {
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
-    const menuRef = useRef(null);
+    const buttonRef = useRef(null); // MeatballMenu 버튼 참조
 
-    const togglePopup = () => {
-        if (menuRef.current) {
-            const rect = menuRef.current.getBoundingClientRect();
+    const handleTogglePopup = () => {
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            // MeatballMenu의 bottom에 맞춰 팝업의 top을 설정하고, 우측 상단이 맞닿도록 left를 설정
             setPopupPosition({
-                top: rect.bottom + window.scrollY, // 버튼 바로 아래에 위치
-                left: rect.left + window.scrollX,  // 버튼의 왼쪽에 맞춰 위치
+                top: rect.bottom, // 버튼의 아래쪽
+                left: rect.right - 195, // 팝업 너비만큼 조정 (195px)
             });
         }
-        setIsPopupVisible(!isPopupVisible);
+        setIsPopupOpen(!isPopupOpen);
     };
 
     const handleClickOutside = (event) => {
-        if (menuRef.current && !menuRef.current.contains(event.target)) {
-            setIsPopupVisible(false);
+        if (buttonRef.current && !buttonRef.current.contains(event.target)) {
+            setIsPopupOpen(false);
         }
     };
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
+        if (isPopupOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, []);
+    }, [isPopupOpen]);
 
     return (
-        <>
-            <MenuButton ref={menuRef} onClick={togglePopup}>
+        <div>
+            <MenuButton ref={buttonRef} onClick={handleTogglePopup}>
                 <img src="/Icons/meatballs.svg" alt="Meatball Menu" />
             </MenuButton>
-            {isPopupVisible && (
-                <Popup 
-                    title="Menu" 
-                    onClose={() => setIsPopupVisible(false)} 
-                    position={popupPosition} // 팝업 위치 전달
+            {isPopupOpen && (
+                <Popup
+                    title="Menu"
+                    position={popupPosition} // 동적으로 계산된 위치 전달
+                    onClose={() => setIsPopupOpen(false)}
                 >
-                    {menuItems}
+                    <MenuItem>신고하기</MenuItem>
+                    <MenuItem>링크 복사하기</MenuItem>
+                    <MenuItem>Option 3</MenuItem>
                 </Popup>
             )}
-        </>
+        </div>
     );
-});
+};
 
 // PropTypes
 Votes.propTypes = {
@@ -216,6 +224,7 @@ const MenuButton = styled.button`
     background: transparent;
     cursor: pointer;
     margin-left: auto;
+    transition: all 0.3s ease;
 
     img {
         width: 25px;
@@ -224,5 +233,14 @@ const MenuButton = styled.button`
 
     &:active {
         transform: scale(0.9);
+    }
+`;
+
+const MenuItem = styled.div`
+    padding: 8px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    &:hover {
+        background-color: #f0f0f0;
     }
 `;

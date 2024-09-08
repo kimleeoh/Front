@@ -21,11 +21,12 @@ const MyPage = () => {
           <img src="/Icons/Icon_arrow.svg" alt="뒤로 가기" />
         </BackButton>
         <ProfileName></ProfileName>
+        <Edit>수정</Edit>
       </Header>
       <Profile>
-        <img src="/TempProfile.jpg" alt="프로필" width='100px' height='100px' style={{ borderRadius: '50%' }}/>
+        <img src="/Profile.svg" alt="프로필" width='100px' height='100px' style={{ borderRadius: '50%' }}/>
         <ProfileInfo>
-          우치하 사스케
+          Guest
           <InfoBox>
             <DetailInfo>작성한 꿀팁<Measurement>20</Measurement></DetailInfo>
             <DetailInfo>작성한 답변<Measurement>20</Measurement></DetailInfo>
@@ -35,7 +36,7 @@ const MyPage = () => {
       </Profile>
       <Introduction>
         소개
-        <IntroductionBox>지금까지 느껴보지않았던 감각이야! 썩어빠진 닌자세계와 우치하를 결별시키는 감각! 내가 바라는 것은 너희들이 줄곧 바라던 것이다! 너희들의 바람대로 우치하를 너희 기억에서 없애주지! 나뭇잎도 모든 것도 전부 죽여버리는 것으로 말이야! 그것이 바로 우치하 일족의 부흥이다!</IntroductionBox>
+        <IntroductionBox>소개</IntroductionBox>
       </Introduction>
       <TabNavigation 
         tabs={['프로필', '활동']} 
@@ -344,4 +345,30 @@ const ScrollableSubjectList = styled.div`
     width: 100%;
     max-height: 280px;
     overflow-y: auto;
+`;
+
+const Edit = styled.button`
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba(172, 178, 187, 0.3);
+  }
+
+  &:active {
+    scale: 0.95;
+  }
+
+  font-size: 16px;
+  font-weight: bold;
+  color: #434b60;
+  text-align: center;
 `;

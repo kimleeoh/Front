@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import Button from '../../components/Button';
 
-const ImageUploadButton = ({ onFileSelect, label }) => {
+const ImageUploadButton = ({ onFileSelect, label, width='23%' }) => {
   const fileInputRef = useRef(null);
 
   const handleButtonClick = () => {
@@ -21,7 +21,7 @@ const ImageUploadButton = ({ onFileSelect, label }) => {
       <Button
         label={label}
         onClick={handleButtonClick}
-        width={'23%'}
+        width={width}
         color={'#ACB2BB'}
         backgroundColor={'#F1F2F4'}
         hoverColor={'#ACB2BB'}

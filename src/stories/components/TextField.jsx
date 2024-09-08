@@ -56,7 +56,7 @@ const TextField = ({ label, value: externalValue, onChange, disabled, type, widt
               type="button" 
               aria-label={isPasswordVisible ? '비밀번호 숨기기' : '비밀번호 보기'}
             >
-              {isPasswordVisible ? '🙈' : '👁️'}
+              {isPasswordVisible ? <img src='/Icons/Invisible.svg' width={'20px'} /> : <img src='/Icons/Visible.svg' width={'20px'}/>}
             </ToggleButton>
           ) : (
             <ClearButton onMouseDown={clearInput}>×</ClearButton>

@@ -39,6 +39,11 @@ const SignUpPage = () => {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       setErrorMessage(value === '' ? '' : !emailPattern.test(value) ? '유효한 이메일 주소를 입력해 주세요.' : '');
     }
+
+    if (name === 'studentId') {
+      const { lengthValid } = validateStudentId(value);
+      setErrorMessage(lengthValid ? '' : '학번은 8자리로 입력해 주세요.');
+    }
   
     if (name === 'password' || name === 'confirmPassword') {
       const { password, confirmPassword } = { ...formData, [name]: value };
@@ -58,6 +63,10 @@ const SignUpPage = () => {
     }
   };
 
+  const validateStudentId = (studentId) => {
+    const lengthValid = studentId.length === 8;
+    return { lengthValid };
+  };
 
   const validatePassword = (password) => {
     const lengthValid = password.length >= 8 && password.length <= 12;
@@ -86,22 +95,35 @@ const SignUpPage = () => {
 
   const validateStep = () => {
     switch (step) {
-      case 1:
-        return formData.name.trim() !== '';
-      case 2:
-        return formData.department.trim() !== '';
-      case 3:
-        return !isNaN(Number(formData.studentId)) && formData.studentId.trim() !== '';
-      case 4:
-        return formData.email.trim() !== '';
-      case 5:
-        return formData.confirmEmail.trim() !== '';
-      case 6:
-        return formData.password.trim() !== '' && formData.password === formData.confirmPassword;
-      default:
-        return false;
+        case 1:
+            // 이름 입력: 공백 확인
+            return formData.name.trim() !== '';
+        case 2:
+            // 학부 입력: 공백 확인
+            return formData.department.trim() !== '';
+        case 3:
+            // 학번 입력: 숫자이고 8자리인지 확인
+            return !isNaN(Number(formData.studentId)) && formData.studentId.trim().length === 8;
+        case 4:
+            // 이메일 형식 확인
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(formData.email);
+        case 5:
+            // 인증 이메일의 입력 여부 확인 (별도의 인증 로직이 있을 수도 있음)
+            return formData.confirmEmail.trim() !== '';
+        case 6:
+            // 비밀번호 유효성 확인 (비밀번호 일치 및 유효성)
+            const { lengthValid, hasNumber, hasSpecialChar } = passwordValid;
+            return (
+                formData.password.trim() !== '' &&
+                formData.password === formData.confirmPassword &&
+                lengthValid && hasNumber && hasSpecialChar
+            );
+        default:
+            return false;
     }
-  };
+};
+
 
   const renderButtons = () => {
     const isStepValid = validateStep();
@@ -174,6 +196,7 @@ const SignUpPage = () => {
               onChange={handleChange}
               name="studentId"
             />
+            {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
           </>
         );
       case 4:
