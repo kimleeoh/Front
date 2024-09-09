@@ -26,7 +26,6 @@ export default ImageDownloadList;
 const DownloadContainer = styled.div`
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
     border: 1px solid #ACB2BB;
     border-radius: 8px;
     padding: 10px 10px;

@@ -1,6 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const dropdownAnimation = keyframes`
+    0% {
+        opacity: 0;
+        transform: translateY(-10px) translateX(5px) scaleX(0.5) scaleY(0.5);
+        transform-origin: right top;
+    }
+    70% {
+        transform: scaleX(1.05) scaleY(1.05);
+        transform-origin: right top;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) translateX(0) scaleX(1) scaleY(1);
+        transform-origin: right top;
+    }
+`;
 
 const Popup = ({ children, title, onClose, position }) => {
     return (
@@ -24,14 +41,17 @@ Popup.propTypes = {
 };
 
 const PopupWrapper = styled.div`
-    position: absolute; /* 팝업 위치를 동적으로 조정 */
+    position: absolute;
     width: 195px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(8px);
     box-shadow: 6px 6px 8px 0px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
     z-index: 100;
     transition: all 0.3s ease;
+
+    animation: ${dropdownAnimation} 0.3s ease;
+    transform-origin: right top; /* 팝업이 확장되는 기준점 설정 */
 `;
 
 const Header = styled.div`
@@ -46,7 +66,7 @@ const Header = styled.div`
 `;
 
 const Content = styled.div`
-    padding: 0 8px 8px 8px;
+    padding: 0 4px 4px 4px;
 `;
 
 export default Popup;

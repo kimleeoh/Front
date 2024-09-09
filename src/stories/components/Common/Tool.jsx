@@ -191,8 +191,9 @@ const VoteButton = styled.button`
 `;
 
 const VoteCount = styled.span`
-    color: ${(props) => (props.voted ? '#3182F7' : '#434B60')};
+    color: ${(props) => (props.voted ? '#3182F7' : '#ACB2BB')};
     font-size: 16px;
+    font-weight: bold;
     transition: color 0.3s ease;
     width: 30px;
     text-align: center;
@@ -225,12 +226,21 @@ const MenuButton = styled.button`
     cursor: pointer;
     margin-left: auto;
     transition: all 0.3s ease;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    padding: 0;
 
     img {
         width: 25px;
         height: 25px;
     }
 
+    &:hover {
+        background-color: #E2E5E9;
+    }
     &:active {
         transform: scale(0.9);
     }
@@ -240,7 +250,11 @@ const MenuItem = styled.div`
     padding: 8px 8px;
     border-radius: 8px;
     cursor: pointer;
+    transition: all 0.3s ease;
     &:hover {
-        background-color: #f0f0f0;
+        background-color: #E2E5E9;
+    }
+    &:active {
+        transform: scale(0.98);
     }
 `;

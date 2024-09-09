@@ -10,6 +10,7 @@ const CarouselTemp = ({
     autoPlayInterval = 5000,
     showBullets = true,
     showFraction = true,
+    showArrows = true,
   }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
@@ -128,16 +129,19 @@ const CarouselTemp = ({
               ))}
             </SlideContainer>
           </SlideWrapper>
+          {showArrows && (
           <LeftButton color={fractionColor} onClick={prevSlide}>
             <svg width="24" height="16" viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'rotate(90deg)' }}>
               <path d="M13.75 1.854L7.5 8.104L1.25 1.854" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </LeftButton>
+          )} {showArrows && (
           <RightButton color={fractionColor} onClick={nextSlide}>
             <svg width="24" height="16" viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'rotate(270deg)' }}>
               <path d="M13.75 1.854L7.5 8.104L1.25 1.854" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </RightButton>
+          )}
           {showFraction && (
             <FractionIndicator color={fractionColor}>
               {currentSlide + 1} / {slideCount}
@@ -177,6 +181,7 @@ const SlideWrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+  // border-radius: 16px; 네비게이션 버튼 삐져나감 수정 필요
 `;
 
 const SlideContainer = styled.div`
@@ -198,18 +203,18 @@ const NavigationButton = styled.button`
   background: transparent;
   color: white;
   border: none;
-  padding: 15px;
+  padding: 12px;
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.3s;
   transition: all ease 0.3s;
+  border-radius: inherit;
 
   ${CarouselContainer}:hover & {
     opacity: 1;
   }
 
     &:active {
-        
   background: rgba(0, 0, 0, 0.5);
 }
 
@@ -268,7 +273,7 @@ white-space: nowrap;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
   color: ${props => props.color};
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   padding: 3px 6px;
   border-radius: 10px;

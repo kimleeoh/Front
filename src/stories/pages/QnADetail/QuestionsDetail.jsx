@@ -151,6 +151,7 @@ const Wrapper = styled.div`
 const TopBar = styled.div`
     display: flex;
     align-items: center;
+    justify-content: space-between;
 `
 
 const BottomBar = styled.div`

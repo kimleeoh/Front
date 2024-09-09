@@ -1,6 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
+
+const dropdownAnimation = keyframes`
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+        origin: top;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) translateX(0) scaleY(1);
+        origin: top;
+    }
+`;
 
 const SelectBoard = ({ options, placeholder, onChange }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -42,17 +55,19 @@ const SelectBoard = ({ options, placeholder, onChange }) => {
         };
     }, []);
 
-    const currentOptions = selectedOptions.length === 0 
-        ? options 
+    const currentOptions = selectedOptions.length === 0
+        ? options
         : (selectedOptions[selectedOptions.length - 1]?.subcategories || []);
 
     return (
         <DropdownContainer ref={dropdownRef}>
             <DropdownHeader onClick={toggleDropdown}>
-                {selectedOptions.length === 0 
-                    ? placeholder 
+                {selectedOptions.length === 0
+                    ? placeholder
                     : selectedOptions.map(option => option.label).join(' > ')}
-                <ArrowIcon isOpen={isOpen}><img src='/Icons/Arrow.svg' alt="arrow" /></ArrowIcon>
+                <ArrowIcon isOpen={isOpen}>
+                    <img src='/Icons/Arrow.svg' alt="arrow" />
+                </ArrowIcon>
             </DropdownHeader>
             {isOpen && (
                 <DropdownListContainer>
@@ -109,6 +124,7 @@ const DropdownContainer = styled.div`
     padding: 10px;
     border-bottom: 1px solid #ACB2BB;
     position: relative;
+    gap: 10px;
 `;
 
 const DropdownHeader = styled.div`
@@ -134,22 +150,27 @@ const DropdownListContainer = styled.div`
     left: 0;
     width: 100%;
     z-index: 1;
-    border: 1px solid #ddd;
     border-top: none;
     border-radius: 0 0 16px 16px;
-    background-color: white;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
     max-height: 200px;
-    overflow-y: auto;
     transition: all 0.3s ease;
-    
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: ${dropdownAnimation} 0.3s ease;
+    transform-origin: top;
+
+    /* Flexbox 설정 */
+    display: flex;
+    flex-direction: column;
 `;
 
 const DropdownList = styled.ul`
+    flex: 1; /* 남은 공간을 모두 차지 */
+    overflow-y: auto; /* 내용이 넘치면 스크롤 */
     padding: 0;
     margin: 0;
     list-style-type: none;
-    
 `;
 
 const ListItem = styled.li`
@@ -163,13 +184,20 @@ const ListItem = styled.li`
     }
     &:active {
         transform: scale(0.98);
-        }
+    }
 `;
 
 const BackButton = styled.div`
     padding: 10px 0;
     cursor: pointer;
     text-align: center;
-    background-color: #E2E5E9;
     border-top: 1px solid #E2E5E9;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: rgba(226, 229, 233, 0.3);
+    }
+    &:active {
+        transform: scale(0.98);
+    }
 `;

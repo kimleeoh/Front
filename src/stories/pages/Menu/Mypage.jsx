@@ -21,7 +21,7 @@ const MyPage = () => {
           <img src="/Icons/Icon_arrow.svg" alt="뒤로 가기" />
         </BackButton>
         <ProfileName></ProfileName>
-        <Edit>수정</Edit>
+        <Edit>편집</Edit>
       </Header>
       <Profile>
         <img src="/Profile.svg" alt="프로필" width='100px' height='100px' style={{ borderRadius: '50%' }}/>

@@ -17,7 +17,7 @@ const TipsDetail = ({ _id, name, major, title, subject, content, time, views, li
                     <span> {getTimeElapsed(time)} | {major} {name} | 조회수 {views} </span>
                 </MetaContainer>
                 <Content>{content}</Content>
-
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px'}}>
                 {images.length > 0 && (
                     <ImageContainer>
                         {/*이미지 하나만 보이게 하기*/}
@@ -28,7 +28,11 @@ const TipsDetail = ({ _id, name, major, title, subject, content, time, views, li
                 {/* Download section for multiple images */}
                 <ImageDownloadList images={images}/>
 
+                <ToolContainer>
                 <Votes like={like} />
+                <div> <Notification /> <Scrap /> </div> 
+                </ToolContainer>
+                </div>
             </Wrapper>
         </OutWrapper>
     );
@@ -109,31 +113,9 @@ const Image = styled.img`
     border-radius: 8px;
 `;
 
-const DownloadContainer = styled.div`
+const ToolContainer = styled.div`
     display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    border: 1px solid #ACB2BB;
-    border-radius: 8px;
-    padding: 10px 10px;
-    gap: 10px; /* Add space between each file item */
-`;
-
-const FileContainer = styled.div`
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-`;
-
-const FileName = styled.span`
-    color: #434B60;
-    font-size: 14px;
-`;
-
-const DownloadLink = styled.a`
-    font-size: 14px;
-    color: #434B60;
-    margin-left: auto;
-    display: flex;
-    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
 `;

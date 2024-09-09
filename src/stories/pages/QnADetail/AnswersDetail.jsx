@@ -11,6 +11,7 @@ const Answers = ({_id, name, level, user_grade, major, content, img, like }) => 
     return (
         <OutWrapper>
             <Wrapper>
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <SubWrapper>
                     <Title><img src="/Icons/A.svg" /></Title>
                     <img src="/Icons/Profile.svg" />
@@ -18,8 +19,9 @@ const Answers = ({_id, name, level, user_grade, major, content, img, like }) => 
                         <LevelGrade>Lv. {level} | {user_grade} 등급</LevelGrade>
                         <MajorName>{major} {name}</MajorName>
                      </ProfileContainer>
-                     <Button style={{marginLeft: 'auto'}}><img src="/Icons/report.svg" onClick={() => Report(_id={_id})} /></Button>
                 </SubWrapper>
+                <MeatballMenu _id={_id} />
+                </div>
                 <Content>{content}</Content>
 
                 {images.length > 0 && (
