@@ -124,8 +124,12 @@ const MetaContainer = styled.div`
 `
 
 const OutWrapper = styled.div`
+    width: 100%;
+    max-width: 400px;
+    min-width: 400px;
+    margin: 0 auto;
+    padding: 0 10px;
     border-bottom: 1px solid #ACB2BB;
-    width: 400px;
 `;
 
 const ImageContainer = styled.div`

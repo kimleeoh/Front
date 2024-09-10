@@ -23,7 +23,7 @@ export default FixedIcon;
 
 const FixedIconContainer = styled.div`
     position: fixed;
-    margin-left: 300px;
+    left: 80%;
     bottom: 100px;
     width: 50px;
     height: 50px;

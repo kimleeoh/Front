@@ -31,14 +31,16 @@ const Checker = ({text, onChange, disabled, type, readOnly, checked}) => {
     };
 
     return (
-        <Button
-            onClick={handleCheckboxClick}
-            disabled={disabled}
-            readOnly={readOnly} // readOnly prop 추가
-        >
-            <img src={getIconSrc(currentChecked)} alt="checkbox icon" />
-            <span style={{color: currentChecked ? '#434B60' : '#ACB2BB', fontSize: '16px', fontWeight: '500', paddingLeft: '5px' }}>{text}</span>
-        </Button>
+        <CheckerWrapper>
+            <Button
+                onClick={handleCheckboxClick}
+                disabled={disabled}
+                readOnly={readOnly} // readOnly prop 추가
+            >
+                <img src={getIconSrc(currentChecked)} alt="checkbox icon" />
+                <span style={{color: currentChecked ? '#434B60' : '#ACB2BB', fontSize: '16px', fontWeight: '500', paddingLeft: '5px' }}>{text}</span>
+            </Button>
+        </CheckerWrapper>
     )
 }
 
@@ -62,12 +64,26 @@ Checker.defaultProps = {
     checked: false, // 기본값 설정
 };
 
+const CheckerWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 40px;
+    width: 100%;
+    min-width: 420px;
+    margin: 0 auto;
+    background-color: white;
+    margin-top: 10px;
+`;
+
 const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 10px;
     border-radius: 16px;
+    width: 100%;
 
     img {
         width: 20px;
@@ -84,4 +100,6 @@ const Button = styled.button`
         scale: ${props => (props.disabled || props.readOnly ? 1 : 0.95)};
         background-color: ${props => (props.disabled || props.readOnly ? 'white' : '#e2e5e9')};
     }
+
+    width: auto;
 `;

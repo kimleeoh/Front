@@ -65,7 +65,6 @@ const EditBoardPage = () => {
         // 예를 들어, 로그아웃 API를 호출하거나, 로그인 페이지로 이동
     };
 
-
     return (
         <Wrapper>
             <Header showIcon={false} text="게시판 편집" backButton={true} searchButton={false} onClick={handleBackClick}>
@@ -73,7 +72,9 @@ const EditBoardPage = () => {
                 <Save onClick={handleSave}>저장</Save>
                 )}
             </Header>
-            <BoardTitle text={title} edit={false} />
+            <AddButtonWrapper>
+                <BoardTitle text={title} edit={false} />
+            </AddButtonWrapper>
             <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="subjectlist">
                 {(provided) => (
@@ -104,15 +105,17 @@ const EditBoardPage = () => {
                 )}
             </Droppable>
             </DragDropContext>
-            <Button
-                label={'+ 과목 추가하기'}
-                width={'23%'}
-                color={'#ACB2BB'}
-                backgroundColor={'#F1F2F4'}
-                hoverColor={'#ACB2BB'}
-                hoverBackgroundColor={'#E5E9F2'}
-                style={{ marginTop: '20px' }}
-            />
+            <AddButtonWrapper>
+                <Button
+                    label={'+ 과목 추가하기'}
+                    width={'380px'}
+                    color={'#ACB2BB'}
+                    backgroundColor={'#F1F2F4'}
+                    hoverColor={'#ACB2BB'}
+                    hoverBackgroundColor={'#E5E9F2'}
+                    style={{ marginTop: '20px' }}
+                />
+            </AddButtonWrapper>
 
             <Modal ref={modalRef} width='300px'>
                 <span style={{fontSize: '16px'}}>저장하시겠습니까?</span>
@@ -134,6 +137,7 @@ const Wrapper = styled.div`
     align-items: center;
     margin-top: 100px;
     margin-bottom: 100px;
+    width: 100%;
 `;
 
 const SubjectListWrapper = styled.div`
@@ -143,8 +147,19 @@ const SubjectListWrapper = styled.div`
     align-items: center;
     background-color: white;
     border-radius: 24px;
-    margin-top: 10px;
+    margin: 0 auto;
+    padding: 0 10px 0;
 `;
+
+const AddButtonWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 393px;
+    min-width: 400px;
+`
 
 const ButtonWrapper = styled.div`
     display: flex;

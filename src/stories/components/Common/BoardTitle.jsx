@@ -49,7 +49,8 @@ const Wrapper = styled.div`
     color: #434B60;
     font-size: 16px;
     font-weight: bold;
-    padding: 20px 10px;
+    padding: 30px 10px;
+    margin: 0 auto;
 `;
 
 const Button = styled.button`

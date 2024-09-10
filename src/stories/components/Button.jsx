@@ -95,6 +95,7 @@ const StyledButton = styled.button`
   white-space: nowrap;
   font-size: ${(props) => props.fontSize};
   padding: 11px 20px;
+  max-width: 393px;
   border: none;
   border-radius: 16px;
   cursor: ${(props) => (props.disabled ? '' : 'pointer')};

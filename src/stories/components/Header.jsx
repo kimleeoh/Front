@@ -74,7 +74,10 @@ export default Header;
 const TopLayout = styled.div`
   position: fixed;
   top: 0;
-  width: 400px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%
+  max-width: 400px;
   background: rgba(240, 242, 244, 0.30);
   backdrop-filter: blur(8px);
   display: flex;

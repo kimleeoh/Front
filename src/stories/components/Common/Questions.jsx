@@ -5,8 +5,12 @@ import { Link } from 'react-router-dom';
 import getTimeElapsed from './getTimeElapsed';
 
 const OutWrapper = styled.div`
+    width: 100%;
+    max-width: 400px;
+    min-width: 400px;
+    margin: 0 auto;
+    padding: 0 10px;
     border-bottom: 1px solid #ACB2BB;
-    width: 400px;
 `;
 
 const StyledLink = styled(Link)`
@@ -24,6 +28,7 @@ const Wrapper = styled.div`
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.2s ease;
+    
     &:active {
         background-color: #F1F7Fd;
         transition: all 0.2s ease;
@@ -63,10 +68,6 @@ const Content = styled.div`
     overflow: hidden;
 `;
 
-const Subject = styled.div`
-    font-size: 16px;
-    margin-bottom: 10px;
-`;
 
 const MetaContainer = styled.div`
     display: flex;

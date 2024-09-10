@@ -158,56 +158,65 @@ const BoardHome = () => {
 
 export default BoardHome;
 
+const maxWidth = '400px';
+const mainColor = '#434B60';
+const backgroundColor = '#f0f2f4';
+const whiteColor = 'white';
+const borderRadius = '24px';
+
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    background-color: #f0f2f4; /* 전체 배경 색상 설정 */
-    min-height: 100vh; /* 페이지가 전체 화면을 채우도록 설정 */
-    position: relative; /* 헤더를 페이지 상단에 고정하기 위해 필요 */
-    padding-top: 30px; /* 헤더 공간만큼 패딩 추가 */
-    padding-bottom: 100px; /* 하단 패딩 추가 */
+    background-color: ${backgroundColor};
+    min-height: 100vh;
+    padding: 100px 0 100px;
+    width: 100%;
+    min-width: 440px;
+    box-sizing: border-box;
 `;
 
 const ContentWrapper = styled.div`
     width: 100%;
-    max-width: 393px;
-    padding-top: 90px;
+    max-width: ${maxWidth};
+    margin: 0 auto;
+    padding: 0 10px;
+    box-sizing: border-box;
 `;
 
 const Header = styled.div`
-    width: 393px;
+    width: 100%;
+    max-width: ${maxWidth};
     height: 88px;
-    padding: 10px 20px;
+    padding: 0 20px;
     display: flex;
     align-items: center;
-
     font-weight: bold;
     font-size: 24px;
-    color: #434B60;
+    color: ${mainColor};
     background: rgba(240, 242, 244, 0.30);
     backdrop-filter: blur(5px);
-
-    position: fixed; /* 헤더를 페이지 상단에 고정 */
-    text-indent: 10px;
-    z-index: 1000;
+    position: fixed;
     top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    box-sizing: border-box;
 `;
 
 const SubjectWrapper = styled.div`
-    width: 380px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    background-color: white;
-    border-radius: 24px;
-
+    background-color: ${whiteColor};
+    border-radius: ${borderRadius};
     margin-bottom: 10px;
-`
+
+`;
+
 const ScrollableSubjectList = styled.div`
     width: 100%;
-    max-height: 230px; // 최대 높이 설정
-    overflow-y: auto; // 세로 스크롤 활성화
+    max-height: 230px;
+    overflow-y: auto;
 `;
