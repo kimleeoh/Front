@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { useLocation, useNavigate } from 'react-router-dom';
+import useWindowSize from './Common/WindowSize';
 
 // 애니메이션 정의
 const jellyAnimation = keyframes`
@@ -58,8 +59,10 @@ const NavBar = ({ initialState }) => {
         }, 0);  // 0ms 지연을 주어 애니메이션이 매번 실행되도록 함
     }, [navigate]);
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <BottomLayout>
+        <BottomLayout maxWidth={windowSize}>
             {Object.keys(ICONS).map((buttonName) => (
                 <NavButton
                     key={buttonName}
@@ -88,19 +91,23 @@ NavBar.defaultProps = {
 export default NavBar;
 
 // NavButton Component
-const NavButton = ({ isActive, disabledIconSrc, enabledIconSrc, children, onClick, isAnimating, ...props }) => (
-    <Button
-        isActive={isActive}
-        isAnimating={isAnimating}
-        onClick={onClick}
-        enabledIconSrc={enabledIconSrc}
-        disabledIconSrc={disabledIconSrc}
-        {...props}
-    >
-        <img src={isActive ? enabledIconSrc : disabledIconSrc} alt={children} />
-        {children}
-    </Button>
-);
+const NavButton = ({ isActive, disabledIconSrc, enabledIconSrc, children, onClick, isAnimating, ...props }) => {
+    const {width: windowSize} = useWindowSize();
+    return (
+        <Button
+            isActive={isActive}
+            isAnimating={isAnimating}
+            onClick={onClick}
+            enabledIconSrc={enabledIconSrc}
+            disabledIconSrc={disabledIconSrc}
+            {...props}
+            maxWidth={windowSize}
+        >
+            <img src={isActive ? enabledIconSrc : disabledIconSrc} alt={children} />
+            {children}
+        </Button>
+    )
+};
 
 NavButton.propTypes = {
     isActive: PropTypes.bool.isRequired,
@@ -118,7 +125,7 @@ const Button = styled.button`
     justify-content: center;
     align-items: center;
     gap: 5px;
-    width: 65px;
+    width: ${(props) => props.maxWidth > 380 ? '65px' : '55px'};
     height: 65px;
     border-radius: 16px;
     border: 0;
@@ -156,7 +163,7 @@ const Button = styled.button`
 const BottomLayout = styled.div`
     position: fixed;
     gap: 10px;
-    width: 380px;
+    width: ${(props) => props.maxWidth}
     height: 80px;
     display: flex;
     justify-content: center;

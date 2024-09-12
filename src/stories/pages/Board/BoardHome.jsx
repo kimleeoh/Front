@@ -5,6 +5,7 @@ import BoardTitle from "../../components/Common/BoardTitle";
 import SubjectList from "../../components/Common/SubjectList";
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
+import useWindowSize from "../../components/Common/WindowSize";
 
 const initialSubjectList = [
     {subject: '디지털미디어원리'},
@@ -39,6 +40,8 @@ const BoardHome = () => {
     const [subjectData, setSubjectData] = useState([]);
     const [bookmarkData, setBookmarkData] = useState([]);
     const [subjectData2, setSubjectData2] = useState([]);
+    const {width: windowSize} = useWindowSize();
+    console.log(windowSize);
 
     useEffect(() => {
         localStorage.removeItem('subjectData');
@@ -104,8 +107,8 @@ const BoardHome = () => {
 
     return (
         <Wrapper>
-            <Header>게시판</Header>
-            <ContentWrapper>
+            <Header maxWidth={windowSize}>게시판</Header>
+            <ContentWrapper maxWidth={windowSize}>
                 <BoardTitle text={'내가 수강 중인 과목'} type={'edit'} onEditClick={() => handleEditClick('subject', '내가 수강 중인 과목')} />
                 <SubjectWrapper>
                     <ScrollableSubjectList>
@@ -158,7 +161,7 @@ const BoardHome = () => {
 
 export default BoardHome;
 
-const maxWidth = '400px';
+
 const mainColor = '#434B60';
 const backgroundColor = '#f0f2f4';
 const whiteColor = 'white';
@@ -172,13 +175,12 @@ const Wrapper = styled.div`
     min-height: 100vh;
     padding: 100px 0 100px;
     width: 100%;
-    min-width: 440px;
     box-sizing: border-box;
 `;
 
 const ContentWrapper = styled.div`
     width: 100%;
-    max-width: ${maxWidth};
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     margin: 0 auto;
     padding: 0 10px;
     box-sizing: border-box;
@@ -186,7 +188,7 @@ const ContentWrapper = styled.div`
 
 const Header = styled.div`
     width: 100%;
-    max-width: ${maxWidth};
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     height: 88px;
     padding: 0 20px;
     display: flex;

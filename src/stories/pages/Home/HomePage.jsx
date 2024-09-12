@@ -43,6 +43,8 @@ const Wrapper = styled.div`
     position: relative;
     padding-top: 88px; /* 헤더 공간만큼 패딩 추가 */
     padding-bottom: 100px;
+    width: 100%;
+    min-width: 450px;
 `;
 
 const Header = styled.div`

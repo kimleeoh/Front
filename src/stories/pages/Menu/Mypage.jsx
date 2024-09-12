@@ -115,6 +115,9 @@ const Wrapper = styled.div`
     padding-bottom: 100px; /* 하단 패딩 추가 */
     
     background-color: #f0f2f4;
+
+    width: 100%;
+    min-width: 420px;
 `;
 
 const Header = styled.div`

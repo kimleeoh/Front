@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import useWindowSize from './Common/WindowSize';
 
 const Header = forwardRef(({ showIcon, text, backButton, searchButton, onClick, children }, ref) => {
   const navigate = useNavigate();
@@ -19,9 +20,11 @@ const Header = forwardRef(({ showIcon, text, backButton, searchButton, onClick, 
     navigate('/search');
   };
 
+  const {width: windowSize} = useWindowSize();
+
   return (
-    <TopLayout>
-      <Head>
+    <TopLayout maxWidth={windowSize}>
+      <Head maxWidth={windowSize}>
         {backButton && (
           <LeftContent>
             <IconButton
@@ -76,8 +79,8 @@ const TopLayout = styled.div`
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%
-  max-width: 400px;
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+  
   background: rgba(240, 242, 244, 0.30);
   backdrop-filter: blur(8px);
   display: flex;
@@ -89,7 +92,7 @@ const TopLayout = styled.div`
 `;
 
 const Head = styled.div`
-  width: 380px;
+  width: 330px;
   height: 80px;
   display: flex;
   justify-content: center;

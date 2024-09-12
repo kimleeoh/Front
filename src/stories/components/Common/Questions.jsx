@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import getTimeElapsed from './getTimeElapsed';
+import useWindowSize from './WindowSize';
 
 const OutWrapper = styled.div`
     width: 100%;
-    max-width: 400px;
-    min-width: 400px;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    
     margin: 0 auto;
-    padding: 0 10px;
     border-bottom: 1px solid #ACB2BB;
 `;
 
@@ -22,9 +22,9 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 380px;
+    
     height: 140px;
-    padding: 20px 10px;
+    padding: 20px 20px;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -42,14 +42,16 @@ const ContentWrapper = styled.div`
 
 const TextWrapper = styled.div`
     align-items: flex-start;
-    max-width: ${(props) => (props.hasImage ? '290px' : '380px')};
+    max-width: ${(props) => (props.hasImage ? '80%' : '100%')};
+    overflow: hidden;
 `
 
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
-
+    width: 100%;
+    
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -94,8 +96,9 @@ const Image = styled.img`
 `;
 
 const Questions = ({ _id, title, content, subject, time, views, like, img, limit }) => {
+    const {width: windowSize} = useWindowSize();
     return (
-        <OutWrapper>
+        <OutWrapper maxWidth={windowSize}>
             <StyledLink to={`/qna/${_id}`}>
                 <Wrapper>
                     <ContentWrapper>
@@ -144,4 +147,3 @@ Questions.defaultProps = {
     img: null,
     limit: 0
 };
-

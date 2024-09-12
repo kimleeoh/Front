@@ -108,7 +108,6 @@ const EditBoardPage = () => {
             <AddButtonWrapper>
                 <Button
                     label={'+ 과목 추가하기'}
-                    width={'380px'}
                     color={'#ACB2BB'}
                     backgroundColor={'#F1F2F4'}
                     hoverColor={'#ACB2BB'}

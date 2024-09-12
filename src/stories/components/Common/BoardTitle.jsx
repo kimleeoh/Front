@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes, { oneOf } from 'prop-types';
+import useWindowSize from "./WindowSize";
 
 const BoardTitle = ({ text, onEditClick, type }) => {
+    const { width: windowWidth } = useWindowSize();
     let iconSrc;
 
     switch (type) {
@@ -17,7 +19,7 @@ const BoardTitle = ({ text, onEditClick, type }) => {
     }
 
     return (
-        <Wrapper>
+        <Wrapper maxWidth={windowWidth}>
             {text}
             {type && (
                 <Button onClick={onEditClick} iconSrc={iconSrc} />
@@ -40,7 +42,7 @@ BoardTitle.defaultProps = {
 export default BoardTitle;
 
 const Wrapper = styled.div`
-    width: 370px;
+    max-width: ${(props)=> props.maxWidth}px;
     height: 20px;
     display: flex;
     align-items: center;
@@ -59,6 +61,7 @@ const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+
     border: none;
     border-radius: 10px;
     background-color: transparent;

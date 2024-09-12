@@ -25,6 +25,9 @@ const Wrapper = styled.div`
     justify-content: center;
     height: 100vh;
     gap: 20px;
+    width: 100%;
+    min-width: 400px;
+
 `;
 
 const Title = styled.h1`
@@ -37,5 +40,6 @@ const Description = styled.p`
     font-size: 18px;
     color: #434B60;
     margin-bottom: 20px;
+    padding: 0 20px;
 `;
 

@@ -83,6 +83,8 @@ const Wrapper = styled.div`
     position: relative;
     padding-top: 10px;
     padding-bottom: 100px;
+    width: 100%;
+    min-width: 400px;
 `;
 
 const SubjectWrapper = styled.div`

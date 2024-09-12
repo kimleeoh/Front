@@ -80,6 +80,8 @@ const Wrapper = styled.div`
     margin-top: 110px;
     margin-bottom: 100px;
     gap: 20px;
+    width: 100%;
+    min-width: 420px;
 `;
 
 const Header = styled.div`

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import useWindowSize from './WindowSize';
 
 const Checker = ({text, onChange, disabled, type, readOnly, checked}) => {
     const [isChecked, setIsChecked] = useState(checked);
@@ -30,8 +31,10 @@ const Checker = ({text, onChange, disabled, type, readOnly, checked}) => {
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <CheckerWrapper>
+        <CheckerWrapper maxWidth={windowSize}>
             <Button
                 onClick={handleCheckboxClick}
                 disabled={disabled}
@@ -70,8 +73,8 @@ const CheckerWrapper = styled.div`
     align-items: center;
     text-align: center;
     height: 40px;
-    width: 100%;
-    min-width: 420px;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+
     margin: 0 auto;
     background-color: white;
     margin-top: 10px;

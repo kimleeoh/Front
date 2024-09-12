@@ -68,6 +68,9 @@ const PageContainer = styled.div`
   margin-top: 100px;
   margin-bottom: 100px;
   gap: 20px;
+  padding: 0 20px;
+  width: 100%;
+  min-width: 400px;
 `;
 
 const Content = styled.div`
