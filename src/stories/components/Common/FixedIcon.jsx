@@ -51,14 +51,18 @@ const Button = styled.button`
         height: 50px; /* Set the height of the icon */
         transition: all 0.3s ease; /* Smooth transition for image change */
 
-        box-shadow: 2px 4px 10px gray;
+        
+        box-shadow: 0px 2px 4px gray;
     }
 
     &:hover {
+    
+        box-shadow: 2px 4px 10px gray;
         
     }
     &:active {
         transition: all 0.3s ease;
         scale: 0.9;
+        box-shadow: 0px 0px 0px gray;
     }
 `

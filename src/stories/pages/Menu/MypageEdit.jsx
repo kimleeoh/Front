@@ -5,29 +5,48 @@ import { useNavigate } from 'react-router-dom';
 import ProgressBar from "../../components/Common/ProgressBar";
 import BoardTitle from "../../components/Common/BoardTitle";
 import SubjectList from "../../components/Common/SubjectList";
-import ChipFilter from "../../components/Common/ChipFilter";
+import TextField from "../../components/TextField";
+import TextArea from "../../components/Common/TextArea";
 
-const MyPage = () => {
+const MyPageEdit = () => {
   const [activeTab, setActiveTab] = useState("프로필");
+  const [profileImage, setProfileImage] = useState("/Profile.svg"); // 기본 프로필 이미지
   const navigate = useNavigate();
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setProfileImage(imageUrl); // 이미지 업로드 후 업데이트
+    }
+  };
+
   return (
     <Wrapper>
       <Header>
-        <BackButton onClick={() => navigate('/menu')}>
+        <BackButton onClick={() => navigate('/mypage')}>
           <img src="/Icons/Icon_arrow.svg" alt="뒤로 가기" />
         </BackButton>
         <ProfileName></ProfileName>
-        <Edit onClick={() => navigate('/mypage/edit')}>편집</Edit>
+        <Save>저장</Save>
       </Header>
       <Profile>
-        <img src="/Profile.svg" alt="프로필" width='100px' height='100px' style={{ borderRadius: '50%' }}/>
+        <ProfileImageWrapper>
+        <img src={profileImage} alt="프로필" width='100px' height='100px' style={{ borderRadius: '50%' }} />
+          <EditButton onClick={() => document.getElementById('imageUpload').click()} />
+          <HiddenFileInput 
+            id="imageUpload"
+            type="file" 
+            accept="image/*" 
+            onChange={handleImageUpload} 
+          />
+        </ProfileImageWrapper>
         <ProfileInfo>
-          Guest
+          <TextField value="Guest" width={'85%'}/>
           <InfoBox>
             <DetailInfo>작성한 꿀팁<Measurement>20</Measurement></DetailInfo>
             <DetailInfo>작성한 답변<Measurement>20</Measurement></DetailInfo>
@@ -37,7 +56,7 @@ const MyPage = () => {
       </Profile>
       <Introduction>
         소개
-        <IntroductionBox>소개</IntroductionBox>
+        <IntroductionBox><TextArea width={'95%'} backgroundColor={'#e2e5e9'} fontSize={'14px'}/></IntroductionBox>
       </Introduction>
       <TabNavigation 
         tabs={['프로필', '활동']} 
@@ -53,7 +72,7 @@ const MyPage = () => {
                 <BadgeBox />
                 <BadgeBox />
             </BadgeContainer>
-            <BoardTitle text="성적"/>
+            <BoardTitle text="성적" type={'edit'}/>
             <SubjectWrapper>
                 <ScrollableSubjectList>
                     <SubjectList
@@ -85,42 +104,21 @@ const MyPage = () => {
               </Reputation>
               <div style={{padding: '0px 20px 20px'}}>
               <InfoBox>
-                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
-                <img src="/Icons/Vote_c.svg" alt="투표" width='35px' height='35px'/>
-                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
-                <div style={{fontSize: '10px', color: '#ACB2BB'}}>받은 투표 수</div>
-                </div>
-
-                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
-                <img src="/Icons/Bookmark_c.svg" alt="스크랩" width='20px' height='28px'/>
-                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
-                <div style={{fontSize: '10px', color: '#ACB2BB'}}>스크랩 수</div>
-                </div>
-
-                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
-                <img src="/Icons/Crown_c.svg" alt="꿀팁" width='40px' height='40px'/>
-                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
-                <div style={{fontSize: '10px', color: '#ACB2BB'}}>채택 수</div>
-                </div>
-
-                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
-                <img src="/Icons/Global_c.svg" alt="답변" width='28px' height='28px'/>
-                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
-                <div style={{fontSize: '10px', color: '#ACB2BB'}}>조회 수</div>
-                </div>
-
-
+                <DetailInfo>받은 투표수<Measurement>20</Measurement></DetailInfo>
+                <DetailInfo>스크랩수<Measurement>20</Measurement></DetailInfo>
+                <DetailInfo>채택수<Measurement>4</Measurement></DetailInfo>
+                <DetailInfo>총 조회수<Measurement>1000</Measurement></DetailInfo>
               </InfoBox>
               </div>
             <Title>최근 작성한 게시글</Title>
-            <ChipFilter />
+            <div>최근 작성한 게시글 내용</div>
         </Content>
       )}
     </Wrapper>
   );
 };
 
-export default MyPage;
+export default MyPageEdit;
 
 // Styled Components
 
@@ -135,9 +133,6 @@ const Wrapper = styled.div`
     padding-bottom: 100px; /* 하단 패딩 추가 */
     
     background-color: #f0f2f4;
-
-    width: 100%;
-    min-width: 420px;
 `;
 
 const Header = styled.div`
@@ -176,6 +171,10 @@ const BackButton = styled.div`
   }
 `;
 
+const HiddenFileInput = styled.input`
+  display: none;
+`;
+
 const ProfileName = styled.div`
   font-size: 18px;
   font-weight: bold;
@@ -185,6 +184,34 @@ const ProfileName = styled.div`
   margin: 0 60px; /* BackButton과 ProfileName 사이의 여백 설정 */
 `;
 
+// Profile Image Edit Button styled component
+const ProfileImageWrapper = styled.div`
+  position: relative;
+  width: 100px;
+  height: 100px;
+`;
+
+const EditButton = styled.button`
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+  width: ${(props) => props.size || '30px'}; /* 기본 크기 30px */
+  height: ${(props) => props.size || '30px'};
+  background: url('/Icons/Edit.svg') no-repeat center;
+  background-size: ${(props) => props.iconSize || '20px'}; /* 아이콘 크기 prop으로 조정 */
+  background-color: #e2e5e9; /* 배경색 제거 */
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0px 2px 4px gray;
+  transition: all 0.3s ease;
+
+  &:active {
+    scale: 0.95;
+  }
+`;
+
+// Modified Profile Component
 const Profile = styled.div`
   width: 370px;
   height: 100px;
@@ -212,7 +239,7 @@ const InfoBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   gap: 8px;
 `;
 
@@ -370,7 +397,7 @@ const ScrollableSubjectList = styled.div`
     overflow-y: auto;
 `;
 
-const Edit = styled.button`
+const Save = styled.button`
   width: 60px;
   height: 60px;
   display: flex;

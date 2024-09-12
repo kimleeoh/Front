@@ -1,26 +1,35 @@
-import react, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Report from '../../components/Common/Report'
+import Report from '../../components/Common/Report';
 import { Votes, Scrap, Notification, MeatballMenu } from '../../components/Common/Tool';
 import CarouselTemp from '../../components/Common/CarouselTemp';
 
-const Answers = ({_id, name, level, user_grade, major, content, img, like }) => {
+const Answers = ({ _id, name, level, user_grade, major, content, img, like }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
-    
+    const [isAdopted, setIsAdopted] = useState(true); // Adoption state management
+
     return (
         <OutWrapper>
             <Wrapper>
-                <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                <SubWrapper>
-                    <Title><img src="/Icons/A.svg" /></Title>
-                    <img src="/Icons/Profile.svg" />
-                    <ProfileContainer>
-                        <LevelGrade>Lv. {level} | {user_grade} 등급</LevelGrade>
-                        <MajorName>{major} {name}</MajorName>
-                     </ProfileContainer>
-                </SubWrapper>
-                <MeatballMenu _id={_id} />
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <SubWrapper>
+                        <Title><img src="/Icons/A.svg" /></Title>
+                        <img src="/Icons/Profile.svg" />
+                        <ProfileContainer>
+                            <LevelGrade>Lv. {level} | {user_grade} 등급</LevelGrade>
+                            <MajorName>{major} {name}</MajorName>
+                        </ProfileContainer>
+                    </SubWrapper>
+                    <div style={{display: 'flex', gap: '5px'}}>
+                    {isAdopted && (
+                        <AdoptWrapper>
+                            <Adopt src="/adopt.svg" />
+                            <AdoptLabel>질문자 채택</AdoptLabel>
+                        </AdoptWrapper>
+                    )}
+                    <MeatballMenu _id={_id} />
+                    </div>
                 </div>
                 <Content>{content}</Content>
 
@@ -42,11 +51,10 @@ const Answers = ({_id, name, level, user_grade, major, content, img, like }) => 
                 )}
 
                 <Votes like={like} />
-
             </Wrapper>
         </OutWrapper>
     );
-}
+};
 
 export default Answers;
 
@@ -91,12 +99,11 @@ const Wrapper = styled.div`
 const SubWrapper = styled.div`
     display: flex;
     align-items: center;
-`
+`;
 
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
-    
     display: flex;
     align-items: center;
 `;
@@ -106,69 +113,53 @@ const Content = styled.div`
     margin-top: 20px;
 `;
 
-
 const ProfileContainer = styled.div`
     margin-left: 10px;
-`
+`;
 
 const LevelGrade = styled.div`
     display: flex;
     align-items: center;
     font-size: 8px;
-`
+`;
+
 const MajorName = styled.div`
     display: flex;
     align-items: center;
     font-size: 12px;
     font-weight: bold;
-`
+`;
 
 const OutWrapper = styled.div`
     width: 400px;
 `;
 
-
-const Button = styled.button`
-    display: flex;
-
-    border: 0px;
-    background-color: white;
-
-    img{
-        width: 25px;
-        height: 25px;
-        transition: all 0.3s ease;
-    }
-
-    cursor: pointer;
-
-
-    &:hover {
-        transition: all 0.3s ease;
-    }
-
-    &:active {
-        transition: all 0.3s ease;
-        scale: 0.95;
-    }
-`
-
-const ImageWrapper = styled.div`
+const AdoptWrapper = styled.div`
     position: relative;
-    margin-top: 20px;
-    width: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    cursor: grab;
-    user-select: none;
 `;
 
-const ImageContainer = styled.div`
-    display: flex;
+const Adopt = styled.img`
+    width: 40px;
+    height: 60px;
+    color: white;
+`;
+
+const AdoptLabel = styled.div`
+    position: absolute;
+    top: 20%;
     width: 100%;
-    overflow: hidden;
-    
+    text-align: center;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0);
+`;
+
+const CarouselWrapper = styled.div`
+    margin-top: 20px;
+    width: 100%;
 `;
 
 const Image = styled.img`
@@ -178,9 +169,4 @@ const Image = styled.img`
     object-position: center;
     border-radius: 8px;
     flex-shrink: 0;
-`;
-
-const CarouselWrapper = styled.div`
-    margin-top: 20px;
-    width: 100%;
 `;
