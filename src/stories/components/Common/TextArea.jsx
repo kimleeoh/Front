@@ -42,11 +42,11 @@ const TextArea = ({ width, height, placeholder, fontColor, backgroundColor, font
 export default TextArea;
 
 const StyledTextArea = styled.textarea`
-    margin-top: 20px;
     width: ${props => props.width};
     height: ${props => props.height};
-    padding: 0px 10px;
+    padding: 5px 10px;
     border: none;
+    border-radius: 16px;
 
     background-color: ${props => props.backgroundColor};
     color: ${props => props.fontColor};

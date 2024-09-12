@@ -20,6 +20,7 @@ import UnifiedBoard from "./stories/pages/Board/UnifiedBoard";
 
 import MenuPage from "./stories/pages/Menu/MenuPage";
 import MyPage from "./stories/pages/Menu/Mypage";
+import MyPageEdit from "./stories/pages/Menu/MypageEdit";
 import Grades from "./stories/pages/Menu/Grades";
 import GradesRegister from "./stories/pages/Menu/GradeRegister"
 import MyBoard from "./stories/pages/Menu/MyBoard";
@@ -76,6 +77,7 @@ const App = () => {
 
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/edit" element={<MyPageEdit />} />
         <Route path="/grades" element={<Grades />} />
         <Route path="/grades/register" element={<GradesRegister />} />
         <Route path="/myboard" element={<MyBoard />} />
