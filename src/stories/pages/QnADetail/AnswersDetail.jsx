@@ -113,6 +113,7 @@ const Title = styled.div`
 const Content = styled.div`
     font-size: 16px;
     margin-top: 20px;
+    margin-bottom: 20px;
 `;
 
 const ProfileContainer = styled.div`

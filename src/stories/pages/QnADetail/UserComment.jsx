@@ -91,7 +91,7 @@ const User = ({post_id, name, level, major, profileImg, limit}) => {
 
     if (limit === 0) {
         return (
-            <OutWrapper>
+            <OutWrapper maxWidth={windowSize}>
                 <Wrapper>
                     <SubWrapper>
                         <ProfileImg src={profileImg} />
@@ -114,7 +114,7 @@ const User = ({post_id, name, level, major, profileImg, limit}) => {
     }
 
     return (
-        <OutWrapper>
+        <OutWrapper maxWidth={windowSize}>
             <Wrapper>
                 {limit === null ? (
                     <SubWrapper>
@@ -129,7 +129,10 @@ const User = ({post_id, name, level, major, profileImg, limit}) => {
                         <ProfileImg src={profileImg} />
                         <ProfileContainer>
                             <LevelGrade>Lv. {level} | A 등급</LevelGrade>
-                            <MajorName>{major} {name}<span style={{color: '#3182F7'}}>님은 답변 등록이 가능합니다.</span></MajorName>
+                            <MajorName>
+                                {major} {name}
+                                <span style={{color: '#3182F7'}}>님은 답변 등록이 가능합니다.</span>
+                            </MajorName>
                         </ProfileContainer>
                     </SubWrapper>
                 ) : (
@@ -211,6 +214,7 @@ const MajorName = styled.div`
     align-items: center;
     font-size: 12px;
     font-weight: bold;
+    flex-wrap: wrap;
 `
 
 const OutWrapper = styled.div`
@@ -220,8 +224,4 @@ const OutWrapper = styled.div`
 
 const TextAreaWrapper = styled.div`
     padding: 0px 10px;
-`
-
-const ImageUploaderWrapper = styled.div`
-    width: 280px;
 `

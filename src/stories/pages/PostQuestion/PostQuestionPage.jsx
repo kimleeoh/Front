@@ -190,7 +190,6 @@ const PostQuestionPage = () => {
         </Wrapper>
     );
 }
-
 export default PostQuestionPage;
 
 const Wrapper = styled.div`
