@@ -162,7 +162,7 @@ const Button = styled.button`
 
 const BottomLayout = styled.div`
     position: fixed;
-    gap: 10px;
+    gap: 6px;
     width: ${(props) => props.maxWidth}
     height: 80px;
     display: flex;
@@ -171,5 +171,5 @@ const BottomLayout = styled.div`
     z-index: 1000;
     border: 1px solid #e0e0e0;
     border-radius: 16px;
-    padding: 5px 0px 10px 0px;
+    padding: 5px 5px 20px 5px;
 `;

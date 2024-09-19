@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Votes, Scrap, Notification, MeatballMenu } from '../../components/Common/Tool';
+import Report from '../../components/Common/Report';
+import { Votes, Scrap, Notification } from '../../components/Common/Tool';
 import CarouselTemp from '../../components/Common/CarouselTemp';
+import MeatballMenu from '../../components/Common/MeatballMenu';
 import useWindowSize from '../../components/Common/WindowSize';
 
 const Answers = ({ _id, name, level, user_grade, major, content, img, like }) => {
