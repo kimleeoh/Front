@@ -6,9 +6,11 @@ import Button from '../../components/Button';
 import Checker from '../../components/Common/Checker';
 import DiscreteProgressBar from './DiscreteProgressBar';
 import { SignUpHandler } from '../../../axioses/SignUpHandler';
+import useWindowSize from '../../components/Common/WindowSize';
 
 
 const SignUpPage = () => {
+  const {width: windowSize} = useWindowSize();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
@@ -129,14 +131,13 @@ const SignUpPage = () => {
     const isStepValid = validateStep();
 
     return (
-      <ButtonWrapper buttonCount={step === 1 || step === 6 ? 1 : 2}>
+      <ButtonWrapper buttonCount={step === 1 || step === 6 ? 1 : 2} maxWidth={windowSize}>
         {step > 1 && (
           <Button
             label="이전"
             onClick={handlePrevious}
             backgroundColor="#434B60"
             hoverBackgroundColor="#5A6480"
-            width="48%"
           />
         )}
         <Button
@@ -144,7 +145,7 @@ const SignUpPage = () => {
           onClick={step === 6 ? handleSubmit : handleNext}
           backgroundColor="#434B60"
           hoverBackgroundColor="#5A6480"
-          width={step === 1 ? '100%' : '48%'}
+          
           disabled={!isStepValid}
         />
       </ButtonWrapper>
@@ -265,7 +266,7 @@ const SignUpPage = () => {
                 name="confirmPassword"
               />
               {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
-              <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+              <div style={{ marginTop: '-15px',  display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: {windowSize}}}>
                 <Checker
                   text="비밀번호는 8~12자 이내로 입력하세요."
                   type="check"
@@ -292,10 +293,9 @@ const SignUpPage = () => {
         return null;
     }
   };
-
   return (
-    <Wrapper>
-      <FormWrapper>
+    <Wrapper maxWidth={windowSize}>
+      <FormWrapper maxWidth={windowSize}>
         <DiscreteProgressBar 
           totalSteps={6} 
           currentStep={step} 
@@ -330,14 +330,14 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  padding: 20px;
 `;
 
 const FormWrapper = styled.div`
   position: fixed;
   top: 15%;
-  width: 100%;
-  max-width: 400px;
+
+  width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+  padding: ${(props) => (props.maxWidth > 430 ? '0px' : '0 20px')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -351,12 +351,11 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: ${({ buttonCount }) => (buttonCount === 1 ? 'center' : 'space-between')};
   margin-top: 20px;
-  width: 400px;
+  width: 100%;
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+  padding: 0 10px;
+  box-sizing: border-box;
   gap: 10px;
-
-  button {
-    width: ${({ buttonCount }) => (buttonCount === 1 ? '400px' : '48%')};
-  }
 `;
 
 const SigninWrapper = styled.div`
@@ -368,7 +367,7 @@ const SigninWrapper = styled.div`
 const StepDescription = styled.div`
   width: 100%;
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: -10px;
 `;
 
 const Title = styled.h2`
@@ -386,6 +385,8 @@ const Subtitle = styled.p`
 const TextFieldsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 20px;
 `;
 

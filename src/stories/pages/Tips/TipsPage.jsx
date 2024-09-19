@@ -81,9 +81,9 @@ const TipsPage = () => {
     const [TipsData, setTipsData] = useState([]);
     const [filteredTips, setFilteredTips] = useState([]);
 
-    BaseAxios.get('/api/dummy/testtips').then((result)=>{
-        console.log(result.data)
-    })
+    // BaseAxios.get('/api/dummy/testtips').then((result)=>{
+    //     console.log(result.data)
+    // })
 
     useEffect(() => {
         // Load TipsData from localStorage or initialize it
@@ -111,7 +111,7 @@ const TipsPage = () => {
     return (
         <Wrapper>
             <Header showIcon={false} text="Tips" backButton={false} searchButton={true}/>
-            <ChipFilter onFilterChange={handleFilterChange} />
+            <ChipFilter onFilterChange={handleFilterChange} marginTop={'10px'}/>
             {filteredTips.map((tip) => (
                 <Tips
                     key={tip._id}

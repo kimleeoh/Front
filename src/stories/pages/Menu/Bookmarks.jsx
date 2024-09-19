@@ -142,5 +142,4 @@ const Wrapper = styled.div`
     margin-top: 100px;
     margin-bottom: 100px;
     width: 100%;
-    min-width: 400px;
 `;

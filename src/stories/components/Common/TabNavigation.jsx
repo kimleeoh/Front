@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import useWindowSize from './WindowSize';
 
 const TabNavigation = ({ tabs, activeTab, onTabChange }) => {
   const [tabWidths, setTabWidths] = useState([]);
@@ -15,8 +16,10 @@ const TabNavigation = ({ tabs, activeTab, onTabChange }) => {
     onTabChange(tab);
   };
 
+  const {width: windowSize} = useWindowSize();
+
   return (
-    <TabWrapper>
+    <TabWrapper maxWidth={windowSize}>
       <TabContainer>
         {tabs.map((tab, index) => (
           <Tab
@@ -40,7 +43,8 @@ const TabNavigation = ({ tabs, activeTab, onTabChange }) => {
 
 const TabWrapper = styled.div`
   display: flex;
-  width: 380px;
+  width: 100%;
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
   border-bottom: 1px solid #e0e0e0;
   position: relative;
 `;
@@ -51,6 +55,7 @@ const TabContainer = styled.div`
 `;
 
 const Tab = styled.div`
+  box-sizing: border-box;
   flex: 1;
   text-align: center;
   padding: 10px 0;

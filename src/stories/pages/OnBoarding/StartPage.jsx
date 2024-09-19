@@ -5,6 +5,7 @@ import Button from '../../components/Button';
 import TextField from '../../components/TextField';
 import Logo from './Logo'
 import { LoginHandler } from '../../../axioses/SignUpHandler';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const StartPage = () => {
     const [isLoginMode, setIsLoginMode] = useState(false);
@@ -39,8 +40,10 @@ const StartPage = () => {
         navigate('/signup'); // Navigate to the signup page
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <Wrapper>
+        <Wrapper maxWidth={windowSize}>
             <LogoWrapper isLoginMode={isLoginMode}>
                 <Logo/>
             </LogoWrapper>
@@ -52,7 +55,6 @@ const StartPage = () => {
                             name="username"
                             value={formData.username}
                             onChange= {handleChange}
-                            width="300px"
                         />
                         <TextField
                             label="비밀번호"
@@ -60,7 +62,6 @@ const StartPage = () => {
                             type="password"
                             value={formData.password}
                             onChange={handleChange}
-                            width="300px"
                         />
                     </LoginWrapper>
                 ) : (
@@ -68,18 +69,20 @@ const StartPage = () => {
                         <SloganWrapper>
                             <Slogan>당신의 멋진 슬로건을 여기에 입력하세요</Slogan>
                         </SloganWrapper>
-                        <StartButtonWrapper>
+                        <StartButtonWrapper maxWidth={windowSize}>
                             <Button
                                 label="시작하기"
+
                                 onClick={handleNavigateSignUp} // Use navigation function
                             />
                         </StartButtonWrapper>
                     </>
                 )}
             </ContentWrapper>
-            <ButtonWrapper>
+            <ButtonWrapper maxWidth={windowSize}>
                 <Button
                     label="로그인"
+
                     backgroundColor="#434B60"
                     hoverBackgroundColor="#5A6480"
                     onClick={isLoginMode ? handleActualLogin : handleNavigateLogin}
@@ -89,7 +92,7 @@ const StartPage = () => {
                 <CreateAccountButtonWrapper>
                     <Button
                         label="계정 만들기"
-                        width="120px"
+                        width="140px"
                         height="40px"
                         color="#434B60"
                         hoverColor="#434B60"
@@ -112,10 +115,12 @@ const Wrapper = styled.div`
     justify-content: center;
     height: 100vh;
     gap: 20px;
+    width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    margin: 0 auto;
 `;
 
 const LogoWrapper = styled.div`
-    width: 334px;
+    width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     height: 100px;
     transition: transform 0.3s ease;
     transform: ${({ isLoginMode }) => (isLoginMode ? 'translateY(-10px)' : 'translateY(0)')};
@@ -134,6 +139,7 @@ const SloganWrapper = styled.div`
 const Slogan = styled.h2`
     font-size: 24px;
     color: #434B60;
+    padding: 0 20px;
 `;
 
 const ContentWrapper = styled.div`
@@ -151,6 +157,10 @@ const StartButtonWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    padding: 0 20px;
+    box-sizing: border-box;
 `;
 
 const ButtonWrapper = styled.div`
@@ -158,6 +168,10 @@ const ButtonWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    padding: 0 20px;
+    box-sizing: border-box;
 `;
 
 const CreateAccountButtonWrapper = styled.div`

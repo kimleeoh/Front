@@ -7,6 +7,7 @@ import Modal from '../../components/Common/Modal';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import Checker from '../../components/Common/Checker';
 import ImageUploadButton from '../Confirmation/ImageUploadButton';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const GradeRegister = () => {
     const Grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "F"];
@@ -95,12 +96,14 @@ const GradeRegister = () => {
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
         <Wrapper>
             <Header text="성적 등록하기">
                 <Verify onClick={handleVerifyClick}>인증</Verify>
             </Header>
-            <TermPickerWrapper>
+            <TermPickerWrapper maxWidth={windowSize}>
                 <Picker items={availableYears} selectedItem={selectedYear} onChange={setSelectedYear} placeholder={'XXXX'} />
                 학년도
                 <Picker items={availableTerms} selectedItem={selectedTerm} onChange={setSelectedTerm} placeholder={'X'} />
@@ -126,7 +129,6 @@ const GradeRegister = () => {
                 <Button
                     label="저장"
                     onClick={() => alert("성적이 저장되었습니다.")}
-                    width="380px"
                     color="#fff"
                     backgroundColor="#007bff"
                     hoverBackgroundColor="#0056b3"
@@ -184,7 +186,10 @@ const Verify = styled.button`
 `;
 
 const TermPickerWrapper = styled.div`
-    width: 320px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    box-sizing: border-box;
+    padding: 0 10px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -198,7 +203,7 @@ const TermPickerWrapper = styled.div`
 `;
 
 const SubjectWrapper = styled.div`
-    width: 320px;
+    width: 100%;
     margin-top: 20px;
     display: flex;
     flex-direction: column;

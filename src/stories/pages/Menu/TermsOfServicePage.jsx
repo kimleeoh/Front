@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const TermsOfServicePage = () => {
+  const {width: windowSize} = useWindowSize();
 
   return (
     <PageContainer>
       <Header text='이용약관' searchButton={false}/>
-      <Content>
+      <Content maxWidth={windowSize}>
         <Title>A-F Killer 이용약관</Title>
         <p><strong>제 1조 (목적)</strong></p>
         <p>
@@ -70,15 +72,15 @@ const PageContainer = styled.div`
   gap: 20px;
   padding: 0 20px;
   width: 100%;
-  min-width: 400px;
+  box-sizing: border-box;
 `;
 
 const Content = styled.div`
   text-align: left;
   font-size: 14px;
   line-height: 1.6;
-  padding: 0 10px;
-  width: 380px;
+  width: 100%;
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 `;
 
 const Title = styled.h1`

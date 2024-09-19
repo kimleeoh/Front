@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Chip from './Chip';
 import PropTypes from 'prop-types';
+import useWindowSize from './WindowSize';
 
 const Container = styled.div`
     height: 40px;
-    width: 380px;
-    padding: 0 10px;
-    min-width: 400px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
+    margin-top: ${(props) => props.marginTop};
 `;
 
-const ChipFilter = ({ onFilterChange }) => {
+const ChipFilter = ({ onFilterChange, marginTop }) => {
     const [activeChips, setActiveChips] = useState([]);
 
     const handleChipClick = (label) => {
@@ -29,8 +30,10 @@ const ChipFilter = ({ onFilterChange }) => {
 
     const badges = ['필기공유', '시험정보', '수업꿀팁'];
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <Container>
+        <Container maxWidth={windowSize} marginTop={marginTop}>
             {badges.map(badge => (
                 <Chip
                     key={badge}
@@ -45,6 +48,7 @@ const ChipFilter = ({ onFilterChange }) => {
 
 ChipFilter.propTypes = {
     onFilterChange: PropTypes.func.isRequired,
+    marginTop: PropTypes.string,
 };
 
 export default ChipFilter;

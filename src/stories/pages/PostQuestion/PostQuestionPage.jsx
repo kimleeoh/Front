@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
-import NavBar from '../../components/NavBar';
-import FixedBottomContainer from '../../components/FixedBottomContainer';
-import TextField from '../../components/TextField';
 import TextInput from '../../components/Common/TextInput';
 import TextArea from '../../components/Common/TextArea';
 import SelectBoard from '../../components/Common/SelectBoard';
@@ -11,6 +8,7 @@ import ImageUploader from '../../components/Common/ImageUploader2';
 import PointInput from './PointInput';
 import Checker from '../../components/Common/Checker';
 import Button from '../../components/Button';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const initialUserData = [
     {
@@ -122,26 +120,27 @@ const PostQuestionPage = () => {
         const { title, board, content, point } = formValues;
 
         if (title.trim() === '') {
-            return <ValidationMessage> 제목을 입력해 주세요.</ValidationMessage>;
+            return <ValidationMessage maxWidth={windowSize}> 제목을 입력해 주세요.</ValidationMessage>;
         }
         if (board.length === 0) {
-            return <ValidationMessage> 게시판을 선택해 주세요.</ValidationMessage>;
+            return <ValidationMessage maxWidth={windowSize}> 게시판을 선택해 주세요.</ValidationMessage>;
         }
         if (content.trim() === '') {
-            return <ValidationMessage>내용을 입력해 주세요.</ValidationMessage>;
+            return <ValidationMessage maxWidth={windowSize}>내용을 입력해 주세요.</ValidationMessage>;
         }
         if (point.trim() === '') {
-            return <ValidationMessage>포인트를 입력해 주세요.</ValidationMessage>;
+            return <ValidationMessage maxWidth={windowSize}>포인트를 입력해 주세요.</ValidationMessage>;
         }
     
         return null;
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
         <Wrapper>
             <Header showIcon={false} text="질문 작성하기" backButton={true} searchButton={false} />
-            <TextInput 
-                width={'380px'} 
+            <TextInput  
                 height={'30px'} 
                 fontSize={'15px'} 
                 placeholder={'제목 입력'} 
@@ -154,7 +153,6 @@ const PostQuestionPage = () => {
                 onChange={(value) => handleInputChange('board', value)}
             />
             <TextArea 
-                width={'380px'} 
                 height={'300px'} 
                 fontSize={'15px'}
                 placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요.*"} 
@@ -177,15 +175,14 @@ const PostQuestionPage = () => {
                 disabled={formValues.point < 100} 
             />
             {formValues.point < 100 && (
-                <Condition>
-                    <span style={{ fontSize: '10px', color: '#D00303', marginLeft: '20px' }}>
+                <Condition maxWidth={windowSize}>
+                    <span style={{ fontSize: '10px', color: '#D00303', marginLeft: '20px', marginTop: '10px' }}>
                         100p 이상 입력해야 조건을 제시할 수 있습니다.
                     </span>
                 </Condition>
             )}
             <Button 
                 label={'등록하기'} 
-                width={'380px'} 
                 style={{ marginTop: '15px' }} 
                 onClick={handleFormSubmit}
             />
@@ -193,7 +190,6 @@ const PostQuestionPage = () => {
         </Wrapper>
     );
 }
-
 export default PostQuestionPage;
 
 const Wrapper = styled.div`
@@ -203,15 +199,24 @@ const Wrapper = styled.div`
     align-items: center;
     margin-top: 100px;
     margin-bottom: 100px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 20px;
 `;
 
 const Condition = styled.div`
     display: flex;
     align-items: center;
-    width: 380px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 `;
 
 const ValidationMessage = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     color: #D00303;
     font-size: 12px;
     margin-top: 5px;

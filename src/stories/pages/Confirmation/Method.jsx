@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import useWindowSize from "../../components/Common/WindowSize";
 
 const Method = ({title, content, to}) => {
     const navigate = useNavigate();
@@ -9,8 +10,10 @@ const Method = ({title, content, to}) => {
     const handleClick = () => {
         navigate(to, {state: {title}});
     }
+
+    const {width: windowSize} = useWindowSize();
     return (
-        <Wrapper onClick={handleClick}>
+        <Wrapper onClick={handleClick} maxWidth={windowSize}>
             <Title> {title} </Title>
             <Content> {content} </Content>
         </Wrapper>
@@ -30,8 +33,9 @@ Method.propTypes = {
 }
 
 const Wrapper = styled.div`
-    width: 373px;
-    height: 60px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 
     align-items: center;
     margin-bottom: 20px;
@@ -40,7 +44,7 @@ const Wrapper = styled.div`
     border-radius: 20px;
     background-color: #f0f2f4;
     padding: 30px 20px;
-
+    
     transition: all 0.3s ease;
     cursor: pointer;
     &:active {

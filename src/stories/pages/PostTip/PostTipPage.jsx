@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
-import NavBar from '../../components/NavBar';
-import FixedBottomContainer from '../../components/FixedBottomContainer';
-import TextField from '../../components/TextField';
 import TextInput from '../../components/Common/TextInput';
 import TextArea from '../../components/Common/TextArea';
 import SelectBoard from '../../components/Common/SelectBoard';
 import ImageUploader from '../../components/Common/ImageUploader2';
-import PointInput from '../PostQuestion/PointInput';
-import Checker from '../../components/Common/Checker';
 import Button from '../../components/Button'
 import ChipFilter from '../../components/Common/ChipFilter';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const initialUserData = [
     {
@@ -140,12 +136,12 @@ const PostQuestionPage = () => {
         return null;
     };
 
+    const {width: windowSize} = useWindowSize();
 
     return (
         <Wrapper>
             <Header showIcon={false} text="글 작성하기" backButton={true} searchButton={false}/>
             <TextInput 
-                width={'380px'} 
                 height={'30px'} 
                 fontSize={'15px'} 
                 placeholder={'제목 입력'}  
@@ -157,19 +153,17 @@ const PostQuestionPage = () => {
             />
             <ChipFilter onFilterChange={(value) => handleInputChange('tags', value)} />
             <TextArea 
-                width={'380px'} 
                 height={'300px'} 
                 fontSize={'15px'} 
                 placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."} 
                 onChange={(value) => handleInputChange('content', value)}
             />
             <ImageUploader onChange={(value) => handleInputChange('images', value)}/>
-            <StyledDiv>
+            <StyledDiv maxWidth={windowSize}>
                 <span>일정 포인트를 자동으로 지급해줘요.</span>
             </StyledDiv>
             <Button 
                 label={'등록하기'} 
-                width={'380px'} 
                 style={{marginTop: '15px'}} 
                 onClick={handleFormSubmit}
             />
@@ -187,18 +181,14 @@ const Wrapper = styled.div`
     align-items: center;
     margin-top: 100px;
     margin-bottom: 100px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 20px;
 `;
-
-const Condition = styled.div`
-    display: flex;
-    align-items: center;
-    width: 380px;
-`
 
 const StyledDiv = styled.div`
     display: flex;
     align-items: center;
-    width: 380px;
     padding: 10px;
     border: none;
     border-radius: 15px;
@@ -206,6 +196,9 @@ const StyledDiv = styled.div`
     background-color: #F0F2F4;
 
     margin-top: 10px;
+
+     width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 `
 
 const ValidationMessage = styled.div`

@@ -5,9 +5,9 @@ import { Votes, Scrap, Notification } from '../../components/Common/Tool';
 import MeatballMenu from '../../components/Common/MeatballMenu';
 import Report from '../../components/Common/Report';
 import CarouselTemp from '../../components/Common/CarouselTemp';
-import CarouselTemp2 from '../../components/Common/CarouselTemp2'
 import getTimeElapsed from '../../components/Common/getTimeElapsed';
 import CategoryPath from '../../components/Common/CategoryPath';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views, like, img, limit, likePost }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
@@ -46,8 +46,10 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
         console.log("Notification toggled:", isNotified);
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <OutWrapper>
+        <OutWrapper maxWidth={windowSize}>
             <Wrapper>
                 <TopBar>
                     <CategoryPath categories={subject} />
@@ -73,7 +75,7 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
                             showFraction={true}
                         >
                             {images.map((image, index) => (
-                                <Image key={index} src={image} draggable="false" />
+                                <Image key={index} src={image} draggable="false" maxWidth={windowSize}/>
                             ))}
                         </CarouselTemp>
                     </CarouselWrapper>
@@ -144,8 +146,8 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 380px;
-    padding: 20px 10px;
+
+    padding: 20px 0;
     border-bottom: 1px solid #F1F2F4;
 `;
 
@@ -160,6 +162,7 @@ const BottomBar = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
+    width: 100%;
 `;
 
 const Title = styled.div`
@@ -197,12 +200,13 @@ const MetaContainer = styled.div`
 `;
 
 const OutWrapper = styled.div`
-    width: 400px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 `;
 
 const Image = styled.img`
-    width: 380px;
-    height: 380px;
+    width: 100%;
+    height: 300px;
     object-fit: cover;
     object-position: center;
     border-radius: 8px;

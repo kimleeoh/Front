@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
+import useWindowSize from './WindowSize';
 
 const dropdownAnimation = keyframes`
     0% {
@@ -60,14 +61,11 @@ const SelectBoard = ({ options, placeholder, onChange }) => {
         ? options
         : (selectedOptions[selectedOptions.length - 1]?.subcategories || []);
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <DropdownContainer ref={dropdownRef}>
-            <DropdownHeader
-                onClick={toggleDropdown}
-                aria-expanded={isOpen}
-                aria-haspopup="listbox"
-                role="button"
-            >
+        <DropdownContainer ref={dropdownRef} maxWidth={windowSize}>
+            <DropdownHeader onClick={toggleDropdown}>
                 {selectedOptions.length === 0
                     ? placeholder
                     : selectedOptions.map(option => option.label).join(' > ')}
@@ -137,10 +135,11 @@ const DropdownContainer = styled.div`
     border-bottom: 1px solid #ACB2BB;
     position: relative;
     gap: 10px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 `;
 
 const DropdownHeader = styled.div`
-    width: 380px;
     height: 30px;
     background-color: white;
     display: flex;

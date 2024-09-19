@@ -24,7 +24,7 @@ const Header = forwardRef(({ showIcon, text, backButton, searchButton, onClick, 
 
   return (
     <TopLayout maxWidth={windowSize}>
-      <Head maxWidth={windowSize}>
+      <Head maxWidth={windowSize-40}>
         {backButton && (
           <LeftContent>
             <IconButton
@@ -92,7 +92,7 @@ const TopLayout = styled.div`
 `;
 
 const Head = styled.div`
-  width: 330px;
+  width: ${(props) => props.maxWidth}px;
   height: 80px;
   display: flex;
   justify-content: center;

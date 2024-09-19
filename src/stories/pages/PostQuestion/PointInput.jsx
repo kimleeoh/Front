@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const PointInput = ({ width, height, placeholder, fontColor, backgroundColor, fontSize, onChange, point, disabled}) => {
     const [content, setContent] = useState('');
@@ -26,11 +27,12 @@ const PointInput = ({ width, height, placeholder, fontColor, backgroundColor, fo
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <>  
-            <div style={{width: '380px', color: '#ACB2BB', marginTop: '10px'}}>
-                <small style={{marginRight: 'auto'}}>보유 포인트: {point}p</small>
-            </div> 
+        <Wrapper maxWidth={windowSize}>
+            <small style={{marginRight: 'auto'}}>보유 포인트: {point}p</small>
+
             <StyledPointInput
                 value={content}
                 onChange={handleChange}
@@ -43,8 +45,9 @@ const PointInput = ({ width, height, placeholder, fontColor, backgroundColor, fo
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 disabled={disabled}
+                maxWidth={windowSize}
             />
-        </>
+        </Wrapper>
     );
 };
 
@@ -73,11 +76,22 @@ PointInput.defaultProps = {
     disabled: false,
 };
 
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    margin-top: 10px;
+`
+
 const StyledPointInput = styled.input`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: ${props => props.width};
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     height: ${props => props.height};
     padding: 10px;
     border: none;

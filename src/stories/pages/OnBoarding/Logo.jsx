@@ -2,6 +2,7 @@
 import React, { useState, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
+import useWindowSize from '../../components/Common/WindowSize';
 
 // 애니메이션 정의
 const jellyAnimation = keyframes`
@@ -42,8 +43,10 @@ const Logo = ({ width, theme }) => {
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <LogoWrapper key={animationKey} width={width} onClick={handleClick}>
+        <LogoWrapper key={animationKey} width={width} onClick={handleClick} maxWidth={windowSize}>
             <img src={getLogoSrc()} alt="Logo" />
         </LogoWrapper>
     );
@@ -65,7 +68,10 @@ export default Logo;
 
 // 스타일 정의
 const LogoWrapper = styled.div`
-    width: ${({ width }) => width};  // width prop에 따라 넓이 설정
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    padding: 0 20px;
+    box-sizing: border-box;
     height: auto;
     display: flex;
     align-items: center;

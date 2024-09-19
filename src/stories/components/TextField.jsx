@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import useWindowSize from './Common/WindowSize';
 
 const TextField = ({ label, value: externalValue, onChange, disabled, type, width, name }) => {
   const [inputValue, setInputValue] = useState(externalValue || '');
@@ -30,8 +31,10 @@ const TextField = ({ label, value: externalValue, onChange, disabled, type, widt
     setIsPasswordVisible(prev => !prev);
   };
 
+  const {width: windowSize} = useWindowSize();
+
   return (
-    <TextFieldWrapper width={width}>
+    <TextFieldWrapper width={width} maxWidth={windowSize}>
       <InputWrapper>
         <StyledLabel
           hasValue={inputValue !== ''}
@@ -81,7 +84,6 @@ TextField.defaultProps = {
   value: '',
   onChange: () => {},
   disabled: false,
-  width: '310px',
   type: 'text',
   name: '', // 기본값 추가
 };
@@ -93,9 +95,11 @@ const TextFieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0;
-  width: ${props => props.width};
+  width: ${(props) => (props.width ? props.width : '100%')};
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
   height: 50px;
   position: relative;
+  padding: 0 20px;
 `;
 
 const StyledLabel = styled.label`

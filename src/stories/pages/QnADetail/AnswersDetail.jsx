@@ -5,13 +5,16 @@ import Report from '../../components/Common/Report';
 import { Votes, Scrap, Notification } from '../../components/Common/Tool';
 import CarouselTemp from '../../components/Common/CarouselTemp';
 import MeatballMenu from '../../components/Common/MeatballMenu';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const Answers = ({ _id, name, level, user_grade, major, content, img, like }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
     const [isAdopted, setIsAdopted] = useState(true); // Adoption state management
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <OutWrapper>
+        <OutWrapper maxWidth={windowSize}>
             <Wrapper>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <SubWrapper>
@@ -45,7 +48,7 @@ const Answers = ({ _id, name, level, user_grade, major, content, img, like }) =>
                             infinite={true}
                         >
                             {images.map((image, index) => (
-                                <Image key={index} src={image} draggable="false" />
+                                <Image key={index} src={image} draggable="false" maxWidth={windowSize} />
                             ))}
                         </CarouselTemp>
                     </CarouselWrapper>
@@ -92,8 +95,8 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 380px;
-    padding: 20px 10px;
+
+    padding: 20px 0;
     border-bottom: 1px solid #F1F2F4;
 `;
 
@@ -112,6 +115,7 @@ const Title = styled.div`
 const Content = styled.div`
     font-size: 16px;
     margin-top: 20px;
+    margin-bottom: 20px;
 `;
 
 const ProfileContainer = styled.div`
@@ -132,7 +136,8 @@ const MajorName = styled.div`
 `;
 
 const OutWrapper = styled.div`
-    width: 400px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 `;
 
 const AdoptWrapper = styled.div`
@@ -164,8 +169,8 @@ const CarouselWrapper = styled.div`
 `;
 
 const Image = styled.img`
-    width: 380px;
-    height: 380px;
+    width: 100%;
+    height: 300px;
     object-fit: cover;
     object-position: center;
     border-radius: 8px;

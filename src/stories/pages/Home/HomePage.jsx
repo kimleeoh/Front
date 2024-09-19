@@ -4,15 +4,18 @@ import styled from "styled-components";
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import Logo from "../OnBoarding/Logo";
+import useWindowSize from "../../components/Common/WindowSize";
 
 const HomePage = () => {
     const navigate = useNavigate();
 
+    const {width: windowSize} = useWindowSize();
+
     return (
         <Wrapper>
-            <Header>
-                <div style={{marginBottom: '10px'}}>
-                <Logo width="150px" theme="darkgray" /> </div>
+            <Header maxWidth={windowSize}>
+                <div style={{marginBottom: '10px', width: '100%'}}>
+                <Logo theme="darkgray" /> </div>
                 <PointButton onClick={() => navigate('/point')}>내 포인트: 3500P</PointButton>
                 <NotificationButton onClick={() => navigate('/notification')}>
                     <img
@@ -21,7 +24,7 @@ const HomePage = () => {
                     />
                 </NotificationButton>
             </Header>
-            <Content>
+            <Content maxWidth={windowSize}>
                 {/* 여기에 홈 페이지의 메인 콘텐츠를 추가합니다 */}
             </Content>
             <FixedBottomContainer>
@@ -43,13 +46,14 @@ const Wrapper = styled.div`
     position: relative;
     padding-top: 88px; /* 헤더 공간만큼 패딩 추가 */
     padding-bottom: 100px;
+    box-sizing: border-box;
     width: 100%;
-    min-width: 450px;
 `;
 
 const Header = styled.div`
+    box-sizing: border-box;
     width: 100%;
-    max-width: 393px;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     height: 88px;
     padding: 10px 20px;
     display: flex;
@@ -106,8 +110,9 @@ const NotificationButton = styled.button`
 `;
 
 const Content = styled.div`
+    box-sizing: border-box;
     width: 100%;
-    max-width: 393px;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     padding: 20px;
     text-align: center;
 `;
