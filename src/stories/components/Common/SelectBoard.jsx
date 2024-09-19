@@ -6,12 +6,10 @@ const dropdownAnimation = keyframes`
     0% {
         opacity: 0;
         transform: translateY(-10px);
-        origin: top;
     }
     100% {
         opacity: 1;
-        transform: translateY(0) translateX(0) scaleY(1);
-        origin: top;
+        transform: translateY(0);
     }
 `;
 
@@ -23,13 +21,16 @@ const SelectBoard = ({ options, placeholder, onChange }) => {
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     const handleOptionClick = (option) => {
-        if (option.subcategories && option.subcategories.length > 0) {
-            setSelectedOptions([...selectedOptions, option]);
-        } else {
-            setSelectedOptions([...selectedOptions, option]);
-            setIsOpen(false);
-            if (onChange) {
-                onChange([...selectedOptions, option]);
+        if (!selectedOptions.some((selected) => selected.value === option.value)) {
+            if (option.subcategories && option.subcategories.length > 0) {
+                setSelectedOptions([...selectedOptions, option]);
+            } else {
+                const newSelectedOptions = [...selectedOptions, option];
+                setSelectedOptions(newSelectedOptions);
+                setIsOpen(false);
+                if (onChange) {
+                    onChange(newSelectedOptions);
+                }
             }
         }
     };
@@ -61,7 +62,12 @@ const SelectBoard = ({ options, placeholder, onChange }) => {
 
     return (
         <DropdownContainer ref={dropdownRef}>
-            <DropdownHeader onClick={toggleDropdown}>
+            <DropdownHeader
+                onClick={toggleDropdown}
+                aria-expanded={isOpen}
+                aria-haspopup="listbox"
+                role="button"
+            >
                 {selectedOptions.length === 0
                     ? placeholder
                     : selectedOptions.map(option => option.label).join(' > ')}
@@ -71,14 +77,21 @@ const SelectBoard = ({ options, placeholder, onChange }) => {
             </DropdownHeader>
             {isOpen && (
                 <DropdownListContainer>
-                    <DropdownList>
+                    <DropdownList role="listbox">
                         {currentOptions.length > 0 ? (
                             currentOptions.map((option) => (
                                 <ListItem
                                     key={option.value}
                                     onClick={() => handleOptionClick(option)}
+                                    role="option"
+                                    aria-selected={selectedOptions.some(selected => selected.value === option.value)}
                                 >
                                     {option.label}
+                                    {option.subcategories && option.subcategories.length > 0 && (
+                                        <span style={{transform: 'rotate(270deg)'}}>
+                                            <img src='/Icons/Arrow.svg' alt="arrow" width={'12px'}/>
+                                        </span>
+                                    )}
                                 </ListItem>
                             ))
                         ) : (
@@ -119,7 +132,6 @@ SelectBoard.defaultProps = {
 };
 
 const DropdownContainer = styled.div`
-    font-family: Arial, sans-serif;
     font-size: 15px;
     padding: 10px;
     border-bottom: 1px solid #ACB2BB;
@@ -130,7 +142,6 @@ const DropdownContainer = styled.div`
 const DropdownHeader = styled.div`
     width: 380px;
     height: 30px;
-    border-radius: none;
     background-color: white;
     display: flex;
     justify-content: space-between;
@@ -150,24 +161,22 @@ const DropdownListContainer = styled.div`
     left: 0;
     width: 100%;
     z-index: 1;
-    border-top: none;
     border-radius: 0 0 16px 16px;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(8px);
-    max-height: 200px;
+    max-height: 180px;
     transition: all 0.3s ease;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);  // box-shadow 적용
     animation: ${dropdownAnimation} 0.3s ease;
     transform-origin: top;
 
-    /* Flexbox 설정 */
     display: flex;
     flex-direction: column;
 `;
 
 const DropdownList = styled.ul`
-    flex: 1; /* 남은 공간을 모두 차지 */
-    overflow-y: auto; /* 내용이 넘치면 스크롤 */
+    flex: 1;
+    overflow-y: auto;
     padding: 0;
     margin: 0;
     list-style-type: none;
@@ -176,6 +185,8 @@ const DropdownList = styled.ul`
 const ListItem = styled.li`
     padding: 10px;
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
     transition: all 0.3s ease;
     border-radius: 8px;
 

@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Votes, Scrap, Notification, MeatballMenu } from '../../components/Common/Tool';
+import { Votes, Scrap, Notification } from '../../components/Common/Tool';
+import MeatballMenu from '../../components/Common/MeatballMenu';
 import Report from '../../components/Common/Report';
 import CarouselTemp from '../../components/Common/CarouselTemp';
 import CarouselTemp2 from '../../components/Common/CarouselTemp2'

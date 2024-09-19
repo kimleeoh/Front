@@ -104,10 +104,29 @@ const MyPageEdit = () => {
               </Reputation>
               <div style={{padding: '0px 20px 20px'}}>
               <InfoBox>
-                <DetailInfo>받은 투표수<Measurement>20</Measurement></DetailInfo>
-                <DetailInfo>스크랩수<Measurement>20</Measurement></DetailInfo>
-                <DetailInfo>채택수<Measurement>4</Measurement></DetailInfo>
-                <DetailInfo>총 조회수<Measurement>1000</Measurement></DetailInfo>
+                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
+                <img src="/Icons/Vote_c.svg" alt="투표" width='35px' height='35px'/>
+                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
+                <div style={{fontSize: '10px', color: '#ACB2BB'}}>받은 투표 수</div>
+                </div>
+
+                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
+                <img src="/Icons/Bookmark_c.svg" alt="스크랩" width='20px' height='28px'/>
+                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
+                <div style={{fontSize: '10px', color: '#ACB2BB'}}>스크랩 수</div>
+                </div>
+
+                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
+                <img src="/Icons/Crown_c.svg" alt="꿀팁" width='40px' height='40px'/>
+                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
+                <div style={{fontSize: '10px', color: '#ACB2BB'}}>채택 수</div>
+                </div>
+
+                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
+                <img src="/Icons/Global_c.svg" alt="답변" width='28px' height='28px'/>
+                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
+                <div style={{fontSize: '10px', color: '#ACB2BB'}}>조회 수</div>
+                </div>
               </InfoBox>
               </div>
             <Title>최근 작성한 게시글</Title>
@@ -199,7 +218,8 @@ const EditButton = styled.button`
   height: ${(props) => props.size || '30px'};
   background: url('/Icons/Edit.svg') no-repeat center;
   background-size: ${(props) => props.iconSize || '20px'}; /* 아이콘 크기 prop으로 조정 */
-  background-color: #e2e5e9; /* 배경색 제거 */
+  background-color: transparent; /* 배경색 제거 */
+  backdrop-filter: blur(20px); /* 배경 흐리게 처리 */
   border: none;
   cursor: pointer;
   border-radius: 50%;
@@ -239,7 +259,7 @@ const InfoBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 8px;
 `;
 
