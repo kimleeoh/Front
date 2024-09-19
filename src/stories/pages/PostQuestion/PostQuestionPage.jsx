@@ -9,6 +9,7 @@ import PointInput from './PointInput';
 import Checker from '../../components/Common/Checker';
 import Button from '../../components/Button';
 import useWindowSize from '../../components/Common/WindowSize';
+import BottomSheet from '../../components/Common/BottomSheet';
 
 const initialUserData = [
     {
@@ -33,6 +34,7 @@ const PostQuestionPage = () => {
 
     const [showValidationMessages, setShowValidationMessages] = useState(false);
     const [isPointInputDisabled, setIsPointInputDisabled] = useState(false);
+    const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
     const boardOptions = [
         {
@@ -42,7 +44,15 @@ const PostQuestionPage = () => {
                 {   value: '23이후', 
                     label: '23이후', 
                     subcategories: [
-                        {value: '과학&기술', label: '과학&기술'},
+                        {
+                            value: '과학&기술',
+                            label: '과학&기술',
+                            subcategories: [
+                                {value: '4차산업혁명시대의정보보안', label: '4차산업혁명시대의정보보안'},
+                                {value: '프로그래밍기초(Python)', label: '프로그래밍기초(Python)'},
+                                {value: '신재생에너지활용및실무', label: '신재생에너지활용및실무'},
+                            ]
+                        },
                         {value: '문화&예술', label: '문화&예술'},
                         {value: '사회&정치&경제', label: '사회&정치&경제'},
                         {value: '인간&언어', label: '인간&언어'},
@@ -85,6 +95,18 @@ const PostQuestionPage = () => {
 
     const handleInputChange = (name, value) => {
         setFormValues({ ...formValues, [name]: value });
+    };
+
+    const handleBoardChange = (value) => {
+        // 선택된 옵션이 하나 이상일 때
+        if (value.length > 1) {
+            const secondLastOption = value[value.length - 2]; // 바로 전 단계의 옵션
+    
+            // 바로 전 단계의 옵션이 하위 카테고리를 가지고 있을 때 BottomSheet 표시
+            if (secondLastOption.subcategories && secondLastOption.subcategories.length > 0) {
+                setIsBottomSheetVisible(true);
+            }
+        }
     };
 
     const handleFormSubmit = (e) => {
@@ -150,7 +172,7 @@ const PostQuestionPage = () => {
             <SelectBoard 
                 options={boardOptions} 
                 placeholder={'게시판 선택'}
-                onChange={(value) => handleInputChange('board', value)}
+                onChange={handleBoardChange}
             />
             <TextArea 
                 height={'300px'} 
@@ -187,6 +209,7 @@ const PostQuestionPage = () => {
                 onClick={handleFormSubmit}
             />
             {showValidationMessages && renderValidationMessages()}
+            {isBottomSheetVisible && <BottomSheet />}
         </Wrapper>
     );
 }

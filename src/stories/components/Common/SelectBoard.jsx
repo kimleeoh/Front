@@ -29,6 +29,7 @@ const SelectBoard = ({ options, placeholder, onChange }) => {
         } else {
             setSelectedOptions([...selectedOptions, option]);
             setIsOpen(false);
+            
             if (onChange) {
                 onChange([...selectedOptions, option]);
             }
@@ -40,6 +41,13 @@ const SelectBoard = ({ options, placeholder, onChange }) => {
         setSelectedOptions(newSelectedOptions);
         if (onChange) {
             onChange(newSelectedOptions);
+        }
+    };
+
+    const handleSaveClick = () => {
+        setIsOpen(false);
+        if (onChange) {
+            onChange(selectedOptions); // Trigger the onChange with the current selection
         }
     };
 
@@ -89,7 +97,10 @@ const SelectBoard = ({ options, placeholder, onChange }) => {
                         )}
                     </DropdownList>
                     {selectedOptions.length > 0 && (
-                        <BackButton onClick={handleBackClick}>뒤로 가기</BackButton>
+                        <ButtonContainer>
+                            <BackButton onClick={handleBackClick}>뒤로 가기</BackButton>
+                            <SaveButton onClick={handleSaveClick}>저장</SaveButton>
+                        </ButtonContainer>
                     )}
                 </DropdownListContainer>
             )}
@@ -191,11 +202,32 @@ const ListItem = styled.li`
     }
 `;
 
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #E2E5E9;
+`;
+
 const BackButton = styled.div`
-    padding: 10px 0;
+    flex: 1;
+    padding: 10px;
     cursor: pointer;
     text-align: center;
-    border-top: 1px solid #E2E5E9;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: rgba(226, 229, 233, 0.3);
+    }
+    &:active {
+        transform: scale(0.98);
+    }
+`;
+
+const SaveButton = styled.div`
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
     transition: all 0.3s ease;
 
     &:hover {
