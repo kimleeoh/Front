@@ -5,6 +5,7 @@ import Header from "../../components/Header";
 import Button from "../../components/Button";
 import BoardTitle from "../../components/Common/BoardTitle";
 import SubjectList from "../../components/Common/SubjectList";
+import useWindowSize from "../../components/Common/WindowSize";
 
 const Grades = () => {
     const navigate = useNavigate();
@@ -20,53 +21,56 @@ const Grades = () => {
         navigate("/grades/register");
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
         <Wrapper>
             <Header text="내 성적" searchButton={false}>
                 <Verify onClick={handleVerifyClick}>등록</Verify>
             </Header>
-            <BoardTitle text="2024학년도 1학기" />
-            <SubjectWrapper>
-                <ScrollableSubjectList>
-                    <SubjectList
-                        subject={'디지털미디어원리'}
-                        disableLink={true}
-                        rate={subjectGrades['디지털미디어원리']}
-                    />
-                    <SubjectList
-                        subject={'영상편집론'}
-                        disableLink={true}
-                        rate={subjectGrades['영상편집론']}
-                    />
-                    {/* ...다른 과목들도 추가 */}
-                </ScrollableSubjectList>
-            </SubjectWrapper>
-            <BoardTitle text="2024학년도 2학기" />
-            <SubjectWrapper>
-                <ScrollableSubjectList>
-                    <SubjectList
-                        subject={'디지털미디어실습'}
-                        disableLink={true}
-                        rate={subjectGrades['디지털미디어실습']}
-                    />
-                    <SubjectList
-                        subject={'영상기획론'}
-                        disableLink={true}
-                        rate={subjectGrades['영상기획론']}
-                    />
-                    {/* ...다른 과목들도 추가 */}
-                </ScrollableSubjectList>
-            </SubjectWrapper>
-            <Button
-                label={'+ 학기 추가하기'}
-                width={'380px'}
-                color={'#ACB2BB'}
-                backgroundColor={'#F1F2F4'}
-                hoverColor={'#ACB2BB'}
-                hoverBackgroundColor={'#E5E9F2'}
-                style={{ marginTop: '20px' }}
-                onClick={() => navigate("/grades/register")}
-            />
+            <ContentWrapper maxWidth={windowSize}>
+                <BoardTitle text="2024학년도 1학기" />
+                <SubjectWrapper maxWidth={windowSize}>
+                    <ScrollableSubjectList>
+                        <SubjectList
+                            subject={'디지털미디어원리'}
+                            disableLink={true}
+                            rate={subjectGrades['디지털미디어원리']}
+                        />
+                        <SubjectList
+                            subject={'영상편집론'}
+                            disableLink={true}
+                            rate={subjectGrades['영상편집론']}
+                        />
+                        {/* ...다른 과목들도 추가 */}
+                    </ScrollableSubjectList>
+                </SubjectWrapper>
+                <BoardTitle text="2024학년도 2학기" />
+                <SubjectWrapper>
+                    <ScrollableSubjectList>
+                        <SubjectList
+                            subject={'디지털미디어실습'}
+                            disableLink={true}
+                            rate={subjectGrades['디지털미디어실습']}
+                        />
+                        <SubjectList
+                            subject={'영상기획론'}
+                            disableLink={true}
+                            rate={subjectGrades['영상기획론']}
+                        />
+                        {/* ...다른 과목들도 추가 */}
+                    </ScrollableSubjectList>
+                </SubjectWrapper>
+                <Button
+                    label={'+ 학기 추가하기'}
+                    color={'#ACB2BB'}
+                    backgroundColor={'#F1F2F4'}
+                    hoverColor={'#ACB2BB'}
+                    hoverBackgroundColor={'#E5E9F2'}
+                    style={{ marginTop: '20px' }}
+                    onClick={() => navigate("/grades/register")}
+                />
+            </ContentWrapper>
         </Wrapper>
     );
 }
@@ -81,14 +85,25 @@ const Wrapper = styled.div`
     background-color: #f0f2f4;
     min-height: 100vh;
     position: relative;
-    padding-top: 10px;
-    padding-bottom: 100px;
+
     width: 100%;
-    min-width: 400px;
+    margin: 0 auto;
 `;
 
+const ContentWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    padding: 100px 10px 80px;
+    box-sizing: border-box;
+`
+
 const SubjectWrapper = styled.div`
-    width: 380px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     display: flex;
     flex-direction: column;
     align-items: center;

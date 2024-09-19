@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import useWindowSize from './Common/WindowSize';
 
 /**
  * Primary UI component for user interaction
  */
 const Button = React.forwardRef(
   ({ color, backgroundColor, hoverColor, hoverBackgroundColor, fontSize, width, height, label, disabled, underline, ...props }, ref) => {
+    const {width: windowSize} = useWindowSize();
     return (
       <StyledButton
         ref={ref}
@@ -20,6 +22,7 @@ const Button = React.forwardRef(
         disabled={disabled}
         underline={underline}
         {...props}
+        maxWidth={windowSize}
       >
         {label}
       </StyledButton>
@@ -77,7 +80,6 @@ Button.defaultProps = {
   hoverColor: 'white',
   hoverBackgroundColor: '#145c9e',
   fontSize: '16px',
-  width: '340px',
   height: '50px',
   disabled: false,
   onClick: undefined,
@@ -95,13 +97,13 @@ const StyledButton = styled.button`
   white-space: nowrap;
   font-size: ${(props) => props.fontSize};
   padding: 11px 20px;
-  max-width: 393px;
   border: none;
   border-radius: 16px;
   cursor: ${(props) => (props.disabled ? '' : 'pointer')};
   color: ${(props) => props.color};
   background-color: ${(props) => props.backgroundColor};
-  width: ${(props) => props.width};
+  width: ${(props) => (props.width ? props.width : '100%')};
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
   height: ${(props) => props.height};
   transition: all 0.3s ease;
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};

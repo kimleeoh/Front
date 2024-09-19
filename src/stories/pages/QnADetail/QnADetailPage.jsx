@@ -7,6 +7,7 @@ import Header from '../../components/Header';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import AnswersDetail from './AnswersDetail';
 import UserComment from './UserComment';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const initialQuestionData = [
     {
@@ -184,6 +185,8 @@ const QnADetailPage = () => {
 
     const currentQuestion = questionData.find((question) => question._id === String(_id));
     const currentUser = initialUserData[0];
+
+    const {width: windowSize} = useWindowSize();
     
     return (
         <Wrapper>
@@ -246,4 +249,7 @@ const Wrapper = styled.div`
     align-items: center;
     margin-top: 100px;
     margin-bottom: 100px;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
 `;

@@ -21,7 +21,6 @@ const ImageUploadButton = ({ onFileSelect, label, width='23%' }) => {
       <Button
         label={label}
         onClick={handleButtonClick}
-        width={width}
         color={'#ACB2BB'}
         backgroundColor={'#F1F2F4'}
         hoverColor={'#ACB2BB'}

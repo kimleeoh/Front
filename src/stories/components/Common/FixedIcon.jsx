@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import useWindowSize from './WindowSize';
 
 const FixedIcon = ({src, url}) => {
     const navigate = useNavigate();
@@ -10,8 +11,10 @@ const FixedIcon = ({src, url}) => {
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <FixedIconContainer>
+        <FixedIconContainer maxWidth={windowSize}>
             <Button onClick={handleClick}>
                 <img src={src} />
             </Button>
@@ -23,7 +26,7 @@ export default FixedIcon;
 
 const FixedIconContainer = styled.div`
     position: fixed;
-    left: 80%;
+    right: ${(props) => props.maxWidth > 430 ? `${20 + (props.maxWidth - 430)/2}px` : '20px'};
     bottom: 100px;
     width: 50px;
     height: 50px;

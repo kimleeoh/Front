@@ -7,6 +7,7 @@ import BoardTitle from "../../components/Common/BoardTitle";
 import SubjectList from "../../components/Common/SubjectList";
 import TextField from "../../components/TextField";
 import TextArea from "../../components/Common/TextArea";
+import useWindowSize from "../../components/Common/WindowSize";
 
 const MyPageEdit = () => {
   const [activeTab, setActiveTab] = useState("프로필");
@@ -25,18 +26,20 @@ const MyPageEdit = () => {
     }
   };
 
+  const {width: windowSize} = useWindowSize();
+
   return (
     <Wrapper>
-      <Header>
+      <Header maxWidth={windowSize}>
         <BackButton onClick={() => navigate('/mypage')}>
           <img src="/Icons/Icon_arrow.svg" alt="뒤로 가기" />
         </BackButton>
         <ProfileName></ProfileName>
         <Save>저장</Save>
       </Header>
-      <Profile>
+      <Profile maxWidth={windowSize}>
         <ProfileImageWrapper>
-        <img src={profileImage} alt="프로필" width='100px' height='100px' style={{ borderRadius: '50%' }} />
+          <img src={profileImage} alt="프로필" width='100px' height='100px' style={{ borderRadius: '50%' }} />
           <EditButton onClick={() => document.getElementById('imageUpload').click()} />
           <HiddenFileInput 
             id="imageUpload"
@@ -54,9 +57,9 @@ const MyPageEdit = () => {
           </InfoBox>
         </ProfileInfo>
       </Profile>
-      <Introduction>
+      <Introduction maxWidth={windowSize}>
         소개
-        <IntroductionBox><TextArea width={'95%'} backgroundColor={'#e2e5e9'} fontSize={'14px'}/></IntroductionBox>
+        <IntroductionBox maxWidth={windowSize}><TextArea width={'95%'} backgroundColor={'#e2e5e9'} fontSize={'14px'}/></IntroductionBox>
       </Introduction>
       <TabNavigation 
         tabs={['프로필', '활동']} 
@@ -64,7 +67,7 @@ const MyPageEdit = () => {
         onTabChange={handleTabChange} 
       />
       {activeTab === "프로필" && (
-        <Content>
+        <Content maxWidth={windowSize}>
             <Title>배지</Title>
             <BadgeContainer>
                 <BadgeBox />
@@ -123,22 +126,25 @@ export default MyPageEdit;
 // Styled Components
 
 const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* 페이지가 전체 화면을 채우도록 설정 */
-    position: relative; /* 헤더를 페이지 상단에 고정하기 위해 필요 */
-    padding-top: 100px; /* 헤더 공간만큼 패딩 추가 */
-    padding-bottom: 100px; /* 하단 패딩 추가 */
-    
-    background-color: #f0f2f4;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* 페이지가 전체 화면을 채우도록 설정 */
+  position: relative; /* 헤더를 페이지 상단에 고정하기 위해 필요 */
+  padding: 100px 10px 100px;
+  
+  background-color: #f0f2f4;
+
+  width: 100%;
 `;
 
 const Header = styled.div`
   position: fixed;
   top: 0;
-  width: 380px;
+  width: 100%;
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
   background: rgba(240, 242, 244, 0.3);
   backdrop-filter: blur(3px);
   display: flex;
@@ -213,9 +219,10 @@ const EditButton = styled.button`
 
 // Modified Profile Component
 const Profile = styled.div`
-  width: 370px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
   height: 100px;
-  padding: 0 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -224,7 +231,7 @@ const Profile = styled.div`
 
 const ProfileInfo = styled.div`
   display: flex;
-  width: 223px;
+  width: 100%;
   flex-direction: column;
   align-items: flex-start;
   gap: 13px;
@@ -233,6 +240,7 @@ const ProfileInfo = styled.div`
   font-size: 18px;
   font-weight: 700;
   line-height: normal;
+  margin-left: 10px;
 `;
 
 const InfoBox = styled.div`
@@ -263,13 +271,15 @@ const Measurement = styled.div`
 `;
 
 const Introduction = styled.div`
-  padding: 10px 0px;
+  box-sizing: border-box;
+  padding: 10px 10px;
   color: #434B60;
   font-family: Inter, sans-serif;
   font-size: 16px;
   font-weight: 700;
   line-height: normal;
-  width: 380px;
+  width: 100%;
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
   text-align: left;
 `;
 
@@ -277,13 +287,16 @@ const IntroductionBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 340px;
+  width: 100%;
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+  box-sizing: border-box;
   padding: 15px 20px;
   font-weight: 500;
 `;
 
 const Content = styled.div`
-  width: 380px;
+  width: 100%;
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
   height: 800px;
   text-align: left;
   gap: 20px;
@@ -291,8 +304,9 @@ const Content = styled.div`
 
 const Title = styled.div`
   display: flex;
+  box-sizing: border-box;
   width: 100%;
-  height: 38px;
+
   padding: 15px 10px;
   flex-direction: column;
   justify-content: center;
@@ -359,12 +373,12 @@ const Reputation = styled.div`
 
   color: #434B60;
 
-text-align: center;
-font-family: Inter;
-font-size: 24px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
+  text-align: center;
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 `;
 
 const ProgressBarContainer = styled.div`
@@ -382,7 +396,7 @@ const ProgressBarContainer = styled.div`
 `;
 
 const SubjectWrapper = styled.div`
-    width: 380px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

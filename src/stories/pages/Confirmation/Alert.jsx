@@ -2,13 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
-
+import useWindowSize from "../../components/Common/WindowSize";
 
 const Alert = () => {
     const navigate = useNavigate();
+    const {width: windowSize} = useWindowSize();
 
     return (
-        <Wrapper>
+        <Wrapper maxWidth={windowSize}>
             <Icon src="/Icons/Alert.svg"/>
             <Title>인증 처리가 진행 중입니다.</Title>
             <Content>인증 처리에는 최대 72시간이 소요될 수 있습니다. 
@@ -16,7 +17,6 @@ const Alert = () => {
             <Button
                 label={'돌아가기'}
                 onClick={() => navigate('/home')}
-                width={'23%'}
                 color={'#ACB2BB'}
                 backgroundColor={'#F1F2F4'}
                 hoverColor={'#ACB2BB'}
@@ -34,12 +34,14 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 0 10px;
+    margin: 0 auto;
+    min-height: 100vh;
 `
 
 const Icon = styled.img`
     width: 80px;
     height: 80px;
-    margin-top: 250px;
 `
 
 const Title = styled.div`

@@ -6,6 +6,7 @@ import FixedBottomContainer from '../../components/FixedBottomContainer';
 import MenuList from './MenuList';
 import Modal from '../../components/Common/Modal';
 import Button from '../../components/Button';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const MenuPage = () => {
     const modalRef = useRef();
@@ -20,13 +21,15 @@ const MenuPage = () => {
         // 예를 들어, 로그아웃 API를 호출하거나, 로그인 페이지로 이동
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
         <Wrapper>
-            <Header>
+            <Header maxWidth={windowSize}>
                 전체 메뉴
             </Header>
-            <Link to="/mypage" style={{ textDecoration: 'none' }}>
-                <MyPage>
+            <Link to="/mypage" style={{ textDecoration: 'none', width: '100%' }}>
+                <MyPage maxWidth={windowSize}>
                     <Profile>
                         <img src='/Profile.svg' alt='profile' width='62px' height='62px' style={{ borderRadius: '50%' }}/>
                         Guest
@@ -37,7 +40,7 @@ const MenuPage = () => {
                 </MyPage>
             </Link>
 
-            <Section>
+            <Section maxWidth={windowSize}>
                 <MenuList to="/grades"> 내 성적 </MenuList>
                 <MenuList to="/points"> 내 포인트 </MenuList>
                 <Title> 게시물 </Title>
@@ -81,12 +84,15 @@ const Wrapper = styled.div`
     margin-bottom: 100px;
     gap: 20px;
     width: 100%;
-    min-width: 420px;
+    padding: 0 10px;
+    box-sizing: border-box;
 `;
 
 const Header = styled.div`
     display: flex;
-    width: 393px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    box-sizing: border-box;
     height: 88px;
     padding: 10px 20px;
     justify-content: space-between;
@@ -106,8 +112,10 @@ const Header = styled.div`
 
 const MyPage = styled.div`
     display: flex;
-    width: 358px;
-    height: 62px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    box-sizing: border-box;
+    
     padding: 17px;
     justify-content: space-between;
     align-items: center;
@@ -119,6 +127,7 @@ const MyPage = styled.div`
         scale: 0.95;
     }
     cursor: pointer;
+    margin: 0 auto;
 `;
 
 const Profile = styled.div`
@@ -149,6 +158,8 @@ const Section = styled.div`
     display: flex;
     flex-direction: column;
     gap: 3px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 `;
 
 const Title = styled.div`

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from 'prop-types';
+import useWindowSize from "./WindowSize";
 
 const SubjectList = ({ subject, actions, onClick, rate }) => {
     const handleClick = () => {
@@ -9,9 +10,11 @@ const SubjectList = ({ subject, actions, onClick, rate }) => {
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
         <Line onClick={handleClick}>
-            <Wrapper>
+            <Wrapper maxWidth={windowSize}>
                 <SubjectTitle>
                     <span style={{ marginLeft: '10px' }}>{subject}</span>
                 </SubjectTitle>
@@ -59,14 +62,16 @@ SubjectList.defaultProps = {
 };
 
 const Wrapper = styled.div`
-    width: 370px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    box-sizing: border-box;
     height: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border: none;
     border-radius: 15px;
-    padding: 5px;
+    padding: 30px 0;
     cursor: pointer;
     transition: all 0.2s ease;
     &:active {

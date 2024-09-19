@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import { Votes, Scrap, Notification, MeatballMenu } from '../../components/Common/Tool';
 import getTimeElapsed from '../../components/Common/getTimeElapsed';
 import ImageDownloadList from './ImageDownloadList';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const TipsDetail = ({ _id, name, major, title, subject, content, time, views, like, img }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
+    const {width: windowSize} = useWindowSize();
 
     return (
-        <OutWrapper>
+        <OutWrapper maxWidth={windowSize}>
             <Wrapper>
                 <span style={{ marginBottom: '15px', fontSize: '15px' }}>{subject}</span>
                 <Title>{title}</Title>
@@ -70,8 +72,8 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 380px;
-    padding: 20px 10px;
+
+    padding: 20px 20px;
     border-bottom: 1px solid #F1F2F4;
 `;
 
@@ -95,7 +97,8 @@ const MetaContainer = styled.div`
 `;
 
 const OutWrapper = styled.div`
-    width: 400px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 `;
 
 const ImageContainer = styled.div`

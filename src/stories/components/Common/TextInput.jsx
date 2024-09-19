@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const TextInput = ({ width, height, placeholder, fontColor, backgroundColor, fontSize, marginTop, onChange}) => {
     const [content, setContent] = useState('');
@@ -23,6 +24,8 @@ const TextInput = ({ width, height, placeholder, fontColor, backgroundColor, fon
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
         <StyledTextInput
             value={content}
@@ -36,6 +39,7 @@ const TextInput = ({ width, height, placeholder, fontColor, backgroundColor, fon
             marginTop={marginTop}
             onFocus={handleFocus}
             onBlur={handleBlur}
+            maxWidth={windowSize}
         />
     );
 };
@@ -46,7 +50,8 @@ const StyledTextInput = styled.input`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: ${props => props.width};
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     height: ${props => props.height};
     margin-top: ${props => props.marginTop};
     padding: 10px;
@@ -64,14 +69,6 @@ const StyledTextInput = styled.input`
         font-size: ${props => props.fontSize};
     }
 `;
-
-const Asterisk = styled.img`
-    position: relative;
-    right: 120px;
-    bottom: 35px;
-    width: 8px;
-    height: 8px;
-`
 
 TextInput.propTypes = {
     width: PropTypes.string,

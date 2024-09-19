@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom'; // useNavigate를 import합니다.
 import PropTypes from 'prop-types';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const MenuList = ({ children, to, onClick }) => {
     const navigate = useNavigate();
@@ -14,8 +15,10 @@ const MenuList = ({ children, to, onClick }) => {
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <Wrapper onClick={handleClick}>
+        <Wrapper onClick={handleClick} maxWidth={windowSize}>
             {children}
             <svg xmlns="http://www.w3.org/2000/svg" width="9" height="15" viewBox="0 0 9 15" fill="none">
                 <path d="M1.75 1.25L8 7.5L1.75 13.75" stroke="#ACB2BB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -39,9 +42,11 @@ export default MenuList;
 
 const Wrapper = styled.div`
     display: flex;
-    width: 358px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    box-sizing: border-box;
     height: 30px;
-    padding: 10px 14px;
+    padding: 25px 14px;
     align-items: center;
     justify-content: space-between;
     gap: 10px;

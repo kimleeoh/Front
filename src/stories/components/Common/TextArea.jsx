@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import useWindowSize from './WindowSize';
 
 const TextArea = ({ width, height, placeholder, fontColor, backgroundColor, fontSize, onChange }) => {
     const [content, setContent] = useState('');
@@ -23,6 +24,8 @@ const TextArea = ({ width, height, placeholder, fontColor, backgroundColor, font
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
         <StyledTextArea
             value={content}
@@ -35,6 +38,7 @@ const TextArea = ({ width, height, placeholder, fontColor, backgroundColor, font
             fontSize={fontSize}
             onFocus={handleFocus}
             onBlur={handleBlur}
+            maxWidth={windowSize}
         />
     );
 };
@@ -42,7 +46,8 @@ const TextArea = ({ width, height, placeholder, fontColor, backgroundColor, font
 export default TextArea;
 
 const StyledTextArea = styled.textarea`
-    width: ${props => props.width};
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     height: ${props => props.height};
     padding: 5px 10px;
     border: none;

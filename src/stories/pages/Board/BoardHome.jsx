@@ -41,7 +41,6 @@ const BoardHome = () => {
     const [bookmarkData, setBookmarkData] = useState([]);
     const [subjectData2, setSubjectData2] = useState([]);
     const {width: windowSize} = useWindowSize();
-    console.log(windowSize);
 
     useEffect(() => {
         localStorage.removeItem('subjectData');

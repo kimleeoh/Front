@@ -5,6 +5,7 @@ import Button from '../../components/Button';
 import { useState, useEffect } from 'react';
 import ImageUploader from './ImageUploader';
 import TextArea from '../../components/Common/TextArea';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const User = ({post_id, name, level, major, profileImg, limit}) => {
     const [isAnswered, setIsAnswered] = useState(false);
@@ -51,9 +52,11 @@ const User = ({post_id, name, level, major, profileImg, limit}) => {
         });
     };
 
+    const {width: windowSize} = useWindowSize();
+
     if (isAnswered) {
         return (
-            <OutWrapper>
+            <OutWrapper maxWidth={windowSize}>
                 <Wrapper>
                     <SubWrapper>
                         <ProfileImg src={profileImg} />
@@ -173,7 +176,6 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 380px;
     padding: 15px 15px;
 
     margin-top: 15px;
@@ -186,16 +188,6 @@ const SubWrapper = styled.div`
     display: flex;
     align-items: center;
 `
-
-const Content = styled.div`
-    font-size: 16px;
-    margin-top: 20px;
-`;
-
-const Subject = styled.div`
-    font-size: 16px;
-    margin-bottom: 10px;
-`;
 
 const ProfileContainer = styled.div`
     margin-left: 10px;
@@ -222,31 +214,8 @@ const MajorName = styled.div`
 `
 
 const OutWrapper = styled.div`
-    width: 400px;
-`;
-
-const ImageContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    margin-top: 20px;
-`;
-
-const Image = styled.img`
-    width: 380px;
-    height: 380px;
-    object-fit: cover;
-    object-position: center;
-`;
-
-const PlaceHolder = styled.div`
-    display: flex; 
-    padding: 20px 20px;
-
-    font-size: 12px;
-    color: #ACB2BB;
-    
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 `
 
 const TextAreaWrapper = styled.div`

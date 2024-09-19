@@ -4,6 +4,7 @@ import BaseAxios from "../../../axioses/BaseAxios";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import ImageUploadButton from "./ImageUploadButton";
+import useWindowSize from "../../components/Common/WindowSize";
 
 const Submit = () => {
     const navigate = useNavigate();
@@ -28,11 +29,11 @@ const Submit = () => {
 
         try {
             // Send the POST request with the FormData
-            await BaseAxios.post('/api/register/imgUpload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            // await BaseAxios.post('/api/register/imgUpload', formData, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data',
+            //     },
+            // });
             
             console.log("File submitted:", selectedFile);
             navigate('/verify');
@@ -41,12 +42,14 @@ const Submit = () => {
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <Wrapper>
+        <Wrapper maxWidth={windowSize}>
             <Header showIcon={false} text={title} backButton={true} searchButton={false}>
                 {selectedFile && <Send onClick={handleSubmit}>제출</Send>}
             </Header>
-            <Ad>튜토리얼 & 광고</Ad>
+            <Ad maxWidth={windowSize}>튜토리얼 & 광고</Ad>
             <ImageUploadButton 
                 label={selectedFile ? selectedFile.name : '파일추가'}
                 onFileSelect={handleFileSelect}
@@ -64,17 +67,21 @@ const Wrapper = styled.div`
     align-items: center;
     margin-top: 100px;
     margin-bottom: 100px;
+    padding: 0 10px;
 `;
 
 const Ad = styled.div`
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     text-align: center;
     justify-content: center;
     margin-top: 40px;
 
-    width: 393px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     height: 500px;
+    padding: 0 20px;
 
     border: none;
     border-radius: 10px;

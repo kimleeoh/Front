@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import getTimeElapsed from '../../components/Common/getTimeElapsed';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const Tips = ({ _id, name, major, title, content, time, views, like, img, point }) => {
-
+    const {width: windowSize} = useWindowSize();
     return (
-        <OutWrapper>
+        <OutWrapper maxWidth={windowSize}>
             <StyledLink to={`/tips/${_id}`}>
                 <Wrapper>
                     <ContentWrapper>
@@ -67,12 +68,13 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 380px;
+    
     height: 140px;
-    padding: 20px 10px;
+    padding: 20px 20px;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.2s ease;
+    
     &:active {
         background-color: #F1F7Fd;
         transition: all 0.2s ease;
@@ -86,14 +88,16 @@ const ContentWrapper = styled.div`
 
 const TextWrapper = styled.div`
     align-items: flex-start;
-    max-width: ${(props) => (props.hasImage ? '290px' : '380px')};
+    max-width: ${(props) => (props.hasImage ? '80%' : '100%')};
+    overflow: hidden;
 `
 
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
-
+    width: 100%;
+    
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -101,23 +105,20 @@ const Title = styled.div`
 
 const Content = styled.div`
     font-size: 16px;
+    font-weight: regular;
     margin-bottom: 10px;
 
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    
+
     text-overflow: ellipsis;
     overflow: hidden;
 `;
 
-const Subject = styled.div`
-    font-size: 16px;
-    margin-bottom: 10px;
-`;
-
 const MetaContainer = styled.div`
     display: flex;
+    align-items: center;
     margin-top: auto;
     
     font-size: 10px;
@@ -125,10 +126,8 @@ const MetaContainer = styled.div`
 
 const OutWrapper = styled.div`
     width: 100%;
-    max-width: 400px;
-    min-width: 400px;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     margin: 0 auto;
-    padding: 0 10px;
     border-bottom: 1px solid #ACB2BB;
 `;
 

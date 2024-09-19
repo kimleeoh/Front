@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import useWindowSize from './WindowSize';
 
 const CarouselTemp = ({
     children,
@@ -105,6 +106,8 @@ const CarouselTemp = ({
       setCurrentSlide(index);
     };
   
+    const {width: windowSize} = useWindowSize();
+
     return (
       <CarouselWrapper width={width}>
         <CarouselContainer height={height} ref={containerRef}>
@@ -167,14 +170,15 @@ export default CarouselTemp;
 
 const CarouselWrapper = styled.div`
   position: relative;
-  width: ${props => props.width || '100%'};
+  width: ${props => props.size};
+  height: ${props => props.size};
   padding-bottom: 30px; // 이미지와 불렛 사이 공간
 `;
 
 const CarouselContainer = styled.div`
   position: relative;
   width: 100%;
-  height: ${props => props.height || '400px'};
+  height: 100%;
 `;
 
 const SlideWrapper = styled.div`
@@ -256,16 +260,15 @@ const Bullet = styled.div`
 `;
 
 const FractionIndicator = styled.div`
-
   display: flex;
-width: 45px;
-height: 30px;
-padding: 0px 6px;
-justify-content: center;
-align-items: center;
-gap: 10px;
-flex-shrink: 0;
-white-space: nowrap;
+  width: 45px;
+  height: 30px;
+  padding: 0px 6px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  white-space: nowrap;
 
   position: absolute;
   bottom: 10px;

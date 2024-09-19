@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
+import useWindowSize from './WindowSize';
 
 const dropdownAnimation = keyframes`
     0% {
@@ -59,8 +60,10 @@ const SelectBoard = ({ options, placeholder, onChange }) => {
         ? options
         : (selectedOptions[selectedOptions.length - 1]?.subcategories || []);
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <DropdownContainer ref={dropdownRef}>
+        <DropdownContainer ref={dropdownRef} maxWidth={windowSize}>
             <DropdownHeader onClick={toggleDropdown}>
                 {selectedOptions.length === 0
                     ? placeholder
@@ -125,10 +128,11 @@ const DropdownContainer = styled.div`
     border-bottom: 1px solid #ACB2BB;
     position: relative;
     gap: 10px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 `;
 
 const DropdownHeader = styled.div`
-    width: 380px;
     height: 30px;
     border-radius: none;
     background-color: white;

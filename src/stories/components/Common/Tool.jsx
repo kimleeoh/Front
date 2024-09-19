@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Popup from '../Popup';
-import BaseAxios from '../../../axioses/BaseAxios';
+import useWindowSize from './WindowSize';
 
 export const Votes = ({ like, handleLike, handleUnlike }) => {
     const [likesCount, setLikesCount] = useState(like);
@@ -32,8 +32,10 @@ export const Votes = ({ like, handleLike, handleUnlike }) => {
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <VotesWrapper>
+        <VotesWrapper maxWidth={windowSize}>
             <VoteButton onClick={handleUpClick}>
                 <img
                     src={voteStatus === 'up' ? '/Icons/Arrow_vote_on.svg' : '/Icons/Arrow_vote.svg'}
@@ -96,7 +98,7 @@ export const MeatballMenu = () => {
     const handleTogglePopup = () => {
         if (buttonRef.current) {
             const rect = buttonRef.current.getBoundingClientRect();
-            // MeatballMenu의 bottom에 맞춰 팝업의 top을 설정하고, 우측 상단이 맞닿도록 left를 설정
+            // MeatballMenu의 bottom에  맞춰 팝업의 top을 설정하고, 우측 상단이 맞닿도록 left를 설정
             setPopupPosition({
                 top: rect.bottom, // 버튼의 아래쪽
                 left: rect.right - 195, // 팝업 너비만큼 조정 (195px)

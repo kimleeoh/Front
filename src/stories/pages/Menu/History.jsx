@@ -61,7 +61,7 @@ const History = () => {
     return (
         <Wrapper>
             <Header showIcon={false} text='최근 본 글' backButton={true} searchButton={true}/>
-            <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
+            <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange}/>
             {activeTab === '전체' && (
                 <>
                     {filteredQuestions
@@ -142,5 +142,4 @@ const Wrapper = styled.div`
     margin-top: 100px;
     margin-bottom: 100px;
     width: 100%;
-    min-width: 400px;
 `;

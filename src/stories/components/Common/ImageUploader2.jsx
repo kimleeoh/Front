@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import useWindowSize from './WindowSize';
 
 const ImageUploader = ({ onChange }) => {
     const [files, setFiles] = useState([]);
@@ -13,8 +14,10 @@ const ImageUploader = ({ onChange }) => {
         }
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
-        <UploaderWrapper>
+        <UploaderWrapper maxWidth={windowSize}>
             {files.length > 0 ? (
                 <FileName>{files.map(file => file.name).join(', ')}</FileName>
             ) : (
@@ -43,13 +46,15 @@ export default ImageUploader;
 const UploaderWrapper = styled.div`
     display: flex;
     align-items: center;
-    width: 360px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     height: 40px;
     border: 1px solid #ACB2BB;
     border-radius: 16px;
     padding: 0 20px;
     font-size: 14px;
     flex-wrap: wrap;
+    box-sizing: border-box;
 `;
 
 const UploadButton = styled.label`

@@ -8,6 +8,7 @@ import Button from '../../components/Button';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import Modal from '../../components/Common/Modal';
 import { useNavigate } from 'react-router-dom';
+import useWindowSize from '../../components/Common/WindowSize';
 
 
 const EditBoardPage = () => {
@@ -65,6 +66,8 @@ const EditBoardPage = () => {
         // 예를 들어, 로그아웃 API를 호출하거나, 로그인 페이지로 이동
     };
 
+    const {width: windowSize} = useWindowSize();
+
     return (
         <Wrapper>
             <Header showIcon={false} text="게시판 편집" backButton={true} searchButton={false} onClick={handleBackClick}>
@@ -72,13 +75,15 @@ const EditBoardPage = () => {
                 <Save onClick={handleSave}>저장</Save>
                 )}
             </Header>
-            <AddButtonWrapper>
+
+            <BoardTitleWrapper maxWidth={windowSize}>
                 <BoardTitle text={title} edit={false} />
-            </AddButtonWrapper>
+            </BoardTitleWrapper>
+
             <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="subjectlist">
                 {(provided) => (
-                    <SubjectListWrapper className="subjectlist" {...provided.droppableProps} ref={provided.innerRef}>
+                    <SubjectListWrapper maxWidth={windowSize}className="subjectlist" {...provided.droppableProps} ref={provided.innerRef}>
                         {subjects.map((item, index) => (
                             <Draggable draggableId={item.id} index={index} key={item.id}>
                                 {(provided, snapshot) => (
@@ -86,6 +91,10 @@ const EditBoardPage = () => {
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
+                                        style={{
+                                            ...provided.draggableProps.style,
+                                            width: '100%'  // Make sure the div takes full width
+                                          }}
                                     >
                                         <SubjectList
                                             subject={item.subject || item.bookmark}
@@ -105,16 +114,16 @@ const EditBoardPage = () => {
                 )}
             </Droppable>
             </DragDropContext>
-            <AddButtonWrapper>
-                <Button
-                    label={'+ 과목 추가하기'}
-                    color={'#ACB2BB'}
-                    backgroundColor={'#F1F2F4'}
-                    hoverColor={'#ACB2BB'}
-                    hoverBackgroundColor={'#E5E9F2'}
-                    style={{ marginTop: '20px' }}
-                />
-            </AddButtonWrapper>
+
+            <Button
+                label={'+ 과목 추가하기'}
+                color={'#ACB2BB'}
+                backgroundColor={'#F1F2F4'}
+                hoverColor={'#ACB2BB'}
+                hoverBackgroundColor={'#E5E9F2'}
+                style={{ marginTop: '20px' }}
+            />
+
 
             <Modal ref={modalRef} width='300px'>
                 <span style={{fontSize: '16px'}}>저장하시겠습니까?</span>
@@ -137,27 +146,30 @@ const Wrapper = styled.div`
     margin-top: 100px;
     margin-bottom: 100px;
     width: 100%;
+    box-sizing: border-box;
+    padding: 0 10px;
 `;
 
 const SubjectListWrapper = styled.div`
-    width: 380px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+
     background-color: white;
     border-radius: 24px;
-    margin: 0 auto;
+
     padding: 0 10px 0;
 `;
 
-const AddButtonWrapper = styled.div`
+const BoardTitleWrapper = styled.div`
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
+    align-items: flex-start;
+    justify-content: flex-start;
     width: 100%;
-    max-width: 393px;
-    min-width: 400px;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
 `
 
 const ButtonWrapper = styled.div`
@@ -165,7 +177,6 @@ const ButtonWrapper = styled.div`
     justify-content: space-around;
     margin-top: 20px;
     gap: 10px;
-
 `;
 
 const Save = styled.button`

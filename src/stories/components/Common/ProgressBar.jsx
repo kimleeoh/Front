@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import useWindowSize from './WindowSize';
 
 // 기본 진행 바 컨테이너
 const ProgressBarContainer = styled.div`
   display: flex;
   background-color: #d9d9d9;
   border-radius: 5px;
-  width: ${props => props.width};  // 기본값을 props로 전달
+  width: 100%;
+  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
   height: 10px;
   overflow: hidden;
 `;
@@ -22,9 +24,10 @@ const ProgressFill = styled.div`
 
 const ProgressBar = ({ totalSteps, currentStep, color, width }) => {
   const progress = (currentStep / totalSteps) * 100;
+  const {width: windowSize} = useWindowSize();
 
   return (
-    <ProgressBarContainer width={width}>
+    <ProgressBarContainer maxWidth={windowSize}>
       <ProgressFill color={color} progress={progress}/>
     </ProgressBarContainer>
   );
@@ -39,7 +42,6 @@ ProgressBar.propTypes = {
 
 ProgressBar.defaultProps = {
   color: '#3182F7',
-  width: '100%',  // 기본값을 설정
 };
 
 export default ProgressBar;
