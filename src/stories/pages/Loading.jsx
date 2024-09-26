@@ -1,9 +1,11 @@
 import React from "react";
+import styled from "styled-components";
+import { Spinner } from "../components/Common/Spinner";
 
 export default () => {
     return (
         <div>
-            <h1>Loading...</h1>
+            <Spinner />
         </div>
     );
 };
