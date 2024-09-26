@@ -10,6 +10,7 @@ import Checker from "../../components/Common/Checker";
 import Button from "../../components/Button";
 import useWindowSize from "../../components/Common/WindowSize";
 import BottomSheet from "../../components/Common/BottomSheet";
+import BaseAxios from "../../../axioses/BaseAxios";
 
 const initialUserData = [
   {
