@@ -99,7 +99,7 @@ const GradeRegister = () => {
     const {width: windowSize} = useWindowSize();
 
     return (
-        <Wrapper>
+        <Wrapper maxWidth={windowSize}>
             <Header text="성적 등록하기">
                 <Verify onClick={handleVerifyClick}>인증</Verify>
             </Header>
@@ -111,7 +111,7 @@ const GradeRegister = () => {
             </TermPickerWrapper>
             <Checker text="인증되지 않음" readOnly={true} type={'check'} />
             {subjects.length > 0 && (
-                <SubjectWrapper>
+                <SubjectWrapper maxWidth={windowSize}>
                     {subjects.map(subject => (
                         <SubjectItem key={subject}>
                             <SubjectName>{subject}</SubjectName>
@@ -204,6 +204,9 @@ const TermPickerWrapper = styled.div`
 
 const SubjectWrapper = styled.div`
     width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    padding: 0 10px;
+    box-sizing: border-box;
     margin-top: 20px;
     display: flex;
     flex-direction: column;

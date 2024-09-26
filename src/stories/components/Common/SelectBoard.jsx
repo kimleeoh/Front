@@ -14,38 +14,72 @@ const dropdownAnimation = keyframes`
     }
 `;
 
-const SelectBoard = ({ options, placeholder, onChange }) => {
+const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
+    const {width: windowSize} = useWindowSize();
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState([]);
+    const [currentOptions, setCurrentOptions] = useState([]);
     const dropdownRef = useRef(null);
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
-    const handleOptionClick = (option) => {
-        if (option.subcategories && option.subcategories.length > 0) {
-            setSelectedOptions([...selectedOptions, option]);
+    useEffect(() => {
+        if (Array.isArray(options) && options.length > 0 && options[0].subcategories) {
+            setCurrentOptions(options[0].subcategories);
         } else {
-            setSelectedOptions([...selectedOptions, option]);
-            setIsOpen(false);
-            
-            if (onChange) {
-                onChange([...selectedOptions, option]);
-            }
+            setCurrentOptions([]);
         }
+
+        if (Array.isArray(options) && options.length > 0 && options[0].type >= 2){
+            console.log("false");
+            setIsOpen(false);
+        }
+
+        if (options[1] && options[1].label){
+            const newSelectedOptions = [...selectedOptions, {label: options[1].label}];
+            setSelectedOptions(newSelectedOptions);
+            console.log("selectedOptions: ", selectedOptions);
+        }
+    }, [options]);
+
+    const handleOptionClick =  (option) => {
+        const newSelectedOptions = [...selectedOptions, option];
+        setSelectedOptions(newSelectedOptions);
+
+        if (!option.id){
+            setCurrentOptions(option.subcategories);
+        }
+        else {
+            onFetchCategories(option.id);
+        }
+        
+        // if (option.subcategories){
+        //     setCurrentOptions(option.subcategories);
+        // }
+        // else if (option.id){
+        //     onFetchCategories(option.id);
+        // }
+        // else {
+        //     setIsOpen(false);
+        //     onChange(newSelectedOptions);
+        // }
     };
 
-    const handleBackClick = () => {
+    const handleBackClick = async () => {
         const newSelectedOptions = selectedOptions.slice(0, -1);
         setSelectedOptions(newSelectedOptions);
-        if (onChange) {
-            onChange(newSelectedOptions);
-        }
-    };
-
-    const handleSaveClick = () => {
-        setIsOpen(false);
-        if (onChange) {
-            onChange(selectedOptions); // Trigger the onChange with the current selection
+        
+        if (newSelectedOptions.length > 0) {
+            const lastOption = newSelectedOptions[newSelectedOptions.length - 1];
+            if (lastOption.id) {
+                const newOptions = await onFetchCategories(lastOption.id);
+                setCurrentOptions(Array.isArray(newOptions) ? newOptions : []);
+            } else if (Array.isArray(lastOption.subcategories)) {
+                setCurrentOptions(lastOption.subcategories);
+            }
+        } else {
+            const initialOptions = await onFetchCategories('');
+            setCurrentOptions(Array.isArray(initialOptions) ? initialOptions : []);
         }
     };
 
@@ -53,6 +87,9 @@ const SelectBoard = ({ options, placeholder, onChange }) => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setIsOpen(false);
+            }
+            if (onChange) {
+                onChange(selectedOptions); // Trigger the onChange with the current selection
             }
         };
 
@@ -62,11 +99,12 @@ const SelectBoard = ({ options, placeholder, onChange }) => {
         };
     }, []);
 
-    const currentOptions = selectedOptions.length === 0
-        ? options
-        : (selectedOptions[selectedOptions.length - 1]?.subcategories || []);
-
-    const {width: windowSize} = useWindowSize();
+    const handleSaveClick = () => {
+        setIsOpen(false);
+        if (onChange) {
+            onChange(selectedOptions); // Trigger the onChange with the current selection
+        }
+    };
 
     return (
         <DropdownContainer ref={dropdownRef} maxWidth={windowSize}>

@@ -9,6 +9,7 @@ import PointInput from './PointInput';
 import Checker from '../../components/Common/Checker';
 import Button from '../../components/Button';
 import useWindowSize from '../../components/Common/WindowSize';
+import BaseAxios from '../../../axioses/BaseAxios';
 import BottomSheet from '../../components/Common/BottomSheet';
 
 const initialUserData = [
@@ -36,49 +37,6 @@ const PostQuestionPage = () => {
     const [isPointInputDisabled, setIsPointInputDisabled] = useState(false);
     const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
-    const boardOptions = [
-        {
-            value: '교양선택',
-            label: '교양선택',
-            subcategories: [
-                {   value: '23이후', 
-                    label: '23이후', 
-                    subcategories: [
-                        {
-                            value: '과학&기술',
-                            label: '과학&기술',
-                            subcategories: [
-                                {value: '4차산업혁명시대의정보보안', label: '4차산업혁명시대의정보보안'},
-                                {value: '프로그래밍기초(Python)', label: '프로그래밍기초(Python)'},
-                                {value: '신재생에너지활용및실무', label: '신재생에너지활용및실무'},
-                            ]
-                        },
-                        {value: '문화&예술', label: '문화&예술'},
-                        {value: '사회&정치&경제', label: '사회&정치&경제'},
-                        {value: '인간&언어', label: '인간&언어'},
-                        {value: '자기개발&진로탐색', label: '자기개발&진로탐색'},
-                    ]},
-                { value: '기독교과목', label: '기독교과목' },
-            ],
-        },
-        {
-            value: '교양필수',
-            label: '교양필수',
-            subcategories: [
-                { value: 'subcategory2_1', label: 'Subcategory 2.1' },
-                { value: 'subcategory2_2', label: 'Subcategory 2.2' },
-            ],
-        },
-        {
-            value: '학부별전공',
-            label: '학부별전공',
-            subcategories: [
-                { value: 'subcategory2_1', label: 'Subcategory 2.1' },
-                { value: 'subcategory2_2', label: 'Subcategory 2.2' },
-            ],
-        },
-    ];
-
     const [userData, setUserData] = useState([]);
 
     useEffect(() => {
@@ -91,22 +49,12 @@ const PostQuestionPage = () => {
             localStorage.setItem('userData', JSON.stringify(initialUserData));
             setUserData(initialUserData);
         }
+
+        fetchCategories('');
     }, []);
 
     const handleInputChange = (name, value) => {
         setFormValues({ ...formValues, [name]: value });
-    };
-
-    const handleBoardChange = (value) => {
-        // 선택된 옵션이 하나 이상일 때
-        if (value.length > 1) {
-            const secondLastOption = value[value.length - 2]; // 바로 전 단계의 옵션
-    
-            // 바로 전 단계의 옵션이 하위 카테고리를 가지고 있을 때 BottomSheet 표시
-            if (secondLastOption.subcategories && secondLastOption.subcategories.length > 0) {
-                setIsBottomSheetVisible(true);
-            }
-        }
     };
 
     const handleFormSubmit = (e) => {
@@ -157,6 +105,61 @@ const PostQuestionPage = () => {
         return null;
     };
 
+    const [boardOptions, setBoardOptions] = useState([]);
+
+    const fetchCategories  = async (id) => {
+        try {
+                console.log("id: ", id, "전송");
+                const response = await BaseAxios.post('/api/dummy/category', { id });
+                console.log("response: ", response);
+                const fetchedCategories = response.data;
+
+                const newBoardOptions  = [
+                    {
+                        subcategories: fetchedCategories.sub_category_list_name.map((subName, index) => ({
+                            value: subName,
+                            label: subName,
+                            id: fetchedCategories.sub_category_list_id[index],
+                        })),
+                        type: fetchedCategories.type
+                    }
+                ]
+                console.log("newBoardOptions: ", newBoardOptions);
+                setBoardOptions(newBoardOptions);
+
+                if (fetchedCategories.type >= 2){
+                    setIsBottomSheetVisible(true);
+                }
+            }
+        catch (error) {
+            console.error('Error fetching question data:', error);
+        }
+    };
+
+    const handleBoardChange = async (selectedOptions) => {
+        handleInputChange('board', selectedOptions);
+    };
+
+    const handleBottomSheetSelection = (selectedOptions) => {
+        setBoardOptions(selectedOptions)
+        setBoardOptions(prevOptions => {
+            if (!Array.isArray(prevOptions)) {
+                const initialOptions = prevOptions ? [prevOptions] : [];
+                return [
+                    ...initialOptions,
+                    { label: selectedOptions.CategoryName }
+                ];
+            }
+            
+            return [
+                ...prevOptions,
+                { code: 404 }
+            ];
+        });
+        handleInputChange('board', selectedOptions);
+        console.log("boardOptions", boardOptions);
+    };
+
     const {width: windowSize} = useWindowSize();
 
     return (
@@ -173,6 +176,7 @@ const PostQuestionPage = () => {
                 options={boardOptions} 
                 placeholder={'게시판 선택'}
                 onChange={handleBoardChange}
+                onFetchCategories={fetchCategories}
             />
             <TextArea 
                 height={'300px'} 
@@ -209,7 +213,10 @@ const PostQuestionPage = () => {
                 onClick={handleFormSubmit}
             />
             {showValidationMessages && renderValidationMessages()}
-            {isBottomSheetVisible && <BottomSheet />}
+            {isBottomSheetVisible && <BottomSheet 
+            options={boardOptions} 
+            onChange={handleBottomSheetSelection}
+            />}
         </Wrapper>
     );
 }
