@@ -92,6 +92,7 @@ const SignUpPage = () => {
     // 서버로 데이터를 전송하는 로직을 추가할 수 있습니다.
     // 예: await fetch('/api/signup', { method: 'POST', body: JSON.stringify(formData) });
     SignUpHandler(step, formData);
+    navigate('/confirm');
     console.log('제출된 데이터:', formData);
   };
 

@@ -22,7 +22,7 @@ const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
     const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
-
+    
     useEffect(() => {
         if (Array.isArray(options) && options.length > 0 && options[0].subcategories) {
             setCurrentOptions(options[0].subcategories);

@@ -16,7 +16,7 @@ const Alert = () => {
                 <br/> 인증 처리가 완료되면, 알림 탭을 통해 처리 결과를 안내해 드립니다.</Content>
             <Button
                 label={'돌아가기'}
-                onClick={() => navigate('/home')}
+                onClick={() => navigate('/')}
                 color={'#ACB2BB'}
                 backgroundColor={'#F1F2F4'}
                 hoverColor={'#ACB2BB'}
