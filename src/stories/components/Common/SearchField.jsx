@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const SearchField = ({ placeholder, onSearch, width }) => {
     const [query, setQuery] = useState('');
     const [isFocused, setIsFocused] = useState(false);
+    const inputRef = useRef(null); // input에 대한 ref 생성
 
     const handleInputChange = (e) => {
         setQuery(e.target.value);
@@ -17,6 +18,7 @@ const SearchField = ({ placeholder, onSearch, width }) => {
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             handleSearch();
+            inputRef.current.blur(); // 엔터를 눌렀을 때 포커스 해제
         }
     };
 
@@ -38,6 +40,7 @@ const SearchField = ({ placeholder, onSearch, width }) => {
                 <img src="/Icons/Search.svg" alt="Search" />
             </SearchButton>
             <SearchInput
+                ref={inputRef} // ref를 input에 할당
                 type="text"
                 value={query}
                 onChange={handleInputChange}
@@ -57,7 +60,7 @@ const SearchField = ({ placeholder, onSearch, width }) => {
 
 SearchField.propTypes = {
     placeholder: PropTypes.string,
-    onSearch: PropTypes.func.isRequired,  // 검색 작업을 처리할 함수
+    onSearch: PropTypes.func.isRequired,
     width: PropTypes.string,
 };
 
@@ -83,8 +86,7 @@ const SearchInput = styled.input`
     outline: none;
     font-size: 16px;
     background-color: transparent;
-    
-  color: #434b60;
+    color: #434b60;
 `;
 
 const SearchButton = styled.button`
@@ -100,7 +102,6 @@ const ClearButton = styled.button`
     border: none;
     cursor: pointer;
     outline: none;
-    
     font-size: 35px;
     color: #434b60;
 `;

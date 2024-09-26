@@ -73,7 +73,7 @@ const App = () => {
           <Route path="/board" element={<BoardHome />} />
           <Route path="/edit-board" element={<EditBoardPage />} />
           <Route path="/board/:subject" element={<UnifiedBoard />} />
-          <Route path="/searching" element={<Searching />} />
+          <Route path="/search" element={<Searching />} />
           
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/mypage" element={<MyPage />} />
