@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate  } from 'react-router-dom';
+import React, { Suspense, useState, useEffect, useCallback } from "react";
+import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
-import BoardTitle from "../../components/Common/BoardTitle";
-import SubjectList from "../../components/Common/SubjectList";
+import useWindowSize from "../../components/Common/WindowSize";
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
-import useWindowSize from "../../components/Common/WindowSize";
 
+// Lazy-loaded components
+const BoardTitle = React.lazy(() => import('../../components/Common/BoardTitle'));
+const SubjectList = React.lazy(() => import('../../components/Common/SubjectList'));
+
+// Immediately loaded components (not lazy)
+
+
+// Initial data
 const initialSubjectList = [
     {subject: '디지털미디어원리'},
     {subject: '영상편집론'},
@@ -16,151 +22,131 @@ const initialSubjectList = [
     {subject: '영상편집론'},
     {subject: 'CTE for IT, Engineering&Natura'},
     {subject: 'UX/UI디자인'},
-]
+];
 
 const initialBookMarkList = [
     {bookmark: '글로벌미디어학부'},
     {bookmark: 'IT대학'},
     {bookmark: '글로벌미디어학부'},
     {bookmark: 'IT대학'},
-    {bookmark: '글로벌미디어학부'},
-    {bookmark: 'IT대학'},
-]
+];
 
 const initialSubjectList2 = [
     {subject: '미디어제작및실습'},
     {subject: 'Art&Technology'},
     {subject: '컴퓨터시스템개론'},
-    {subject: '미디어제작및실습'},
-    {subject: 'Art&Technology'},
-    {subject: '컴퓨터시스템개론'},
-]
+];
 
-const BoardHome = () => {
-    const [subjectData, setSubjectData] = useState([]);
-    const [bookmarkData, setBookmarkData] = useState([]);
-    const [subjectData2, setSubjectData2] = useState([]);
-    const {width: windowSize} = useWindowSize();
+// Helper to fetch or initialize data from localStorage
+const useStoredData = (key, initialData) => {
+    const [data, setData] = useState(() => {
+        const storedData = localStorage.getItem(key);
+        return storedData ? JSON.parse(storedData) : initialData;
+    });
 
     useEffect(() => {
-        localStorage.removeItem('subjectData');
-        localStorage.removeItem('bookmarkData');
-        localStorage.removeItem('subjectData2');
+        localStorage.setItem(key, JSON.stringify(data));
+    }, [key, data]);
 
-        const subjectData = localStorage.getItem('subjectData');
-        const bookmarkData = localStorage.getItem('bookmarkData');
-        const subjectData2 = localStorage.getItem('subjectData2');
+    return [data, setData];
+};
 
-        if (subjectData) {
-            setSubjectData(JSON.parse(subjectData));
-        } else {
-            localStorage.setItem('subjectData', JSON.stringify(initialSubjectList));
-            setSubjectData(initialSubjectList);
-        }
-
-        if (bookmarkData) {
-            setBookmarkData(JSON.parse(bookmarkData));
-        } else {
-            localStorage.setItem('bookmarkData', JSON.stringify(initialBookMarkList));
-            setBookmarkData(initialBookMarkList);
-        }
-
-        if (subjectData2) {
-            setSubjectData2(JSON.parse(subjectData2));
-        } else {
-            localStorage.setItem('subjectData2', JSON.stringify(initialSubjectList2));
-            setSubjectData2(initialSubjectList2);
-        }
-    }, []);
-
+const BoardHome = () => {
+    const [subjectData, setSubjectData] = useStoredData('subjectData', initialSubjectList);
+    const [bookmarkData, setBookmarkData] = useStoredData('bookmarkData', initialBookMarkList);
+    const [subjectData2, setSubjectData2] = useStoredData('subjectData2', initialSubjectList2);
+    const { width: windowSize } = useWindowSize();
     const navigate = useNavigate();
 
-    const handleSubjectClick = (subject) => {
-        // 과목 클릭 시 부모 컴포넌트에서 처리
+    const handleSubjectClick = useCallback((subject) => {
         console.log("Subject clicked:", subject);
         navigate(`/board/${subject}`);
-    };
+    }, [navigate]);
 
-    const handleEditClick = (listType, title) => {
-        let listData = [];
+    const handleEditClick = useCallback((listType, title) => {
+        let listData;
         switch (listType) {
             case 'subject':
                 listData = subjectData;
-                title= '내가 수강 중인 과목';
+                title = '내가 수강 중인 과목';
                 break;
             case 'bookmark':
                 listData = bookmarkData;
-                title= '즐겨찾기';
+                title = '즐겨찾기';
                 break;
             case 'subject2':
                 listData = subjectData2;
-                title= '수강했던 과목';
+                title = '수강했던 과목';
                 break;
             default:
                 listData = [];
         }
-    
 
-        navigate('/edit-board', {state: {listData, title}});
-    };
+        navigate('/edit-board', { state: { listData, title } });
+    }, [subjectData, bookmarkData, subjectData2, navigate]);
+
+    const renderBoardTitle = (title, listType) => (
+        <BoardTitle text={title} type="edit" onEditClick={() => handleEditClick(listType, title)} />
+    );
 
     return (
-        <Wrapper>
-            <Header maxWidth={windowSize}>게시판</Header>
-            <ContentWrapper maxWidth={windowSize}>
-                <BoardTitle text={'내가 수강 중인 과목'} type={'edit'} onEditClick={() => handleEditClick('subject', '내가 수강 중인 과목')} />
-                <SubjectWrapper>
-                    <ScrollableSubjectList>
-                        {subjectData.map((subject) => (
-                            <SubjectList
-                                key={subject.subject}
-                                subject={subject.subject}
-                                onClick={handleSubjectClick}
-                                actions={[]} // Add actions if needed
-                            />
-                        ))}
-                    </ScrollableSubjectList>
-                </SubjectWrapper>
+        <Suspense fallback={<div>Loading...</div>}>
+            <Wrapper>
+                <Header maxWidth={windowSize}>게시판</Header>
+                <ContentWrapper maxWidth={windowSize}>
+                    {renderBoardTitle('내가 수강 중인 과목', 'subject')}
+                    <SubjectWrapper>
+                        <ScrollableSubjectList>
+                            {subjectData.map(({ subject }) => (
+                                <SubjectList
+                                    key={subject}
+                                    subject={subject}
+                                    onClick={() => handleSubjectClick(subject)}
+                                    actions={[]} // Optional actions
+                                />
+                            ))}
+                        </ScrollableSubjectList>
+                    </SubjectWrapper>
 
-                <BoardTitle text={'즐겨찾기'} type={'edit'} onEditClick={() => handleEditClick('bookmark', '즐겨찾기')} />
-                <SubjectWrapper>
-                    <ScrollableSubjectList>
-                        {bookmarkData.map((bookmark) => (
-                            <SubjectList
-                                key={bookmark.bookmark}
-                                subject={bookmark.bookmark}
-                                onClick={handleSubjectClick}
-                                actions={[]} // Add actions if needed
-                            />
-                        ))}
-                    </ScrollableSubjectList>
-                </SubjectWrapper>
+                    {renderBoardTitle('즐겨찾기', 'bookmark')}
+                    <SubjectWrapper>
+                        <ScrollableSubjectList>
+                            {bookmarkData.map(({ bookmark }) => (
+                                <SubjectList
+                                    key={bookmark}
+                                    subject={bookmark}
+                                    onClick={() => handleSubjectClick(bookmark)}
+                                    actions={[]} // Optional actions
+                                />
+                            ))}
+                        </ScrollableSubjectList>
+                    </SubjectWrapper>
 
-                <BoardTitle text={'수강했던 과목'} type={'edit'} onEditClick={() => handleEditClick('subject2', '수강했던 과목')} />
-                <SubjectWrapper>
-                    <ScrollableSubjectList>
-                        {subjectData2.map((subject) => (
-                            <SubjectList
-                                key={subject.subject}
-                                subject={subject.subject}
-                                onClick={handleSubjectClick}
-                                actions={[]} // Add actions if needed
-                            />
-                        ))}
-                    </ScrollableSubjectList>
-                </SubjectWrapper>
-            </ContentWrapper>
-            <FixedBottomContainer>
-                <NavBar state='Board' />
-            </FixedBottomContainer>
-
-        </Wrapper>
+                    {renderBoardTitle('수강했던 과목', 'subject2')}
+                    <SubjectWrapper>
+                        <ScrollableSubjectList>
+                            {subjectData2.map(({ subject }) => (
+                                <SubjectList
+                                    key={subject}
+                                    subject={subject}
+                                    onClick={() => handleSubjectClick(subject)}
+                                    actions={[]} // Optional actions
+                                />
+                            ))}
+                        </ScrollableSubjectList>
+                    </SubjectWrapper>
+                </ContentWrapper>
+                <FixedBottomContainer>
+                    <NavBar state="Board" />
+                </FixedBottomContainer>
+            </Wrapper>
+        </Suspense>
     );
-}
+};
 
 export default BoardHome;
 
-
+// Styled components
 const mainColor = '#434B60';
 const backgroundColor = '#f0f2f4';
 const whiteColor = 'white';
@@ -213,7 +199,6 @@ const SubjectWrapper = styled.div`
     background-color: ${whiteColor};
     border-radius: ${borderRadius};
     margin-bottom: 10px;
-
 `;
 
 const ScrollableSubjectList = styled.div`

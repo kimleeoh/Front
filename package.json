@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@next/bundle-analyzer": "^14.2.13",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -63,8 +64,11 @@
     "@storybook/react": "^8.2.1",
     "@storybook/react-webpack5": "^8.2.1",
     "@storybook/test": "^8.2.1",
+    "cra-bundle-analyzer": "^0.1.1",
     "eslint-plugin-storybook": "^0.8.0",
     "prop-types": "^15.8.1",
-    "webpack": "^5.92.1"
-  }
+    "webpack": "^5.92.1",
+    "webpack-bundle-analyzer": "^4.10.2"
+  },
+   "build": "cross-env ANALYZE=true NODE_ENV=production next build&&source-map-explorer .next/static/**/*.js"
 }

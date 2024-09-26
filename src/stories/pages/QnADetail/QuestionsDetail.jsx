@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Votes, Scrap, Notification } from '../../components/Common/Tool';
 import MeatballMenu from '../../components/Common/MeatballMenu';
-import Report from '../../components/Common/Report';
 import CarouselTemp from '../../components/Common/CarouselTemp';
 import getTimeElapsed from '../../components/Common/getTimeElapsed';
 import CategoryPath from '../../components/Common/CategoryPath';

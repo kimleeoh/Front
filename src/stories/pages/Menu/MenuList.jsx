@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'; // useNavigate를 import합니�
 import PropTypes from 'prop-types';
 import useWindowSize from '../../components/Common/WindowSize';
 
-const MenuList = ({ children, to, onClick }) => {
+const MenuList = ({ children, to, onClick, src }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -19,7 +19,10 @@ const MenuList = ({ children, to, onClick }) => {
 
     return (
         <Wrapper onClick={handleClick} maxWidth={windowSize}>
+            <Content>
+            {src && <img src={src} alt='icon' width='20px' height='20px'/> }
             {children}
+            </Content>
             <svg xmlns="http://www.w3.org/2000/svg" width="9" height="15" viewBox="0 0 9 15" fill="none">
                 <path d="M1.75 1.25L8 7.5L1.75 13.75" stroke="#ACB2BB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -31,6 +34,7 @@ MenuList.propTypes = {
     children: PropTypes.node.isRequired,
     to: PropTypes.string,
     onClick: PropTypes.func,
+    src: PropTypes.string,
 };
 
 MenuList.defaultProps = {
@@ -65,4 +69,10 @@ const Wrapper = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+`;
+
+const Content = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 8px;
 `;
