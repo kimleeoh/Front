@@ -12,6 +12,7 @@ import PointInput from '../../components/PointInput';
 import CheckBar from '../../components/CheckBar';
 import Button from '../../components/Button'
 import CategorySelector from "../../components/CategorySelector"
+import BaseAxios from '../../../axioses/BaseAxios';
 
 const initialUserData = [
     {
@@ -107,12 +108,13 @@ const PostQuestionPage = () => {
         const now = new Date().toISOString();
 
         // Update 'time' first then proceed with form submission
-        setFormValues((prevFormValues) => {
+        setFormValues(async(prevFormValues) => {
             const user = userData[0] || {};
             const updatedFormValues = { ...prevFormValues, name: user.name, major: user.major, profileImg: user.profileImg, time: now };
             
             if (isFormValid) {
                 // Add your API call here to send updatedFormValues to the backend.
+                await BaseAxios.post('/api/qna/create/post', updatedFormValues);
                 console.log(updatedFormValues);
             }
 
