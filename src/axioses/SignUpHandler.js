@@ -173,6 +173,7 @@ const SignUpHandler = async (step, formData) => {
             //response 검사해서 오류 코드 뜨면 navigate하는 함수
             //if(response.status !== 200){}
             break;
+            
         }
     }
 }

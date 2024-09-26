@@ -13,31 +13,31 @@ import BaseAxios from '../../../axioses/BaseAxios';
 import BottomSheet from '../../components/Common/BottomSheet';
 
 const initialUserData = [
-    {
-        id: 1,
-        name: '이예진',
-        major: '글로벌미디어학부',
-        profileImg: '/Icons/Download.svg',
-        point: 1020,
-    }
+  {
+    id: 1,
+    name: "이예진",
+    major: "글로벌미디어학부",
+    profileImg: "/Icons/Download.svg",
+    point: 1020,
+  },
 ];
 
 const PostQuestionPage = () => {
-    const [formValues, setFormValues] = useState({
-        title: '',
-        board: [],
-        content: '',
-        images: [],
-        point: '',
-        limit: false,
-        time: '',
-    });
+  const [formValues, setFormValues] = useState({
+    title: "",
+    board: [],
+    content: "",
+    images: [],
+    point: "",
+    limit: false,
+    time: "",
+  });
 
     const [showValidationMessages, setShowValidationMessages] = useState(false);
     const [isPointInputDisabled, setIsPointInputDisabled] = useState(false);
     const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
-    const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState([]);
 
     useEffect(() => {
         // Local storage operations for user data
@@ -57,37 +57,42 @@ const PostQuestionPage = () => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        const now = new Date().toISOString();
+  const handleFormSubmit = async(e) => {
+    e.preventDefault();
+    const now = new Date().toISOString();
 
-        const user = userData[0] || {};
-        const updatedFormValues = { 
-            ...formValues, 
-            name: user.name, 
-            major: user.major, 
-            profileImg: user.profileImg, 
-            time: now 
-        };
-
-        const { title, board, content, point } = formValues;
-        const isFormValid = title.trim() !== '' && board.length > 0 && content.trim() !== '' && point.trim() !== '';
-
-        if (isFormValid) {
-            // Add your API call here to send updatedFormValues to the backend.
-            console.log(updatedFormValues);
-        } else {
-            setShowValidationMessages(true);
-        }
+    const user = userData[0] || {};
+    const updatedFormValues = {
+      ...formValues,
+      name: user.name,
+      major: user.major,
+      profileImg: user.profileImg,
+      time: now,
     };
 
-    const handleCheckerChange = (isChecked) => {
-        handleInputChange('limit', isChecked);
-        setIsPointInputDisabled(isChecked);
-    };
+    const { title, board, content, point } = formValues;
+    const isFormValid =
+      title.trim() !== "" &&
+      board.length > 0 &&
+      content.trim() !== "" &&
+      point.trim() !== "";
 
-    const renderValidationMessages = () => {
-        const { title, board, content, point } = formValues;
+    if (isFormValid) {
+      // Add your API call here to send updatedFormValues to the backend.
+      await BaseAxios.post('/api/qna/create/post', updatedFormValues);
+      console.log(updatedFormValues);
+    } else {
+      setShowValidationMessages(true);
+    }
+  };
+
+  const handleCheckerChange = (isChecked) => {
+    handleInputChange("limit", isChecked);
+    setIsPointInputDisabled(isChecked);
+  };
+
+  const renderValidationMessages = () => {
+    const { title, board, content, point } = formValues;
 
         if (title.trim() === '') {
             return <ValidationMessage maxWidth={windowSize}> 제목을 입력해 주세요.</ValidationMessage>;
@@ -160,7 +165,7 @@ const PostQuestionPage = () => {
         console.log("boardOptions", boardOptions);
     };
 
-    const {width: windowSize} = useWindowSize();
+  const { width: windowSize } = useWindowSize();
 
     return (
         <Wrapper>
@@ -223,31 +228,31 @@ const PostQuestionPage = () => {
 export default PostQuestionPage;
 
 const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
-    margin-bottom: 100px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px;
 `;
 
 const Condition = styled.div`
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
 `;
 
 const ValidationMessage = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
-    color: #D00303;
-    font-size: 12px;
-    margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+  color: #d00303;
+  font-size: 12px;
+  margin-top: 5px;
 `;

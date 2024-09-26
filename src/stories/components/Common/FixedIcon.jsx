@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useWindowSize from './WindowSize';
 
-const FixedIcon = ({src, url}) => {
+const FixedIcon = ({src = '/Icons/Question.svg', url}) => {
     const navigate = useNavigate();
 
     const handleClick = () => {

@@ -55,7 +55,7 @@ const BottomSheet = ({options, onChange}) => {
   console.log("newOptions: ", newOptions);
 
   const [height, setHeight] = useState(400);
-  const [startY, setStartY] = useState(null);
+  const [startY, setStartY] = useState(null); // Starting Y position on drag
   const [isDragging, setIsDragging] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const minHeight = 100;

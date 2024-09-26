@@ -1,38 +1,46 @@
-import React from "react";
+import React, { Suspense, lazy, useMemo } from "react";
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
-import NavBar from '../../components/NavBar';
-import FixedBottomContainer from '../../components/FixedBottomContainer';
 import Logo from "../OnBoarding/Logo";
 import useWindowSize from "../../components/Common/WindowSize";
 
+// Dynamic imports for code splitting
+const NavBar = lazy(() => import('../../components/NavBar'));
+const FixedBottomContainer = lazy(() => import('../../components/FixedBottomContainer'));
+
 const HomePage = () => {
     const navigate = useNavigate();
+    const { width: windowSize } = useWindowSize();
 
-    const {width: windowSize} = useWindowSize();
+    // Memoizing maxWidth to prevent unnecessary recalculations
+    const maxWidth = useMemo(() => (windowSize > 430 ? '400px' : windowSize), [windowSize]);
 
     return (
         <Wrapper>
-            <Header maxWidth={windowSize}>
-                <div style={{marginBottom: '10px', width: '100%'}}>
-                <Logo theme="darkgray" /> </div>
+            <Header maxWidth={maxWidth}>
+                <div style={{ marginBottom: '10px', width: '100%' }}>
+                    <Logo theme="darkgray" /> 
+                </div>
                 <PointButton onClick={() => navigate('/point')}>내 포인트: 3500P</PointButton>
                 <NotificationButton onClick={() => navigate('/notification')}>
                     <img
                         src="/Icons/Bellnactive.svg"
                         alt="Notification"
+                        loading="lazy"  // Lazy loading for image
                     />
                 </NotificationButton>
             </Header>
-            <Content maxWidth={windowSize}>
-                {/* 여기에 홈 페이지의 메인 콘텐츠를 추가합니다 */}
+            <Content maxWidth={maxWidth}>
+                {/* 메인 콘텐츠 */}
             </Content>
-            <FixedBottomContainer>
-                <NavBar initialState="Home" />
-            </FixedBottomContainer>
+            <Suspense fallback={<div>Loading...</div>}>
+                <FixedBottomContainer>
+                    <NavBar initialState="Home" />
+                </FixedBottomContainer>
+            </Suspense>
         </Wrapper>
     );
-}
+};
 
 export default HomePage;
 
@@ -53,7 +61,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
     box-sizing: border-box;
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => props.maxWidth};
     height: 88px;
     padding: 10px 20px;
     display: flex;
@@ -71,20 +79,15 @@ const PointButton = styled.button`
     width: 110px;
     height: 40px;
     white-space: nowrap;
-    flex-direction: column;
     justify-content: center;
-    text-align: center;
-    flex-shrink: 0;
+    align-items: center;
     border: none;
     border-radius: 11px;
     color: #434B60;
-    text-align: center;
     font-family: Inter;
     font-size: 12px;
-    font-style: normal;
     font-weight: 700;
-    line-height: normal;
-    text-decoration-line: underline;
+    text-decoration: underline;
     cursor: pointer;
     transition: all 0.3s ease;
 
@@ -101,18 +104,25 @@ const NotificationButton = styled.button`
     height: 40px;
     border-radius: 12px;
     transition: all 0.3s ease;
+    cursor: pointer;
+
+    img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        loading: lazy;  // Lazy loading for notification icon
+    }
 
     &:active {
         transform: scale(0.95);
         background: rgba(0, 0, 0, 0.1);
     }
-    cursor: pointer;
 `;
 
 const Content = styled.div`
     box-sizing: border-box;
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => props.maxWidth};
     padding: 20px;
     text-align: center;
 `;

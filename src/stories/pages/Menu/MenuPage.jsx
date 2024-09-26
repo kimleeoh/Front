@@ -41,15 +41,16 @@ const MenuPage = () => {
             </Link>
 
             <Section maxWidth={windowSize}>
-                <MenuList to="/grades"> 내 성적 </MenuList>
-                <MenuList to="/points"> 내 포인트 </MenuList>
+                <MenuList to="/grades" src={'/icons/A+.svg'}> 내 성적 </MenuList>
+                <MenuList to="/points" src={'/icons/point.svg'}> 내 포인트 </MenuList>
                 <Title> 게시물 </Title>
-                <MenuList to="/myboard"> 내가 쓴 글 </MenuList>
-                <MenuList to="/bookmarks"> 북마크 </MenuList>
-                <MenuList to="/history"> 최근 본 글 </MenuList>
+                <MenuList to="/myboard" src={'/icons/pencil.svg'}> 내가 쓴 글 </MenuList>
+                <MenuList to="/bookmarks" src={'/icons/scrap.svg'}> 북마크한 글 </MenuList>
+                <MenuList to="/comments" src={'/icons/thumb.svg'}> 좋아요한 글 </MenuList>
+                <MenuList to="/history" src={'/icons/recent.svg'}> 최근 본 글 </MenuList>
                 <Title> 도움말 </Title>
-                <MenuList to="/notices"> 공지사항 </MenuList>
-                <MenuList to="/contact"> 문의하기 </MenuList>
+                <MenuList to="/notices" src={'/icons/notice.svg'}> 공지사항 </MenuList>
+                <MenuList to="/contact" src={'/icons/speak.svg'}> 문의하기 </MenuList>
                 <Title> 기타 </Title>
                 <MenuList to="/terms"> 이용약관 </MenuList>
                 <MenuList to="/privacy"> 개인정보 처리방침 </MenuList>
