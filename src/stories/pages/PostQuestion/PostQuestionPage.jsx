@@ -123,7 +123,7 @@ const PostQuestionPage = () => {
     }
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async(e) => {
     e.preventDefault();
     const now = new Date().toISOString();
 
@@ -145,6 +145,7 @@ const PostQuestionPage = () => {
 
     if (isFormValid) {
       // Add your API call here to send updatedFormValues to the backend.
+      await BaseAxios.post('/api/qna/create/post', updatedFormValues);
       console.log(updatedFormValues);
     } else {
       setShowValidationMessages(true);
