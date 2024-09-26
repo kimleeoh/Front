@@ -68,7 +68,8 @@
     "eslint-plugin-storybook": "^0.8.0",
     "prop-types": "^15.8.1",
     "webpack": "^5.92.1",
-    "webpack-bundle-analyzer": "^4.10.2"
+    "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-dev-server": "^5.1.0"
   },
-   "build": "cross-env ANALYZE=true NODE_ENV=production next build&&source-map-explorer .next/static/**/*.js"
+  "build": "cross-env ANALYZE=true NODE_ENV=production next build&&source-map-explorer .next/static/**/*.js"
 }
