@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import PropTypes from "prop-types";
 import useWindowSize from "./WindowSize";
 
+//드롭다운애니메이션 설정
 const dropdownAnimation = keyframes`
     0% {
         opacity: 0;
@@ -14,97 +15,105 @@ const dropdownAnimation = keyframes`
     }
 `;
 
+//selectboard 컴포넌트
+// options: 게시판 목록
 const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
-    const {width: windowSize} = useWindowSize();
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedOptions, setSelectedOptions] = useState([]);
-    const [currentOptions, setCurrentOptions] = useState([]);
-    const dropdownRef = useRef(null);
+  const { width: windowSize } = useWindowSize();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [currentOptions, setCurrentOptions] = useState([]);
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
-    
-    useEffect(() => {
-        if (Array.isArray(options) && options.length > 0 && options[0].subcategories) {
-            setCurrentOptions(options[0].subcategories);
-        } else {
-            setCurrentOptions([]);
-        }
 
-        if (Array.isArray(options) && options.length > 0 && options[0].type >= 2){
-            console.log("false");
-            setIsOpen(false);
-        }
+  useEffect(() => {
+    if (
+      Array.isArray(options) &&
+      options.length > 0 &&
+      options[0].subcategories
+    ) {
+      setCurrentOptions(options[0].subcategories);
+    } else {
+      setCurrentOptions([]);
+    }
 
-        if (options[1] && options[1].label){
-            const newSelectedOptions = [...selectedOptions, {label: options[1].label}];
-            setSelectedOptions(newSelectedOptions);
-            console.log("selectedOptions: ", selectedOptions);
-        }
-    }, [options]);
+    if (Array.isArray(options) && options.length > 0 && options[0].type >= 2) {
+      console.log("false");
+      setIsOpen(false);
+    }
 
-    const handleOptionClick =  (option) => {
-        const newSelectedOptions = [...selectedOptions, option];
-        setSelectedOptions(newSelectedOptions);
+    if (options[1] && options[1].label) {
+      const newSelectedOptions = [
+        ...selectedOptions,
+        { label: options[1].label },
+      ];
+      setSelectedOptions(newSelectedOptions);
+      console.log("selectedOptions: ", selectedOptions);
+    }
+  }, [options, selectedOptions]);
 
-        if (!option.id){
-            setCurrentOptions(option.subcategories);
-        }
-        else {
-            onFetchCategories(option.id);
-        }
-        
-        // if (option.subcategories){
-        //     setCurrentOptions(option.subcategories);
-        // }
-        // else if (option.id){
-        //     onFetchCategories(option.id);
-        // }
-        // else {
-        //     setIsOpen(false);
-        //     onChange(newSelectedOptions);
-        // }
+  const handleOptionClick = (option) => {
+    const newSelectedOptions = [...selectedOptions, option];
+    setSelectedOptions(newSelectedOptions);
+
+    if (!option.id) {
+      setCurrentOptions(option.subcategories);
+    } else {
+      onFetchCategories(option.id);
+    }
+
+    // if (option.subcategories){
+    //     setCurrentOptions(option.subcategories);
+    // }
+    // else if (option.id){
+    //     onFetchCategories(option.id);
+    // }
+    // else {
+    //     setIsOpen(false);
+    //     onChange(newSelectedOptions);
+    // }
+  };
+
+  const handleBackClick = async () => {
+    const newSelectedOptions = selectedOptions.slice(0, -1);
+    setSelectedOptions(newSelectedOptions);
+
+    if (newSelectedOptions.length > 0) {
+      const lastOption = newSelectedOptions[newSelectedOptions.length - 1];
+      if (lastOption.id) {
+        const newOptions = await onFetchCategories(lastOption.id);
+        setCurrentOptions(Array.isArray(newOptions) ? newOptions : []);
+      } else if (Array.isArray(lastOption.subcategories)) {
+        setCurrentOptions(lastOption.subcategories);
+      }
+    } else {
+      const initialOptions = await onFetchCategories("");
+      setCurrentOptions(Array.isArray(initialOptions) ? initialOptions : []);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+      if (onChange) {
+        onChange(selectedOptions); // Trigger the onChange with the current selection
+      }
     };
-
-    const handleBackClick = async () => {
-        const newSelectedOptions = selectedOptions.slice(0, -1);
-        setSelectedOptions(newSelectedOptions);
-        
-        if (newSelectedOptions.length > 0) {
-            const lastOption = newSelectedOptions[newSelectedOptions.length - 1];
-            if (lastOption.id) {
-                const newOptions = await onFetchCategories(lastOption.id);
-                setCurrentOptions(Array.isArray(newOptions) ? newOptions : []);
-            } else if (Array.isArray(lastOption.subcategories)) {
-                setCurrentOptions(lastOption.subcategories);
-            }
-        } else {
-            const initialOptions = await onFetchCategories('');
-            setCurrentOptions(Array.isArray(initialOptions) ? initialOptions : []);
-        }
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsOpen(false);
-            }
-            if (onChange) {
-                onChange(selectedOptions); // Trigger the onChange with the current selection
-            }
-        };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [onChange, selectedOptions]);
 
-    const handleSaveClick = () => {
-        setIsOpen(false);
-        if (onChange) {
-            onChange(selectedOptions); // Trigger the onChange with the current selection
-        }
-    };
+  const handleSaveClick = () => {
+    setIsOpen(false);
+    if (onChange) {
+      onChange(selectedOptions); // Trigger the onChange with the current selection
+    }
+  };
 
   return (
     <DropdownContainer ref={dropdownRef} maxWidth={windowSize}>
