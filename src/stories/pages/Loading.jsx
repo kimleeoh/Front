@@ -4,8 +4,15 @@ import { Spinner } from "../components/Common/Spinner";
 
 export default () => {
     return (
-        <div>
+        <Wrapper>
             <Spinner />
-        </div>
+        </Wrapper>
     );
 };
+
+const Wrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+`;

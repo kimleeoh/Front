@@ -12,6 +12,7 @@ const TipsPage = lazy(() => import("./stories/pages/Tips/TipsPage"));
 const Searching = lazy(() => import("./stories/pages/Searching"));
 const QnADetailPage = lazy(() => import("./stories/pages/QnADetail/QnADetailPage"));
 const TipsDetailPage = lazy(() => import("./stories/pages/TipsDetail/TipsDetailPage"));
+const PostsDetail = lazy(() => import("./stories/pages/Posts/PostsDetail"));
 const PostTipPage = lazy(() => import("./stories/pages/PostTip/PostTipPage"));
 const PostQuestionPage = lazy(() => import("./stories/pages/PostQuestion/PostQuestionPage"));
 const BoardHome = lazy(() => import("./stories/pages/Board/BoardHome"));
@@ -25,8 +26,14 @@ const Grades = lazy(() => import("./stories/pages/Menu/Grades"));
 const GradesRegister = lazy(() => import("./stories/pages/Menu/GradeRegister"));
 const MyBoard = lazy(() => import("./stories/pages/Menu/MyBoard"));
 const Bookmarks = lazy(() => import("./stories/pages/Menu/Bookmarks"));
+const Likes = lazy(() => import("./stories/pages/Menu/Likes"));
 const History = lazy(() => import("./stories/pages/Menu/History"));
 const TermsOfServicePage = lazy(() => import("./stories/pages/Menu/TermsOfServicePage"));
+const TermsOfPrivatePage = lazy(() => import("./stories/pages/Menu/TermsOfPrivatePage"));
+const PolicyPage = lazy(() => import("./stories/pages/Menu/PolicyPage"));
+const Notices = lazy(() => import("./stories/pages/Menu/Notices"));
+const MyContact = lazy(() => import("./stories/pages/Menu/MyContact"));
+const Contact = lazy(() => import("./stories/pages/Menu/Contact"));
 
 const ConfirmationPage = lazy(() => import("./stories/pages/Confirmation/ConfirmationPage"));
 const Submit = lazy(() => import("./stories/pages/Confirmation/Submit"));
@@ -70,6 +77,7 @@ const App = () => {
           <Route path="/tips" element={<TipsPage />} />
           <Route path="/tips/:_id" element={<TipsDetailPage />} />
           <Route path="/tips/post" element={<PostTipPage />} />
+          <Route path="/:category/:_id" element={<PostsDetail />} />
           <Route path="/board" element={<BoardHome />} />
           <Route path="/edit-board" element={<EditBoardPage />} />
           <Route path="/board/:subject" element={<UnifiedBoard />} />
@@ -82,8 +90,14 @@ const App = () => {
           <Route path="/grades/register" element={<GradesRegister />} />
           <Route path="/myboard" element={<MyBoard />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
+          <Route path="/likes" element={<Likes />} />
           <Route path="/history" element={<History />} />
           <Route path="/terms" element={<TermsOfServicePage />} />
+          <Route path="/privacy" element={<TermsOfPrivatePage />} />
+          <Route path="/policies" element={<PolicyPage />} />
+          <Route path="/notices" element={<Notices />} />
+          <Route path="/mycontact" element={<MyContact />} />
+          <Route path="/contact" element={<Contact />} />
 
           <Route path="/confirm" element={<ConfirmationPage />} />
           <Route path="/confirm/newComer" element={<Submit />} />

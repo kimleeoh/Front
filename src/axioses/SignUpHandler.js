@@ -51,7 +51,7 @@ const sensitiveInfo = (() => {
   let cipher = null;
   let decipher = null;
   return {
-    isNotFilled: () => twoKey == "",
+    isNotFilled: () => (twoKey = ""),
     setLoginKey: (iv, key) => {
       twoKey = key;
       cipher = (text) => encryptAES(text, key, iv);

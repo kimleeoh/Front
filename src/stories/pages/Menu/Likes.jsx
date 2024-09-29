@@ -14,7 +14,7 @@ const initialQuestionData = [
 const initialTipsData = [
 ];
 
-const MyBoard = () => {
+const Likes = () => {
     const { subject } = useParams();
     const [questionData, setQuestionData] = useState([]);
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
@@ -60,8 +60,8 @@ const MyBoard = () => {
 
     return (
         <Wrapper>
-            <Header showIcon={false} text='내가 쓴 글' backButton={true} searchButton={true}/>
-            <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
+            <Header showIcon={false} text='좋아요한 글' backButton={true} searchButton={true}/>
+            <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange}/>
             {activeTab === '전체' && (
                 <>
                     {filteredQuestions
@@ -132,14 +132,14 @@ const MyBoard = () => {
     );
 };
 
-export default MyBoard;
+export default Likes;
 
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 120px;
+    margin-top: 100px;
     margin-bottom: 100px;
     width: 100%;
 `;

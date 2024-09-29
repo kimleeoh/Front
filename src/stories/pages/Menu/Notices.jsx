@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import BaseAxios from '../../../axioses/BaseAxios';
 import styled from 'styled-components';
 import Header from '../../components/Header';
-import NavBar from '../../components/NavBar';
-import FixedBottomContainer from '../../components/FixedBottomContainer';
 import Questions from '../../components/Common/Questions';
-import Checker from '../../components/Common/Checker';
-import FixedIcon from '../../components/Common/FixedIcon';
+import Posts from '../../components/Common/Posts';
 
 const initialQuestionData = [
     {
@@ -139,7 +136,7 @@ const initialQuestionData = [
     }
 ];
 
-const QnAPage = () => {
+const Notices = () => {
     const [questionData, setQuestionData] = useState([]);
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
 
@@ -169,25 +166,20 @@ const QnAPage = () => {
     //     fetchData()
     // }, []);
 
-    const handleCheckerChange = (isChecked) => {
-        setIsAGradeOnly(isChecked);
-    };
-
     const filteredQuestions = isAGradeOnly
         ? questionData.filter(question => question.restricted_type > 0)
         : questionData;
 
     return (
         <Wrapper>
-            <Header showIcon={false} text="Q&A" backButton={false} searchButton={true}/>
+            <Header showIcon={false} text="공지사항" backButton={true} searchButton={false}/>
             <Head>
-            <Checker text={'A등급 제한'} onChange={handleCheckerChange}/>
             </Head>
             {filteredQuestions.map((question) => {
                 const img = Array.isArray(question.img) ? question.img[0] : question.img;
 
                 return (
-                    <Questions
+                    <Posts
                         key={question._id}
                         _id={question._id}
                         title={question.title}
@@ -198,19 +190,16 @@ const QnAPage = () => {
                         like={question.like}
                         img={img}
                         limit={question.restricted_type}
+                        user_main={question.user_main}
                     />
                 )
             })}
 
-            <FixedIcon src="/Icons/Question.svg" url={"/qna/post"}/>
-            <FixedBottomContainer>
-                <NavBar state='QnA' />
-            </FixedBottomContainer>
         </Wrapper>
     );
 };
 
-export default QnAPage;
+export default Notices;
 
 const Wrapper = styled.div`
     display: flex;

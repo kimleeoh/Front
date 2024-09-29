@@ -35,12 +35,15 @@ const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
             setIsOpen(false);
         }
 
-        if (options[1] && options[1].label){
-            const newSelectedOptions = [...selectedOptions, {label: options[1].label}];
-            setSelectedOptions(newSelectedOptions);
-            console.log("selectedOptions: ", selectedOptions);
-        }
-    }, [options]);
+    if (options[1] && options[1].label) {
+      const newSelectedOptions = [
+        ...selectedOptions,
+        { label: options[1].label },
+      ];
+      setSelectedOptions(newSelectedOptions);
+      console.log("selectedOptions: ", selectedOptions);
+    }
+  }, [options, selectedOptions]);
 
     const handleOptionClick =  (option) => {
         const newSelectedOptions = [...selectedOptions, option];
