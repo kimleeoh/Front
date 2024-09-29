@@ -50,7 +50,7 @@ const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
       setSelectedOptions(newSelectedOptions);
       console.log("selectedOptions: ", selectedOptions);
     }
-  }, [options, selectedOptions]);
+  }, []);
 
   const handleOptionClick = (option) => {
     const newSelectedOptions = [...selectedOptions, option];
@@ -106,7 +106,7 @@ const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [onChange, selectedOptions]);
+  }, []);
 
   const handleSaveClick = () => {
     setIsOpen(false);
