@@ -86,6 +86,8 @@ const PostQuestionPage = () => {
     }
   };
 
+  console.log(formValues);
+
   const handleCheckerChange = (isChecked) => {
     handleInputChange("limit", isChecked);
     setIsPointInputDisabled(isChecked);

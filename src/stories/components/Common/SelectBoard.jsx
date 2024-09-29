@@ -22,7 +22,7 @@ const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
     const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
-    
+
     useEffect(() => {
         if (Array.isArray(options) && options.length > 0 && options[0].subcategories) {
             setCurrentOptions(options[0].subcategories);
@@ -35,15 +35,12 @@ const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
             setIsOpen(false);
         }
 
-    if (options[1] && options[1].label) {
-      const newSelectedOptions = [
-        ...selectedOptions,
-        { label: options[1].label },
-      ];
-      setSelectedOptions(newSelectedOptions);
-      console.log("selectedOptions: ", selectedOptions);
-    }
-  }, [options, selectedOptions]);
+        if (options[1] && options[1].label){
+            const newSelectedOptions = [...selectedOptions, {label: options[1].label}];
+            setSelectedOptions(newSelectedOptions);
+            console.log("selectedOptions: ", selectedOptions);
+        }
+    }, [options]);
 
     const handleOptionClick =  (option) => {
         const newSelectedOptions = [...selectedOptions, option];
@@ -91,9 +88,9 @@ const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setIsOpen(false);
             }
-            if (onChange) {
-                onChange(selectedOptions); // Trigger the onChange with the current selection
-            }
+            // if (onChange) {
+            //     onChange(selectedOptions); // Trigger the onChange with the current selection
+            // }
         };
 
     document.addEventListener("mousedown", handleClickOutside);

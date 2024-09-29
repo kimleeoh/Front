@@ -7,6 +7,7 @@ import FixedBottomContainer from '../../components/FixedBottomContainer';
 import Questions from '../../components/Common/Questions';
 import Checker from '../../components/Common/Checker';
 import FixedIcon from '../../components/Common/FixedIcon';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const initialQuestionData = [
     {
@@ -177,10 +178,12 @@ const QnAPage = () => {
         ? questionData.filter(question => question.restricted_type > 0)
         : questionData;
 
+    const {width: windowSize} = useWindowSize();
+
     return (
         <Wrapper>
             <Header showIcon={false} text="Q&A" backButton={false} searchButton={true}/>
-            <Head>
+            <Head  maxWidth={windowSize}>
             <Checker text={'A등급 제한'} onChange={handleCheckerChange}/>
             </Head>
             {filteredQuestions.map((question) => {
@@ -224,7 +227,8 @@ const Wrapper = styled.div`
 
 const Head = styled.div`
     display: flex;
-    width: 400px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     align-items: flex-start;
     justify-content: ;
     gap: 10px;
