@@ -52,17 +52,6 @@ const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
         else {
             onFetchCategories(option.id);
         }
-        
-        // if (option.subcategories){
-        //     setCurrentOptions(option.subcategories);
-        // }
-        // else if (option.id){
-        //     onFetchCategories(option.id);
-        // }
-        // else {
-        //     setIsOpen(false);
-        //     onChange(newSelectedOptions);
-        // }
     };
 
     const handleBackClick = async () => {

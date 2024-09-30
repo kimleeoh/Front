@@ -83,23 +83,34 @@ const TipsPage = () => {
   const [TipsData, setTipsData] = useState([]);
   const [filteredTips, setFilteredTips] = useState([]);
 
-  BaseAxios.get("/api/bulletin/test").then((result) => {
-    console.log(result.data);
-  });
-
   useEffect(() => {
-    // Load TipsData from localStorage or initialize it
-    localStorage.removeItem("TipsData");
-    const TipsData = localStorage.getItem("TipsData");
-    if (TipsData) {
-      setTipsData(JSON.parse(TipsData));
-      setFilteredTips(JSON.parse(TipsData)); // Initialize filteredTips with all tips
-    } else {
-      localStorage.setItem("TipsData", JSON.stringify(initialTipsData));
-      setTipsData(initialTipsData);
-      setFilteredTips(initialTipsData); // Initialize filteredTips with all tips
-    }
+    // // Load TipsData from localStorage or initialize it
+    // localStorage.removeItem("TipsData");
+    // const TipsData = localStorage.getItem("TipsData");
+    // if (TipsData) {
+    //   setTipsData(JSON.parse(TipsData));
+    //   setFilteredTips(JSON.parse(TipsData)); // Initialize filteredTips with all tips
+    // } else {
+    //   localStorage.setItem("TipsData", JSON.stringify(initialTipsData));
+    //   setTipsData(initialTipsData);
+    //   setFilteredTips(initialTipsData); // Initialize filteredTips with all tips
+    // }
+
+    fetchChips(['pilgy']);
   }, []);
+
+  const fetchChips = async (filters) => {
+    try{
+      const filtersArray = Array.isArray(filters) ? filters : [filters];
+
+      console.log('Sending request with data:', { filters: filtersArray });
+
+      const response = await BaseAxios.post('/api/bulletin/tips', { filters:  filtersArray});
+      console.log(response);
+    } catch (error){
+      console.error('Error fetching question data:', error);
+    }
+  }
 
   const handleFilterChange = (activeChips) => {
     if (activeChips.length === 0) {
@@ -121,7 +132,7 @@ const TipsPage = () => {
         searchButton={true}
       />
       <ChipFilter onFilterChange={handleFilterChange} marginTop={"10px"} />
-      {filteredTips.map((tip) => (
+      {/* {filteredTips.map((tip) => (
         <Tips
           key={tip._id}
           _id={tip._id}
@@ -136,7 +147,7 @@ const TipsPage = () => {
           like={tip.like}
           // point={tip.point}
         />
-      ))}
+      ))} */}
       <FixedIcon src="/Icons/Pen.svg" url={"/tips/post"} />
       <FixedBottomContainer>
         <NavBar state="Tips" />
