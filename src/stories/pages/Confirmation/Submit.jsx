@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Header from "../../components/Header";
 import ImageUploadButton from "./ImageUploadButton";
 import useWindowSize from "../../components/Common/WindowSize";
+import {SignUpHandler} from "../../../axioses/SignUpHandler";
 
 const Submit = () => {
     const navigate = useNavigate();
@@ -25,17 +26,20 @@ const Submit = () => {
 
         // Create a new FormData object
         const formData = new FormData();
-        formData.append('img', selectedFile);
-
         try {
             // Send the POST request with the FormData
-            // await BaseAxios.post('/api/register/imgUpload', formData, {
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data',
-            //     },
-            // });
+            const r = await BaseAxios.post('/api/register/imgUpload', {img:selectedFile}, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log(r.data.link);
+            if(r.status==200){
+                formData.append('img', r.data.link);
+            }
             
             console.log("File submitted:", selectedFile);
+            SignUpHandler(6, formData);
             navigate('/verify');
         } catch (error) {
             console.error("File upload failed:", error);

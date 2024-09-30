@@ -175,6 +175,15 @@ const SignUpHandler = async (step, formData) => {
             break;
             
         }
+        case 6:{
+            const passData = {
+                id : sensitiveInfo.getEncryptSessionID(), 
+                imgLink : sensitiveInfo.encrypt(formData.img),
+            };
+            const response = await BaseAxios.post('/api/register/page/6', passData);
+            //response 검사해서 오류 코드 뜨면 navigate하는 함수
+            //if(response.status !== 200){}
+        }
     }
 }
 
