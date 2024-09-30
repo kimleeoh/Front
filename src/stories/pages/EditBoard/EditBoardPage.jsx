@@ -9,6 +9,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import Modal from '../../components/Common/Modal';
 import { useNavigate } from 'react-router-dom';
 import useWindowSize from '../../components/Common/WindowSize';
+import BottomSheet from '../../components/Common/BottomSheet';
 
 
 const EditBoardPage = () => {
@@ -68,6 +69,8 @@ const EditBoardPage = () => {
 
     const {width: windowSize} = useWindowSize();
 
+    const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+
     return (
         <Wrapper>
             <Header showIcon={false} text="게시판 편집" backButton={true} searchButton={false} onClick={handleBackClick}>
@@ -122,6 +125,7 @@ const EditBoardPage = () => {
                 hoverColor={'#ACB2BB'}
                 hoverBackgroundColor={'#E5E9F2'}
                 style={{ marginTop: '20px' }}
+                onClick={() => setIsBottomSheetVisible(true)}
             />
 
 
@@ -132,6 +136,9 @@ const EditBoardPage = () => {
                     <Button onClick={() => modalRef.current.close()} label={'아니요'} backgroundColor={'#434B60'} hoverBackgroundColor={'#ACB2BB'} width={'130px'}/>
                 </ButtonWrapper>
             </Modal>
+
+            {isBottomSheetVisible && <BottomSheet 
+            />}
         </Wrapper>
     );
 };

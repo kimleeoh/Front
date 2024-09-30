@@ -3,10 +3,7 @@ import styled from 'styled-components';
 import Header from '../../components/Header';
 import TextInput from '../../components/Common/TextInput';
 import TextArea from '../../components/Common/TextArea';
-import SelectBoard from '../../components/Common/SelectBoard';
 import ImageUploader from '../../components/Common/ImageUploader2';
-import PointInput from './PointInput';
-import Checker from '../../components/Common/Checker';
 import Button from '../../components/Button';
 import useWindowSize from '../../components/Common/WindowSize';
 import BaseAxios from '../../../axioses/BaseAxios';
@@ -22,7 +19,7 @@ const initialUserData = [
   },
 ];
 
-const PostQuestionPage = () => {
+const Contact = () => {
   const [formValues, setFormValues] = useState({
     title: "",
     board: [],
@@ -85,8 +82,6 @@ const PostQuestionPage = () => {
       setShowValidationMessages(true);
     }
   };
-
-  console.log(formValues);
 
   const handleCheckerChange = (isChecked) => {
     handleInputChange("limit", isChecked);
@@ -171,7 +166,7 @@ const PostQuestionPage = () => {
 
     return (
         <Wrapper>
-            <Header showIcon={false} text="질문 작성하기" backButton={true} searchButton={false} />
+            <Header showIcon={false} text="문의하기" backButton={true} searchButton={false} />
             <TextInput  
                 height={'30px'} 
                 fontSize={'15px'} 
@@ -179,41 +174,13 @@ const PostQuestionPage = () => {
                 marginTop={'20px'}
                 onChange={(value) => handleInputChange('title', value)}
             />
-            <SelectBoard 
-                options={boardOptions} 
-                placeholder={'게시판 선택'}
-                onChange={handleBoardChange}
-                onFetchCategories={fetchCategories}
-            />
             <TextArea 
                 height={'300px'} 
                 fontSize={'15px'}
-                placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요.*"} 
+                placeholder={"고객센터를 통해 궁금증을 해결하세요."} 
                 onChange={(value) => handleInputChange('content', value)}
             />
             <ImageUploader onChange={(value) => handleInputChange('images', value)}/>
-            {initialUserData.map((user) => (
-                <PointInput
-                    key={user.id}
-                    name={user.name}
-                    point={user.point}
-                    onChange={(value) => handleInputChange('point', value)}
-                    disabled={isPointInputDisabled}
-                    placeholder={'포인트를 입력해 주세요'}
-                />
-            ))}
-            <Checker 
-                text={'A 이상의 답변만 받고 싶어요.'} 
-                onChange={handleCheckerChange}
-                disabled={formValues.point < 100} 
-            />
-            {formValues.point < 100 && (
-                <Condition maxWidth={windowSize}>
-                    <span style={{ fontSize: '10px', color: '#D00303', marginLeft: '20px', marginTop: '10px' }}>
-                        100p 이상 입력해야 조건을 제시할 수 있습니다.
-                    </span>
-                </Condition>
-            )}
             <Button 
                 label={'등록하기'} 
                 style={{ marginTop: '15px' }} 
@@ -227,7 +194,7 @@ const PostQuestionPage = () => {
         </Wrapper>
     );
 }
-export default PostQuestionPage;
+export default Contact;
 
 const Wrapper = styled.div`
   display: flex;

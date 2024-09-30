@@ -86,6 +86,7 @@ const PostQuestionPage = () => {
                         tags.length > 0 &&
                         content.trim() !== '';
         setIsFormValid(isValid);
+        console.log(boardOptions);
     }, [formValues]);
 
     const handleInputChange = (name, value) => {

@@ -42,6 +42,9 @@ const MenuPage = () => {
                     </Profile>
                     <MyPageArrow>
                         마이페이지
+                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="15" viewBox="0 0 9 15" fill="none">
+                <path d="M1.75 1.25L8 7.5L1.75 13.75" stroke="#ACB2BB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
                     </MyPageArrow>
                 </MyPage>
             </Link>
@@ -52,11 +55,11 @@ const MenuPage = () => {
                 <Title> 게시물 </Title>
                 <MenuList to="/myboard" src={'/icons/pencil.svg'}> 내가 쓴 글 </MenuList>
                 <MenuList to="/bookmarks" src={'/icons/scrap.svg'}> 북마크한 글 </MenuList>
-                <MenuList to="/comments" src={'/icons/thumb.svg'}> 좋아요한 글 </MenuList>
+                <MenuList to="/likes" src={'/icons/thumb.svg'}> 좋아요한 글 </MenuList>
                 <MenuList to="/history" src={'/icons/recent.svg'}> 최근 본 글 </MenuList>
                 <Title> 도움말 </Title>
                 <MenuList to="/notices" src={'/icons/notice.svg'}> 공지사항 </MenuList>
-                <MenuList to="/contact" src={'/icons/speak.svg'}> 문의하기 </MenuList>
+                <MenuList to="/mycontact" src={'/icons/speak.svg'}> 문의하기 </MenuList>
                 <Title> 기타 </Title>
                 <MenuList to="/terms"> 이용약관 </MenuList>
                 <MenuList to="/privacy"> 개인정보 처리방침 </MenuList>
@@ -152,7 +155,7 @@ const Profile = styled.div`
 const MyPageArrow = styled.div`
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     color: #ACB2BB;
     font-family: Inter;
     font-size: 12px;

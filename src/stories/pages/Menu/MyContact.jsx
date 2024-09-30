@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react';
 import BaseAxios from '../../../axioses/BaseAxios';
 import styled from 'styled-components';
 import Header from '../../components/Header';
-import NavBar from '../../components/NavBar';
-import FixedBottomContainer from '../../components/FixedBottomContainer';
 import Questions from '../../components/Common/Questions';
-import Checker from '../../components/Common/Checker';
+import Posts from '../../components/Common/Posts';
 import FixedIcon from '../../components/Common/FixedIcon';
-import useWindowSize from '../../components/Common/WindowSize';
 
 const initialQuestionData = [
     {
@@ -140,7 +137,7 @@ const initialQuestionData = [
     }
 ];
 
-const QnAPage = () => {
+const MyContact = () => {
     const [questionData, setQuestionData] = useState([]);
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
 
@@ -170,27 +167,20 @@ const QnAPage = () => {
     //     fetchData()
     // }, []);
 
-    const handleCheckerChange = (isChecked) => {
-        setIsAGradeOnly(isChecked);
-    };
-
     const filteredQuestions = isAGradeOnly
         ? questionData.filter(question => question.restricted_type > 0)
         : questionData;
 
-    const {width: windowSize} = useWindowSize();
-
     return (
         <Wrapper>
-            <Header showIcon={false} text="Q&A" backButton={false} searchButton={true}/>
-            <Head  maxWidth={windowSize}>
-            <Checker text={'A등급 제한'} onChange={handleCheckerChange}/>
+            <Header showIcon={false} text="내 문의" backButton={true} searchButton={false}/>
+            <Head>
             </Head>
             {filteredQuestions.map((question) => {
                 const img = Array.isArray(question.img) ? question.img[0] : question.img;
 
                 return (
-                    <Questions
+                    <Posts
                         key={question._id}
                         _id={question._id}
                         title={question.title}
@@ -205,15 +195,12 @@ const QnAPage = () => {
                 )
             })}
 
-            <FixedIcon src="/Icons/Question.svg" url={"/qna/post"}/>
-            <FixedBottomContainer>
-                <NavBar state='QnA' />
-            </FixedBottomContainer>
+            <FixedIcon src="/Icons/Question.svg" url={"/contact"}/>
         </Wrapper>
     );
 };
 
-export default QnAPage;
+export default MyContact;
 
 const Wrapper = styled.div`
     display: flex;
@@ -227,8 +214,7 @@ const Wrapper = styled.div`
 
 const Head = styled.div`
     display: flex;
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    width: 400px;
     align-items: flex-start;
     justify-content: ;
     gap: 10px;

@@ -59,13 +59,13 @@ const Button = styled.button`
     }
 
     &:hover {
-    
+        scale: 1.05;
         box-shadow: 2px 4px 10px gray;
         
     }
     &:active {
         transition: all 0.3s ease;
-        scale: 0.9;
+        scale: 0.95;
         box-shadow: 0px 0px 0px gray;
     }
 `

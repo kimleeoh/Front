@@ -39,7 +39,7 @@ const StyledChip = styled.div`
     transition: all 0.3s ease;
 
     &:active {
-        background-color: #434B60;
+        background-color: #3182F7;
         color: white;
     }
 `;

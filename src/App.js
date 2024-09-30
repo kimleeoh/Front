@@ -1,39 +1,45 @@
-import React, { useEffect } from "react";
-import "./index.css";
+import React, { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import StartPage from "./stories/pages/OnBoarding/StartPage";
-import SignUpPage from "./stories/pages/OnBoarding/SignUpPage";
+import Loading from "./stories/pages/Loading"; // 로딩 컴포넌트
 
-import HomePage from "./stories/pages/Home/HomePage";
-import NotificationPage from "./stories/pages/Home/NotificationPage";
-import QnAPage from "./stories/pages/QnA/QnAPage";
-import TipsPage from "./stories/pages/Tips/TipsPage";
-import Searching from "./stories/pages/Searching"
+// React.lazy를 이용한 동적 import
+const StartPage = lazy(() => import("./stories/pages/OnBoarding/StartPage"));
+const SignUpPage = lazy(() => import("./stories/pages/OnBoarding/SignUpPage"));
+const HomePage = lazy(() => import("./stories/pages/Home/HomePage"));
+const NotificationPage = lazy(() => import("./stories/pages/Home/NotificationPage"));
+const QnAPage = lazy(() => import("./stories/pages/QnA/QnAPage"));
+const TipsPage = lazy(() => import("./stories/pages/Tips/TipsPage"));
+const Searching = lazy(() => import("./stories/pages/Searching"));
+const QnADetailPage = lazy(() => import("./stories/pages/QnADetail/QnADetailPage"));
+const TipsDetailPage = lazy(() => import("./stories/pages/TipsDetail/TipsDetailPage"));
+const PostsDetail = lazy(() => import("./stories/pages/Posts/PostsDetail"));
+const PostTipPage = lazy(() => import("./stories/pages/PostTip/PostTipPage"));
+const PostQuestionPage = lazy(() => import("./stories/pages/PostQuestion/PostQuestionPage"));
+const BoardHome = lazy(() => import("./stories/pages/Board/BoardHome"));
+const EditBoardPage = lazy(() => import("./stories/pages/EditBoard/EditBoardPage"));
+const UnifiedBoard = lazy(() => import("./stories/pages/Board/UnifiedBoard"));
 
-import QnADetailPage from "./stories/pages/QnADetail/QnADetailPage";
-import TipsDetailPage from "./stories/pages/TipsDetail/TipsDetailPage";
-import PostTipPage from "./stories/pages/PostTip/PostTipPage";
-import PostQuestionPage from "./stories/pages/PostQuestion/PostQuestionPage";
-import BoardHome from "./stories/pages/Board/BoardHome";
-import EditBoardPage from "./stories/pages/EditBoard/EditBoardPage";
-import UnifiedBoard from "./stories/pages/Board/UnifiedBoard";
+const MenuPage = lazy(() => import("./stories/pages/Menu/MenuPage"));
+const MyPage = lazy(() => import("./stories/pages/Menu/Mypage"));
+const MyPageEdit = lazy(() => import("./stories/pages/Menu/MypageEdit"));
+const Grades = lazy(() => import("./stories/pages/Menu/Grades"));
+const GradesRegister = lazy(() => import("./stories/pages/Menu/GradeRegister"));
+const MyBoard = lazy(() => import("./stories/pages/Menu/MyBoard"));
+const Bookmarks = lazy(() => import("./stories/pages/Menu/Bookmarks"));
+const Likes = lazy(() => import("./stories/pages/Menu/Likes"));
+const History = lazy(() => import("./stories/pages/Menu/History"));
+const TermsOfServicePage = lazy(() => import("./stories/pages/Menu/TermsOfServicePage"));
+const TermsOfPrivatePage = lazy(() => import("./stories/pages/Menu/TermsOfPrivatePage"));
+const PolicyPage = lazy(() => import("./stories/pages/Menu/PolicyPage"));
+const Notices = lazy(() => import("./stories/pages/Menu/Notices"));
+const MyContact = lazy(() => import("./stories/pages/Menu/MyContact"));
+const Contact = lazy(() => import("./stories/pages/Menu/Contact"));
 
-import MenuPage from "./stories/pages/Menu/MenuPage";
-import MyPage from "./stories/pages/Menu/Mypage";
-import MyPageEdit from "./stories/pages/Menu/MypageEdit";
-import Grades from "./stories/pages/Menu/Grades";
-import GradesRegister from "./stories/pages/Menu/GradeRegister"
-import MyBoard from "./stories/pages/Menu/MyBoard";
-import Bookmarks from "./stories/pages/Menu/Bookmarks";
-import History from "./stories/pages/Menu/History";
-import TermsOfServicePage from "./stories/pages/Menu/TermsOfServicePage";
+const ConfirmationPage = lazy(() => import("./stories/pages/Confirmation/ConfirmationPage"));
+const Submit = lazy(() => import("./stories/pages/Confirmation/Submit"));
+const Alert = lazy(() => import("./stories/pages/Confirmation/Alert"));
 
-import Confirmationpage from "./stories/pages/Confirmation/ConfirmationPage";
-import Submit from "./stories/pages/Confirmation/Submit"
-import Alert from "./stories/pages/Confirmation/Alert";
-
-import Error from "./stories/pages/Error";
-import Loading from "./stories/pages/Loading";
+const Error = lazy(() => import("./stories/pages/Error"));
 
 const App = () => {
   const [loading, setLoading] = React.useState(true);
@@ -58,41 +64,50 @@ const App = () => {
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<StartPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+      {/* Suspense로 컴포넌트를 로드할 때 보여줄 fallback UI */}
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/" element={<StartPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/notification" element={<NotificationPage />} />
+          <Route path="/qna" element={<QnAPage />} />
+          <Route path="/qna/:_id" element={<QnADetailPage />} />
+          <Route path="/qna/post" element={<PostQuestionPage />} />
+          <Route path="/tips" element={<TipsPage />} />
+          <Route path="/tips/:_id" element={<TipsDetailPage />} />
+          <Route path="/tips/post" element={<PostTipPage />} />
+          <Route path="/:category/:_id" element={<PostsDetail />} />
+          <Route path="/board" element={<BoardHome />} />
+          <Route path="/edit-board" element={<EditBoardPage />} />
+          <Route path="/board/:subject" element={<UnifiedBoard />} />
+          <Route path="/search" element={<Searching />} />
+          
+          <Route path="/menu" element={<MenuPage />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/edit" element={<MyPageEdit />} />
+          <Route path="/grades" element={<Grades />} />
+          <Route path="/grades/register" element={<GradesRegister />} />
+          <Route path="/myboard" element={<MyBoard />} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
+          <Route path="/likes" element={<Likes />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/terms" element={<TermsOfServicePage />} />
+          <Route path="/privacy" element={<TermsOfPrivatePage />} />
+          <Route path="/policies" element={<PolicyPage />} />
+          <Route path="/notices" element={<Notices />} />
+          <Route path="/mycontact" element={<MyContact />} />
+          <Route path="/contact" element={<Contact />} />
 
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/notification" element={<NotificationPage />} />
-        <Route path="/qna" element={<QnAPage />} />
-        <Route path="/qna/:_id" element={<QnADetailPage />} />
-        <Route path="/qna/post" element={<PostQuestionPage />} />
-        <Route path="/tips" element={<TipsPage />} />
-        <Route path="/tips/:_id" element={<TipsDetailPage />} />
-        <Route path="/tips/post" element={<PostTipPage />} />
-        <Route path="/board" element={<BoardHome />} />
-        <Route path="/edit-board" element={<EditBoardPage />} />
-        <Route path="/board/:subject" element={<UnifiedBoard />} />
-        <Route path="/searching" element={<Searching />} />
+          <Route path="/confirm" element={<ConfirmationPage />} />
+          <Route path="/confirm/newComer" element={<Submit />} />
+          <Route path="/confirm/registeredStudent" element={<Submit />} />
+          <Route path="/confirm/graduate" element={<Submit />} />
+          <Route path="/verify" element={<Alert />} />
 
-        <Route path="/menu" element={<MenuPage />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/mypage/edit" element={<MyPageEdit />} />
-        <Route path="/grades" element={<Grades />} />
-        <Route path="/grades/register" element={<GradesRegister />} />
-        <Route path="/myboard" element={<MyBoard />} />
-        <Route path="/bookmarks" element={<Bookmarks />} />
-        <Route path="/history" element={<History />} />
-        <Route path="/terms" element={<TermsOfServicePage />} />
-
-        <Route path="/confirm" element={<Confirmationpage />} />
-        <Route path="/confirm/newComer" element={<Submit />} />
-        <Route path="/confirm/registeredStudent" element={<Submit />} />
-        <Route path="/confirm/graduate" element={<Submit />} />
-        <Route path="/verify" element={<Alert />} />
-
-        <Route path="/*" element={<Error />} />
-      </Routes>
+          <Route path="/*" element={<Error />} />
+        </Routes>
+      </Suspense>
     </Router>
   );
 };
