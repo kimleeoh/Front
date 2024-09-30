@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
@@ -15,12 +16,14 @@ const MenuPage = () => {
     const handleLogoutClick = () => {
         modalRef.current.open();
     };
-
+    const navigate = useNavigate();
     const confirmLogout = () => {
         // 로그아웃 로직을 여기에 추가합니다.
         try{
         BaseAxios.delete('/api/logout');
-        modalRef.current.close();}
+            modalRef.current.close();
+            navigate('/');
+        }
         catch(e){
             console.log(e);
         }
