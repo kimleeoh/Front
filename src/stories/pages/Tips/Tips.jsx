@@ -5,26 +5,26 @@ import { Link } from 'react-router-dom';
 import getTimeElapsed from '../../components/Common/getTimeElapsed';
 import useWindowSize from '../../components/Common/WindowSize';
 
-const Tips = ({ _id, name, major, title, content, time, views, like, img, point }) => {
+const Tips = ({ _id, Ruser, title, content, preview_img, likes, point, views, time }) => {
     const {width: windowSize} = useWindowSize();
     return (
         <OutWrapper maxWidth={windowSize}>
             <StyledLink to={`/tips/${_id}`}>
                 <Wrapper>
                     <ContentWrapper>
-                        <TextWrapper hasImage={Boolean(img)}>
+                        <TextWrapper hasImage={Boolean(preview_img)}>
                             <Title>{title}</Title>
                             <Content>{content}</Content>
                         </TextWrapper>
 
-                        {img && <ImageContainer>
-                            <Image src={img} />
+                        {preview_img && <ImageContainer>
+                            <Image src={preview_img} />
                         </ImageContainer>}
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {major} {name} | 조회수 {views} </span>
-                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold'}}> {like} </span>
+                        {/* <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {major} {name} | 조회수 {views} </span> */}
+                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold'}}> {likes} </span>
                         <span style={{marginLeft: 'auto', color: '#737373'}}> {point}P </span>
                     </MetaContainer>
                 </Wrapper>

@@ -81,7 +81,6 @@ const initialTipsData = [
 
 const TipsPage = () => {
   const [TipsData, setTipsData] = useState([]);
-  const [filteredTips, setFilteredTips] = useState([]);
 
   useEffect(() => {
     // // Load TipsData from localStorage or initialize it
@@ -96,7 +95,7 @@ const TipsPage = () => {
     //   setFilteredTips(initialTipsData); // Initialize filteredTips with all tips
     // }
 
-    fetchChips(['pilgy']);
+    fetchChips(['test']);
   }, []);
 
   const fetchChips = async (filters) => {
@@ -106,7 +105,8 @@ const TipsPage = () => {
       console.log('Sending request with data:', { filters: filtersArray });
 
       const response = await BaseAxios.post('/api/bulletin/tips', { filters:  filtersArray});
-      console.log(response);
+      setTipsData([response.data]);
+      console.log(TipsData);
     } catch (error){
       console.error('Error fetching question data:', error);
     }
@@ -114,12 +114,9 @@ const TipsPage = () => {
 
   const handleFilterChange = (activeChips) => {
     if (activeChips.length === 0) {
-      setFilteredTips(TipsData); // Show all tips if no filter is selected
+      setTipsData(TipsData); // Show all tips if no filter is selected
     } else {
-      const filtered = TipsData.filter((tip) =>
-        activeChips.includes(tip.filter)
-      );
-      setFilteredTips(filtered);
+      fetchChips(activeChips);
     }
   };
 
@@ -132,22 +129,23 @@ const TipsPage = () => {
         searchButton={true}
       />
       <ChipFilter onFilterChange={handleFilterChange} marginTop={"10px"} />
-      {/* {filteredTips.map((tip) => (
+      {TipsData.map((tip) => (
         <Tips
-          key={tip._id}
           _id={tip._id}
+          Ruser={tip.Ruser}
           title={tip.title}
-          img={Array.isArray(tip.img) ? tip.img[0] : tip.img} // Only the first image
-          name={tip.name}
-          major={tip.major}
-          subject={tip.subject}
           content={tip.content}
-          time={tip.time}
+          preview_img={tip.preview_img}
+          likes={tip.likes}
+          point={tip.point}
           views={tip.views}
-          like={tip.like}
-          // point={tip.point}
+          time={tip.time}
+          // img={Array.isArray(tip.img) ? tip.img[0] : tip.img} // Only the first image
+          // name={tip.name}
+          // major={tip.major}
+          // subject={tip.subject}
         />
-      ))} */}
+      ))}
       <FixedIcon src="/Icons/Pen.svg" url={"/tips/post"} />
       <FixedBottomContainer>
         <NavBar state="Tips" />
