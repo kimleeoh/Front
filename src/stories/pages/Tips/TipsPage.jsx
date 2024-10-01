@@ -95,8 +95,12 @@ const TipsPage = () => {
     //   setFilteredTips(initialTipsData); // Initialize filteredTips with all tips
     // }
 
-    fetchChips(['test']);
+    fetchChips(['']);
   }, []);
+
+  useEffect(() => {
+    console.log('Updated TipsData:', TipsData);
+  }, [TipsData]);
 
   const fetchChips = async (filters) => {
     try{
@@ -105,8 +109,7 @@ const TipsPage = () => {
       console.log('Sending request with data:', { filters: filtersArray });
 
       const response = await BaseAxios.post('/api/bulletin/tips', { filters:  filtersArray});
-      setTipsData([response.data]);
-      console.log(TipsData);
+      setTipsData(response.data);
     } catch (error){
       console.error('Error fetching question data:', error);
     }
@@ -114,7 +117,7 @@ const TipsPage = () => {
 
   const handleFilterChange = (activeChips) => {
     if (activeChips.length === 0) {
-      setTipsData(TipsData); // Show all tips if no filter is selected
+      fetchChips(['']);
     } else {
       fetchChips(activeChips);
     }
