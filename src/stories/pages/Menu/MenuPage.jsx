@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBar from '../../components/NavBar';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
@@ -7,6 +8,7 @@ import MenuList from './MenuList';
 import Modal from '../../components/Common/Modal';
 import Button from '../../components/Button';
 import useWindowSize from '../../components/Common/WindowSize';
+import BaseAxios from '../../../axioses/BaseAxios';
 
 const MenuPage = () => {
     const modalRef = useRef();
@@ -14,10 +16,17 @@ const MenuPage = () => {
     const handleLogoutClick = () => {
         modalRef.current.open();
     };
-
+    const navigate = useNavigate();
     const confirmLogout = () => {
         // 로그아웃 로직을 여기에 추가합니다.
-        modalRef.current.close();
+        try{
+        BaseAxios.delete('/api/logout');
+            modalRef.current.close();
+            navigate('/');
+        }
+        catch(e){
+            console.log(e);
+        }
         // 예를 들어, 로그아웃 API를 호출하거나, 로그인 페이지로 이동
     };
 

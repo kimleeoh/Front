@@ -7,6 +7,7 @@ import Checker from '../../components/Common/Checker';
 import DiscreteProgressBar from './DiscreteProgressBar';
 import { SignUpHandler } from '../../../axioses/SignUpHandler';
 import useWindowSize from '../../components/Common/WindowSize';
+import BaseAxios from '../../../axioses/BaseAxios';
 
 
 const SignUpPage = () => {
@@ -77,10 +78,29 @@ const SignUpPage = () => {
     return { lengthValid, hasNumber, hasSpecialChar };
   };
 
-  const handleNext = () => {
+  const handleNext = async() => {
     if (validateStep()) {
-      SignUpHandler(step, formData);
-      setStep(prevStep => prevStep + 1);
+      if(step<4){
+        SignUpHandler(step, formData);
+        setStep(prevStep => prevStep + 1);
+      }
+      else if (step == 4) {
+        BaseAxios.post('/api/register/email', {email: formData.email});
+        
+        setStep(prevStep => prevStep + 1);
+        
+      }else if(step==5){
+        const r = await BaseAxios.post('/api/register/emailAuthNum', {email: formData.email, authNum: formData.confirmEmail});
+        if(r.status === 200){
+          console.log("인증 성공");
+          SignUpHandler(step-1, formData);
+          setStep(prevStep => prevStep + 1);
+        }else{
+          console.log("인증 실패");
+          console.log(r.data);
+          alert("인증에 실패했습니다. 다시 시도해 주세요.");
+        }
+      }
     }
   };
 
@@ -91,9 +111,10 @@ const SignUpPage = () => {
   const handleSubmit = async () => {
     // 서버로 데이터를 전송하는 로직을 추가할 수 있습니다.
     // 예: await fetch('/api/signup', { method: 'POST', body: JSON.stringify(formData) });
-    SignUpHandler(step, formData);
-    navigate('/confirm');
+    console.log(step-1)
+    SignUpHandler(step-1, formData);
     console.log('제출된 데이터:', formData);
+    navigate('/confirm');
   };
 
   const validateStep = () => {
