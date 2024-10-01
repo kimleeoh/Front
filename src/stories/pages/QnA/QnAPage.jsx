@@ -227,8 +227,8 @@ const Wrapper = styled.div`
 
 const Head = styled.div`
     display: flex;
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    width: 80%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "360px" : props.maxWidth)};
     align-items: flex-start;
     justify-content: ;
     gap: 10px;

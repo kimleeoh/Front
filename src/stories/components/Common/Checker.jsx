@@ -74,8 +74,7 @@ const CheckerWrapper = styled.div`
     text-align: center;
     height: 30px;
     max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
-
-    margin: 0 auto;
+    margin-right: auto;
     background-color: white;
     margin-top: 10px;
 `;

@@ -137,7 +137,7 @@ const GradeRegister = () => {
             </FixedBottomContainer>
 
             <Modal ref={modalRef} width='300px'>
-                <span style={{ fontSize: '16px' }}>성적을 인증하시겠습ddd니까?</span>
+                <span style={{ fontSize: '16px' }}>성적을 인증하시겠습니까?</span>
                 <ImageUploadButton label={'성적표 업로드'} width={'140px'}/>
                 <ButtonWrapper>
                     <Button onClick={() => modalRef.current.close()} label={'아니요'} backgroundColor={'#434B60'} hoverBackgroundColor={'#ACB2BB'} width={'130px'} />
