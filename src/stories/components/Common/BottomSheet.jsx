@@ -9,6 +9,7 @@ const BottomSheet = ({options, onChange}) => {
 
   const [currentOptions, setCurrentOptions] = useState([]);
   const [newOptions, setNewOptions] = useState([]);
+  const [canSelect, setCanSelect] = useState(true);
 
   useEffect(() => {
       if (Array.isArray(options) && options.length > 0 && options[0].subcategories) {
@@ -84,6 +85,17 @@ const BottomSheet = ({options, onChange}) => {
     }
   };
 
+  const handleOptionClick = (option) => {
+    if (canSelect) {
+      console.log("canSelect: ", canSelect);
+      setCanSelect(false);
+      onChange(option);
+    }
+    else {
+      console.log('선택할 수 없음');
+    }
+  };
+
   useEffect(() => {
     const handleTouchEvents = (e) => {
       if (isDragging) {
@@ -102,12 +114,6 @@ const BottomSheet = ({options, onChange}) => {
     };
   }, [isDragging, height]);
 
-  const handleSubjectSelect = (subject) => {
-    if (onChange) {
-      onChange(subject);
-    }
-  };
-
   if (!isVisible) return null; // Return null if BottomSheet is not visible
 
   return (
@@ -121,7 +127,7 @@ const BottomSheet = ({options, onChange}) => {
             professor={option.Professor}
             timeIcredit={option.TimeIcredit}
             sub_student={option.Sub_student}
-            onClick={() => handleSubjectSelect(option)}
+            onClick={() => handleOptionClick(option)}
           />
         ))}
       </ScrollableContent>

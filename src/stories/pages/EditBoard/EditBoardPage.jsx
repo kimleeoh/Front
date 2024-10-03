@@ -9,7 +9,9 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import Modal from '../../components/Common/Modal';
 import { useNavigate } from 'react-router-dom';
 import useWindowSize from '../../components/Common/WindowSize';
-import BottomSheet from '../../components/Common/BottomSheet';
+import SubjectInfo from '../../components/Common/SubjectInfo';
+import BaseAxios from '../../../axioses/BaseAxios';
+import SelectSubject from '../../components/Common/SelectSubject';
 
 
 const EditBoardPage = () => {
@@ -49,6 +51,7 @@ const EditBoardPage = () => {
     }
 
     const modalRef = useRef();
+    const subjectModalRef = useRef();
     const navigate = useNavigate();
 
     const handleBackClick = () => {
@@ -67,9 +70,31 @@ const EditBoardPage = () => {
         // 예를 들어, 로그아웃 API를 호출하거나, 로그인 페이지로 이동
     };
 
-    const {width: windowSize} = useWindowSize();
+    const handleAddSubjectClick = () => {
+        subjectModalRef.current.open(); // Open the modal for adding subjects
+    };
 
-    const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+    const [isBackClicked, setIsBackClicked] = useState(0);
+    const [selectedCategory, setSelectedCategory] = useState([]);
+
+    const handleGoBack = () => {
+        setIsBackClicked(prevCount => prevCount + 1);
+        console.log("Going back...");
+    };
+
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category)
+    };
+
+    const saveSubject = () => {
+        if (selectedCategory){
+            // 저장 api 저장할 때 selectedCategory의 맨 마지막 인덱스에 있는 값 넣어야 함
+            console.log("저장되었습니다. 추가 목록: ", selectedCategory);
+        }
+        subjectModalRef.current.close();
+    }
+
+    const {width, height} = useWindowSize();
 
     return (
         <Wrapper>
@@ -79,14 +104,14 @@ const EditBoardPage = () => {
                 )}
             </Header>
 
-            <BoardTitleWrapper maxWidth={windowSize}>
+            <BoardTitleWrapper maxWidth={width}>
                 <BoardTitle text={title} edit={false} />
             </BoardTitleWrapper>
 
             <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="subjectlist">
                 {(provided) => (
-                    <SubjectListWrapper maxWidth={windowSize}className="subjectlist" {...provided.droppableProps} ref={provided.innerRef}>
+                    <SubjectListWrapper maxWidth={width} className="subjectlist" {...provided.droppableProps} ref={provided.innerRef}>
                         {subjects.map((item, index) => (
                             <Draggable draggableId={item.id} index={index} key={item.id}>
                                 {(provided, snapshot) => (
@@ -125,7 +150,7 @@ const EditBoardPage = () => {
                 hoverColor={'#ACB2BB'}
                 hoverBackgroundColor={'#E5E9F2'}
                 style={{ marginTop: '20px' }}
-                onClick={() => setIsBottomSheetVisible(true)}
+                onClick={handleAddSubjectClick}
             />
 
 
@@ -137,8 +162,32 @@ const EditBoardPage = () => {
                 </ButtonWrapper>
             </Modal>
 
-            {isBottomSheetVisible && <BottomSheet 
-            />}
+            <Modal ref={subjectModalRef} width="300px" height={`${height-150}px`}>
+                <ScrollableContent>
+                    <SelectSubject 
+                        isBackClicked={isBackClicked}
+                        onCategorySelect={handleCategorySelect}
+                    />
+                </ScrollableContent>
+                <ButtonWrapper>
+                    <Button 
+                        onClick={saveSubject} 
+                        label={'저장'} 
+                        backgroundColor={'#FF3C3C'} 
+                        hoverBackgroundColor={'red'} 
+                        width={'130px'}
+                    />
+                    <Button 
+                        onClick={() => handleGoBack()} 
+                        label={'뒤로 가기'} 
+                        backgroundColor={'#434B60'} 
+                        hoverBackgroundColor={'#ACB2BB'} 
+                        width={'130px'}
+                    />
+                </ButtonWrapper>
+            </Modal>
+
+            
         </Wrapper>
     );
 };
@@ -211,4 +260,11 @@ const Save = styled.button`
   font-weight: bold;
   color: #434b60;
   text-align: center;
+`;
+
+const ScrollableContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
 `;
