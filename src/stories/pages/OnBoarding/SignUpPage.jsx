@@ -84,7 +84,8 @@ const SignUpPage = () => {
         SignUpHandler(step, formData);
         setStep(prevStep => prevStep + 1);
       } else if (step === 4) {
-        BaseAxios.post('/api/register/email', { email: formData.email });
+        const result = await BaseAxios.post('/api/register/email', { email: formData.email });
+        if(result.status === 409){alert("이미 가입된 이메일입니다.");return;}
         setStep(prevStep => prevStep + 1);
       } else if (step === 5) {
         try {
