@@ -24,23 +24,20 @@ const Submit = () => {
     const handleSubmit = async () => {
         if (!selectedFile) return;
 
-        // Create a new FormData object
-        const formData = new FormData();
         try {
             // Send the POST request with the FormData
-            const r = await BaseAxios.post('/api/register/imgUpload', {img:selectedFile}, {
+            const i = new FormData();
+            i.append('img', selectedFile);
+            const r = await BaseAxios.post('/api/register/imgUpload', i, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
             console.log(r.data.link);
             if(r.status==200){
-                formData.append('img', r.data.link);
+                SignUpHandler(6, r.data.link);
+                navigate('/verify');
             }
-            
-            console.log("File submitted:", selectedFile);
-            SignUpHandler(6, formData);
-            navigate('/verify');
         } catch (error) {
             console.error("File upload failed:", error);
         }

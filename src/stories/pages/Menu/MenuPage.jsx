@@ -12,17 +12,17 @@ import BaseAxios from '../../../axioses/BaseAxios';
 
 const MenuPage = () => {
     const modalRef = useRef();
-
+    const navigate = useNavigate();
     const handleLogoutClick = () => {
         modalRef.current.open();
     };
-    const navigate = useNavigate();
+
     const confirmLogout = () => {
         // 로그아웃 로직을 여기에 추가합니다.
         try{
         BaseAxios.delete('/api/logout');
-            modalRef.current.close();
-            navigate('/');
+        modalRef.current.close();
+        navigate('/');
         }
         catch(e){
             console.log(e);
