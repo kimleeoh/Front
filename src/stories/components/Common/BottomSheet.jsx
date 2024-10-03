@@ -1,64 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import useWindowSize from './WindowSize';
 import SubjectInfo from './SubjectInfo';
-import BaseAxios from '../../../axioses/BaseAxios';
+import PropTypes from 'prop-types';
 
-const BottomSheet = ({options, onChange}) => {
+const BottomSheet = ({options, onClick}) => {
   const {width: windowSize} = useWindowSize();
-
-  const [currentOptions, setCurrentOptions] = useState([]);
-  const [newOptions, setNewOptions] = useState([]);
-  const [canSelect, setCanSelect] = useState(true);
-
-  useEffect(() => {
-      if (Array.isArray(options) && options.length > 0 && options[0].subcategories) {
-          setCurrentOptions(options[0].subcategories);
-      } else {
-          setCurrentOptions([]);
-      }
-  }, [options]);
-
-  console.log(currentOptions);
-
-  const fetchCategories  = async (id) => {
-      try {
-              const response = await BaseAxios.post('/api/dummy/category', { id });
-              const fetchedCategories = response.data;
-
-              const newBoardOptions  = [
-                  {
-                      CategoryName: fetchedCategories.category_name,
-                      Professor: fetchedCategories.professor,
-                      TimeIcredit: fetchedCategories.timeIcredit,
-                      Sub_student: fetchedCategories.sub_student
-                  }
-              ]
-              setNewOptions(prevOptions => [...prevOptions, ...newBoardOptions]);
-          }
-      catch (error) {
-          console.error('Error fetching question data:', error);
-      }
-  };
-
-  useEffect(() => {
-      if (currentOptions.length > 0) {
-          const fetchAllCategories = async () => {
-              for (const option of currentOptions) {
-                  await fetchCategories(option.id);
-                  await new Promise(resolve => setTimeout(resolve, 50)); //100ms delay
-              }
-          };
-          fetchAllCategories();
-      }
-  }, [currentOptions]);
-
-  console.log("newOptions: ", newOptions);
 
   const [height, setHeight] = useState(400);
   const [startY, setStartY] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
   const minHeight = 100;
   const maxHeight = window.innerHeight * 0.8; // 80% of screen height
 
@@ -85,17 +36,6 @@ const BottomSheet = ({options, onChange}) => {
     }
   };
 
-  const handleOptionClick = (option) => {
-    if (canSelect) {
-      console.log("canSelect: ", canSelect);
-      setCanSelect(false);
-      onChange(option);
-    }
-    else {
-      console.log('선택할 수 없음');
-    }
-  };
-
   useEffect(() => {
     const handleTouchEvents = (e) => {
       if (isDragging) {
@@ -114,20 +54,18 @@ const BottomSheet = ({options, onChange}) => {
     };
   }, [isDragging, height]);
 
-  if (!isVisible) return null; // Return null if BottomSheet is not visible
-
   return (
     <BottomSheetContainer height={height} maxWidth={windowSize}>
       <Handle onTouchStart={handleTouchStart} />
       <ScrollableContent>
-        {newOptions.map((option, index) => (
+        {options.map((option, index) => (
           <SubjectInfo 
             key={index}
             category_name={option.CategoryName}
             professor={option.Professor}
             timeIcredit={option.TimeIcredit}
             sub_student={option.Sub_student}
-            onClick={() => handleOptionClick(option)}
+            onClick={() => onClick(option.CategoryName)}
           />
         ))}
       </ScrollableContent>
@@ -136,6 +74,11 @@ const BottomSheet = ({options, onChange}) => {
 };
 
 export default BottomSheet;
+
+BottomSheet.propTypes = {
+  options: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired, 
+};
 
 const BottomSheetContainer = styled.div`
   position: fixed;

@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import PropTypes from "prop-types";
 import useWindowSize from "./WindowSize";
+import BaseAxios from "../../../axioses/BaseAxios";
+import BottomSheet from "./BottomSheet";
 
 const dropdownAnimation = keyframes`
     0% {
@@ -14,72 +16,119 @@ const dropdownAnimation = keyframes`
     }
 `;
 
-const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
+const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
     const {width: windowSize} = useWindowSize();
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedOptions, setSelectedOptions] = useState([]);
-    const [currentOptions, setCurrentOptions] = useState([]);
     const dropdownRef = useRef(null);
+
+    const [selectedCategoryId, setSelectedCategoryId] = useState(startId || '');
+    const [subCategories, setSubCategories] = useState([]);
+    const [categoryHistoryId, setCategoryHistoryId] = useState([]);
+    const [categoryHistoryName, setCategoryHistoryName] = useState([]);
+    const [finalOptions, setFinalOptions] = useState([]);
+    const [canSelect, setCanSelect] = useState(true);
+    const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
+
     useEffect(() => {
-        if (Array.isArray(options) && options.length > 0 && options[0].subcategories) {
-            setCurrentOptions(options[0].subcategories);
-        } else {
-            setCurrentOptions([]);
-        }
+      BaseAxios.post('/api/dummy/category', { id: selectedCategoryId })
+        .then(response => {
+            const fetchedCategories = response.data;
 
-        if (Array.isArray(options) && options.length > 0 && options[0].type >= 2){
-            console.log("false");
-            setIsOpen(false);
-        }
+            const newBoardOptions = fetchedCategories.sub_category_list_name.map((subName, index) => ({
+                value: subName,
+                label: subName,
+                id: fetchedCategories.sub_category_list_id[index],
+            }));
+            if (fetchedCategories.type == 2) {
+                Promise.all(newBoardOptions.map(option => 
+                    BaseAxios.post('/api/dummy/category', {id: option.id})
+                        .then(response => ({
+                            CategoryName: response.data.category_name,
+                            Professor: response.data.professor,
+                            TimeIcredit: response.data.timeIcredit,
+                            Sub_student: response.data.sub_student,
+                        }))
+                )).then(newBoardOptions2 => {
+                    setFinalOptions(newBoardOptions2);
+                    setIsBottomSheetVisible(true);
+                    setIsOpen(false);
+                });
+            }
+            console.log("response: ", response);
+            console.log("newBoardOptions: ", newBoardOptions);
+            setSubCategories(newBoardOptions);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }, [selectedCategoryId]);
 
-        if (options[1] && options[1].label){
-            const newSelectedOptions = [...selectedOptions, {label: options[1].label}];
-            setSelectedOptions(newSelectedOptions);
-            console.log("selectedOptions: ", selectedOptions);
-        }
-    }, [options]);
-
-    const handleOptionClick =  (option) => {
-        const newSelectedOptions = [...selectedOptions, option];
-        setSelectedOptions(newSelectedOptions);
-
-        if (!option.id){
-            setCurrentOptions(option.subcategories);
+    const handleCategorySelect = (categoryId, categoryLabel) => {
+        if (canSelect) {
+          setCategoryHistoryId([...categoryHistoryId, selectedCategoryId]);
+          setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
+          setSelectedCategoryId(categoryId);
         }
         else {
-            onFetchCategories(option.id);
+            setCategoryHistoryName(prevHistory => {
+            const newHistory = [...prevHistory];
+            newHistory[newHistory.length - 1] = categoryLabel;
+            return newHistory;
+        })
         }
     };
 
-    const handleBackClick = async () => {
-        const newSelectedOptions = selectedOptions.slice(0, -1);
-        setSelectedOptions(newSelectedOptions);
-        
-        if (newSelectedOptions.length > 0) {
-            const lastOption = newSelectedOptions[newSelectedOptions.length - 1];
-            if (lastOption.id) {
-                const newOptions = await onFetchCategories(lastOption.id);
-                setCurrentOptions(Array.isArray(newOptions) ? newOptions : []);
-            } else if (Array.isArray(lastOption.subcategories)) {
-                setCurrentOptions(lastOption.subcategories);
-            }
-        } else {
-            const initialOptions = await onFetchCategories('');
-            setCurrentOptions(Array.isArray(initialOptions) ? initialOptions : []);
+    const handleGoBack = () => {
+      if (categoryHistoryId.length > 0) {
+        const previousCategoryId = categoryHistoryId[categoryHistoryId.length - 1];  // Get the last category from history
+        setCategoryHistoryId(categoryHistoryId.slice(0, -1));  // Remove the last entry from history
+        setSelectedCategoryId(previousCategoryId);  // Set previous category as selected
+        if (!canSelect) {
+            setCategoryHistoryName(categoryHistoryName.slice(0, -2)); 
         }
+        else {
+            setCategoryHistoryName(categoryHistoryName.slice(0, -1)); 
+        }
+    }
+
+        setIsBottomSheetVisible(false);
+        setIsOpen(true);
+        setCanSelect(true);
     };
+
+    const handleFinalCategorySelect = (categoryLabel) => {
+        if (canSelect){
+            setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
+            setCanSelect(false);
+        }
+        else {
+            setCategoryHistoryName(prevHistory => {
+                const newHistory = [...prevHistory];
+                newHistory[newHistory.length - 1] = categoryLabel;
+                return newHistory;
+            })
+        }
+    }
+
+    const Save = () => {
+      onCategorySelect(categoryHistoryName)
+      setIsOpen(false);
+      setIsBottomSheetVisible(false);
+      onChange(categoryHistoryName);
+    }
+
+    console.log("subCategories: ", subCategories);
+    console.log("categoryHistoryId: ", categoryHistoryId);
+    console.log("categoryHistoryName: ", categoryHistoryName);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setIsOpen(false);
             }
-            // if (onChange) {
-            //     onChange(selectedOptions); // Trigger the onChange with the current selection
-            // }
         };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -88,19 +137,13 @@ const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
     };
   }, []);
 
-    const handleSaveClick = () => {
-        setIsOpen(false);
-        if (onChange) {
-            onChange(selectedOptions); // Trigger the onChange with the current selection
-        }
-    };
-
   return (
-    <DropdownContainer ref={dropdownRef} maxWidth={windowSize}>
+    <>
+      <DropdownContainer ref={dropdownRef} maxWidth={windowSize}>
       <DropdownHeader onClick={toggleDropdown}>
-        {selectedOptions.length === 0
+        {categoryHistoryName.length === 0
           ? placeholder
-          : selectedOptions.map((option) => option.label).join(" > ")}
+          : categoryHistoryName.map((option) => option).join(" > ")}
         <ArrowIcon isOpen={isOpen}>
           <img src="/Icons/Arrow.svg" alt="arrow" />
         </ArrowIcon>
@@ -108,15 +151,10 @@ const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
       {isOpen && (
         <DropdownListContainer>
           <DropdownList role="listbox">
-            {currentOptions.length > 0 ? (
-              currentOptions.map((option) => (
+            {subCategories.length > 0 ? (
+              subCategories.map((option) => (
                 <ListItem
-                  key={option.value}
-                  onClick={() => handleOptionClick(option)}
-                  role="option"
-                  aria-selected={selectedOptions.some(
-                    (selected) => selected.value === option.value
-                  )}
+                  onClick={() => handleCategorySelect(option.id, option.label)}
                 >
                   {option.label}
                   {option.subcategories && option.subcategories.length > 0 && (
@@ -130,15 +168,21 @@ const SelectBoard = ({ options, placeholder, onChange, onFetchCategories }) => {
               <ListItem></ListItem>
             )}
           </DropdownList>
-          {selectedOptions.length > 0 && (
+          {categoryHistoryName.length > 0 && (
             <ButtonContainer>
-              <BackButton onClick={handleBackClick}>뒤로 가기</BackButton>
-              <SaveButton onClick={handleSaveClick}>저장</SaveButton>
+              <BackButton onClick={handleGoBack}>뒤로 가기</BackButton>
+              <SaveButton onClick={Save}>저장</SaveButton>
             </ButtonContainer>
           )}
         </DropdownListContainer>
       )}
     </DropdownContainer>
+    {isBottomSheetVisible && 
+    <BottomSheet 
+      options={finalOptions}
+      onClick={handleFinalCategorySelect}  
+    />}
+    </>
   );
 };
 
