@@ -78,31 +78,35 @@ const SignUpPage = () => {
     return { lengthValid, hasNumber, hasSpecialChar };
   };
 
-  const handleNext = async() => {
+  const handleNext = async () => {
     if (validateStep()) {
-      if(step<4){
+      if (step < 4) {
         SignUpHandler(step, formData);
         setStep(prevStep => prevStep + 1);
-      }
-      else if (step == 4) {
-        BaseAxios.post('/api/register/email', {email: formData.email});
-        
+      } else if (step === 4) {
+        BaseAxios.post('/api/register/email', { email: formData.email });
         setStep(prevStep => prevStep + 1);
-        
-      }else if(step==5){
-        const r = await BaseAxios.post('/api/register/emailAuthNum', {email: formData.email, authNum: formData.confirmEmail});
-        if(r.status === 200){
-          console.log("인증 성공");
-          SignUpHandler(step-1, formData);
-          setStep(prevStep => prevStep + 1);
-        }else{
-          console.log("인증 실패");
-          console.log(r.data);
-          alert("인증에 실패했습니다. 다시 시도해 주세요.");
+      } else if (step === 5) {
+        try {
+          const r = await BaseAxios.post('/api/register/emailAuthNum', { email: formData.email, authNum: formData.confirmEmail });
+          if (r.status === 200) {
+            console.log("인증 성공");
+            SignUpHandler(step - 1, formData);
+            setStep(prevStep => prevStep + 1);
+          } else {
+            console.log("인증 실패");
+            console.log(r.data);
+            setErrorMessage("인증번호가 올바르지 않습니다. 다시 입력해 주세요.");
+            alert("인증에 실패했습니다. 다시 시도해 주세요.");
+          }
+        } catch (error) {
+          console.error("인증 오류", error);
+          setErrorMessage("인증 과정에서 오류가 발생했습니다. 다시 시도해 주세요.");
         }
       }
     }
   };
+  
 
   const handlePrevious = () => {
     setStep(prevStep => prevStep - 1);

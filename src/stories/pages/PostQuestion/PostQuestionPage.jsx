@@ -137,6 +137,9 @@ const PostQuestionPage = () => {
                 if (fetchedCategories.type >= 2){
                     setIsBottomSheetVisible(true);
                 }
+                else {
+                    setIsBottomSheetVisible(false);
+                }
             }
         catch (error) {
             console.error('Error fetching question data:', error);

@@ -74,6 +74,7 @@ const Content = styled.div`
 const MetaContainer = styled.div`
     display: flex;
     align-items: center;
+    align-content: center;
     margin-top: auto;
 
     font-size: 10px;
@@ -95,7 +96,24 @@ const Image = styled.img`
     border-radius: 8px;
 `;
 
-const Questions = ({ _id, title, content, subject, time, views, like, img, limit }) => {
+const Point = styled.div`
+    background: #78ADF9;
+    color: white;
+    font-size: 9px;
+    width: ${(props) => `${20 + String(props.point).length * 2}px`};  /* 자릿수에 따라 width 조정 */
+    height: 12px;
+    padding: 3px;
+    border-radius: 10px;
+    align-items: center;
+    align-content: center;
+    margin-left: auto;
+    white-space: nowrap;
+    display: flex;
+    gap: 3px;
+`;
+
+
+const Questions = ({ _id, title, content, subject, time, views, like, img, limit, point }) => {
     const {width: windowSize} = useWindowSize();
     return (
         <OutWrapper maxWidth={windowSize}>
@@ -113,9 +131,9 @@ const Questions = ({ _id, title, content, subject, time, views, like, img, limit
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {subject} | 조회수 {views} </span>
-                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold'}}> {like} </span>
-                        <span style={{marginLeft: 'auto', color: '#737373'}}> {limit > 0 ? '등급 제한: A' : ''} </span>
+                        <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {subject} | 조회수 {views} | 제한: {limit}</span>
+                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold', fontSize: '10px', transform: 'translateY(1px)'}}> {like} </span>
+                        <Point><img src='/point_white.svg' width={'12px'} /> + {point}</Point>
                     </MetaContainer>
                 </Wrapper>
             </StyledLink>
@@ -134,7 +152,8 @@ Questions.propTypes = {
     views: PropTypes.number.isRequired,
     like: PropTypes.number.isRequired,
     img: PropTypes.array,
-    limit: PropTypes.number.isRequired
+    limit: PropTypes.number.isRequired,
+    point: PropTypes.number.isRequired
 };
 
 Questions.defaultProps = {
@@ -145,5 +164,6 @@ Questions.defaultProps = {
     views: 0,
     like: 0,
     img: null,
-    limit: 0
+    limit: 0,
+    point: 100,
 };

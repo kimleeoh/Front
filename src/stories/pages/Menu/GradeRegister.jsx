@@ -101,7 +101,6 @@ const GradeRegister = () => {
     return (
         <Wrapper maxWidth={windowSize}>
             <Header text="성적 등록하기">
-                <Verify onClick={handleVerifyClick}>인증</Verify>
             </Header>
             <TermPickerWrapper maxWidth={windowSize}>
                 <Picker items={availableYears} selectedItem={selectedYear} onChange={setSelectedYear} placeholder={'XXXX'} />
@@ -127,8 +126,8 @@ const GradeRegister = () => {
             )}
             <FixedBottomContainer>
                 <Button
-                    label="저장"
-                    onClick={() => alert("성적이 저장되었습니다.")}
+                    label="인증"
+                    onClick={handleVerifyClick}
                     color="#fff"
                     backgroundColor="#007bff"
                     hoverBackgroundColor="#0056b3"
@@ -137,7 +136,7 @@ const GradeRegister = () => {
             </FixedBottomContainer>
 
             <Modal ref={modalRef} width='300px'>
-                <span style={{ fontSize: '16px' }}>성적을 인증하시겠습ddd니까?</span>
+                <span style={{ fontSize: '16px' }}>성적을 인증하시겠습니까?</span>
                 <ImageUploadButton label={'성적표 업로드'} width={'140px'}/>
                 <ButtonWrapper>
                     <Button onClick={() => modalRef.current.close()} label={'아니요'} backgroundColor={'#434B60'} hoverBackgroundColor={'#ACB2BB'} width={'130px'} />

@@ -19,13 +19,22 @@ const Container = styled.div`
 const ChipFilter = ({ onFilterChange, marginTop }) => {
     const [activeChips, setActiveChips] = useState([]);
 
+    const chipFilterMapping = {
+        '필기공유': 'pilgy',
+        '시험정보': 'test',
+        '수업꿀팁': 'honey',
+    };
+
     const handleChipClick = (label) => {
         const updatedChips = activeChips.includes(label)
             ? activeChips.filter(badge => badge !== label)
             : [...activeChips, label];
 
         setActiveChips(updatedChips);
-        onFilterChange(updatedChips); // Pass the updated badges to the parent component
+
+        const activeFilters = updatedChips.map(chip => chipFilterMapping[chip]);
+        console.log(activeFilters);
+        onFilterChange(activeFilters); 
     };
 
     const badges = ['필기공유', '시험정보', '수업꿀팁'];

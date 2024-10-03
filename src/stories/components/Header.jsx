@@ -69,7 +69,7 @@ Header.defaultProps = {
   showIcon: false,
   text: 'Q&A',
   backButton: true,
-  searchButton: true,
+  searchButton: false,
 };
 
 export default Header;
