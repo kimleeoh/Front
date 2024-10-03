@@ -152,9 +152,9 @@ const SignUpHandler = async (step = 1, formData) => {
       };
 
       const response = await BaseAxios.post("/api/register/page/3", passData);
-      if(response.status==409){alert("이미 가입된 학번입니다.");}
+      if(response.status==201){alert("이미 가입된 학번입니다.");return false;}
       //response 검사해서 오류 코드 뜨면 navigate하는 함수
-      //if(response.status !== 200){}
+      //if(response.status !== 200){}s
       break;
     }
     case 4: {
@@ -188,6 +188,7 @@ const SignUpHandler = async (step = 1, formData) => {
             //if(response.status !== 200){}
         }
     }
+    return true;
 };
 
 export { SignUpHandler, LoginHandler };
