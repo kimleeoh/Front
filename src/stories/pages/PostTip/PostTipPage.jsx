@@ -32,52 +32,6 @@ const PostQuestionPage = () => {
     const [showValidationMessages, setShowValidationMessages] = useState(false);
 
     const [userData, setUserData] = useState([]);
-    useEffect(() => {
-        // Local storage operations for user data
-        localStorage.removeItem('userData');
-        const userData = localStorage.getItem('userData');
-        if (userData) {
-            setUserData(JSON.parse(userData));
-        } else {
-            localStorage.setItem('userData', JSON.stringify(initialUserData));
-            setUserData(initialUserData);
-        }
-    }, []);
-    
-    const boardOptions = [
-        {
-            value: '교양선택',
-            label: '교양선택',
-            subcategories: [
-                {   value: '23이후', 
-                    label: '23이후', 
-                    subcategories: [
-                        {value: '과학&기술', label: '과학&기술'},
-                        {value: '문화&예술', label: '문화&예술'},
-                        {value: '사회&정치&경제', label: '사회&정치&경제'},
-                        {value: '인간&언어', label: '인간&언어'},
-                        {value: '자기개발&진로탐색', lable: '자기개발&진로탐색'},
-                    ]},
-                { value: '기독교과목', label: '기독교과목' },
-            ],
-        },
-        {
-            value: '교양필수',
-            label: '교양필수',
-            subcategories: [
-                { value: 'subcategory2_1', label: 'Subcategory 2.1' },
-                { value: 'subcategory2_2', label: 'Subcategory 2.2' },
-            ],
-        },
-        {
-            value: '학부별전공',
-            label: '학부별전공',
-            subcategories: [
-                { value: 'subcategory2_1', label: 'Subcategory 2.1' },
-                { value: 'subcategory2_2', label: 'Subcategory 2.2' },
-            ],
-        },
-    ];
 
     useEffect(() => {
         const { title, board, tags, content } = formValues;
@@ -86,7 +40,7 @@ const PostQuestionPage = () => {
                         tags.length > 0 &&
                         content.trim() !== '';
         setIsFormValid(isValid);
-        console.log(boardOptions);
+        console.log(formValues);
     }, [formValues]);
 
     const handleInputChange = (name, value) => {
@@ -139,6 +93,14 @@ const PostQuestionPage = () => {
 
     const {width: windowSize} = useWindowSize();
 
+    const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState([]);
+
+    const handleCategorySelect = (options) => {
+        setSelectedCategory(options);
+        console.log("게시판 선택: ", selectedCategory);
+    }
+
     return (
         <Wrapper>
             <Header showIcon={false} text="글 작성하기" backButton={true} searchButton={false}/>
@@ -149,8 +111,8 @@ const PostQuestionPage = () => {
                 onChange={(value) => handleInputChange('title', value)}
             />
             <SelectBoard 
-                options={boardOptions} 
                 onChange={(value) => handleInputChange('board', value)}
+                onCategorySelect={handleCategorySelect}
             />
             <ChipFilter onFilterChange={(value) => handleInputChange('tags', value)} />
             <TextArea 

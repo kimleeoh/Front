@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import BaseAxios from '../../../axioses/BaseAxios';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
