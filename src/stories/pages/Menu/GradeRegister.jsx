@@ -101,7 +101,6 @@ const GradeRegister = () => {
     return (
         <Wrapper maxWidth={windowSize}>
             <Header text="성적 등록하기">
-                <Verify onClick={handleVerifyClick}>인증</Verify>
             </Header>
             <TermPickerWrapper maxWidth={windowSize}>
                 <Picker items={availableYears} selectedItem={selectedYear} onChange={setSelectedYear} placeholder={'XXXX'} />
@@ -127,8 +126,8 @@ const GradeRegister = () => {
             )}
             <FixedBottomContainer>
                 <Button
-                    label="저장"
-                    onClick={() => alert("성적이 저장되었습니다.")}
+                    label="인증"
+                    onClick={handleVerifyClick}
                     color="#fff"
                     backgroundColor="#007bff"
                     hoverBackgroundColor="#0056b3"
