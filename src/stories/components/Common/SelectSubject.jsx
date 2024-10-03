@@ -127,7 +127,6 @@ export default SelectSubject
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 100%;
     font-size: 15px;
 `
@@ -152,5 +151,4 @@ const ListItem = styled.li`
     display: flex;
     width: 100%;
     justify-content: space-between;
-
 `

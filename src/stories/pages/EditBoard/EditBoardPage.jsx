@@ -78,8 +78,13 @@ const EditBoardPage = () => {
     const [selectedCategory, setSelectedCategory] = useState([]);
 
     const handleGoBack = () => {
-        setIsBackClicked(prevCount => prevCount + 1);
-        console.log("Going back...");
+        if (selectedCategory.length == 0){
+            subjectModalRef.current.close();
+        }
+        else {
+            setIsBackClicked(prevCount => prevCount + 1);
+            console.log("Going back...");
+        }
     };
 
     const handleCategorySelect = (category) => {
