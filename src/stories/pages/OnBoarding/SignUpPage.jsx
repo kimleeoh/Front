@@ -8,6 +8,7 @@ import DiscreteProgressBar from './DiscreteProgressBar';
 import { SignUpHandler } from '../../../axioses/SignUpHandler';
 import useWindowSize from '../../components/Common/WindowSize';
 import BaseAxios from '../../../axioses/BaseAxios';
+import SelectMajor from '../../components/Common/SelectMajor';
 
 
 const SignUpPage = () => {
@@ -205,11 +206,11 @@ const SignUpPage = () => {
               <Title>학부 입력</Title>
               <Subtitle>현재 소속된 학부를 입력해 주세요.</Subtitle>
             </StepDescription>
-            <TextField
-              label="학부"
-              value={formData.department}
-              onChange={handleChange}
+            <SelectMajor
+              startId={'66ccbb8d63fd0fe4e81552b0'}
               name="department"
+              onChange={handleChange}
+              placeholder={"학부 선택"}
             />
           </>
         );
