@@ -4,7 +4,7 @@ import useWindowSize from './WindowSize';
 import SubjectInfo from './SubjectInfo';
 import PropTypes from 'prop-types';
 
-const BottomSheet = ({options, onClick}) => {
+const BottomSheet = ({options, onClick, handleGoBack, save}) => {
   const {width: windowSize} = useWindowSize();
 
   const [height, setHeight] = useState(400);
@@ -57,6 +57,10 @@ const BottomSheet = ({options, onClick}) => {
   return (
     <BottomSheetContainer height={height} maxWidth={windowSize}>
       <Handle onTouchStart={handleTouchStart} />
+      <ButtonContainer>
+        <BackButton onClick={handleGoBack}>뒤로 가기</BackButton>
+        <SaveButton onClick={save}>저장</SaveButton>
+      </ButtonContainer>
       <ScrollableContent>
         {options.map((option, index) => (
           <SubjectInfo 
@@ -108,4 +112,40 @@ const ScrollableContent = styled.div`
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #e2e5e9;
+`;
+
+const BackButton = styled.div`
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba(226, 229, 233, 0.3);
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+`;
+
+const SaveButton = styled.div`
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba(226, 229, 233, 0.3);
+  }
+  &:active {
+    transform: scale(0.98);
+  }
 `;

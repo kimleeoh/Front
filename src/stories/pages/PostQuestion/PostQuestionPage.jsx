@@ -49,8 +49,6 @@ const PostQuestionPage = () => {
             localStorage.setItem('userData', JSON.stringify(initialUserData));
             setUserData(initialUserData);
         }
-
-        fetchCategories('');
     }, []);
 
     const handleInputChange = (name, value) => {
@@ -112,65 +110,14 @@ const PostQuestionPage = () => {
         return null;
     };
 
-    const [boardOptions, setBoardOptions] = useState([]);
-
-    const fetchCategories  = async (id) => {
-        try {
-                console.log("id: ", id, "전송");
-                const response = await BaseAxios.post('/api/dummy/category', { id });
-                console.log("response: ", response);
-                const fetchedCategories = response.data;
-
-                const newBoardOptions  = [
-                    {
-                        subcategories: fetchedCategories.sub_category_list_name.map((subName, index) => ({
-                            value: subName,
-                            label: subName,
-                            id: fetchedCategories.sub_category_list_id[index],
-                        })),
-                        type: fetchedCategories.type
-                    }
-                ]
-                console.log("newBoardOptions: ", newBoardOptions);
-                setBoardOptions(newBoardOptions);
-
-                if (fetchedCategories.type >= 2){
-                    setIsBottomSheetVisible(true);
-                }
-                else {
-                    setIsBottomSheetVisible(false);
-                }
-            }
-        catch (error) {
-            console.error('Error fetching question data:', error);
-        }
-    };
-
-    const handleBoardChange = async (selectedOptions) => {
-        handleInputChange('board', selectedOptions);
-    };
-
-    const handleBottomSheetSelection = (selectedOptions) => {
-        setBoardOptions(selectedOptions)
-        setBoardOptions(prevOptions => {
-            if (!Array.isArray(prevOptions)) {
-                const initialOptions = prevOptions ? [prevOptions] : [];
-                return [
-                    ...initialOptions,
-                    { label: selectedOptions.CategoryName }
-                ];
-            }
-            
-            return [
-                ...prevOptions,
-                { code: 404 }
-            ];
-        });
-        handleInputChange('board', selectedOptions);
-        console.log("boardOptions", boardOptions);
-    };
-
   const { width: windowSize } = useWindowSize();
+
+  const [selectedCategory, setSelectedCategory] = useState([]);
+
+    const handleCategorySelect = (options) => {
+        setSelectedCategory(options);
+        console.log("게시판 선택: ", selectedCategory);
+    }
 
     return (
         <Wrapper>
@@ -183,10 +130,8 @@ const PostQuestionPage = () => {
                 onChange={(value) => handleInputChange('title', value)}
             />
             <SelectBoard 
-                options={boardOptions} 
-                placeholder={'게시판 선택'}
-                onChange={handleBoardChange}
-                onFetchCategories={fetchCategories}
+                onChange={(value) => handleInputChange('board', value)}
+                onCategorySelect={handleCategorySelect}
             />
             <TextArea 
                 height={'300px'} 
@@ -223,10 +168,6 @@ const PostQuestionPage = () => {
                 onClick={handleFormSubmit}
             />
             {showValidationMessages && renderValidationMessages()}
-            {isBottomSheetVisible && <BottomSheet 
-            options={boardOptions} 
-            onChange={handleBottomSheetSelection}
-            />}
         </Wrapper>
     );
 }

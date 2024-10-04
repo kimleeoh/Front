@@ -93,7 +93,6 @@ const PostQuestionPage = () => {
 
     const {width: windowSize} = useWindowSize();
 
-    const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState([]);
 
     const handleCategorySelect = (options) => {

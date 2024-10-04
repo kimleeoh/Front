@@ -180,7 +180,9 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
     {isBottomSheetVisible && 
     <BottomSheet 
       options={finalOptions}
-      onClick={handleFinalCategorySelect}  
+      onClick={handleFinalCategorySelect}
+      handleGoBack={handleGoBack}
+      save={Save}
     />}
     </>
   );
