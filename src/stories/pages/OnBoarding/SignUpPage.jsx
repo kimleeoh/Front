@@ -84,10 +84,11 @@ const SignUpPage = () => {
         const a = await SignUpHandler(step, formData);
         if(a){setStep(prevStep => prevStep + 1);}
       } else if (step === 4) {
-        const result = await BaseAxios.post('/api/register/email', { email: formData.email });
+        const result = await BaseAxios.post('/api/register/emailAlready', { email: formData.email }); 
         if(result.status === 201){alert("이미 가입된 이메일입니다.");}
         else{
-        setStep(prevStep => prevStep + 1);}
+          BaseAxios.post('/api/register/email', { email: formData.email });
+          setStep(prevStep => prevStep + 1);}
       } else if (step === 5) {
         try {
           const r = await BaseAxios.post('/api/register/emailAuthNum', { email: formData.email, authNum: formData.confirmEmail });
