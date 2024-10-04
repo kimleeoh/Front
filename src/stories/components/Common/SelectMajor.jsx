@@ -28,6 +28,11 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
+    useEffect(() => {
+        setCategoryHistoryName([]);
+        setCategoryHistoryId([]);
+    }, [])
+
 
     useEffect(() => {
       BaseAxios.post('/api/dummy/category', { id: selectedCategoryId })
@@ -54,9 +59,11 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
 
     const handleCategorySelect = (categoryId, categoryLabel) => {
         if (canSelect) {
-          setCategoryHistoryId([...categoryHistoryId, selectedCategoryId]);
-          setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
-          setSelectedCategoryId(categoryId);
+            if (categoryLabel !== categoryHistoryName[categoryHistoryName.length - 1]) {
+                setCategoryHistoryId([...categoryHistoryId, selectedCategoryId]);
+                setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
+                setSelectedCategoryId(categoryId);
+              }
         }
         else {
             setCategoryHistoryName(prevHistory => {
@@ -69,14 +76,15 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
 
     const handleGoBack = () => {
       if (categoryHistoryId.length > 0) {
-        const previousCategoryId = categoryHistoryId[categoryHistoryId.length - 1];  // Get the last category from history
-        setCategoryHistoryId(categoryHistoryId.slice(0, -1));  // Remove the last entry from history
-        setSelectedCategoryId(previousCategoryId);  // Set previous category as selected
+        setCanSelect(true)
+        setSelectedCategoryId(startId);  // Set previous category as selected
         if (!canSelect) {
             setCategoryHistoryName(categoryHistoryName.slice(0, -2)); 
+            setCategoryHistoryId(categoryHistoryId.slice(0, -2)); 
         }
         else {
             setCategoryHistoryName(categoryHistoryName.slice(0, -1)); 
+            setCategoryHistoryId(categoryHistoryId.slice(0, -1)); 
         }
     }
         setIsOpen(true);
