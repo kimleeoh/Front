@@ -54,9 +54,11 @@ const SelectSubject = ({startId, isBackClicked, onCategorySelect}) => {
       }, [selectedCategoryId]);
 
     const handleCategorySelect = (categoryId, categoryLabel) => {
-        setCategoryHistoryId([...categoryHistoryId, selectedCategoryId]);
-        setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
-        setSelectedCategoryId(categoryId);
+        if (categoryLabel !== categoryHistoryName[categoryHistoryName.length - 1]) {
+            setCategoryHistoryId([...categoryHistoryId, selectedCategoryId]);
+            setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
+            setSelectedCategoryId(categoryId);
+          }
     };
 
     const handleFinalCategorySelect = (categoryLabel) => {
