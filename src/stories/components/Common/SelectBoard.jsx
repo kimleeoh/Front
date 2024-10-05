@@ -68,9 +68,11 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
 
     const handleCategorySelect = (categoryId, categoryLabel) => {
         if (canSelect) {
-          setCategoryHistoryId([...categoryHistoryId, selectedCategoryId]);
-          setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
-          setSelectedCategoryId(categoryId);
+          if (categoryLabel !== categoryHistoryName[categoryHistoryName.length - 1]) {
+            setCategoryHistoryId([...categoryHistoryId, selectedCategoryId]);
+            setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
+            setSelectedCategoryId(categoryId);
+          }
         }
         else {
             setCategoryHistoryName(prevHistory => {
