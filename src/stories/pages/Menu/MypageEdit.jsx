@@ -225,7 +225,7 @@ const EditButton = styled.button`
   background: url('/Icons/Edit.svg') no-repeat center;
   background-size: ${(props) => props.iconSize || '20px'}; /* 아이콘 크기 prop으로 조정 */
   background-color: transparent; /* 배경색 제거 */
-  backdrop-filter: blur(20px); /* 배경 흐리게 처리 */
+  backdrop-filter: blur(12px); /* 배경 흐리게 처리 */
   border: none;
   cursor: pointer;
   border-radius: 50%;

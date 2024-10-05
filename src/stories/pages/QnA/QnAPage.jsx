@@ -183,7 +183,9 @@ const QnAPage = () => {
         <Wrapper>
             <Header showIcon={false} text="Q&A" backButton={false} searchButton={true}/>
             <Head  maxWidth={windowSize}>
+            <div style={{width: '380px'}}>
             <Checker text={'A등급 제한'} onChange={handleCheckerChange}/>
+            </div>
             </Head>
             {filteredQuestions.map((question) => {
                 const img = Array.isArray(question.img) ? question.img[0] : question.img;

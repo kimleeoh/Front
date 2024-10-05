@@ -208,7 +208,9 @@ const UnifiedBoard = () => {
             <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
             {activeTab === 'QnA' && (
                 <>
+                <div style={{width: '380px'}}>
                     <Checker text={'A등급 제한'} onChange={handleCheckerChange} />
+                </div>
                     {filteredQuestions
                         .filter(question => question.now_category_list[question.now_category_list.length - 1] === subject)
                         .map((question) => {

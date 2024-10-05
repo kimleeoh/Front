@@ -115,6 +115,12 @@ const Point = styled.div`
 
 const Questions = ({ _id, title, content, subject, time, views, like, img, limit, point }) => {
     const {width: windowSize} = useWindowSize();
+    const getLimitText = (limit) => {
+        if (limit === 0) return '없음';
+        if (limit === 1) return 'A';
+        if (limit === 2) return 'B';
+        return ''; // 그 외의 값에 대한 처리 (필요에 따라 추가)
+    };
     return (
         <OutWrapper maxWidth={windowSize}>
             <StyledLink to={`/qna/${_id}`}>
@@ -131,9 +137,15 @@ const Questions = ({ _id, title, content, subject, time, views, like, img, limit
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {subject} | 조회수 {views} | 제한: {limit}</span>
-                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold', fontSize: '10px', transform: 'translateY(1px)'}}> {like} </span>
-                        <Point><img src='/point_white.svg' width={'12px'} /> + {point}</Point>
+                        <span style={{color: '#737373'}}>
+                            {getTimeElapsed(time)} | {subject} | 조회수 {views} | 제한: {getLimitText(limit)}
+                        </span>
+                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold', fontSize: '10px', transform: 'translateY(1px)'}}>
+                            <img src='/Icons/Thumb_c.svg' /> {like}
+                        </span>
+                        <Point>
+                            <img src='/point_white.svg' width={'12px'} /> + {point}
+                        </Point>
                     </MetaContainer>
                 </Wrapper>
             </StyledLink>

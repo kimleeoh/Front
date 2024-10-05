@@ -150,11 +150,13 @@ const PostQuestionPage = () => {
                     placeholder={'포인트를 입력해 주세요'}
                 />
             ))}
+            <div style={{width: '380px'}}>
             <Checker 
                 text={'A 이상의 답변만 받고 싶어요.'} 
                 onChange={handleCheckerChange}
                 disabled={formValues.point < 100} 
             />
+            </div>
             {formValues.point < 100 && (
                 <Condition maxWidth={windowSize}>
                     <span style={{ fontSize: '10px', color: '#D00303', marginLeft: '20px', marginTop: '10px' }}>

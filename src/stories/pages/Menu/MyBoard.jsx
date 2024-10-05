@@ -85,7 +85,9 @@ const MyBoard = () => {
             )}
             {activeTab === 'QnA' && (
                 <>
+                <div style={{width: '380px'}}>
                     <Checker text={'A등급 제한'} onChange={handleCheckerChange} />
+                    </div>
                     {filteredQuestions
                         .filter(question => question.subject === subject)
                         .map((question) => (

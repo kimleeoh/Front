@@ -108,7 +108,9 @@ const GradeRegister = () => {
                 <Picker items={availableTerms} selectedItem={selectedTerm} onChange={setSelectedTerm} placeholder={'X'} />
                 학기
             </TermPickerWrapper>
+            <div style={{width: '380px'}}>
             <Checker text="인증되지 않음" readOnly={true} type={'check'} />
+            </div>
             {subjects.length > 0 && (
                 <SubjectWrapper maxWidth={windowSize}>
                     {subjects.map(subject => (

@@ -4,7 +4,9 @@ import Loading from "./stories/pages/Loading"; // 로딩 컴포넌트
 
 // React.lazy를 이용한 동적 import
 const StartPage = lazy(() => import("./stories/pages/OnBoarding/StartPage"));
+const LoginPage = lazy(() => import("./stories/pages/OnBoarding/LoginPage"));
 const SignUpPage = lazy(() => import("./stories/pages/OnBoarding/SignUpPage"));
+const ResetPage = lazy(() => import("./stories/pages/OnBoarding/ResetPage"));
 const HomePage = lazy(() => import("./stories/pages/Home/HomePage"));
 const NotificationPage = lazy(() => import("./stories/pages/Home/NotificationPage"));
 const QnAPage = lazy(() => import("./stories/pages/QnA/QnAPage"));
@@ -68,7 +70,9 @@ const App = () => {
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={<StartPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/reset" element={<ResetPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/qna" element={<QnAPage />} />

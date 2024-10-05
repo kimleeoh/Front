@@ -1,107 +1,34 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../../components/Button';
-import TextField from '../../components/TextField';
-import Logo from './Logo'
-import { LoginHandler } from '../../../axioses/SignUpHandler';
+import Logo from './Logo';
 import useWindowSize from '../../components/Common/WindowSize';
 
 const StartPage = () => {
-    const [isLoginMode, setIsLoginMode] = useState(false);
-    const [formData, setFormData] = useState({
-        username: '',
-        password: ''
-    });
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevData => ({ ...prevData, [name]: value }));
-    };
-
-    const navigate = useNavigate(); // Initialize useNavigate
-
-    const handleActualLogin = async () => {
-        const res = await LoginHandler(formData);
-        if (res.status === 200){
-            navigate('/home');
-        }else{
-            alert(`Error during login: ${res.error}`);
-            // 프론트 분들 이 에러 데이터 받아서 Error.jsx페이지에 넣으려면 어떻게 하면 될까요 
-            // 코드 수정해주시면 감사합니다
-        }
-    };
-
-    const handleNavigateLogin = () => {
-        setIsLoginMode(true);
-    };
-
-    const handleNavigateSignUp = () => {
-        navigate('/signup'); // Navigate to the signup page
-    };
-
-    const {width: windowSize} = useWindowSize();
+    const navigate = useNavigate();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <Wrapper maxWidth={windowSize}>
-            <LogoWrapper isLoginMode={isLoginMode}>
-                <Logo/>
+            <LogoWrapper>
+                <Logo />
             </LogoWrapper>
-            <ContentWrapper isLoginMode={isLoginMode}>
-                {isLoginMode ? (
-                    <LoginWrapper>
-                        <TextField
-                            label="아이디"
-                            name="username"
-                            value={formData.username}
-                            onChange= {handleChange}
-                        />
-                        <TextField
-                            label="비밀번호"
-                            name="password"
-                            type="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                        />
-                    </LoginWrapper>
-                ) : (
-                    <>
-                        <SloganWrapper>
-                            <Slogan>당신의 멋진 슬로건을 여기에 입력하세요</Slogan>
-                        </SloganWrapper>
-                        <StartButtonWrapper maxWidth={windowSize}>
-                            <Button
-                                label="시작하기"
-
-                                onClick={handleNavigateSignUp} // Use navigation function
-                            />
-                        </StartButtonWrapper>
-                    </>
-                )}
-            </ContentWrapper>
+            <SloganWrapper>
+                <Slogan>당신의 멋진 슬로건을 여기에 입력하세요</Slogan>
+            </SloganWrapper>
             <ButtonWrapper maxWidth={windowSize}>
                 <Button
+                    label="시작하기"
+                    onClick={() => navigate('/signup')}
+                />
+                <Button
                     label="로그인"
-
                     backgroundColor="#434B60"
                     hoverBackgroundColor="#5A6480"
-                    onClick={isLoginMode ? handleActualLogin : handleNavigateLogin}
+                    onClick={() => navigate('/login')}
                 />
             </ButtonWrapper>
-            {isLoginMode && (
-                <CreateAccountButtonWrapper>
-                    <Button
-                        label="계정 만들기"
-                        width="140px"
-                        height="40px"
-                        color="#434B60"
-                        hoverColor="#434B60"
-                        backgroundColor="transparent"
-                        hoverBackgroundColor="#ACB2BB"
-                        onClick={handleNavigateSignUp} // Use navigation function
-                    />
-                </CreateAccountButtonWrapper>
-            )}
         </Wrapper>
     );
 };
@@ -120,15 +47,8 @@ const Wrapper = styled.div`
 `;
 
 const LogoWrapper = styled.div`
-    width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    width: 100%;
     height: 100px;
-    transition: transform 0.3s ease;
-    transform: ${({ isLoginMode }) => (isLoginMode ? 'translateY(-10px)' : 'translateY(0)')};
-
-    img {
-        width: 100%;
-        height: 100%;
-    }
 `;
 
 const SloganWrapper = styled.div`
@@ -142,27 +62,6 @@ const Slogan = styled.h2`
     padding: 0 20px;
 `;
 
-const ContentWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    opacity: ${({ isLoginMode }) => (isLoginMode ? 1 : 1)};
-    transform: ${({ isLoginMode }) => (isLoginMode ? 'scale(1)' : 'scale(1)')};
-    transition: opacity 0.3s ease, transform 0.3s ease;
-`;
-
-const StartButtonWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
-    padding: 0 20px;
-    box-sizing: border-box;
-`;
-
 const ButtonWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -172,18 +71,4 @@ const ButtonWrapper = styled.div`
     max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
     padding: 0 20px;
     box-sizing: border-box;
-`;
-
-const CreateAccountButtonWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-`;
-
-const LoginWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
 `;
