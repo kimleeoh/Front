@@ -154,7 +154,7 @@ const ResetPage = () => {
         return (
           <>
             <StepDescription>
-              <Title>이메일로 전송된 인증번호를 입력해주세요</Title>
+              <Title>${formData.email}로 전송된 인증번호를 입력해주세요</Title>
             </StepDescription>
             <TextFieldsWrapper>
               <TextField
