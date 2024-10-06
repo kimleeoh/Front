@@ -108,9 +108,9 @@ const GradeRegister = () => {
                 <Picker items={availableTerms} selectedItem={selectedTerm} onChange={setSelectedTerm} placeholder={'X'} />
                 학기
             </TermPickerWrapper>
-            <div style={{width: '380px'}}>
-            <Checker text="인증되지 않음" readOnly={true} type={'check'} />
-            </div>
+            <CheckerWrapper maxWidth={windowSize}>
+                <Checker text="인증되지 않음" readOnly={true} type={'check'} />
+            </CheckerWrapper>
             {subjects.length > 0 && (
                 <SubjectWrapper maxWidth={windowSize}>
                     {subjects.map(subject => (
@@ -231,3 +231,8 @@ const ButtonWrapper = styled.div`
     margin-top: 20px;
     gap: 10px;
 `;
+
+const CheckerWrapper = styled.div`
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+`
