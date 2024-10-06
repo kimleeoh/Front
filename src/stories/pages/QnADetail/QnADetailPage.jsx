@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import BaseAxios from '../../../axioses/BaseAxios';
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import QuestionsDetail from './QuestionsDetail'
+import styled from 'styled-components';
+import BaseAxios from '../../../axioses/BaseAxios';
+import QuestionsDetail from './QuestionsDetail';
 import Header from '../../components/Header';
 import FixedBottomContainer from '../../components/FixedBottomContainer';
 import AnswersDetail from './AnswersDetail';
 import UserComment from './UserComment';
 import useWindowSize from '../../components/Common/WindowSize';
+import ModalReport from '../../components/Common/ModalReport';
 
 const initialQuestionData = [
     {
@@ -156,38 +157,35 @@ const initialUserData = [
 const QnADetailPage = () => {
     const { _id } = useParams();
     const [questionData, setQuestionData] = useState([]);
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+    const [currentReportId, setCurrentReportId] = useState(null);
 
     useEffect(() => {
-        //로컬 스토리지에서 질문 데이터 로드 또는 초기화
-        localStorage.removeItem('questionData');
-        const questionData = localStorage.getItem('questionData');
-        if (questionData) {
-            setQuestionData(JSON.parse(questionData));
+        // 실제 환경에서는 API 호출로 대체
+        const storedData = localStorage.getItem('questionData');
+        if (storedData) {
+            setQuestionData(JSON.parse(storedData));
         } else {
             localStorage.setItem('questionData', JSON.stringify(initialQuestionData));
             setQuestionData(initialQuestionData);
         }
     }, []);
 
-    // const fetchData = async () => {
-    //     try {
-    //         const result = await BaseAxios.get('/api/dummy/testqna');
-    //         setQuestionData([result.data]);
-    //         console.log(result.data)
-    //     } catch (error) {
-    //         console.error('Error fetching question data:', error);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     fetchData()
-    // }, []);
-
     const currentQuestion = questionData.find((question) => question._id === String(_id));
     const currentUser = initialUserData[0];
 
-    const {width: windowSize} = useWindowSize();
-    
+    const { width: windowSize } = useWindowSize();
+
+    const handleReportClick = (questionId) => {
+        setIsReportModalOpen(true);
+        setCurrentReportId(questionId);
+    };
+
+    const handleCloseReportModal = () => {
+        setIsReportModalOpen(false);
+        setCurrentReportId(null);
+    };
+
     return (
         <Wrapper>
             <Header showIcon={false} text={""} backButton={true} searchButton={false}/>
@@ -205,6 +203,7 @@ const QnADetailPage = () => {
                     img={currentQuestion.img}
                     limit={currentQuestion.restricted_type}
                     likePost={currentUser.likePost}
+                    onReportClick={handleReportClick}
                 />
             )}
 
@@ -224,6 +223,7 @@ const QnADetailPage = () => {
 
             {currentQuestion && initialUserData.map((user) => (
                 <UserComment
+                    key={user.id}
                     post_id={currentQuestion._id}
                     name={user.name}
                     level={user.level}
@@ -234,8 +234,13 @@ const QnADetailPage = () => {
                 />
             ))}
 
-            <FixedBottomContainer>
-            </FixedBottomContainer>
+            <ModalReport
+                isOpen={isReportModalOpen}
+                onClose={handleCloseReportModal}
+                reportId={currentReportId}
+            />
+
+            <FixedBottomContainer />
         </Wrapper>
     );
 };

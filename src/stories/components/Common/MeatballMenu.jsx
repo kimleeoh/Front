@@ -1,55 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Popup from '../Popup';
 
-
-const MeatballMenu = () => {
+const MeatballMenu = ({ _id, onReportClick }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
-    const buttonRef = useRef(null); // MeatballMenu 버튼 참조
 
-    const handleTogglePopup = () => {
-        if (buttonRef.current) {
-            const rect = buttonRef.current.getBoundingClientRect();
-            // MeatballMenu의 bottom에 맞춰 팝업의 top을 설정하고, 우측 상단이 맞닿도록 left를 설정
-            setPopupPosition({
-                top: rect.bottom, // 버튼의 아래쪽
-                left: rect.right - 195, // 팝업 너비만큼 조정 (195px)
-            });
-        }
+    const handleTogglePopup = (event) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        setPopupPosition({
+            top: rect.bottom,
+            left: rect.right - 195,
+        });
         setIsPopupOpen(!isPopupOpen);
     };
 
-    const handleClickOutside = (event) => {
-        if (buttonRef.current && !buttonRef.current.contains(event.target)) {
-            setIsPopupOpen(false);
-        }
+    const handleReportClick = () => {
+        onReportClick(_id);
+        setIsPopupOpen(false);
     };
-
-    useEffect(() => {
-        if (isPopupOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-        } else {
-            document.removeEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [isPopupOpen]);
 
     return (
         <div>
-            <MenuButton ref={buttonRef} onClick={handleTogglePopup}>
+            <MenuButton onClick={handleTogglePopup}>
                 <img src="/Icons/meatballs.svg" alt="Meatball Menu" />
             </MenuButton>
             {isPopupOpen && (
-                <Popup
-                    title="Menu"
-                    position={popupPosition} // 동적으로 계산된 위치 전달
-                    onClose={() => setIsPopupOpen(false)}
-                >
-                    <MenuItem>신고하기</MenuItem>
+                <Popup title="Menu" position={popupPosition} onClose={() => setIsPopupOpen(false)}>
+                    <MenuItem onClick={handleReportClick}>신고하기</MenuItem>
                     <MenuItem>링크 복사하기</MenuItem>
                     <MenuItem>Option 3</MenuItem>
                 </Popup>
@@ -59,6 +37,7 @@ const MeatballMenu = () => {
 };
 
 export default MeatballMenu;
+
 
 const MenuButton = styled.button`
     border: none;
