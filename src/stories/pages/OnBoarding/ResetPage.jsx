@@ -7,6 +7,7 @@ import Checker from '../../components/Common/Checker';
 import useWindowSize from '../../components/Common/WindowSize';
 import BaseAxios from '../../../axioses/BaseAxios';
 import Logo from './Logo';
+import CryptoJS from 'crypto-js';
 
 const ResetPage = () => {
   const {width: windowSize} = useWindowSize();
@@ -84,9 +85,11 @@ const ResetPage = () => {
 
   const handleSubmit = async () => {
     try {
+      const randomBytes = CryptoJS.lib.WordArray.random(16);
       const response = await BaseAxios.post('/api/findPassword/changePassword', {
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        iv:randomBytes
       });
       if (response.status === 200) {
         console.log('비밀번호가 성공적으로 변경되었습니다.');
