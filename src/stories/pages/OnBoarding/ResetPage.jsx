@@ -64,7 +64,11 @@ const ResetPage = () => {
           const response = await BaseAxios.post('/api/findPassword/email', { email: formData.email });
           if (response.status === 200) {
             setStep(2);
-          } else {
+          } else if(response.status === 201){
+            setErrorMessage('가입되지 않은 이메일입니다.');
+            alert("가입되지 않은 이메일입니다.");
+          }
+          else {
             setErrorMessage('이메일 전송에 실패했습니다. 다시 시도해 주세요.');
           }
         } else if (step === 2) {
