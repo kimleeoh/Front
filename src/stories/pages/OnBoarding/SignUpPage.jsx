@@ -32,7 +32,7 @@ const SignUpPage = () => {
   const navigate = useNavigate();
 
   const handleSigninClick = () => {
-    navigate('/');
+    navigate('/login');
   };
 
   const handleChange = (e) => {

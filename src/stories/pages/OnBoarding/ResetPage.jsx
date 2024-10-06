@@ -156,7 +156,7 @@ const ResetPage = () => {
               <Title>비밀번호를 찾고자하는 아이디를 입력해 주세요</Title>
             </StepDescription>
             <TextField
-              label="아이디"
+              label="아이디(이메일)"
               value={formData.name}
               onChange={handleChange}
               name="name"
@@ -167,7 +167,7 @@ const ResetPage = () => {
         return (
             <>
             <StepDescription>
-              <Title>아이디의 이메일로 전송된 인증번호를 입력해주세요</Title>
+              <Title>이메일로 전송된 인증번호를 입력해주세요</Title>
             </StepDescription>
             <TextFieldsWrapper>
               <TextField
