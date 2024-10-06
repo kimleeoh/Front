@@ -10,7 +10,6 @@ import Checker from '../../components/Common/Checker';
 import Button from '../../components/Button';
 import useWindowSize from '../../components/Common/WindowSize';
 import BaseAxios from '../../../axioses/BaseAxios';
-import BottomSheet from '../../components/Common/BottomSheet';
 
 const initialUserData = [
   {
@@ -150,13 +149,13 @@ const PostQuestionPage = () => {
                     placeholder={'포인트를 입력해 주세요'}
                 />
             ))}
-            <div style={{width: '380px'}}>
-            <Checker 
-                text={'A 이상의 답변만 받고 싶어요.'} 
-                onChange={handleCheckerChange}
-                disabled={formValues.point < 100} 
-            />
-            </div>
+            <CheckerWrapper maxWidth={windowSize}>
+                <Checker 
+                    text={'A 이상의 답변만 받고 싶어요.'} 
+                    onChange={handleCheckerChange}
+                    disabled={formValues.point < 100} 
+                />
+            </CheckerWrapper>
             {formValues.point < 100 && (
                 <Condition maxWidth={windowSize}>
                     <span style={{ fontSize: '10px', color: '#D00303', marginLeft: '20px', marginTop: '10px' }}>
@@ -204,3 +203,8 @@ const ValidationMessage = styled.div`
   font-size: 12px;
   margin-top: 5px;
 `;
+
+const CheckerWrapper = styled.div`
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+`
