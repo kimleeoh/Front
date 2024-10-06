@@ -4,19 +4,14 @@ import styled from 'styled-components';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
 import Checker from '../../components/Common/Checker';
-import { SignUpHandler } from '../../../axioses/SignUpHandler';
 import useWindowSize from '../../components/Common/WindowSize';
 import BaseAxios from '../../../axioses/BaseAxios';
 import Logo from './Logo';
-
 
 const ResetPage = () => {
   const {width: windowSize} = useWindowSize();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    name: '',
-    department: '',
-    studentId: '',
     email: '',
     confirmEmail: '',
     password: '',
@@ -29,10 +24,6 @@ const ResetPage = () => {
   });
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-
-  const handleSigninClick = () => {
-    navigate('/');
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,7 +47,6 @@ const ResetPage = () => {
     }
   };
 
-
   const validatePassword = (password) => {
     const lengthValid = password.length >= 8 && password.length <= 12;
     const hasNumber = /\d/.test(password);
@@ -66,84 +56,79 @@ const ResetPage = () => {
 
   const handleNext = async () => {
     if (validateStep()) {
-      if (step < 4) {
-        const a = await SignUpHandler(step, formData);
-        if(a){setStep(prevStep => prevStep + 1);}
-      } else if (step === 4) {
-        const result = await BaseAxios.post('/api/register/emailAlready', { email: formData.email }); 
-        if(result.status === 201){alert("이미 가입된 이메일입니다.");}
-        else{
-          BaseAxios.post('/api/register/email', { email: formData.email });
-          setStep(prevStep => prevStep + 1);}
-      } else if (step === 5) {
-        try {
-          const r = await BaseAxios.post('/api/register/emailAuthNum', { email: formData.email, authNum: formData.confirmEmail });
-          if (r.status === 200) {
-            console.log("인증 성공");
-            SignUpHandler(step - 1, formData);
-            setStep(prevStep => prevStep + 1);
+      try {
+        if (step === 1) {
+          const response = await BaseAxios.post('/api/findPassword/email', { email: formData.email });
+          if (response.status === 200) {
+            setStep(2);
           } else {
-            console.log("인증 실패");
-            console.log(r.data);
-            setErrorMessage("인증번호가 올바르지 않습니다. 다시 입력해 주세요.");
-            alert("인증에 실패했습니다. 다시 시도해 주세요.");
+            setErrorMessage('이메일 전송에 실패했습니다. 다시 시도해 주세요.');
           }
-        } catch (error) {
-          console.error("인증 오류", error);
-          setErrorMessage("인증 과정에서 오류가 발생했습니다. 다시 시도해 주세요.");
+        } else if (step === 2) {
+          const response = await BaseAxios.post('/api/findPassword/emailAuthNum', { 
+            email: formData.email, 
+            authNum: formData.confirmEmail 
+          });
+          if (response.status === 200) {
+            setStep(3);
+          } else {
+            setErrorMessage('인증번호가 올바르지 않습니다. 다시 입력해 주세요.');
+          }
         }
+      } catch (error) {
+        console.error("Error:", error);
+        setErrorMessage('오류가 발생했습니다. 다시 시도해 주세요.');
       }
     }
   };
-  
-
-  const handlePrevious = () => {
-    setStep(prevStep => prevStep - 1);
-  };
 
   const handleSubmit = async () => {
-    // 서버로 데이터를 전송하는 로직을 추가할 수 있습니다.
-    // 예: await fetch('/api/signup', { method: 'POST', body: JSON.stringify(formData) });
-    console.log(step-1)
-    SignUpHandler(step-1, formData);
-    console.log('제출된 데이터:', formData);
-    navigate('/confirm');
+    try {
+      const response = await BaseAxios.post('/api/findPassword/changePassword', {
+        email: formData.email,
+        password: formData.password
+      });
+      if (response.status === 200) {
+        console.log('비밀번호가 성공적으로 변경되었습니다.');
+        navigate('/login');
+      } else {
+        setErrorMessage('비밀번호 변경에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setErrorMessage('오류가 발생했습니다. 다시 시도해 주세요.');
+    }
   };
 
   const validateStep = () => {
     switch (step) {
-        case 1:
-            // 이름 입력: 공백 확인
-            return formData.name.trim() !== '';
-        case 2:
-            // 인증 이메일의 입력 여부 확인 (별도의 인증 로직이 있을 수도 있음)
-            return formData.confirmEmail.trim() !== '';
-        case 3:
-            // 비밀번호 유효성 확인 (비밀번호 일치 및 유효성)
-            const { lengthValid, hasNumber, hasSpecialChar } = passwordValid;
-            return (
-                formData.password.trim() !== '' &&
-                formData.password === formData.confirmPassword &&
-                lengthValid && hasNumber && hasSpecialChar
-            );
-        default:
-            return false;
+      case 1:
+        return formData.email.trim() !== '';
+      case 2:
+        return formData.confirmEmail.trim() !== '';
+      case 3:
+        const { lengthValid, hasNumber, hasSpecialChar } = passwordValid;
+        return (
+          formData.password.trim() !== '' &&
+          formData.password === formData.confirmPassword &&
+          lengthValid && hasNumber && hasSpecialChar
+        );
+      default:
+        return false;
     }
-};
-
+  };
 
   const renderButtons = () => {
     const isStepValid = validateStep();
 
     return (
       <Button
-          label={step === 3 ? '완료' : '다음'}
-          onClick={step === 3 ? handleSubmit : handleNext}
-          backgroundColor="#434B60"
-          hoverBackgroundColor="#5A6480"
-          
-          disabled={!isStepValid}
-        />
+        label={step === 3 ? '완료' : '다음'}
+        onClick={step === 3 ? handleSubmit : handleNext}
+        backgroundColor="#434B60"
+        hoverBackgroundColor="#5A6480"
+        disabled={!isStepValid}
+      />
     );
   };
 
@@ -155,19 +140,21 @@ const ResetPage = () => {
             <StepDescription>
               <Title>비밀번호를 찾고자하는 아이디를 입력해 주세요</Title>
             </StepDescription>
+            <TextFieldsWrapper>
             <TextField
-              label="아이디"
-              value={formData.name}
+              label="아이디 (이메일)"
+              value={formData.email}
               onChange={handleChange}
-              name="name"
+              name="email"
             />
+            </TextFieldsWrapper>
           </>
         );
       case 2:
         return (
-            <>
+          <>
             <StepDescription>
-              <Title>아이디의 이메일로 전송된 인증번호를 입력해주세요</Title>
+              <Title>${formData.email}로 전송된 인증번호를 입력해주세요</Title>
             </StepDescription>
             <TextFieldsWrapper>
               <TextField
@@ -178,18 +165,22 @@ const ResetPage = () => {
               />
             </TextFieldsWrapper>
             <div style={{ marginTop: '-20px', display: 'flex' , alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-            <Button label="인증번호 재전송" width="160px"
-          height="40px"
-          color="#434B60"
-          hoverColor="#434B60"
-          backgroundColor="#e2e5e9"
-          hoverBackgroundColor="#ACB2BB"  />
+              <Button 
+                label="인증번호 재전송" 
+                width="160px"
+                height="40px"
+                color="#434B60"
+                hoverColor="#434B60"
+                backgroundColor="#e2e5e9"
+                hoverBackgroundColor="#ACB2BB"
+                onClick={() => handleNext()}
+              />
             </div>
           </>
         );
       case 3:
         return (
-            <>
+          <>
             <StepDescription>
               <Title>비밀번호 입력 및 확인</Title>
               <Subtitle>비밀번호와 확인 비밀번호를 입력해 주세요.</Subtitle>
@@ -237,12 +228,12 @@ const ResetPage = () => {
         return null;
     }
   };
+
   return (
     <Wrapper maxWidth={windowSize}>
       <FormWrapper maxWidth={windowSize}>
-        
-      <LogoWrapper>
-            <Logo />
+        <LogoWrapper>
+          <Logo />
         </LogoWrapper>
         {renderStepContent()}
       </FormWrapper>
@@ -271,7 +262,7 @@ const FormWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 40px;
+  gap: 20px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -317,6 +308,7 @@ const TextFieldsWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
+  margin-top: 10px;
 `;
 
 const ErrorText = styled.p`

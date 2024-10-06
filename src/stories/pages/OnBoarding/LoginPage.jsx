@@ -63,7 +63,7 @@ const LoginPage = () => {
             <CreateAccountButtonWrapper>
                 <Button
                     label="회원가입"
-                    width="140px"
+                    width="110px"
                     height="40px"
                     color="#434B60"
                     hoverColor="#434B60"
@@ -127,5 +127,5 @@ const CreateAccountButtonWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 8px;
 `;

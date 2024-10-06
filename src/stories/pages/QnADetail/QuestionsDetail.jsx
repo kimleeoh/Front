@@ -8,7 +8,7 @@ import getTimeElapsed from '../../components/Common/getTimeElapsed';
 import CategoryPath from '../../components/Common/CategoryPath';
 import useWindowSize from '../../components/Common/WindowSize';
 
-const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views, like, img, limit, likePost }) => {
+const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views, like, img, limit, likePost, onReportClick }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
 
     const [isLiked, setIsLiked] = useState(false);
@@ -52,7 +52,7 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
             <Wrapper>
                 <TopBar>
                     <CategoryPath categories={subject} />
-                    <MeatballMenu _id={_id} />
+                    <MeatballMenu _id={_id} onReportClick={() => onReportClick(_id)} />
                 </TopBar>
                 <Title>
                     <img src="/Icons/Q.svg" alt="Q icon" />
