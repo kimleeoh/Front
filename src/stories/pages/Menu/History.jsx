@@ -7,6 +7,7 @@ import Checker from '../../components/Common/Checker';
 import TabNavigation from '../../components/Common/TabNavigation';
 import ChipFilter from '../../components/Common/ChipFilter';
 import Tips from '../Tips/Tips';
+import useWindowSize from '../../components/Common/WindowSize';
 
 const initialQuestionData = [
 ]
@@ -21,6 +22,8 @@ const History = () => {
     const [tipsData, setTipsData] = useState([]);
     const [filteredTips, setFilteredTips] = useState([]);
     const [activeTab, setActiveTab] = useState('전체');
+
+    const {width: windowSize} = useWindowSize();
 
     useEffect(() => {
         // 데이터 로딩 로직
@@ -85,9 +88,9 @@ const History = () => {
             )}
             {activeTab === 'QnA' && (
                 <>
-                <div style={{width: '380px'}}>
+                <CheckerWrapper maxWidth={windowSize}>
                     <Checker text={'A등급 제한'} onChange={handleCheckerChange} />
-                </div>
+                </CheckerWrapper>
                     {filteredQuestions
                         .filter(question => question.subject === subject)
                         .map((question) => (
@@ -145,3 +148,8 @@ const Wrapper = styled.div`
     margin-bottom: 100px;
     width: 100%;
 `;
+
+const CheckerWrapper = styled.div`
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+`
