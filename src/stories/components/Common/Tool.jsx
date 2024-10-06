@@ -1,53 +1,65 @@
-import React, { useState, useRef, useEffect } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import Popup from '../Popup';
-import useWindowSize from './WindowSize';
+import React, { useState, useRef, useEffect } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import Popup from "../Popup";
+import useWindowSize from "./WindowSize";
 
 export const Votes = ({ like, handleLike, handleUnlike }) => {
     const [likesCount, setLikesCount] = useState(like);
     const [voteStatus, setVoteStatus] = useState(null); // null: no vote, 'up': upvoted, 'down': downvoted
 
     const handleUpClick = () => {
-        if (voteStatus === 'up') {
+        if (voteStatus === "up") {
             setLikesCount(likesCount - 1); // undo upvote
             setVoteStatus(null);
             handleUnlike();
         } else {
-            setLikesCount(voteStatus === 'down' ? likesCount + 2 : likesCount + 1); // if downvoted before, add 2
-            setVoteStatus('up');
+            setLikesCount(
+                voteStatus === "down" ? likesCount + 2 : likesCount + 1
+            ); // if downvoted before, add 2
+            setVoteStatus("up");
             handleLike();
         }
     };
 
     const handleDownClick = () => {
-        if (voteStatus === 'down') {
+        if (voteStatus === "down") {
             setLikesCount(likesCount + 1); // undo downvote
             setVoteStatus(null);
             handleUnlike();
         } else {
-            setLikesCount(voteStatus === 'up' ? likesCount - 2 : likesCount - 1); // if upvoted before, subtract 2
-            setVoteStatus('down');
+            setLikesCount(
+                voteStatus === "up" ? likesCount - 2 : likesCount - 1
+            ); // if upvoted before, subtract 2
+            setVoteStatus("down");
             handleUnlike();
         }
     };
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <VotesWrapper maxWidth={windowSize}>
             <VoteButton onClick={handleUpClick}>
                 <img
-                    src={voteStatus === 'up' ? '/Icons/Arrow_vote_on.svg' : '/Icons/Arrow_vote.svg'}
+                    src={
+                        voteStatus === "up"
+                            ? "/Icons/Arrow_vote_on.svg"
+                            : "/Icons/Arrow_vote.svg"
+                    }
                     alt="Upvote"
                 />
             </VoteButton>
             <VoteCount voted={voteStatus !== null}>{likesCount}</VoteCount>
             <VoteButton onClick={handleDownClick}>
                 <img
-                    src={voteStatus === 'down' ? '/Icons/Arrow_vote_on.svg' : '/Icons/Arrow_vote.svg'}
+                    src={
+                        voteStatus === "down"
+                            ? "/Icons/Arrow_vote_on.svg"
+                            : "/Icons/Arrow_vote.svg"
+                    }
                     alt="Downvote"
-                    style={{ transform: 'rotate(180deg)' }}
+                    style={{ transform: "rotate(180deg)" }}
                 />
             </VoteButton>
         </VotesWrapper>
@@ -59,13 +71,13 @@ export const Scrap = () => {
 
     const handleSaveToggle = () => {
         setIsSaved(!isSaved);
-        console.log('Scrap toggled:', isSaved ? 'Unsaved' : 'Saved');
+        console.log("Scrap toggled:", isSaved ? "Unsaved" : "Saved");
     };
 
     return (
         <ToolButton onClick={handleSaveToggle}>
             <img
-                src={isSaved ? '/Icons/Save_e.svg' : '/Icons/Save_d.svg'}
+                src={isSaved ? "/Icons/Save_e.svg" : "/Icons/Save_d.svg"}
                 alt="Scrap"
             />
         </ToolButton>
@@ -77,13 +89,20 @@ export const Notification = () => {
 
     const handleNotificationToggle = () => {
         setIsNotificationEnabled(!isNotificationEnabled);
-        console.log('Notification toggled:', isNotificationEnabled ? 'Disabled' : 'Enabled');
+        console.log(
+            "Notification toggled:",
+            isNotificationEnabled ? "Disabled" : "Enabled"
+        );
     };
 
     return (
         <ToolButton onClick={handleNotificationToggle}>
             <img
-                src={isNotificationEnabled ? '/Icons/Notification_e.svg' : '/Icons/Notification_d.svg'}
+                src={
+                    isNotificationEnabled
+                        ? "/Icons/Notification_e.svg"
+                        : "/Icons/Notification_d.svg"
+                }
                 alt="Notification"
             />
         </ToolButton>
@@ -115,13 +134,13 @@ export const MeatballMenu = () => {
 
     useEffect(() => {
         if (isPopupOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
+            document.addEventListener("mousedown", handleClickOutside);
         } else {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         }
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [isPopupOpen]);
 
@@ -193,7 +212,7 @@ const VoteButton = styled.button`
 `;
 
 const VoteCount = styled.span`
-    color: ${(props) => (props.voted ? '#3182F7' : '#ACB2BB')};
+    color: ${(props) => (props.voted ? "#3182F7" : "#ACB2BB")};
     font-size: 16px;
     font-weight: bold;
     transition: color 0.3s ease;
@@ -241,7 +260,7 @@ const MenuButton = styled.button`
     }
 
     &:hover {
-        background-color: #E2E5E9;
+        background-color: #e2e5e9;
     }
     &:active {
         transform: scale(0.9);
@@ -254,7 +273,7 @@ const MenuItem = styled.div`
     cursor: pointer;
     transition: all 0.3s ease;
     &:hover {
-        background-color: #E2E5E9;
+        background-color: #e2e5e9;
     }
     &:active {
         transform: scale(0.98);

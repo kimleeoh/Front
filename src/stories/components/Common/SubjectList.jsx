@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import useWindowSize from "./WindowSize";
 
 const SubjectList = ({ subject, actions, onClick, rate }) => {
@@ -10,33 +10,33 @@ const SubjectList = ({ subject, actions, onClick, rate }) => {
         }
     };
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <Line onClick={handleClick}>
             <Wrapper maxWidth={windowSize}>
                 <SubjectTitle>
-                    <span style={{ marginLeft: '10px' }}>{subject}</span>
+                    <span style={{ marginLeft: "10px" }}>{subject}</span>
                 </SubjectTitle>
-                    {actions?.map((action, index) => (
-                        <ActionButton 
-                            key={index} 
-                            onClick={(e) => {
-                                e.stopPropagation(); // 이벤트 버블링 방지
-                                if (action.onClick) {
-                                    action.onClick(subject); // 각 액션에 대한 onClick 함수 호출
-                                }
-                            }}
-                            style={{ marginLeft: action.marginLeft || '5px' }}
-                        >
-                            <img
-                                src={action.icon}
-                                alt={action.alt}
-                                style={{ cursor: 'pointer' }}
-                            />
-                        </ActionButton>
-                    ))}
-                    {rate && <Rate>{rate}</Rate>}
+                {actions?.map((action, index) => (
+                    <ActionButton
+                        key={index}
+                        onClick={(e) => {
+                            e.stopPropagation(); // 이벤트 버블링 방지
+                            if (action.onClick) {
+                                action.onClick(subject); // 각 액션에 대한 onClick 함수 호출
+                            }
+                        }}
+                        style={{ marginLeft: action.marginLeft || "5px" }}
+                    >
+                        <img
+                            src={action.icon}
+                            alt={action.alt}
+                            style={{ cursor: "pointer" }}
+                        />
+                    </ActionButton>
+                ))}
+                {rate && <Rate>{rate}</Rate>}
             </Wrapper>
         </Line>
     );
@@ -50,11 +50,11 @@ SubjectList.propTypes = {
         PropTypes.shape({
             icon: PropTypes.string.isRequired,
             alt: PropTypes.string.isRequired,
-            onClick: PropTypes.func,  // 액션에 대한 onClick 핸들러
+            onClick: PropTypes.func, // 액션에 대한 onClick 핸들러
             marginLeft: PropTypes.string,
         })
     ),
-    onClick: PropTypes.func,  // SubjectList 전체에 대한 onClick 핸들러
+    onClick: PropTypes.func, // SubjectList 전체에 대한 onClick 핸들러
 };
 
 SubjectList.defaultProps = {
@@ -63,7 +63,7 @@ SubjectList.defaultProps = {
 
 const Wrapper = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     box-sizing: border-box;
     height: 40px;
     display: flex;
@@ -75,21 +75,21 @@ const Wrapper = styled.div`
     cursor: pointer;
     transition: all 0.2s ease;
     &:active {
-        background-color: #F1F2F4;
+        background-color: #f1f2f4;
         transition: all 0.2s ease;
         scale: 0.98;
     }
 `;
 
 const Line = styled.div`
-    border-bottom: 1px solid #F1F2F4;
+    border-bottom: 1px solid #f1f2f4;
 `;
 
 const SubjectTitle = styled.div`
     display: flex;
     align-items: center;
     font-size: 14px;
-    color: #434B60;
+    color: #434b60;
     width: 100%;
 `;
 
@@ -100,7 +100,7 @@ const ActionButton = styled.button`
     cursor: pointer;
     transition: all 0.3s ease;
     &:hover {
-        background-color: #F1F7Fd;
+        background-color: #f1f7fd;
     }
     &:active {
         scale: 0.95;
@@ -109,6 +109,6 @@ const ActionButton = styled.button`
 
 const Rate = styled.div`
     font-size: 14px;
-    color: #434B60;
+    color: #434b60;
     margin-right: 10px;
 `;

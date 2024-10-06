@@ -11,12 +11,12 @@ const getTimeElapsed = (createdAt) => {
     const months = Math.floor(days / 30); // Rough estimate of 30 days per month
     const years = Math.floor(days / 365); // Rough estimate of 365 days per year
 
-    if (minutes < 1) return '방금 전';
+    if (minutes < 1) return "방금 전";
     if (minutes < 60) return `${minutes}분 전`;
     if (hours < 24) return `${hours}시간 전`;
     if (days < 30) return `${days}일 전`;
     if (months < 12) return `${months}개월 전`;
     return `${years}년 전`;
-}
+};
 
 export default getTimeElapsed;

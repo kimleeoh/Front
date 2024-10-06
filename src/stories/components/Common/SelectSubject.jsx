@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import BaseAxios from '../../../axioses/BaseAxios';
+import React, { useState, useEffect } from "react";
+import BaseAxios from "../../../axioses/BaseAxios";
 import styled from "styled-components";
-import SubjectInfo from './SubjectInfo';
+import SubjectInfo from "./SubjectInfo";
 
-const SelectSubject = ({startId, isBackClicked, onCategorySelect}) => {
-    const [selectedCategoryId, setSelectedCategoryId] = useState(startId || '');
+const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
+    const [selectedCategoryId, setSelectedCategoryId] = useState(startId || "");
     const [subCategories, setSubCategories] = useState([]);
     const [categoryHistoryId, setCategoryHistoryId] = useState([]);
     const [categoryHistoryName, setCategoryHistoryName] = useState([]);
@@ -19,28 +19,34 @@ const SelectSubject = ({startId, isBackClicked, onCategorySelect}) => {
 
     useEffect(() => {
         onCategorySelect(categoryHistoryName);
-    }, [categoryHistoryName])
+    }, [categoryHistoryName]);
 
     useEffect(() => {
-          BaseAxios.post('/api/dummy/category', { id: selectedCategoryId })
-            .then(response => {
+        BaseAxios.post("/api/dummy/category", { id: selectedCategoryId })
+            .then((response) => {
                 const fetchedCategories = response.data;
 
-                const newBoardOptions = fetchedCategories.sub_category_list_name.map((subName, index) => ({
-                    value: subName,
-                    label: subName,
-                    id: fetchedCategories.sub_category_list_id[index],
-                }));
+                const newBoardOptions =
+                    fetchedCategories.sub_category_list_name.map(
+                        (subName, index) => ({
+                            value: subName,
+                            label: subName,
+                            id: fetchedCategories.sub_category_list_id[index],
+                        })
+                    );
                 if (fetchedCategories.type == 2) {
-                    Promise.all(newBoardOptions.map(option => 
-                        BaseAxios.post('/api/dummy/category', {id: option.id})
-                            .then(response => ({
+                    Promise.all(
+                        newBoardOptions.map((option) =>
+                            BaseAxios.post("/api/dummy/category", {
+                                id: option.id,
+                            }).then((response) => ({
                                 CategoryName: response.data.category_name,
                                 Professor: response.data.professor,
                                 TimeIcredit: response.data.timeIcredit,
                                 Sub_student: response.data.sub_student,
                             }))
-                    )).then(newBoardOptions2 => {
+                        )
+                    ).then((newBoardOptions2) => {
                         setFinalOptions(newBoardOptions2);
                     });
                 }
@@ -48,43 +54,45 @@ const SelectSubject = ({startId, isBackClicked, onCategorySelect}) => {
                 console.log("newBoardOptions: ", newBoardOptions);
                 setSubCategories(newBoardOptions);
             })
-            .catch(err => {
-              console.error(err);
+            .catch((err) => {
+                console.error(err);
             });
-      }, [selectedCategoryId]);
+    }, [selectedCategoryId]);
 
     const handleCategorySelect = (categoryId, categoryLabel) => {
-        if (categoryLabel !== categoryHistoryName[categoryHistoryName.length - 1]) {
+        if (
+            categoryLabel !==
+            categoryHistoryName[categoryHistoryName.length - 1]
+        ) {
             setCategoryHistoryId([...categoryHistoryId, selectedCategoryId]);
             setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
             setSelectedCategoryId(categoryId);
-          }
+        }
     };
 
     const handleFinalCategorySelect = (categoryLabel) => {
-        if (canSelect){
+        if (canSelect) {
             setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
             setCanSelect(false);
-        }
-        else {
-            setCategoryHistoryName(prevHistory => {
+        } else {
+            setCategoryHistoryName((prevHistory) => {
                 const newHistory = [...prevHistory];
                 newHistory[newHistory.length - 1] = categoryLabel;
                 return newHistory;
-            })
+            });
         }
-    }
+    };
 
     const handleGoBack = () => {
         if (categoryHistoryId.length > 0) {
-            const previousCategoryId = categoryHistoryId[categoryHistoryId.length - 1];  // Get the last category from history
-            setCategoryHistoryId(categoryHistoryId.slice(0, -1));  // Remove the last entry from history
-            setSelectedCategoryId(previousCategoryId);  // Set previous category as selected
+            const previousCategoryId =
+                categoryHistoryId[categoryHistoryId.length - 1]; // Get the last category from history
+            setCategoryHistoryId(categoryHistoryId.slice(0, -1)); // Remove the last entry from history
+            setSelectedCategoryId(previousCategoryId); // Set previous category as selected
             if (!canSelect) {
-                setCategoryHistoryName(categoryHistoryName.slice(0, -2)); 
-            }
-            else {
-                setCategoryHistoryName(categoryHistoryName.slice(0, -1)); 
+                setCategoryHistoryName(categoryHistoryName.slice(0, -2));
+            } else {
+                setCategoryHistoryName(categoryHistoryName.slice(0, -1));
             }
         }
     };
@@ -96,42 +104,48 @@ const SelectSubject = ({startId, isBackClicked, onCategorySelect}) => {
 
     return (
         <Wrapper>
-            {finalOptions.length === 0 ? (
-                subCategories.map((option) => (
-                    <ListItemContainer key={option.id}>
-                        <ListItem
-                            onClick={() => handleCategorySelect(option.id, option.label)}
-                        >
-                            {option.label}
-                            <span style={{ transform: "rotate(270deg)" }}>
-                                <img src="/Icons/Arrow.svg" alt="arrow" width={"12px"} />
-                            </span>
-                        </ListItem>
-                    </ListItemContainer>
-                ))
-            ) : (
-                finalOptions.map((option) => (
-                    <SubjectInfo 
-                        category_name={option.CategoryName}
-                        professor={option.Professor}
-                        timeIcredit={option.TimeIcredit}
-                        sub_student={option.Sub_student} 
-                        onClick={() => handleFinalCategorySelect(option.CategoryName)}
-                    />
-                ))
-            )}
+            {finalOptions.length === 0
+                ? subCategories.map((option) => (
+                      <ListItemContainer key={option.id}>
+                          <ListItem
+                              onClick={() =>
+                                  handleCategorySelect(option.id, option.label)
+                              }
+                          >
+                              {option.label}
+                              <span style={{ transform: "rotate(270deg)" }}>
+                                  <img
+                                      src="/Icons/Arrow.svg"
+                                      alt="arrow"
+                                      width={"12px"}
+                                  />
+                              </span>
+                          </ListItem>
+                      </ListItemContainer>
+                  ))
+                : finalOptions.map((option) => (
+                      <SubjectInfo
+                          category_name={option.CategoryName}
+                          professor={option.Professor}
+                          timeIcredit={option.TimeIcredit}
+                          sub_student={option.Sub_student}
+                          onClick={() =>
+                              handleFinalCategorySelect(option.CategoryName)
+                          }
+                      />
+                  ))}
         </Wrapper>
-    )
-}
+    );
+};
 
-export default SelectSubject
+export default SelectSubject;
 
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
     font-size: 15px;
-`
+`;
 const ListItemContainer = styled.div`
     display: flex;
     width: 100%;
@@ -148,9 +162,9 @@ const ListItemContainer = styled.div`
     &:active {
         transform: scale(0.98);
     }
-`
+`;
 const ListItem = styled.li`
     display: flex;
     width: 100%;
     justify-content: space-between;
-`
+`;

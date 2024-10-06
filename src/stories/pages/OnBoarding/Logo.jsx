@@ -1,8 +1,8 @@
 // components/Logo.js
-import React, { useState, useCallback } from 'react';
-import styled, { keyframes } from 'styled-components';
-import PropTypes from 'prop-types';
-import useWindowSize from '../../components/Common/WindowSize';
+import React, { useState, useCallback } from "react";
+import styled, { keyframes } from "styled-components";
+import PropTypes from "prop-types";
+import useWindowSize from "../../components/Common/WindowSize";
 
 // 애니메이션 정의
 const jellyAnimation = keyframes`
@@ -29,24 +29,29 @@ const Logo = ({ width, theme }) => {
 
     const handleClick = useCallback(() => {
         // 애니메이션을 강제로 초기화하기 위해 키를 변경
-        setAnimationKey(prevKey => prevKey + 1);
+        setAnimationKey((prevKey) => prevKey + 1);
     }, []);
 
     // 테마에 따른 로고 이미지 경로 설정
     const getLogoSrc = () => {
         switch (theme) {
-            case 'darkgray':
-                return '/Logo_darkgray.svg';
-            case 'main':
+            case "darkgray":
+                return "/Logo_darkgray.svg";
+            case "main":
             default:
-                return '/Logo_main.svg';
+                return "/Logo_main.svg";
         }
     };
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
-        <LogoWrapper key={animationKey} width={width} onClick={handleClick} maxWidth={windowSize}>
+        <LogoWrapper
+            key={animationKey}
+            width={width}
+            onClick={handleClick}
+            maxWidth={windowSize}
+        >
             <img src={getLogoSrc()} alt="Logo" />
         </LogoWrapper>
     );
@@ -54,14 +59,14 @@ const Logo = ({ width, theme }) => {
 
 // PropTypes 정의
 Logo.propTypes = {
-    width: PropTypes.string,   // 로고의 넓이를 설정할 수 있는 prop
-    theme: PropTypes.oneOf(['main', 'darkgray'])  // 로고의 테마를 설정할 수 있는 선택형 prop
+    width: PropTypes.string, // 로고의 넓이를 설정할 수 있는 prop
+    theme: PropTypes.oneOf(["main", "darkgray"]), // 로고의 테마를 설정할 수 있는 선택형 prop
 };
 
 // 기본 prop 값
 Logo.defaultProps = {
-    width: '334px',
-    theme: 'main'
+    width: "334px",
+    theme: "main",
 };
 
 export default Logo;
@@ -69,7 +74,7 @@ export default Logo;
 // 스타일 정의
 const LogoWrapper = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     padding: 0 20px;
     box-sizing: border-box;
     height: auto;

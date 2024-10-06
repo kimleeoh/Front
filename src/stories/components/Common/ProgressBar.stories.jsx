@@ -1,15 +1,15 @@
-import ProgressBar from './ProgressBar';
+import ProgressBar from "./ProgressBar";
 
 const meta = {
-  component: ProgressBar,
+    component: ProgressBar,
 };
 
 export default meta;
 
 export const Default = {
-  args: {
-    totalSteps: 0,
-    currentStep: 0,
-    color: "#000000"
-  }
+    args: {
+        totalSteps: 0,
+        currentStep: 0,
+        color: "#000000",
+    },
 };

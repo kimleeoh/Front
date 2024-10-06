@@ -1,7 +1,7 @@
-import SearchField from './SearchField';
+import SearchField from "./SearchField";
 
 const meta = {
-  component: SearchField,
+    component: SearchField,
 };
 
 export default meta;

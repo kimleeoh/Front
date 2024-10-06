@@ -1,7 +1,7 @@
-import Picker from './Picker';
+import Picker from "./Picker";
 
 const meta = {
-  component: Picker,
+    component: Picker,
 };
 
 export default meta;

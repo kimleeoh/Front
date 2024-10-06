@@ -1,7 +1,7 @@
-import LogoFluid from './LogoFluid';
+import LogoFluid from "./LogoFluid";
 
 const meta = {
-  component: LogoFluid,
+    component: LogoFluid,
 };
 
 export default meta;

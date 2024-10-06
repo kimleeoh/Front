@@ -1,9 +1,9 @@
-import StartPage from './StartPage';
+import StartPage from "./StartPage";
 
 const meta = {
-  component: StartPage,
-  title: 'pages/OnBoarding/StartPage',
-  tags: ['autodocs']
+    component: StartPage,
+    title: "pages/OnBoarding/StartPage",
+    tags: ["autodocs"],
 };
 
 export default meta;

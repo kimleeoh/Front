@@ -1,7 +1,7 @@
-import DiscreteProgressBar from './DiscreteProgressBar';
+import DiscreteProgressBar from "./DiscreteProgressBar";
 
 const meta = {
-  component: DiscreteProgressBar,
+    component: DiscreteProgressBar,
 };
 
 export default meta;

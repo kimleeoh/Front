@@ -1,38 +1,55 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import Report from '../../components/Common/Report';
-import { Votes, Scrap, Notification } from '../../components/Common/Tool';
-import CarouselTemp from '../../components/Common/CarouselTemp';
-import MeatballMenu from '../../components/Common/MeatballMenu';
-import useWindowSize from '../../components/Common/WindowSize';
+import React, { useState } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import Report from "../../components/Common/Report";
+import { Votes, Scrap, Notification } from "../../components/Common/Tool";
+import CarouselTemp from "../../components/Common/CarouselTemp";
+import MeatballMenu from "../../components/Common/MeatballMenu";
+import useWindowSize from "../../components/Common/WindowSize";
 
-const Answers = ({ _id, name, level, user_grade, major, content, img, like }) => {
+const Answers = ({
+    _id,
+    name,
+    level,
+    user_grade,
+    major,
+    content,
+    img,
+    like,
+}) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
     const [isAdopted, setIsAdopted] = useState(true); // Adoption state management
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <OutWrapper maxWidth={windowSize}>
             <Wrapper>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                >
                     <SubWrapper>
-                        <Title><img src="/Icons/A.svg" /></Title>
+                        <Title>
+                            <img src="/Icons/A.svg" />
+                        </Title>
                         <img src="/Icons/Profile.svg" />
                         <ProfileContainer>
-                            <LevelGrade>Lv. {level} | {user_grade} 등급</LevelGrade>
-                            <MajorName>{major} {name}</MajorName>
+                            <LevelGrade>
+                                Lv. {level} | {user_grade} 등급
+                            </LevelGrade>
+                            <MajorName>
+                                {major} {name}
+                            </MajorName>
                         </ProfileContainer>
                     </SubWrapper>
-                    <div style={{display: 'flex', gap: '5px'}}>
-                    {isAdopted && (
-                        <AdoptWrapper>
-                            <Adopt src="/adopt.svg" />
-                            <AdoptLabel>질문자 채택</AdoptLabel>
-                        </AdoptWrapper>
-                    )}
-                    <MeatballMenu _id={_id} />
+                    <div style={{ display: "flex", gap: "5px" }}>
+                        {isAdopted && (
+                            <AdoptWrapper>
+                                <Adopt src="/adopt.svg" />
+                                <AdoptLabel>질문자 채택</AdoptLabel>
+                            </AdoptWrapper>
+                        )}
+                        <MeatballMenu _id={_id} />
                     </div>
                 </div>
                 <Content>{content}</Content>
@@ -48,7 +65,12 @@ const Answers = ({ _id, name, level, user_grade, major, content, img, like }) =>
                             infinite={true}
                         >
                             {images.map((image, index) => (
-                                <Image key={index} src={image} draggable="false" maxWidth={windowSize} />
+                                <Image
+                                    key={index}
+                                    src={image}
+                                    draggable="false"
+                                    maxWidth={windowSize}
+                                />
                             ))}
                         </CarouselTemp>
                     </CarouselWrapper>
@@ -81,12 +103,12 @@ Answers.propTypes = {
 Answers.defaultProps = {
     _id: 0,
     post_id: 0,
-    name: '이름',
+    name: "이름",
     level: 1,
-    user_grade: '성적',
-    major: '전공',
-    profileImg: '/Icons/profile.svg',
-    content: '내용',
+    user_grade: "성적",
+    major: "전공",
+    profileImg: "/Icons/profile.svg",
+    content: "내용",
     img: null,
     like: 0,
 };
@@ -97,7 +119,7 @@ const Wrapper = styled.div`
     justify-content: center;
 
     padding: 20px 0;
-    border-bottom: 1px solid #F1F2F4;
+    border-bottom: 1px solid #f1f2f4;
 `;
 
 const SubWrapper = styled.div`
@@ -137,7 +159,7 @@ const MajorName = styled.div`
 
 const OutWrapper = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
 `;
 
 const AdoptWrapper = styled.div`

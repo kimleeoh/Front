@@ -1,38 +1,43 @@
 import React, { Suspense, lazy, useMemo } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../OnBoarding/Logo";
 import useWindowSize from "../../components/Common/WindowSize";
 
 // Dynamic imports for code splitting
-const NavBar = lazy(() => import('../../components/NavBar'));
-const FixedBottomContainer = lazy(() => import('../../components/FixedBottomContainer'));
+const NavBar = lazy(() => import("../../components/NavBar"));
+const FixedBottomContainer = lazy(
+    () => import("../../components/FixedBottomContainer")
+);
 
 const HomePage = () => {
     const navigate = useNavigate();
     const { width: windowSize } = useWindowSize();
 
     // Memoizing maxWidth to prevent unnecessary recalculations
-    const maxWidth = useMemo(() => (windowSize > 430 ? '400px' : windowSize), [windowSize]);
+    const maxWidth = useMemo(
+        () => (windowSize > 430 ? "400px" : windowSize),
+        [windowSize]
+    );
 
     return (
         <Wrapper>
             <Header maxWidth={maxWidth}>
-                <div style={{ marginBottom: '10px', width: '100%' }}>
-                    <Logo theme="darkgray" /> 
+                <div style={{ marginBottom: "10px", width: "100%" }}>
+                    <Logo theme="darkgray" />
                 </div>
-                <PointButton onClick={() => navigate('/point')}>내 포인트: 3500P</PointButton>
-                <NotificationButton onClick={() => navigate('/notification')}>
+                <PointButton onClick={() => navigate("/point")}>
+                    내 포인트: 3500P
+                </PointButton>
+                <NotificationButton onClick={() => navigate("/notification")}>
                     <img
                         src="/Icons/Bellnactive.svg"
                         alt="Notification"
-                        loading="lazy"  // Lazy loading for image
+                        loading="lazy" // Lazy loading for image
                     />
                 </NotificationButton>
             </Header>
-            <Content maxWidth={maxWidth}>
-                {/* 메인 콘텐츠 */}
-            </Content>
+            <Content maxWidth={maxWidth}>{/* 메인 콘텐츠 */}</Content>
             <Suspense fallback={<div>Loading...</div>}>
                 <FixedBottomContainer>
                     <NavBar initialState="Home" />
@@ -67,7 +72,7 @@ const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    background: rgba(240, 242, 244, 0.30);
+    background: rgba(240, 242, 244, 0.3);
     backdrop-filter: blur(5px);
     position: fixed;
     z-index: 1000;
@@ -83,7 +88,7 @@ const PointButton = styled.button`
     align-items: center;
     border: none;
     border-radius: 11px;
-    color: #434B60;
+    color: #434b60;
     font-family: Inter;
     font-size: 12px;
     font-weight: 700;
@@ -110,7 +115,7 @@ const NotificationButton = styled.button`
         width: 100%;
         height: auto;
         object-fit: contain;
-        loading: lazy;  // Lazy loading for notification icon
+        loading: lazy; // Lazy loading for notification icon
     }
 
     &:active {

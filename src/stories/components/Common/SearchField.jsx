@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import React, { useState, useRef } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const SearchField = ({ placeholder, onSearch, width }) => {
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState("");
     const [isFocused, setIsFocused] = useState(false);
     const inputRef = useRef(null); // input에 대한 ref 생성
 
@@ -16,14 +16,14 @@ const SearchField = ({ placeholder, onSearch, width }) => {
     };
 
     const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === "Enter") {
             handleSearch();
             inputRef.current.blur(); // 엔터를 눌렀을 때 포커스 해제
         }
     };
 
     const clearSearch = () => {
-        setQuery('');
+        setQuery("");
     };
 
     const handleFocus = () => {
@@ -50,9 +50,7 @@ const SearchField = ({ placeholder, onSearch, width }) => {
                 placeholder={placeholder || "검색어를 입력하세요"}
             />
             {query && isFocused && (
-                <ClearButton onMouseDown={clearSearch}>
-                    ×
-                </ClearButton>
+                <ClearButton onMouseDown={clearSearch}>×</ClearButton>
             )}
         </SearchContainer>
     );
@@ -69,7 +67,7 @@ export default SearchField;
 const SearchContainer = styled.div`
     display: flex;
     align-items: center;
-    width: ${({ width }) => width || '100%'};
+    width: ${({ width }) => width || "100%"};
     height: 40px;
     max-width: 400px;
     border: none;

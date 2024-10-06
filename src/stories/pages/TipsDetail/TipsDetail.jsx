@@ -1,44 +1,74 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { Votes, Scrap, Notification, MeatballMenu } from '../../components/Common/Tool';
-import getTimeElapsed from '../../components/Common/getTimeElapsed';
-import ImageDownloadList from './ImageDownloadList';
-import useWindowSize from '../../components/Common/WindowSize';
+import React, { useState } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import {
+    Votes,
+    Scrap,
+    Notification,
+    MeatballMenu,
+} from "../../components/Common/Tool";
+import getTimeElapsed from "../../components/Common/getTimeElapsed";
+import ImageDownloadList from "./ImageDownloadList";
+import useWindowSize from "../../components/Common/WindowSize";
 
-const TipsDetail = ({ _id, name, major, title, subject, content, time, views, like, img }) => {
+const TipsDetail = ({
+    _id,
+    name,
+    major,
+    title,
+    subject,
+    content,
+    time,
+    views,
+    like,
+    img,
+}) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <OutWrapper maxWidth={windowSize}>
             <Wrapper>
-                <span style={{ marginBottom: '15px', fontSize: '15px' }}>{subject}</span>
+                <span style={{ marginBottom: "15px", fontSize: "15px" }}>
+                    {subject}
+                </span>
                 <Title>{title}</Title>
                 <MetaContainer>
-                    <span> {getTimeElapsed(time)} | {major} {name} | 조회수 {views} </span>
+                    <span>
+                        {" "}
+                        {getTimeElapsed(time)} | {major} {name} | 조회수 {views}{" "}
+                    </span>
                 </MetaContainer>
                 <Content>{content}</Content>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px'}}>
-                {images.length > 0 && (
-                    <ImageContainer>
-                        {/*이미지 하나만 보이게 하기*/}
-                        <Image src={images[0]} />
-                    </ImageContainer>
-                )}
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "10px",
+                    }}
+                >
+                    {images.length > 0 && (
+                        <ImageContainer>
+                            {/*이미지 하나만 보이게 하기*/}
+                            <Image src={images[0]} />
+                        </ImageContainer>
+                    )}
 
-                {/* Download section for multiple images */}
-                <ImageDownloadList images={images}/>
+                    {/* Download section for multiple images */}
+                    <ImageDownloadList images={images} />
 
-                <ToolContainer>
-                <Votes like={like} />
-                <div> <Notification /> <Scrap /> </div> 
-                </ToolContainer>
+                    <ToolContainer>
+                        <Votes like={like} />
+                        <div>
+                            {" "}
+                            <Notification /> <Scrap />{" "}
+                        </div>
+                    </ToolContainer>
                 </div>
             </Wrapper>
         </OutWrapper>
     );
-}
+};
 
 export default TipsDetail;
 
@@ -57,11 +87,11 @@ TipsDetail.propTypes = {
 
 TipsDetail.defaultProps = {
     _id: 0,
-    name: '이름',
-    major: '전공',
-    title: '제목',
-    subject: '과목',
-    content: '내용',
+    name: "이름",
+    major: "전공",
+    title: "제목",
+    subject: "과목",
+    content: "내용",
     time: 0,
     views: 0,
     like: 0,
@@ -74,7 +104,7 @@ const Wrapper = styled.div`
     justify-content: center;
 
     padding: 20px 20px;
-    border-bottom: 1px solid #F1F2F4;
+    border-bottom: 1px solid #f1f2f4;
 `;
 
 const Title = styled.div`
@@ -98,7 +128,7 @@ const MetaContainer = styled.div`
 
 const OutWrapper = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
 `;
 
 const ImageContainer = styled.div`

@@ -1,7 +1,7 @@
-import SignUpPage from './SignUpPage';
+import SignUpPage from "./SignUpPage";
 
 const meta = {
-  component: SignUpPage,
+    component: SignUpPage,
 };
 
 export default meta;

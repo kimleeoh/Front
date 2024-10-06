@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import useWindowSize from '../../components/Common/WindowSize';
+import React, { useState } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import useWindowSize from "../../components/Common/WindowSize";
 
-const TextInput = ({ width, height, placeholder, fontColor, backgroundColor, fontSize, marginTop, onChange}) => {
-    const [content, setContent] = useState('');
+const TextInput = ({
+    width,
+    height,
+    placeholder,
+    fontColor,
+    backgroundColor,
+    fontSize,
+    marginTop,
+    onChange,
+}) => {
+    const [content, setContent] = useState("");
     const [isFocused, setIsFocused] = useState(false);
 
     const handleChange = (e) => {
         setContent(e.target.value);
         if (onChange) {
-        onChange(e.target.value);
+            onChange(e.target.value);
         }
     };
 
@@ -24,13 +33,13 @@ const TextInput = ({ width, height, placeholder, fontColor, backgroundColor, fon
         }
     };
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <StyledTextInput
             value={content}
             onChange={handleChange}
-            placeholder={isFocused ? '' : placeholder}
+            placeholder={isFocused ? "" : placeholder}
             width={width}
             height={height}
             fontColor={fontColor}
@@ -51,22 +60,22 @@ const StyledTextInput = styled.input`
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
-    height: ${props => props.height};
-    margin-top: ${props => props.marginTop};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    height: ${(props) => props.height};
+    margin-top: ${(props) => props.marginTop};
     padding: 10px;
     border: none;
-    border-bottom: 1px solid #ACB2BB;
-    background-color: ${props => props.backgroundColor};
-    color: ${props => props.fontColor};
-    font-size: ${props => props.fontSize};
+    border-bottom: 1px solid #acb2bb;
+    background-color: ${(props) => props.backgroundColor};
+    color: ${(props) => props.fontColor};
+    font-size: ${(props) => props.fontSize};
     line-height: 1.5;
     resize: none;
     outline: none;
 
     &::placeholder {
-        color: #434B60;
-        font-size: ${props => props.fontSize};
+        color: #434b60;
+        font-size: ${(props) => props.fontSize};
     }
 `;
 
@@ -82,11 +91,11 @@ TextInput.propTypes = {
 };
 
 TextInput.defaultProps = {
-    width: '100%',
-    height: '30px',
-    placeholder: '내용을 입력하세요.',
-    fontColor: '#434B60',
-    backgroundColor: 'white',
-    fontSize: '18px',
-    marginTop: '0px',
+    width: "100%",
+    height: "30px",
+    placeholder: "내용을 입력하세요.",
+    fontColor: "#434B60",
+    backgroundColor: "white",
+    fontSize: "18px",
+    marginTop: "0px",
 };

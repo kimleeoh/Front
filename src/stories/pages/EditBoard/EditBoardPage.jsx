@@ -1,32 +1,35 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 import SubjectList from "../../components/Common/SubjectList";
-import Header from '../../components/Header';
-import BoardTitle from '../../components/Common/BoardTitle';
-import Button from '../../components/Button';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import Modal from '../../components/Common/Modal';
-import { useNavigate } from 'react-router-dom';
-import useWindowSize from '../../components/Common/WindowSize';
-import SubjectInfo from '../../components/Common/SubjectInfo';
-import BaseAxios from '../../../axioses/BaseAxios';
-import SelectSubject from '../../components/Common/SelectSubject';
-
+import Header from "../../components/Header";
+import BoardTitle from "../../components/Common/BoardTitle";
+import Button from "../../components/Button";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import Modal from "../../components/Common/Modal";
+import { useNavigate } from "react-router-dom";
+import useWindowSize from "../../components/Common/WindowSize";
+import SubjectInfo from "../../components/Common/SubjectInfo";
+import BaseAxios from "../../../axioses/BaseAxios";
+import SelectSubject from "../../components/Common/SelectSubject";
 
 const EditBoardPage = () => {
     const location = useLocation();
-    const { listData, title } = location.state || { listData: [], title: '' }; // Get the list data passed from BoardHome
+    const { listData, title } = location.state || { listData: [], title: "" }; // Get the list data passed from BoardHome
 
     const [saveChanges, setSaveChanges] = useState(false);
 
-    const [subjects, setSubjects] = useState(listData.map((item, index) => ({
-        ...item,
-        id: item.id || `subject-${index}`
-    })));
+    const [subjects, setSubjects] = useState(
+        listData.map((item, index) => ({
+            ...item,
+            id: item.id || `subject-${index}`,
+        }))
+    );
 
     const handleSubjectDelete = (subject) => {
-        const updatedSubjects = subjects.filter(item => item.subject !== subject);
+        const updatedSubjects = subjects.filter(
+            (item) => item.subject !== subject
+        );
         setSaveChanges(true);
         setSubjects(updatedSubjects);
     };
@@ -46,9 +49,7 @@ const EditBoardPage = () => {
 
     console.log(subjects);
 
-    const handleSave = () => {
-
-    }
+    const handleSave = () => {};
 
     const modalRef = useRef();
     const subjectModalRef = useRef();
@@ -56,14 +57,14 @@ const EditBoardPage = () => {
 
     const handleBackClick = () => {
         if (saveChanges) {
-          modalRef.current.open();
+            modalRef.current.open();
         } else {
-          // Navigate back without showing modal
-          navigate(-1);
+            // Navigate back without showing modal
+            navigate(-1);
         }
-      };
+    };
 
-      const confirmSave = () => {
+    const confirmSave = () => {
         // 로그아웃 로직을 여기에 추가합니다.
         modalRef.current.close();
         navigate(-1);
@@ -78,35 +79,38 @@ const EditBoardPage = () => {
     const [selectedCategory, setSelectedCategory] = useState([]);
 
     const handleGoBack = () => {
-        if (selectedCategory.length == 0){
+        if (selectedCategory.length == 0) {
             subjectModalRef.current.close();
-        }
-        else {
-            setIsBackClicked(prevCount => prevCount + 1);
+        } else {
+            setIsBackClicked((prevCount) => prevCount + 1);
             console.log("Going back...");
         }
     };
 
     const handleCategorySelect = (category) => {
-        setSelectedCategory(category)
+        setSelectedCategory(category);
     };
 
     const saveSubject = () => {
-        if (selectedCategory){
+        if (selectedCategory) {
             // 저장 api 저장할 때 selectedCategory의 맨 마지막 인덱스에 있는 값 넣어야 함
             console.log("저장되었습니다. 추가 목록: ", selectedCategory);
         }
         subjectModalRef.current.close();
-    }
+    };
 
-    const {width, height} = useWindowSize();
+    const { width, height } = useWindowSize();
 
     return (
         <Wrapper>
-            <Header showIcon={false} text="게시판 편집" backButton={true} searchButton={false} onClick={handleBackClick}>
-                {saveChanges &&(
-                <Save onClick={handleSave}>저장</Save>
-                )}
+            <Header
+                showIcon={false}
+                text="게시판 편집"
+                backButton={true}
+                searchButton={false}
+                onClick={handleBackClick}
+            >
+                {saveChanges && <Save onClick={handleSave}>저장</Save>}
             </Header>
 
             <BoardTitleWrapper maxWidth={width}>
@@ -114,85 +118,121 @@ const EditBoardPage = () => {
             </BoardTitleWrapper>
 
             <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="subjectlist">
-                {(provided) => (
-                    <SubjectListWrapper maxWidth={width} className="subjectlist" {...provided.droppableProps} ref={provided.innerRef}>
-                        {subjects.map((item, index) => (
-                            <Draggable draggableId={item.id} index={index} key={item.id}>
-                                {(provided, snapshot) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        style={{
-                                            ...provided.draggableProps.style,
-                                            width: '100%'  // Make sure the div takes full width
-                                          }}
-                                    >
-                                        <SubjectList
-                                            subject={item.subject || item.bookmark}
-                                            onClick={() => console.log("Edit mode, no navigation")}
-                                            actions={[
-                                                { icon: "/Icons/Delete.svg", alt: "Delete", marginLeft: "auto", onClick: handleSubjectDelete }
-                                            ]}
-                                            isDragging={snapshot.isDragging}
-                                            provided={provided}
-                                        />
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </SubjectListWrapper>
-                )}
-            </Droppable>
+                <Droppable droppableId="subjectlist">
+                    {(provided) => (
+                        <SubjectListWrapper
+                            maxWidth={width}
+                            className="subjectlist"
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                        >
+                            {subjects.map((item, index) => (
+                                <Draggable
+                                    draggableId={item.id}
+                                    index={index}
+                                    key={item.id}
+                                >
+                                    {(provided, snapshot) => (
+                                        <div
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            style={{
+                                                ...provided.draggableProps
+                                                    .style,
+                                                width: "100%", // Make sure the div takes full width
+                                            }}
+                                        >
+                                            <SubjectList
+                                                subject={
+                                                    item.subject ||
+                                                    item.bookmark
+                                                }
+                                                onClick={() =>
+                                                    console.log(
+                                                        "Edit mode, no navigation"
+                                                    )
+                                                }
+                                                actions={[
+                                                    {
+                                                        icon: "/Icons/Delete.svg",
+                                                        alt: "Delete",
+                                                        marginLeft: "auto",
+                                                        onClick:
+                                                            handleSubjectDelete,
+                                                    },
+                                                ]}
+                                                isDragging={snapshot.isDragging}
+                                                provided={provided}
+                                            />
+                                        </div>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </SubjectListWrapper>
+                    )}
+                </Droppable>
             </DragDropContext>
 
             <Button
-                label={'+ 과목 추가하기'}
-                color={'#ACB2BB'}
-                backgroundColor={'#F1F2F4'}
-                hoverColor={'#ACB2BB'}
-                hoverBackgroundColor={'#E5E9F2'}
-                style={{ marginTop: '20px' }}
+                label={"+ 과목 추가하기"}
+                color={"#ACB2BB"}
+                backgroundColor={"#F1F2F4"}
+                hoverColor={"#ACB2BB"}
+                hoverBackgroundColor={"#E5E9F2"}
+                style={{ marginTop: "20px" }}
                 onClick={handleAddSubjectClick}
             />
 
-
-            <Modal ref={modalRef} width='300px'>
-                <span style={{fontSize: '16px'}}>저장하시겠습니까?</span>
+            <Modal ref={modalRef} width="300px">
+                <span style={{ fontSize: "16px" }}>저장하시겠습니까?</span>
                 <ButtonWrapper>
-                    <Button onClick={confirmSave} label={'예'} backgroundColor={'#FF3C3C'} hoverBackgroundColor={'red'} width={'130px'}/>
-                    <Button onClick={() => modalRef.current.close()} label={'아니요'} backgroundColor={'#434B60'} hoverBackgroundColor={'#ACB2BB'} width={'130px'}/>
+                    <Button
+                        onClick={confirmSave}
+                        label={"예"}
+                        backgroundColor={"#FF3C3C"}
+                        hoverBackgroundColor={"red"}
+                        width={"130px"}
+                    />
+                    <Button
+                        onClick={() => modalRef.current.close()}
+                        label={"아니요"}
+                        backgroundColor={"#434B60"}
+                        hoverBackgroundColor={"#ACB2BB"}
+                        width={"130px"}
+                    />
                 </ButtonWrapper>
             </Modal>
 
-            <Modal ref={subjectModalRef} width="300px" height={`${height-150}px`}>
+            <Modal
+                ref={subjectModalRef}
+                width="300px"
+                height={`${height - 150}px`}
+            >
                 <ScrollableContent>
-                    <SelectSubject 
+                    <SelectSubject
                         isBackClicked={isBackClicked}
                         onCategorySelect={handleCategorySelect}
                     />
                 </ScrollableContent>
                 <ButtonWrapper>
-                    <Button 
-                        onClick={saveSubject} 
-                        label={'저장'} 
-                        backgroundColor={'#FF3C3C'} 
-                        hoverBackgroundColor={'red'} 
-                        width={'130px'}
+                    <Button
+                        onClick={saveSubject}
+                        label={"저장"}
+                        backgroundColor={"#FF3C3C"}
+                        hoverBackgroundColor={"red"}
+                        width={"130px"}
                     />
-                    <Button 
-                        onClick={() => handleGoBack()} 
-                        label={'뒤로 가기'} 
-                        backgroundColor={'#434B60'} 
-                        hoverBackgroundColor={'#ACB2BB'} 
-                        width={'130px'}
+                    <Button
+                        onClick={() => handleGoBack()}
+                        label={"뒤로 가기"}
+                        backgroundColor={"#434B60"}
+                        hoverBackgroundColor={"#ACB2BB"}
+                        width={"130px"}
                     />
                 </ButtonWrapper>
             </Modal>
-
-            
         </Wrapper>
     );
 };
@@ -217,7 +257,7 @@ const SubjectListWrapper = styled.div`
     align-items: center;
     box-sizing: border-box;
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
 
     background-color: white;
     border-radius: 24px;
@@ -230,8 +270,8 @@ const BoardTitleWrapper = styled.div`
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
-`
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+`;
 
 const ButtonWrapper = styled.div`
     display: flex;
@@ -241,35 +281,34 @@ const ButtonWrapper = styled.div`
 `;
 
 const Save = styled.button`
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: none;
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 
-  &:hover {
-    background-color: rgba(172, 178, 187, 0.3);
-  }
+    &:hover {
+        background-color: rgba(172, 178, 187, 0.3);
+    }
 
-  &:active {
-    scale: 0.95;
-  }
+    &:active {
+        scale: 0.95;
+    }
 
-    
-  font-size: 16px;
-  font-weight: bold;
-  color: #434b60;
-  text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #434b60;
+    text-align: center;
 `;
 
 const ScrollableContent = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  width: 100%;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
 `;

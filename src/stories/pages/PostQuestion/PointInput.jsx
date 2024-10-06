@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import useWindowSize from '../../components/Common/WindowSize';
+import React, { useState } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import useWindowSize from "../../components/Common/WindowSize";
 
-const PointInput = ({ width, height, placeholder, fontColor, backgroundColor, fontSize, onChange, point, disabled}) => {
-    const [content, setContent] = useState('');
+const PointInput = ({
+    width,
+    height,
+    placeholder,
+    fontColor,
+    backgroundColor,
+    fontSize,
+    onChange,
+    point,
+    disabled,
+}) => {
+    const [content, setContent] = useState("");
     const [isFocused, setIsFocused] = useState(false);
 
     const handleChange = (e) => {
@@ -27,16 +37,16 @@ const PointInput = ({ width, height, placeholder, fontColor, backgroundColor, fo
         }
     };
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <Wrapper maxWidth={windowSize}>
-            <small style={{marginRight: 'auto'}}>보유 포인트: {point}p</small>
+            <small style={{ marginRight: "auto" }}>보유 포인트: {point}p</small>
 
             <StyledPointInput
                 value={content}
                 onChange={handleChange}
-                placeholder={isFocused ? '' : placeholder}
+                placeholder={isFocused ? "" : placeholder}
                 width={width}
                 height={height}
                 fontColor={fontColor}
@@ -66,12 +76,12 @@ PointInput.propTypes = {
 };
 
 PointInput.defaultProps = {
-    width: '380px',
-    height: '50px',
-    placeholder: '포인트를 입력하세요. ',
-    fontColor: '#434B60',
-    backgroundColor: '#F0F2F4',
-    fontSize: '16px',
+    width: "380px",
+    height: "50px",
+    placeholder: "포인트를 입력하세요. ",
+    fontColor: "#434B60",
+    backgroundColor: "#F0F2F4",
+    fontSize: "16px",
     point: 0,
     disabled: false,
 };
@@ -82,30 +92,30 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     margin-top: 10px;
-`
+`;
 
 const StyledPointInput = styled.input`
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
-    height: ${props => props.height};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    height: ${(props) => props.height};
     padding: 10px;
     border: none;
     border-radius: 20px;
-    background-color: ${props => props.backgroundColor};
-    color: ${props => props.fontColor};
-    font-size: ${props => props.fontSize};
+    background-color: ${(props) => props.backgroundColor};
+    color: ${(props) => props.fontColor};
+    font-size: ${(props) => props.fontSize};
     line-height: 1.5;
     resize: none;
     outline: none;
     text-indent: 15px;
 
     &::placeholder {
-        color: #434B60;
-        font-size: ${props => props.fontSize};
+        color: #434b60;
+        font-size: ${(props) => props.fontSize};
     }
 `;
