@@ -141,7 +141,7 @@ const ResetPage = () => {
         return (
           <>
             <StepDescription>
-              <Title>비밀번호를 찾고자하는 아이디를 입력해 주세요</Title>
+              <Title>비밀번호를 재설정할 아이디를 입력해 주세요</Title>
             </StepDescription>
             <TextFieldsWrapper>
             <TextField
@@ -239,8 +239,9 @@ const ResetPage = () => {
           <Logo />
         </LogoWrapper>
         {renderStepContent()}
-      </FormWrapper>
+        
       {renderButtons()}
+      </FormWrapper>
     </Wrapper>
   );
 };
