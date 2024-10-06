@@ -10,6 +10,7 @@ import useWindowSize from '../../components/Common/WindowSize';
 import BaseAxios from '../../../axioses/BaseAxios';
 import SelectMajor from '../../components/Common/SelectMajor';
 
+
 const SignUpPage = () => {
   const {width: windowSize} = useWindowSize();
   const [step, setStep] = useState(1);
@@ -34,7 +35,7 @@ const SignUpPage = () => {
     navigate('/');
   };
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevData => ({ ...prevData, [name]: value }));
   
@@ -64,49 +65,6 @@ const SignUpPage = () => {
         }
       }
     }
-
-    // handleNext 함수의 로직을 여기로 통합
-    if (validateStep()) {
-      if (step < 4) {
-        const a = await SignUpHandler(step, formData);
-        if(a){setStep(prevStep => prevStep + 1);}
-      } else if (step === 4) {
-        const result = await BaseAxios.post('/api/register/emailAlready', { email: formData.email }); 
-        if(result.status === 201){alert("이미 가입된 이메일입니다.");}
-        else{
-          await BaseAxios.post('/api/register/email', { email: formData.email });
-          setStep(prevStep => prevStep + 1);
-        }
-      } else if (step === 5) {
-        try {
-          const r = await BaseAxios.post('/api/register/emailAuthNum', { email: formData.email, authNum: formData.confirmEmail });
-          if (r.status === 200) {
-            console.log("인증 성공");
-            await SignUpHandler(step - 1, formData);
-            setStep(prevStep => prevStep + 1);
-          } else {
-            console.log("인증 실패");
-            console.log(r.data);
-            setErrorMessage("인증번호가 올바르지 않습니다. 다시 입력해 주세요.");
-            alert("인증에 실패했습니다. 다시 시도해 주세요.");
-          }
-        } catch (error) {
-          console.error("인증 오류", error);
-          setErrorMessage("인증 과정에서 오류가 발생했습니다. 다시 시도해 주세요.");
-        }
-      }
-    }
-  };
-
-  const handlePrevious = () => {
-    setStep(prevStep => prevStep - 1);
-  };
-
-  const handleSubmit = async () => {
-    console.log(step-1)
-    await SignUpHandler(step-1, formData);
-    console.log('제출된 데이터:', formData);
-    navigate('/confirm');
   };
 
   const validateStudentId = (studentId) => {
@@ -121,20 +79,78 @@ const SignUpPage = () => {
     return { lengthValid, hasNumber, hasSpecialChar };
   };
 
+  const handleNext = async () => {
+    if (validateStep()) {
+      setErrorMessage('');  // 에러 메시지 초기화
+      if (step < 4) {
+        const a = await SignUpHandler(step, formData);
+        if (a) {
+          setStep(prevStep => prevStep + 1);
+        }
+      } else if (step === 4) {
+        const result = await BaseAxios.post('/api/register/emailAlready', { email: formData.email }); 
+        if (result.status === 201) {
+          alert("이미 가입된 이메일입니다.");
+        } else {
+          BaseAxios.post('/api/register/email', { email: formData.email });
+          setStep(prevStep => prevStep + 1);
+        }
+      } else if (step === 5) {
+        try {
+          const r = await BaseAxios.post('/api/register/emailAuthNum', { email: formData.email, authNum: formData.confirmEmail });
+          if (r.status === 200) {
+            console.log("인증 성공");
+            SignUpHandler(step - 1, formData);
+            setStep(prevStep => prevStep + 1);
+          } else {
+            console.log("인증 실패");
+            console.log(r.data);
+            setErrorMessage("인증번호가 올바르지 않습니다. 다시 입력해 주세요.");
+            alert("인증에 실패했습니다. 다시 시도해 주세요.");
+          }
+        } catch (error) {
+          console.error("인증 오류", error);
+          setErrorMessage("인증 과정에서 오류가 발생했습니다. 다시 시도해 주세요.");
+        }
+      }
+    }
+  };
+  
+  
+
+  const handlePrevious = () => {
+    setStep(prevStep => prevStep - 1);
+  };
+
+  const handleSubmit = async () => {
+    // 서버로 데이터를 전송하는 로직을 추가할 수 있습니다.
+    // 예: await fetch('/api/signup', { method: 'POST', body: JSON.stringify(formData) });
+    console.log(step-1)
+    SignUpHandler(step-1, formData);
+    console.log('제출된 데이터:', formData);
+    navigate('/confirm');
+  };
+
   const validateStep = () => {
     switch (step) {
         case 1:
+            // 이름 입력: 공백 확인
             return formData.name.trim() !== '';
         case 2:
+            // 학부 입력: 공백 확인
             return formData.department.trim() !== '';
         case 3:
+            // 학번 입력: 숫자이고 8자리인지 확인
             return !isNaN(Number(formData.studentId)) && formData.studentId.trim().length === 8;
         case 4:
+            // 이메일 형식 확인
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailPattern.test(formData.email);
         case 5:
+            // 인증 이메일의 입력 여부 확인 (별도의 인증 로직이 있을 수도 있음)
             return formData.confirmEmail.trim() !== '';
         case 6:
+            // 비밀번호 유효성 확인 (비밀번호 일치 및 유효성)
             const { lengthValid, hasNumber, hasSpecialChar } = passwordValid;
             return (
                 formData.password.trim() !== '' &&
@@ -144,7 +160,8 @@ const SignUpPage = () => {
         default:
             return false;
     }
-  };
+};
+
 
   const renderButtons = () => {
     const isStepValid = validateStep();
@@ -161,9 +178,10 @@ const SignUpPage = () => {
         )}
         <Button
           label={step === 6 ? '제출' : '다음'}
-          onClick={step === 6 ? handleSubmit : handleChange}
+          onClick={step === 6 ? handleSubmit : handleNext}
           backgroundColor="#434B60"
           hoverBackgroundColor="#5A6480"
+          
           disabled={!isStepValid}
         />
       </ButtonWrapper>
@@ -311,7 +329,6 @@ const SignUpPage = () => {
         return null;
     }
   };
-
   return (
     <Wrapper maxWidth={windowSize}>
       <FormWrapper maxWidth={windowSize}>
