@@ -191,4 +191,4 @@ const SignUpHandler = async (step = 1, formData) => {
     return true;
 };
 
-export { SignUpHandler, LoginHandler };
+export { SignUpHandler, LoginHandler, encryptAES};

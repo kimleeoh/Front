@@ -8,6 +8,8 @@ import useWindowSize from '../../components/Common/WindowSize';
 import BaseAxios from '../../../axioses/BaseAxios';
 import Logo from './Logo';
 import CryptoJS from 'crypto-js';
+import { encryptAES } from '../../../axioses/SignUpHandler';
+import { Buffer } from 'buffer';
 
 const ResetPage = () => {
   const {width: windowSize} = useWindowSize();
@@ -85,10 +87,25 @@ const ResetPage = () => {
 
   const handleSubmit = async () => {
     try {
-      const randomBytes = CryptoJS.lib.WordArray.random(16);
+      const randomBytes = CryptoJS.lib.WordArray.random(16).toString();
+      let key = CryptoJS.PBKDF2(formData.email, randomBytes, {
+        keySize: 32 / 4, // 32 bytes = 256 bits, keySize is in words (4 bytes each)
+        iterations: 100000,
+        hasher: CryptoJS.algo.SHA256
+      });
+      key = Buffer.from(key.toString(CryptoJS.enc.Hex), 'hex');
+      console.log(formData.confirmEmail);
+      let ib = CryptoJS.PBKDF2(formData.confirmEmail, randomBytes, {
+        keySize: 16 / 4, // 16 bytes = 128 bits, keySize is in words (4 bytes each)
+        iterations: 100000,
+        hasher: CryptoJS.algo.SHA256
+      });
+      ib = Buffer.from(ib.toString(CryptoJS.enc.Hex), 'hex');
+      console.log(key,ib);
+      const encryptedPassword = encryptAES(formData.password, key,ib);
       const response = await BaseAxios.post('/api/findPassword/changePassword', {
         email: formData.email,
-        password: formData.password,
+        newPassword: encryptedPassword,
         iv:randomBytes
       });
       if (response.status === 200) {
@@ -157,7 +174,7 @@ const ResetPage = () => {
         return (
           <>
             <StepDescription>
-              <Title>${formData.email}로 전송된 인증번호를 입력해주세요</Title>
+              <Title>{formData.email}로 전송된 인증번호를 입력해주세요</Title>
             </StepDescription>
             <TextFieldsWrapper>
               <TextField
