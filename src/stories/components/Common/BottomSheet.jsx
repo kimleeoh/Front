@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import useWindowSize from "./WindowSize";
 import SubjectInfo from "./SubjectInfo";
 import PropTypes from "prop-types";
 
+const slideUp = keyframes`
+  0% {
+    transform: translateY(100%);
+  }
+    70% {
+    transform: translateY(-8%);
+    }
+  100% {
+    transform: translateY(0);
+  }
+`;
+
 const BottomSheet = ({ options, onClick, handleGoBack, save }) => {
     const { width: windowSize } = useWindowSize();
-
     const [height, setHeight] = useState(400);
     const [startY, setStartY] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -138,6 +149,7 @@ const BottomSheetContainer = styled.div`
     transition: height 0.3s ease;
     display: flex;
     flex-direction: column;
+    animation: ${slideUp} 0.5s ease-out;
 `;
 
 const Handle = styled.div`
@@ -167,11 +179,11 @@ const BackButton = styled.div`
     cursor: pointer;
     text-align: center;
     transition: all 0.3s ease;
+    border-radius: 12px;
 
     &:hover {
-        background-color: rgba(226, 229, 233, 0.3);
+        background-color: #e2e5e9;
     }
-
     &:active {
         transform: scale(0.98);
     }
@@ -183,11 +195,11 @@ const SaveButton = styled.div`
     cursor: pointer;
     text-align: center;
     transition: all 0.3s ease;
+    border-radius: 12px;
 
     &:hover {
-        background-color: rgba(226, 229, 233, 0.3);
+        background-color: #e2e5e9;
     }
-
     &:active {
         transform: scale(0.98);
     }
