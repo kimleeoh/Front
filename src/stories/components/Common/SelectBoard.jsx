@@ -35,16 +35,18 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
         BaseAxios.post("/api/dummy/category", { id: selectedCategoryId })
             .then((response) => {
                 const fetchedCategories = response.data;
-
-                const newBoardOptions =
-                    fetchedCategories.sub_category_list_name.map(
-                        (subName, index) => ({
-                            value: subName,
-                            label: subName,
-                            id: fetchedCategories.sub_category_list_id[index],
-                        })
-                    );
-                if (fetchedCategories.type == 2) {
+    
+                const newBoardOptions = fetchedCategories.sub_category_list_name.map(
+                    (subName, index) => ({
+                        value: subName,
+                        label: subName,
+                        id: fetchedCategories.sub_category_list_id[index],
+                        hasSubcategories: fetchedCategories.type !== 2  // type이 2가 아닐 때 하위 카테고리가 있음
+                    })
+                );
+    
+                if (fetchedCategories.type === 2) {
+                    // 최종 카테고리 처리 (변경 없음)
                     Promise.all(
                         newBoardOptions.map((option) =>
                             BaseAxios.post("/api/dummy/category", {
@@ -61,10 +63,9 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
                         setIsBottomSheetVisible(true);
                         setIsOpen(false);
                     });
+                } else {
+                    setSubCategories(newBoardOptions);
                 }
-                console.log("response: ", response);
-                console.log("newBoardOptions: ", newBoardOptions);
-                setSubCategories(newBoardOptions);
             })
             .catch((err) => {
                 console.error(err);
@@ -167,37 +168,19 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
                 {isOpen && (
                     <DropdownListContainer>
                         <DropdownList role="listbox">
-                            {subCategories.length > 0 ? (
-                                subCategories.map((option) => (
-                                    <ListItem
-                                        onClick={() =>
-                                            handleCategorySelect(
-                                                option.id,
-                                                option.label
-                                            )
-                                        }
-                                    >
-                                        {option.label}
-                                        {option.subcategories &&
-                                            option.subcategories.length > 0 && (
-                                                <span
-                                                    style={{
-                                                        transform:
-                                                            "rotate(270deg)",
-                                                    }}
-                                                >
-                                                    <img
-                                                        src="/Icons/Arrow.svg"
-                                                        alt="arrow"
-                                                        width={"12px"}
-                                                    />
-                                                </span>
-                                            )}
-                                    </ListItem>
-                                ))
-                            ) : (
-                                <ListItem></ListItem>
-                            )}
+                        {subCategories.map((option) => ( // 이 부분 수정필요 - 하위카테고리 존재 시 화살표 추가해야됨
+    <ListItem
+        key={option.id}
+        onClick={() => handleCategorySelect(option.id, option.label)}
+    >
+        {option.label}
+        {option.hasSubcategories && (
+            <span style={{ transform: "rotate(270deg)" }}>
+                <img src="/Icons/Arrow.svg" alt="arrow" width={"12px"} />
+            </span>
+        )}
+    </ListItem>
+))}
                         </DropdownList>
                         {categoryHistoryName.length > 0 && (
                             <ButtonContainer>

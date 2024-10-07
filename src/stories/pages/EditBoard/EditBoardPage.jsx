@@ -218,17 +218,17 @@ const EditBoardPage = () => {
                 </ScrollableContent>
                 <ButtonWrapper>
                     <Button
-                        onClick={saveSubject}
-                        label={"저장"}
-                        backgroundColor={"#FF3C3C"}
-                        hoverBackgroundColor={"red"}
-                        width={"130px"}
-                    />
-                    <Button
                         onClick={() => handleGoBack()}
                         label={"뒤로 가기"}
                         backgroundColor={"#434B60"}
                         hoverBackgroundColor={"#ACB2BB"}
+                        width={"130px"}
+                    />
+                    <Button
+                        onClick={saveSubject}
+                        label={"저장"}
+                        backgroundColor={"#FF3C3C"}
+                        hoverBackgroundColor={"red"}
                         width={"130px"}
                     />
                 </ButtonWrapper>
