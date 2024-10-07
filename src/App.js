@@ -44,6 +44,8 @@ const History = lazy(() => import("./stories/pages/Menu/History"));
 const TermsOfServicePage = lazy(
     () => import("./stories/pages/Menu/TermsOfServicePage")
 );
+const TermsOfPrivatePage = lazy(() => import("./stories/pages/Menu/TermsOfPrivatePage"));
+const PolicyPage = lazy(() => import("./stories/pages/Menu/PolicyPage"));
 const Notices = lazy(() => import("./stories/pages/Menu/Notices"));
 const MyContact = lazy(() => import("./stories/pages/Menu/MyContact"));
 const Contact = lazy(() => import("./stories/pages/Menu/Contact"));
@@ -103,7 +105,6 @@ const App = () => {
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/edit" element={<MyPageEdit />} />
-          <Route path="/points" element={<PointPage />} />
           <Route path="/grades" element={<Grades />} />
           <Route path="/grades/register" element={<GradesRegister />} />
           <Route path="/myboard" element={<MyBoard />} />
