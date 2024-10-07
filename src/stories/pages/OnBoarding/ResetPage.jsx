@@ -184,7 +184,8 @@ const ResetPage = () => {
                     <>
                         <StepDescription>
                             <Title>
-                                비밀번호를 재설정할 아이디를 입력해 주세요
+                                비밀번호를 재설정할<br></br> 아이디를 입력해
+                                주세요
                             </Title>
                         </StepDescription>
                         <TextFieldsWrapper>
@@ -202,7 +203,7 @@ const ResetPage = () => {
                     <>
                         <StepDescription>
                             <Title>
-                                {formData.email}로 전송된 인증번호를
+                                {formData.email}로 <br></br>전송된 인증번호를
                                 입력해주세요
                             </Title>
                         </StepDescription>
@@ -216,7 +217,7 @@ const ResetPage = () => {
                         </TextFieldsWrapper>
                         <div
                             style={{
-                                marginTop: "-20px",
+                                marginTop: "-10px",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
@@ -366,6 +367,7 @@ const Title = styled.h2`
     font-size: 24px;
     margin: 0;
     color: #434b60;
+    text-align: center;
 `;
 
 const Subtitle = styled.p`
