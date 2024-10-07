@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import Header from '../../components/Header';
-import TextInput from '../../components/Common/TextInput';
-import TextArea from '../../components/Common/TextArea';
-import SelectBoard from '../../components/Common/SelectBoard';
-import ImageUploader from '../../components/Common/ImageUploader2';
-import Button from '../../components/Button'
-import ChipFilter from '../../components/Common/ChipFilter';
-import useWindowSize from '../../components/Common/WindowSize';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import Header from "../../components/Header";
+import TextInput from "../../components/Common/TextInput";
+import TextArea from "../../components/Common/TextArea";
+import SelectBoard from "../../components/Common/SelectBoard";
+import ImageUploader from "../../components/Common/ImageUploader2";
+import Button from "../../components/Button";
+import ChipFilter from "../../components/Common/ChipFilter";
+import useWindowSize from "../../components/Common/WindowSize";
 
 const initialUserData = [
     {
         id: 1,
-        name: '이예진',
-        major: '글로벌미디어학부',
+        name: "이예진",
+        major: "글로벌미디어학부",
         point: 1020,
-    }
+    },
 ];
 
 const PostQuestionPage = () => {
     const [formValues, setFormValues] = useState({
-        title: '',
+        title: "",
         board: [],
         tags: [],
-        content: '',
+        content: "",
         images: [],
-        time: '',
+        time: "",
     });
 
     const [isFormValid, setIsFormValid] = useState(false);
@@ -35,10 +35,11 @@ const PostQuestionPage = () => {
 
     useEffect(() => {
         const { title, board, tags, content } = formValues;
-        const isValid = title.trim() !== '' && 
-                        board.length > 0 && 
-                        tags.length > 0 &&
-                        content.trim() !== '';
+        const isValid =
+            title.trim() !== "" &&
+            board.length > 0 &&
+            tags.length > 0 &&
+            content.trim() !== "";
         setIsFormValid(isValid);
         console.log(formValues);
     }, [formValues]);
@@ -53,16 +54,20 @@ const PostQuestionPage = () => {
         const now = new Date().toISOString();
 
         const user = userData[0] || {};
-        const updatedFormValues = { 
-            ...formValues, 
-            name: user.name, 
-            major: user.major, 
-            profileImg: user.profileImg, 
-            time: now 
+        const updatedFormValues = {
+            ...formValues,
+            name: user.name,
+            major: user.major,
+            profileImg: user.profileImg,
+            time: now,
         };
 
         const { title, board, tags, content } = formValues;
-        const isFormValid = title.trim() !== '' && board.length > 0 && tags.length > 0 && content.trim() !== '';
+        const isFormValid =
+            title.trim() !== "" &&
+            board.length > 0 &&
+            tags.length > 0 &&
+            content.trim() !== "";
 
         if (isFormValid) {
             // Add your API call here to send updatedFormValues to the backend.
@@ -75,64 +80,84 @@ const PostQuestionPage = () => {
     const renderValidationMessages = () => {
         const { title, board, tags, content } = formValues;
 
-        if (title.trim() === '') {
-            return <ValidationMessage> 제목을 입력해 주세요.</ValidationMessage>;
+        if (title.trim() === "") {
+            return (
+                <ValidationMessage> 제목을 입력해 주세요.</ValidationMessage>
+            );
         }
         if (board.length === 0) {
-            return <ValidationMessage> 게시판을 선택해 주세요.</ValidationMessage>;
+            return (
+                <ValidationMessage> 게시판을 선택해 주세요.</ValidationMessage>
+            );
         }
         if (tags.length === 0) {
-            return <ValidationMessage> 카테고리를 선택해 주세요.</ValidationMessage>;
+            return (
+                <ValidationMessage>
+                    {" "}
+                    카테고리를 선택해 주세요.
+                </ValidationMessage>
+            );
         }
-        if (content.trim() === '') {
+        if (content.trim() === "") {
             return <ValidationMessage>내용을 입력해 주세요.</ValidationMessage>;
         }
-    
+
         return null;
     };
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     const [selectedCategory, setSelectedCategory] = useState([]);
 
     const handleCategorySelect = (options) => {
         setSelectedCategory(options);
         console.log("게시판 선택: ", selectedCategory);
-    }
+    };
 
     return (
         <Wrapper>
-            <Header showIcon={false} text="글 작성하기" backButton={true} searchButton={false}/>
-            <TextInput 
-                height={'30px'} 
-                fontSize={'15px'} 
-                placeholder={'제목 입력'}  
-                onChange={(value) => handleInputChange('title', value)}
+            <Header
+                showIcon={false}
+                text="글 작성하기"
+                backButton={true}
+                searchButton={false}
             />
-            <SelectBoard 
-                onChange={(value) => handleInputChange('board', value)}
+            <TextInput
+                height={"30px"}
+                fontSize={"15px"}
+                placeholder={"제목 입력"}
+                onChange={(value) => handleInputChange("title", value)}
+            />
+            <SelectBoard
+                onChange={(value) => handleInputChange("board", value)}
                 onCategorySelect={handleCategorySelect}
             />
-            <ChipFilter onFilterChange={(value) => handleInputChange('tags', value)} />
-            <TextArea 
-                height={'300px'} 
-                fontSize={'15px'} 
-                placeholder={"답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."} 
-                onChange={(value) => handleInputChange('content', value)}
+            <ChipFilter
+                onFilterChange={(value) => handleInputChange("tags", value)}
             />
-            <ImageUploader onChange={(value) => handleInputChange('images', value)}/>
+            <TextArea
+                height={"300px"}
+                fontSize={"15px"}
+                placeholder={
+                    "답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."
+                }
+                onChange={(value) => handleInputChange("content", value)}
+            />
+            <ImageUploader
+                onChange={(value) => handleInputChange("images", value)}
+            />
             <StyledDiv maxWidth={windowSize}>
                 <span>일정 포인트를 자동으로 지급해줘요.</span>
             </StyledDiv>
-            <Button 
-                label={'등록하기'} 
-                style={{marginTop: '15px'}} 
+            <Button
+                label={"등록하기"}
+                style={{ marginTop: "15px" }}
                 onClick={handleFormSubmit}
             />
             {showValidationMessages && renderValidationMessages()}
         </Wrapper>
-    )
-}
+    );
+};
 
 export default PostQuestionPage;
 
@@ -154,17 +179,17 @@ const StyledDiv = styled.div`
     padding: 10px;
     border: none;
     border-radius: 15px;
-    color: #434B60;
-    background-color: #F0F2F4;
+    color: #434b60;
+    background-color: #f0f2f4;
 
     margin-top: 10px;
 
-     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
-`
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+`;
 
 const ValidationMessage = styled.div`
-    color: #D00303;
+    color: #d00303;
     font-size: 12px;
     margin-top: 5px;
 `;

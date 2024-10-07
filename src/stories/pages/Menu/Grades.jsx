@@ -13,7 +13,8 @@ const Grades = () => {
 
     useEffect(() => {
         // 로컬 스토리지에서 과목 성적 불러오기
-        const savedGrades = JSON.parse(localStorage.getItem("subjectGrades")) || {};
+        const savedGrades =
+            JSON.parse(localStorage.getItem("subjectGrades")) || {};
         setSubjectGrades(savedGrades);
     }, []);
 
@@ -21,7 +22,7 @@ const Grades = () => {
         navigate("/grades/register");
     };
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <Wrapper>
@@ -33,14 +34,14 @@ const Grades = () => {
                 <SubjectWrapper maxWidth={windowSize}>
                     <ScrollableSubjectList>
                         <SubjectList
-                            subject={'디지털미디어원리'}
+                            subject={"디지털미디어원리"}
                             disableLink={true}
-                            rate={subjectGrades['디지털미디어원리']}
+                            rate={subjectGrades["디지털미디어원리"]}
                         />
                         <SubjectList
-                            subject={'영상편집론'}
+                            subject={"영상편집론"}
                             disableLink={true}
-                            rate={subjectGrades['영상편집론']}
+                            rate={subjectGrades["영상편집론"]}
                         />
                         {/* ...다른 과목들도 추가 */}
                     </ScrollableSubjectList>
@@ -49,31 +50,31 @@ const Grades = () => {
                 <SubjectWrapper>
                     <ScrollableSubjectList>
                         <SubjectList
-                            subject={'디지털미디어실습'}
+                            subject={"디지털미디어실습"}
                             disableLink={true}
-                            rate={subjectGrades['디지털미디어실습']}
+                            rate={subjectGrades["디지털미디어실습"]}
                         />
                         <SubjectList
-                            subject={'영상기획론'}
+                            subject={"영상기획론"}
                             disableLink={true}
-                            rate={subjectGrades['영상기획론']}
+                            rate={subjectGrades["영상기획론"]}
                         />
                         {/* ...다른 과목들도 추가 */}
                     </ScrollableSubjectList>
                 </SubjectWrapper>
                 <Button
-                    label={'+ 학기 추가하기'}
-                    color={'#ACB2BB'}
-                    backgroundColor={'#F1F2F4'}
-                    hoverColor={'#ACB2BB'}
-                    hoverBackgroundColor={'#E5E9F2'}
-                    style={{ marginTop: '20px' }}
+                    label={"+ 학기 추가하기"}
+                    color={"#ACB2BB"}
+                    backgroundColor={"#F1F2F4"}
+                    hoverColor={"#ACB2BB"}
+                    hoverBackgroundColor={"#E5E9F2"}
+                    style={{ marginTop: "20px" }}
                     onClick={() => navigate("/grades/register")}
                 />
             </ContentWrapper>
         </Wrapper>
     );
-}
+};
 
 export default Grades;
 
@@ -96,14 +97,14 @@ const ContentWrapper = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     padding: 100px 10px 80px;
     box-sizing: border-box;
-`
+`;
 
 const SubjectWrapper = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -119,27 +120,27 @@ const ScrollableSubjectList = styled.div`
 `;
 
 const Verify = styled.button`
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: none;
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 
-  &:hover {
-    background-color: rgba(172, 178, 187, 0.3);
-  }
+    &:hover {
+        background-color: rgba(172, 178, 187, 0.3);
+    }
 
-  &:active {
-    scale: 0.95;
-  }
+    &:active {
+        scale: 0.95;
+    }
 
-  font-size: 16px;
-  font-weight: bold;
-  color: #434b60;
-  text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #434b60;
+    text-align: center;
 `;

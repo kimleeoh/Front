@@ -31,53 +31,63 @@ const SignUpPage = () => {
   const [emailVerified, setEmailVerified] = useState(false);
   const navigate = useNavigate();
 
-  const handleSigninClick = () => {
-    navigate('/login');
-  };
+    const handleSigninClick = () => {
+        navigate("/login");
+    };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevData => ({ ...prevData, [name]: value }));
-  
-    if (name === 'email') {
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      setErrorMessage(value === '' ? '' : !emailPattern.test(value) ? '유효한 이메일 주소를 입력해 주세요.' : '');
-    }
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
 
-    if (name === 'studentId') {
-      const { lengthValid } = validateStudentId(value);
-      setErrorMessage(lengthValid ? '' : '학번은 8자리로 입력해 주세요.');
-    }
-  
-    if (name === 'password' || name === 'confirmPassword') {
-      const { password, confirmPassword } = { ...formData, [name]: value };
-  
-      if (name === 'password') {
-        const { lengthValid, hasNumber, hasSpecialChar } = validatePassword(value);
-        setPasswordValid({ lengthValid, hasNumber, hasSpecialChar });
-      }
-  
-      if (name === 'confirmPassword') {
-        if (password !== confirmPassword) {
-          setErrorMessage('비밀번호가 일치하지 않습니다.');
-        } else {
-          setErrorMessage('');
+        if (name === "email") {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            setErrorMessage(
+                value === ""
+                    ? ""
+                    : !emailPattern.test(value)
+                      ? "유효한 이메일 주소를 입력해 주세요."
+                      : ""
+            );
         }
-      }
-    }
-  };
 
-  const validateStudentId = (studentId) => {
-    const lengthValid = studentId.length === 8;
-    return { lengthValid };
-  };
+        if (name === "studentId") {
+            const { lengthValid } = validateStudentId(value);
+            setErrorMessage(lengthValid ? "" : "학번은 8자리로 입력해 주세요.");
+        }
 
-  const validatePassword = (password) => {
-    const lengthValid = password.length >= 8 && password.length <= 12;
-    const hasNumber = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    return { lengthValid, hasNumber, hasSpecialChar };
-  };
+        if (name === "password" || name === "confirmPassword") {
+            const { password, confirmPassword } = {
+                ...formData,
+                [name]: value,
+            };
+
+            if (name === "password") {
+                const { lengthValid, hasNumber, hasSpecialChar } =
+                    validatePassword(value);
+                setPasswordValid({ lengthValid, hasNumber, hasSpecialChar });
+            }
+
+            if (name === "confirmPassword") {
+                if (password !== confirmPassword) {
+                    setErrorMessage("비밀번호가 일치하지 않습니다.");
+                } else {
+                    setErrorMessage("");
+                }
+            }
+        }
+    };
+
+    const validateStudentId = (studentId) => {
+        const lengthValid = studentId.length === 8;
+        return { lengthValid };
+    };
+
+    const validatePassword = (password) => {
+        const lengthValid = password.length >= 8 && password.length <= 12;
+        const hasNumber = /\d/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        return { lengthValid, hasNumber, hasSpecialChar };
+    };
 
   const handleNext = async () => {
     if (validateStep()) {
@@ -119,53 +129,58 @@ const SignUpPage = () => {
   
   
 
-  const handlePrevious = () => {
-    setStep(prevStep => prevStep - 1);
-  };
+    const handlePrevious = () => {
+        setStep((prevStep) => prevStep - 1);
+    };
 
-  const handleSubmit = async () => {
-    // 서버로 데이터를 전송하는 로직을 추가할 수 있습니다.
-    // 예: await fetch('/api/signup', { method: 'POST', body: JSON.stringify(formData) });
-    console.log(step-1)
-    SignUpHandler(step-1, formData);
-    console.log('제출된 데이터:', formData);
-    navigate('/confirm');
-  };
+    const handleSubmit = async () => {
+        // 서버로 데이터를 전송하는 로직을 추가할 수 있습니다.
+        // 예: await fetch('/api/signup', { method: 'POST', body: JSON.stringify(formData) });
+        console.log(step - 1);
+        SignUpHandler(step - 1, formData);
+        console.log("제출된 데이터:", formData);
+        navigate("/confirm");
+    };
 
-  const validateStep = () => {
-    switch (step) {
-        case 1:
-            // 이름 입력: 공백 확인
-            return formData.name.trim() !== '';
-        case 2:
-            // 학부 입력: 공백 확인
-            return formData.department.trim() !== '';
-        case 3:
-            // 학번 입력: 숫자이고 8자리인지 확인
-            return !isNaN(Number(formData.studentId)) && formData.studentId.trim().length === 8;
-        case 4:
-            // 이메일 형식 확인
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailPattern.test(formData.email);
-        case 5:
-            // 인증 이메일의 입력 여부 확인 (별도의 인증 로직이 있을 수도 있음)
-            return formData.confirmEmail.trim() !== '';
-        case 6:
-            // 비밀번호 유효성 확인 (비밀번호 일치 및 유효성)
-            const { lengthValid, hasNumber, hasSpecialChar } = passwordValid;
-            return (
-                formData.password.trim() !== '' &&
-                formData.password === formData.confirmPassword &&
-                lengthValid && hasNumber && hasSpecialChar
-            );
-        default:
-            return false;
-    }
-};
+    const validateStep = () => {
+        switch (step) {
+            case 1:
+                // 이름 입력: 공백 확인
+                return formData.name.trim() !== "";
+            case 2:
+                // 학부 입력: 공백 확인
+                return formData.department.trim() !== "";
+            case 3:
+                // 학번 입력: 숫자이고 8자리인지 확인
+                return (
+                    !isNaN(Number(formData.studentId)) &&
+                    formData.studentId.trim().length === 8
+                );
+            case 4:
+                // 이메일 형식 확인
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailPattern.test(formData.email);
+            case 5:
+                // 인증 이메일의 입력 여부 확인 (별도의 인증 로직이 있을 수도 있음)
+                return formData.confirmEmail.trim() !== "";
+            case 6:
+                // 비밀번호 유효성 확인 (비밀번호 일치 및 유효성)
+                const { lengthValid, hasNumber, hasSpecialChar } =
+                    passwordValid;
+                return (
+                    formData.password.trim() !== "" &&
+                    formData.password === formData.confirmPassword &&
+                    lengthValid &&
+                    hasNumber &&
+                    hasSpecialChar
+                );
+            default:
+                return false;
+        }
+    };
 
-
-  const renderButtons = () => {
-    const isStepValid = validateStep();
+    const renderButtons = () => {
+        const isStepValid = validateStep();
 
     return (
       <ButtonWrapper buttonCount={step === 1 || step === 6 ? 1 : 2} maxWidth={windowSize}>
@@ -363,73 +378,74 @@ const SignUpPage = () => {
 export default SignUpPage;
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 `;
 
 const FormWrapper = styled.div`
-  position: fixed;
-  top: 15%;
+    position: fixed;
+    top: 15%;
 
-  width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
-  padding: ${(props) => (props.maxWidth > 430 ? '0px' : '0 20px')};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
+    width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    padding: ${(props) => (props.maxWidth > 430 ? "0px" : "0 20px")};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
 `;
 
 const ButtonWrapper = styled.div`
-  position: fixed;
-  bottom: 15%;
-  display: flex;
-  justify-content: ${({ buttonCount }) => (buttonCount === 1 ? 'center' : 'space-between')};
-  margin-top: 20px;
-  width: 100%;
-  max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
-  padding: 0 10px;
-  box-sizing: border-box;
-  gap: 10px;
+    position: fixed;
+    bottom: 15%;
+    display: flex;
+    justify-content: ${({ buttonCount }) =>
+        buttonCount === 1 ? "center" : "space-between"};
+    margin-top: 20px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    padding: 0 10px;
+    box-sizing: border-box;
+    gap: 10px;
 `;
 
 const SigninWrapper = styled.div`
-  position: fixed;
-  bottom: 15%;
-  margin-bottom: -70px;
+    position: fixed;
+    bottom: 15%;
+    margin-bottom: -70px;
 `;
 
 const StepDescription = styled.div`
-  width: 100%;
-  text-align: left;
-  margin-bottom: -10px;
+    width: 100%;
+    text-align: left;
+    margin-bottom: -10px;
 `;
 
 const Title = styled.h2`
-  font-size: 24px;
-  margin: 0;
-  color: #434B60;
+    font-size: 24px;
+    margin: 0;
+    color: #434b60;
 `;
 
 const Subtitle = styled.p`
-  font-size: 18px;
-  margin: 0;
-  color: #6c757d;
+    font-size: 18px;
+    margin: 0;
+    color: #6c757d;
 `;
 
 const TextFieldsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
 `;
 
 const ErrorText = styled.p`
-  color: red;
-  margin-top: -10px;
-  font-size: 14px;
+    color: red;
+    margin-top: -10px;
+    font-size: 14px;
 `;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
 const ImageUploader = () => {
     const [files, setFiles] = useState([]);
@@ -15,7 +15,9 @@ const ImageUploader = () => {
         <UploaderWrapper>
             <FileAddArea>
                 {files.length > 0 ? (
-                     <FileName>{files.map(file => file.name).join(', ')}</FileName>
+                    <FileName>
+                        {files.map((file) => file.name).join(", ")}
+                    </FileName>
                 ) : (
                     <PlaceholderText>
                         이미지를 불러오기 또는 사진 촬영
@@ -24,12 +26,12 @@ const ImageUploader = () => {
             </FileAddArea>
             <UploadButton>
                 파일추가
-                <input 
-                    type="file" 
-                    accept="image/*" 
-                    multiple 
-                    onChange={handleFileChange} 
-                    style={{ display: 'none' }}
+                <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
                 />
             </UploadButton>
         </UploaderWrapper>
@@ -52,16 +54,15 @@ const UploadButton = styled.label`
     justify-content: center;
 
     width: 20%;
-    background-color: #434B60;
+    background-color: #434b60;
     color: white;
     border-radius: 16px;
     cursor: pointer;
     font-size: 12px;
     transition: all 0.3s ease;
 
-
     &:hover {
-        background-color: #5E6C84;
+        background-color: #5e6c84;
     }
     &:active {
         transform: scale(0.95);
@@ -71,7 +72,7 @@ const UploadButton = styled.label`
 const FileAddArea = styled.div`
     width: 80%;
     height: 30px;
-    border: 2px solid #ACB2BB;
+    border: 2px solid #acb2bb;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -82,12 +83,12 @@ const FileAddArea = styled.div`
 `;
 
 const PlaceholderText = styled.p`
-    color: #ACB2BB;
+    color: #acb2bb;
     font-size: 14px;
 `;
 
 const FileName = styled.p`
-    color: #ACB2BB;
+    color: #acb2bb;
     font-size: 14px;
     margin: 0;
 

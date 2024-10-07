@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import useWindowSize from './WindowSize';
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import useWindowSize from "./WindowSize";
 
-const FixedIcon = ({src = '/Icons/Question.svg', url}) => {
+const FixedIcon = ({ src = "/Icons/Question.svg", url }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -11,7 +11,7 @@ const FixedIcon = ({src = '/Icons/Question.svg', url}) => {
         }
     };
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <FixedIconContainer maxWidth={windowSize}>
@@ -19,14 +19,15 @@ const FixedIcon = ({src = '/Icons/Question.svg', url}) => {
                 <img src={src} />
             </Button>
         </FixedIconContainer>
-    )
-}
+    );
+};
 
 export default FixedIcon;
 
 const FixedIconContainer = styled.div`
     position: fixed;
-    right: ${(props) => props.maxWidth > 430 ? `${20 + (props.maxWidth - 430)/2}px` : '20px'};
+    right: ${(props) =>
+        props.maxWidth > 430 ? `${20 + (props.maxWidth - 430) / 2}px` : "20px"};
     bottom: 100px;
     width: 50px;
     height: 50px;
@@ -34,7 +35,7 @@ const FixedIconContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-`
+`;
 
 const Button = styled.button`
     border: none;
@@ -54,18 +55,16 @@ const Button = styled.button`
         height: 50px; /* Set the height of the icon */
         transition: all 0.3s ease; /* Smooth transition for image change */
 
-        
         box-shadow: 0px 2px 4px gray;
     }
 
     &:hover {
         scale: 1.05;
         box-shadow: 2px 4px 10px gray;
-        
     }
     &:active {
         transition: all 0.3s ease;
         scale: 0.95;
         box-shadow: 0px 0px 0px gray;
     }
-`
+`;

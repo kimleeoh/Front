@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Popup from '../Popup';
+import React, { useState } from "react";
+import styled from "styled-components";
+import Popup from "../Popup";
 
 const MeatballMenu = ({ _id, onReportClick }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -26,7 +26,11 @@ const MeatballMenu = ({ _id, onReportClick }) => {
                 <img src="/Icons/meatballs.svg" alt="Meatball Menu" />
             </MenuButton>
             {isPopupOpen && (
-                <Popup title="Menu" position={popupPosition} onClose={() => setIsPopupOpen(false)}>
+                <Popup
+                    title="Menu"
+                    position={popupPosition}
+                    onClose={() => setIsPopupOpen(false)}
+                >
                     <MenuItem onClick={handleReportClick}>신고하기</MenuItem>
                     <MenuItem>링크 복사하기</MenuItem>
                     <MenuItem>Option 3</MenuItem>
@@ -37,7 +41,6 @@ const MeatballMenu = ({ _id, onReportClick }) => {
 };
 
 export default MeatballMenu;
-
 
 const MenuButton = styled.button`
     border: none;
@@ -58,7 +61,7 @@ const MenuButton = styled.button`
     }
 
     &:hover {
-        background-color: #E2E5E9;
+        background-color: #e2e5e9;
     }
     &:active {
         transform: scale(0.9);
@@ -71,7 +74,7 @@ const MenuItem = styled.div`
     cursor: pointer;
     transition: all 0.3s ease;
     &:hover {
-        background-color: #E2E5E9;
+        background-color: #e2e5e9;
     }
     &:active {
         transform: scale(0.98);

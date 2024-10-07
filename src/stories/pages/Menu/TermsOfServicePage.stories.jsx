@@ -1,16 +1,16 @@
-import TermsOfServicePage from './TermsOfServicePage';
-import { MemoryRouter } from 'react-router-dom';
+import TermsOfServicePage from "./TermsOfServicePage";
+import { MemoryRouter } from "react-router-dom";
 
 const meta = {
-  component: TermsOfServicePage,
-  title: 'Pages/termsOfService',
-  decorators: [
-    (Story) => (
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
+    component: TermsOfServicePage,
+    title: "Pages/termsOfService",
+    decorators: [
+        (Story) => (
+            <MemoryRouter>
+                <Story />
+            </MemoryRouter>
+        ),
+    ],
 };
 
 export default meta;

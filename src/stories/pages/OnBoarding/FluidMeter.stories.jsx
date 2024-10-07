@@ -1,7 +1,7 @@
-import FluidMeter from './FluidMeter';
+import FluidMeter from "./FluidMeter";
 
 const meta = {
-  component: FluidMeter,
+    component: FluidMeter,
 };
 
 export default meta;

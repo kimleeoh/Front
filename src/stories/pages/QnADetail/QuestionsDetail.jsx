@@ -1,25 +1,38 @@
-import React, { useRef, useState, useEffect } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { Votes, Scrap, Notification } from '../../components/Common/Tool';
-import MeatballMenu from '../../components/Common/MeatballMenu';
-import CarouselTemp from '../../components/Common/CarouselTemp';
-import getTimeElapsed from '../../components/Common/getTimeElapsed';
-import CategoryPath from '../../components/Common/CategoryPath';
-import useWindowSize from '../../components/Common/WindowSize';
+import React, { useRef, useState, useEffect } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import { Votes, Scrap, Notification } from "../../components/Common/Tool";
+import MeatballMenu from "../../components/Common/MeatballMenu";
+import CarouselTemp from "../../components/Common/CarouselTemp";
+import getTimeElapsed from "../../components/Common/getTimeElapsed";
+import CategoryPath from "../../components/Common/CategoryPath";
+import useWindowSize from "../../components/Common/WindowSize";
 
-const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views, like, img, limit, likePost, onReportClick }) => {
+const QuestionsDetail = ({
+    _id,
+    user_main,
+    title,
+    content,
+    subject,
+    time,
+    views,
+    like,
+    img,
+    limit,
+    likePost,
+    onReportClick,
+}) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
 
     const [isLiked, setIsLiked] = useState(false);
     const [likePostId, setLikePost] = useState(likePost);
-    const [isSaved, setIsSaved] = useState(false);  // Scrap 상태 관리
-    const [isNotified, setIsNotified] = useState(false);  // Notification 상태 관리
+    const [isSaved, setIsSaved] = useState(false); // Scrap 상태 관리
+    const [isNotified, setIsNotified] = useState(false); // Notification 상태 관리
 
     useEffect(() => {
         if (likePost.includes(_id)) {
             setIsLiked(true);
-            console.log('확인')
+            console.log("확인");
         }
     }, [_id, likePost]);
 
@@ -30,9 +43,9 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
     };
 
     const handleUnlike = () => {
-        setLikePost(likePost.filter(postId => postId !== _id));
+        setLikePost(likePost.filter((postId) => postId !== _id));
         console.log("Post unliked:", _id);
-    }
+    };
     // Scrap 토글 핸들러
     const handleSaveToggle = () => {
         setIsSaved(!isSaved);
@@ -45,14 +58,17 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
         console.log("Notification toggled:", isNotified);
     };
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <OutWrapper maxWidth={windowSize}>
             <Wrapper>
                 <TopBar>
                     <CategoryPath categories={subject} />
-                    <MeatballMenu _id={_id} onReportClick={() => onReportClick(_id)} />
+                    <MeatballMenu
+                        _id={_id}
+                        onReportClick={() => onReportClick(_id)}
+                    />
                 </TopBar>
                 <Title>
                     <img src="/Icons/Q.svg" alt="Q icon" />
@@ -60,7 +76,9 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
                 </Title>
 
                 <MetaContainer>
-                    <span>{getTimeElapsed(time)} | {user_main} | 조회수 {views}</span>
+                    <span>
+                        {getTimeElapsed(time)} | {user_main} | 조회수 {views}
+                    </span>
                 </MetaContainer>
                 <Content>{content}</Content>
 
@@ -74,7 +92,12 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
                             showFraction={true}
                         >
                             {images.map((image, index) => (
-                                <Image key={index} src={image} draggable="false" maxWidth={windowSize}/>
+                                <Image
+                                    key={index}
+                                    src={image}
+                                    draggable="false"
+                                    maxWidth={windowSize}
+                                />
                             ))}
                         </CarouselTemp>
                     </CarouselWrapper>
@@ -87,17 +110,16 @@ const QuestionsDetail = ({ _id, user_main, title, content, subject, time, views,
                         handleUnlike={handleUnlike}
                     />
                     <div>
-                    <Notification
-                        isNotificationEnabled={isNotified}
-                        handleNotificationToggle={handleNotificationToggle}
-                    />
-                    <Scrap
-                        isSaveEnabled={isSaved}
-                        handleSaveToggle={handleSaveToggle}
-                    />
+                        <Notification
+                            isNotificationEnabled={isNotified}
+                            handleNotificationToggle={handleNotificationToggle}
+                        />
+                        <Scrap
+                            isSaveEnabled={isSaved}
+                            handleSaveToggle={handleSaveToggle}
+                        />
                     </div>
                 </BottomBar>
-
             </Wrapper>
         </OutWrapper>
     );
@@ -128,11 +150,11 @@ QuestionsDetail.propTypes = {
 
 QuestionsDetail.defaultProps = {
     id: 0,
-    user_main: '이름',
-    major: '전공',
-    title: '제목',
-    content: '내용',
-    subject: '과목',
+    user_main: "이름",
+    major: "전공",
+    title: "제목",
+    content: "내용",
+    subject: "과목",
     time: 0,
     views: 0,
     like: 0,
@@ -147,14 +169,14 @@ const Wrapper = styled.div`
     justify-content: center;
 
     padding: 20px 0;
-    border-bottom: 1px solid #F1F2F4;
+    border-bottom: 1px solid #f1f2f4;
 `;
 
 const TopBar = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-`
+`;
 
 const BottomBar = styled.div`
     display: flex;
@@ -170,7 +192,7 @@ const Title = styled.div`
     margin-bottom: 10px;
     display: flex;
     align-items: flex-start;
-    
+
     img {
         flex-shrink: 0;
         margin-right: 10px;
@@ -179,12 +201,13 @@ const Title = styled.div`
     /* Title text will wrap, and wrapped lines will align correctly */
     span {
         display: inline-block;
-        max-width: calc(100% - 30px); /* Adjust the width to account for the image and margin */
+        max-width: calc(
+            100% - 30px
+        ); /* Adjust the width to account for the image and margin */
         line-height: 1.2; /* Adjust line height to your preference */
         word-break: break-word;
     }
 `;
-
 
 const Content = styled.div`
     font-size: 16px;
@@ -200,7 +223,7 @@ const MetaContainer = styled.div`
 
 const OutWrapper = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
 `;
 
 const Image = styled.img`

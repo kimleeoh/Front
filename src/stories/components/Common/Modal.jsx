@@ -1,30 +1,40 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { forwardRef, useImperativeHandle, useState } from "react";
+import styled, { keyframes } from "styled-components";
 
-const Modal = forwardRef(({ children, width = '400px', height = '300px', background = 'white' }, ref) => {
-    const [isOpen, setIsOpen] = useState(false);
+const Modal = forwardRef(
+    (
+        { children, width = "400px", height = "300px", background = "white" },
+        ref
+    ) => {
+        const [isOpen, setIsOpen] = useState(false);
 
-    useImperativeHandle(ref, () => ({
-        open: () => setIsOpen(true),
-        close: () => setIsOpen(false),
-    }));
+        useImperativeHandle(ref, () => ({
+            open: () => setIsOpen(true),
+            close: () => setIsOpen(false),
+        }));
 
-    if (!isOpen) return null;
+        if (!isOpen) return null;
 
-    const handleOverlayClick = () => setIsOpen(false);
+        const handleOverlayClick = () => setIsOpen(false);
 
-    const handleContentClick = (e) => {
-        e.stopPropagation();
-    };
+        const handleContentClick = (e) => {
+            e.stopPropagation();
+        };
 
-    return (
-        <ModalOverlay onClick={handleOverlayClick}>
-            <ModalContent onClick={handleContentClick} width={width} height={height} background={background}>
-                {children}
-            </ModalContent>
-        </ModalOverlay>
-    );
-});
+        return (
+            <ModalOverlay onClick={handleOverlayClick}>
+                <ModalContent
+                    onClick={handleContentClick}
+                    width={width}
+                    height={height}
+                    background={background}
+                >
+                    {children}
+                </ModalContent>
+            </ModalOverlay>
+        );
+    }
+);
 
 export default Modal;
 
@@ -54,14 +64,14 @@ const modalFadeIn = keyframes`
 `;
 
 const ModalContent = styled.div`
-    background: ${props => props.background};
+    background: ${(props) => props.background};
     backdrop-filter: blur(4px);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     position: relative;
-    width: ${props => props.width};
-    height: ${props => props.height};
+    width: ${(props) => props.width};
+    height: ${(props) => props.height};
     display: flex;
     flex-direction: column;
     align-items: center;

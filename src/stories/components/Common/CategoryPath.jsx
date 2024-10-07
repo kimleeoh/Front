@@ -1,19 +1,21 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const CategoryPath = ({ categories }) => {
-  return (
-    <CategoryPathContainer>
-      {categories.map((category, index) => (
-        <React.Fragment key={index}>
-          <CategoryItem isLast={index === categories.length - 1}>
-            {category}
-          </CategoryItem>
-          {index < categories.length - 1 && <Separator>&gt;</Separator>}
-        </React.Fragment>
-      ))}
-    </CategoryPathContainer>
-  );
+    return (
+        <CategoryPathContainer>
+            {categories.map((category, index) => (
+                <React.Fragment key={index}>
+                    <CategoryItem isLast={index === categories.length - 1}>
+                        {category}
+                    </CategoryItem>
+                    {index < categories.length - 1 && (
+                        <Separator>&gt;</Separator>
+                    )}
+                </React.Fragment>
+            ))}
+        </CategoryPathContainer>
+    );
 };
 
 export default CategoryPath;
@@ -26,7 +28,7 @@ const CategoryPathContainer = styled.div`
 `;
 
 const CategoryItem = styled.span`
-    font-weight: ${props => props.isLast ? 'bold' : 'normal'};
+    font-weight: ${(props) => (props.isLast ? "bold" : "normal")};
 `;
 
 const Separator = styled.span`

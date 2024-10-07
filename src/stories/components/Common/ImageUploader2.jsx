@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import useWindowSize from './WindowSize';
+import React, { useState } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import useWindowSize from "./WindowSize";
 
 const ImageUploader = ({ onChange }) => {
     const [files, setFiles] = useState([]);
@@ -14,23 +14,23 @@ const ImageUploader = ({ onChange }) => {
         }
     };
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <UploaderWrapper maxWidth={windowSize}>
             {files.length > 0 ? (
-                <FileName>{files.map(file => file.name).join(', ')}</FileName>
+                <FileName>{files.map((file) => file.name).join(", ")}</FileName>
             ) : (
                 <PlaceholderText>파일첨부</PlaceholderText>
             )}
             <UploadButton>
-                <img src="/Icons/Plus.svg" alt="Add"/>
+                <img src="/Icons/Plus.svg" alt="Add" />
                 <input
                     type="file"
                     accept="image/*,application/pdf,application/zip"
                     multiple
                     onChange={handleFileChange}
-                    style={{ display: 'none' }}
+                    style={{ display: "none" }}
                 />
             </UploadButton>
         </UploaderWrapper>
@@ -47,9 +47,9 @@ const UploaderWrapper = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     height: 40px;
-    border: 1px solid #ACB2BB;
+    border: 1px solid #acb2bb;
     border-radius: 16px;
     padding: 0 20px;
     font-size: 14px;
@@ -72,14 +72,14 @@ const UploadButton = styled.label`
 `;
 
 const PlaceholderText = styled.div`
-    color: #ACB2BB;
+    color: #acb2bb;
     font-size: 14px;
     display: flex;
     align-items: center;
 `;
 
 const FileName = styled.p`
-    color: #ACB2BB;
+    color: #acb2bb;
     font-size: 14px;
     margin: 0 10px 0 0;
     overflow: hidden;

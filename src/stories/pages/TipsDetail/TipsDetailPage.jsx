@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import Header from '../../components/Header';
-import FixedBottomContainer from '../../components/FixedBottomContainer';
-import TipsDetail from './TipsDetail';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import Header from "../../components/Header";
+import FixedBottomContainer from "../../components/FixedBottomContainer";
+import TipsDetail from "./TipsDetail";
 
 // const initialTipsData = [
 //     {
@@ -67,8 +67,13 @@ const TipsDetailPage = () => {
 
     return (
         <Wrapper>
-            <Header showIcon={false} text={""} backButton={true} searchButton={false}/>
-            {tipData.find(tip => tip._id === String(_id)) && (
+            <Header
+                showIcon={false}
+                text={""}
+                backButton={true}
+                searchButton={false}
+            />
+            {tipData.find((tip) => tip._id === String(_id)) && (
                 <TipsDetail
                     key={currentTip._id}
                     _id={currentTip._id}
@@ -84,11 +89,10 @@ const TipsDetailPage = () => {
                 />
             )}
 
-            <FixedBottomContainer>
-            </FixedBottomContainer>
+            <FixedBottomContainer></FixedBottomContainer>
         </Wrapper>
     );
-}
+};
 
 export default TipsDetailPage;
 

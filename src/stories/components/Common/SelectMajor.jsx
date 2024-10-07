@@ -16,11 +16,11 @@ const dropdownAnimation = keyframes`
 `;
 
 const SelectMajor = ({ startId, placeholder, onChange, name }) => {
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
-    const [selectedCategoryId, setSelectedCategoryId] = useState(startId || '');
+    const [selectedCategoryId, setSelectedCategoryId] = useState(startId || "");
     const [subCategories, setSubCategories] = useState([]);
     const [categoryHistoryId, setCategoryHistoryId] = useState([]);
     const [categoryHistoryName, setCategoryHistoryName] = useState([]);
@@ -31,70 +31,82 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
     useEffect(() => {
         setCategoryHistoryName([]);
         setCategoryHistoryId([]);
-    }, [])
-
+    }, []);
 
     useEffect(() => {
-      BaseAxios.post('/api/dummy/category', { id: selectedCategoryId })
-        .then(response => {
-            const fetchedCategories = response.data;
-            if (fetchedCategories.type < 2){
-                const newBoardOptions = fetchedCategories.sub_category_list_name.map((subName, index) => ({
-                    value: subName,
-                    label: subName,
-                    id: fetchedCategories.sub_category_list_id[index],
-                }));
-                console.log("response: ", response);
-                console.log("newBoardOptions: ", newBoardOptions);
-                setSubCategories(newBoardOptions);
-            }
-            else {
-                setCanSelect(false);
-            }
-        })
-        .catch(err => {
-          console.error(err);
-        });
+        BaseAxios.post("/api/dummy/category", { id: selectedCategoryId })
+            .then((response) => {
+                const fetchedCategories = response.data;
+                if (fetchedCategories.type < 2) {
+                    const newBoardOptions =
+                        fetchedCategories.sub_category_list_name.map(
+                            (subName, index) => ({
+                                value: subName,
+                                label: subName,
+                                id: fetchedCategories.sub_category_list_id[
+                                    index
+                                ],
+                            })
+                        );
+                    console.log("response: ", response);
+                    console.log("newBoardOptions: ", newBoardOptions);
+                    setSubCategories(newBoardOptions);
+                } else {
+                    setCanSelect(false);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+            });
     }, [selectedCategoryId]);
 
     const handleCategorySelect = (categoryId, categoryLabel) => {
         if (canSelect) {
-            if (categoryLabel !== categoryHistoryName[categoryHistoryName.length - 1]) {
-                setCategoryHistoryId([...categoryHistoryId, selectedCategoryId]);
+            if (
+                categoryLabel !==
+                categoryHistoryName[categoryHistoryName.length - 1]
+            ) {
+                setCategoryHistoryId([
+                    ...categoryHistoryId,
+                    selectedCategoryId,
+                ]);
                 setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
                 setSelectedCategoryId(categoryId);
-              }
-        }
-        else {
-            setCategoryHistoryName(prevHistory => {
-            const newHistory = [...prevHistory];
-            newHistory[newHistory.length - 1] = categoryLabel;
-            return newHistory;
-        })
+            }
+        } else {
+            setCategoryHistoryName((prevHistory) => {
+                const newHistory = [...prevHistory];
+                newHistory[newHistory.length - 1] = categoryLabel;
+                return newHistory;
+            });
         }
     };
 
     const handleGoBack = () => {
-      if (categoryHistoryId.length > 0) {
-        setCanSelect(true)
-        setSelectedCategoryId(startId);  // Set previous category as selected
-        if (!canSelect) {
-            setCategoryHistoryName(categoryHistoryName.slice(0, -2)); 
-            setCategoryHistoryId(categoryHistoryId.slice(0, -2)); 
+        if (categoryHistoryId.length > 0) {
+            setCanSelect(true);
+            setSelectedCategoryId(startId); // Set previous category as selected
+            if (!canSelect) {
+                setCategoryHistoryName(categoryHistoryName.slice(0, -2));
+                setCategoryHistoryId(categoryHistoryId.slice(0, -2));
+            } else {
+                setCategoryHistoryName(categoryHistoryName.slice(0, -1));
+                setCategoryHistoryId(categoryHistoryId.slice(0, -1));
+            }
         }
-        else {
-            setCategoryHistoryName(categoryHistoryName.slice(0, -1)); 
-            setCategoryHistoryId(categoryHistoryId.slice(0, -1)); 
-        }
-    }
         setIsOpen(true);
     };
     const Save = () => {
-        if (canSelect == false){
-            onChange({ target: { name, value: categoryHistoryName[categoryHistoryName.length - 1] } });
+        if (canSelect == false) {
+            onChange({
+                target: {
+                    name,
+                    value: categoryHistoryName[categoryHistoryName.length - 1],
+                },
+            });
             setIsOpen(false);
         }
-    }
+    };
 
     console.log("subCategories: ", subCategories);
     console.log("categoryHistoryId: ", categoryHistoryId);
@@ -102,183 +114,202 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
                 setIsOpen(false);
             }
         };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
-  return (
-      <DropdownContainer ref={dropdownRef} maxWidth={windowSize}>
-      <DropdownHeader onClick={toggleDropdown}>
-        {categoryHistoryName.length === 0
-          ? placeholder
-          : categoryHistoryName.map((option) => option).join(" > ")}
-        <ArrowIcon isOpen={isOpen}>
-          <img src="/Icons/Arrow.svg" alt="arrow" />
-        </ArrowIcon>
-      </DropdownHeader>
-      {isOpen && (
-        <DropdownListContainer>
-          <DropdownList role="listbox">
-            {subCategories.length > 0 ? (
-              subCategories.map((option) => (
-                <ListItem
-                  onClick={() => handleCategorySelect(option.id, option.label)}
-                >
-                  {option.label}
-                  {option.subcategories && option.subcategories.length > 0 && (
-                    <span style={{ transform: "rotate(270deg)" }}>
-                      <img src="/Icons/Arrow.svg" alt="arrow" width={"12px"} />
-                    </span>
-                  )}
-                </ListItem>
-              ))
-            ) : (
-              <ListItem></ListItem>
+    return (
+        <DropdownContainer ref={dropdownRef} maxWidth={windowSize}>
+            <DropdownHeader onClick={toggleDropdown}>
+                {categoryHistoryName.length === 0
+                    ? placeholder
+                    : categoryHistoryName.map((option) => option).join(" > ")}
+                <ArrowIcon isOpen={isOpen}>
+                    <img src="/Icons/Arrow.svg" alt="arrow" />
+                </ArrowIcon>
+            </DropdownHeader>
+            {isOpen && (
+                <DropdownListContainer>
+                    <DropdownList role="listbox">
+                        {subCategories.length > 0 ? (
+                            subCategories.map((option) => (
+                                <ListItem
+                                    onClick={() =>
+                                        handleCategorySelect(
+                                            option.id,
+                                            option.label
+                                        )
+                                    }
+                                >
+                                    {option.label}
+                                    {option.subcategories &&
+                                        option.subcategories.length > 0 && (
+                                            <span
+                                                style={{
+                                                    transform: "rotate(270deg)",
+                                                }}
+                                            >
+                                                <img
+                                                    src="/Icons/Arrow.svg"
+                                                    alt="arrow"
+                                                    width={"12px"}
+                                                />
+                                            </span>
+                                        )}
+                                </ListItem>
+                            ))
+                        ) : (
+                            <ListItem></ListItem>
+                        )}
+                    </DropdownList>
+                    {categoryHistoryName.length > 0 && (
+                        <ButtonContainer>
+                            <BackButton onClick={handleGoBack}>
+                                뒤로 가기
+                            </BackButton>
+                            <SaveButton onClick={Save}>저장</SaveButton>
+                        </ButtonContainer>
+                    )}
+                </DropdownListContainer>
             )}
-          </DropdownList>
-          {categoryHistoryName.length > 0 && (
-            <ButtonContainer>
-              <BackButton onClick={handleGoBack}>뒤로 가기</BackButton>
-              <SaveButton onClick={Save}>저장</SaveButton>
-            </ButtonContainer>
-          )}
-        </DropdownListContainer>
-      )}
-    </DropdownContainer>
-  );
+        </DropdownContainer>
+    );
 };
 
 export default SelectMajor;
 
 SelectMajor.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-      subcategories: PropTypes.arrayOf(
+    options: PropTypes.arrayOf(
         PropTypes.shape({
-          value: PropTypes.string.isRequired,
-          label: PropTypes.string.isRequired,
-          subcategories: PropTypes.array,
+            value: PropTypes.string.isRequired,
+            label: PropTypes.string.isRequired,
+            subcategories: PropTypes.arrayOf(
+                PropTypes.shape({
+                    value: PropTypes.string.isRequired,
+                    label: PropTypes.string.isRequired,
+                    subcategories: PropTypes.array,
+                })
+            ),
         })
-      ),
-    })
-  ).isRequired,
-  placeholder: PropTypes.string,
-  onChange: PropTypes.func,
+    ).isRequired,
+    placeholder: PropTypes.string,
+    onChange: PropTypes.func,
 };
 
 SelectMajor.defaultProps = {
-  placeholder: "게시판 선택",
+    placeholder: "게시판 선택",
 };
 
 const DropdownContainer = styled.div`
-  font-size: 15px;
-  padding: 10px;
-  border-bottom: 1px solid #acb2bb;
-  position: relative;
-  gap: 10px;
-  width: 100%;
-  max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    font-size: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #acb2bb;
+    position: relative;
+    gap: 10px;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
 `;
 
 const DropdownHeader = styled.div`
-  height: 30px;
-  background-color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  color: #434b60;
+    height: 30px;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: #434b60;
 `;
 
 const ArrowIcon = styled.span`
-  transform: ${({ isOpen }) => (isOpen ? "rotate(180deg)" : "rotate(0deg)")};
-  transition: transform 0.3s ease;
+    transform: ${({ isOpen }) => (isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+    transition: transform 0.3s ease;
 `;
 
 const DropdownListContainer = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  z-index: 1;
-  border-radius: 0 0 16px 16px;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  max-height: 180px;
-  transition: all 0.3s ease;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); // box-shadow 적용
-  animation: ${dropdownAnimation} 0.3s ease;
-  transform-origin: top;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    border-radius: 0 0 16px 16px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    max-height: 180px;
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); // box-shadow 적용
+    animation: ${dropdownAnimation} 0.3s ease;
+    transform-origin: top;
 
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 `;
 
 const DropdownList = styled.ul`
-  flex: 1;
-  overflow-y: auto;
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
 `;
 
 const ListItem = styled.li`
-  padding: 10px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  transition: all 0.3s ease;
-  border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    border-radius: 8px;
 
-  &:hover {
-    background-color: #e2e5e9;
-  }
-  &:active {
-    transform: scale(0.98);
-  }
+    &:hover {
+        background-color: #e2e5e9;
+    }
+    &:active {
+        transform: scale(0.98);
+    }
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid #e2e5e9;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #e2e5e9;
 `;
 
 const BackButton = styled.div`
-  flex: 1;
-  padding: 10px;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.3s ease;
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
 
-  &:hover {
-    background-color: rgba(226, 229, 233, 0.3);
-  }
-  &:active {
-    transform: scale(0.98);
-  }
+    &:hover {
+        background-color: rgba(226, 229, 233, 0.3);
+    }
+    &:active {
+        transform: scale(0.98);
+    }
 `;
 
 const SaveButton = styled.div`
-  flex: 1;
-  padding: 10px;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.3s ease;
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
 
-  &:hover {
-    background-color: rgba(226, 229, 233, 0.3);
-  }
-  &:active {
-    transform: scale(0.98);
-  }
+    &:hover {
+        background-color: rgba(226, 229, 233, 0.3);
+    }
+    &:active {
+        transform: scale(0.98);
+    }
 `;

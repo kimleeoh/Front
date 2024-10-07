@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Modal from './Modal';
-import Button from '../Button';
-import Checker from './Checker';
+import React, { useState } from "react";
+import styled from "styled-components";
+import Modal from "./Modal";
+import Button from "../Button";
+import Checker from "./Checker";
 
 const reportReasons = [
-    '게시판 성격에 부적합함',
-    '음란물/불건전한 만남 및 대화',
-    '정당/정치인 비하 및 선거운동',
-    '불법촬영물 등의 유통',
-    '상업적 광고 및 판매',
-    '욕설/비하',
-    '낚시/놀람/도배',
-    '유출/사칭/사기'
+    "게시판 성격에 부적합함",
+    "음란물/불건전한 만남 및 대화",
+    "정당/정치인 비하 및 선거운동",
+    "불법촬영물 등의 유통",
+    "상업적 광고 및 판매",
+    "욕설/비하",
+    "낚시/놀람/도배",
+    "유출/사칭/사기",
 ];
 
 const ModalReport = ({ isOpen, onClose, reportId }) => {
@@ -20,11 +20,11 @@ const ModalReport = ({ isOpen, onClose, reportId }) => {
 
     const handleReport = () => {
         if (selectedReason !== null) {
-            console.log('신고 이유:', reportReasons[selectedReason]);
-            console.log('신고된 ID:', reportId);
+            console.log("신고 이유:", reportReasons[selectedReason]);
+            console.log("신고된 ID:", reportId);
             onClose();
         } else {
-            alert('신고 이유를 선택해주세요.');
+            alert("신고 이유를 선택해주세요.");
         }
     };
 

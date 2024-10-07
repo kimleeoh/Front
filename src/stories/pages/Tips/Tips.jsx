@@ -1,12 +1,22 @@
-import react from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import getTimeElapsed from '../../components/Common/getTimeElapsed';
-import useWindowSize from '../../components/Common/WindowSize';
+import react from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import getTimeElapsed from "../../components/Common/getTimeElapsed";
+import useWindowSize from "../../components/Common/WindowSize";
 
-const Tips = ({ _id, Ruser, title, content, preview_img, likes, point, views, time }) => {
-    const {width: windowSize} = useWindowSize();
+const Tips = ({
+    _id,
+    Ruser,
+    title,
+    content,
+    preview_img,
+    likes,
+    point,
+    views,
+    time,
+}) => {
+    const { width: windowSize } = useWindowSize();
     return (
         <OutWrapper maxWidth={windowSize}>
             <StyledLink to={`/tips/${_id}`}>
@@ -17,21 +27,35 @@ const Tips = ({ _id, Ruser, title, content, preview_img, likes, point, views, ti
                             <Content>{content}</Content>
                         </TextWrapper>
 
-                        {preview_img && <ImageContainer>
-                            <Image src={preview_img} />
-                        </ImageContainer>}
+                        {preview_img && (
+                            <ImageContainer>
+                                <Image src={preview_img} />
+                            </ImageContainer>
+                        )}
                     </ContentWrapper>
 
                     <MetaContainer>
                         {/* <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {major} {name} | 조회수 {views} </span> */}
-                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold'}}> {likes} </span>
-                        <Point><img src='/point_white.svg' width={'12px'} /> - {point}</Point>
+                        <span
+                            style={{
+                                marginLeft: "10px",
+                                color: "#3182F7",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            {" "}
+                            {likes}{" "}
+                        </span>
+                        <Point>
+                            <img src="/point_white.svg" width={"12px"} /> -{" "}
+                            {point}
+                        </Point>
                     </MetaContainer>
                 </Wrapper>
             </StyledLink>
         </OutWrapper>
     );
-}
+};
 
 export default Tips;
 
@@ -44,19 +68,19 @@ Tips.propTypes = {
     views: PropTypes.number.isRequired,
     like: PropTypes.number.isRequired,
     img: PropTypes.string,
-    point: PropTypes.number.isRequired
+    point: PropTypes.number.isRequired,
 };
 
 Tips.defaultProps = {
-    name: '이름',
-    major: '전공',
-    title: '제목',
-    content: '내용',
+    name: "이름",
+    major: "전공",
+    title: "제목",
+    content: "내용",
     time: 0,
     views: 0,
     like: 0,
     img: null,
-    point: 100
+    point: 100,
 };
 
 const StyledLink = styled(Link)`
@@ -68,15 +92,15 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+
     height: 140px;
     padding: 20px 20px;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.2s ease;
-    
+
     &:active {
-        background-color: #F1F7Fd;
+        background-color: #f1f7fd;
         transition: all 0.2s ease;
         scale: 0.98;
     }
@@ -84,20 +108,20 @@ const Wrapper = styled.div`
 
 const ContentWrapper = styled.div`
     display: flex;
-`
+`;
 
 const TextWrapper = styled.div`
     align-items: flex-start;
-    max-width: ${(props) => (props.hasImage ? '80%' : '100%')};
+    max-width: ${(props) => (props.hasImage ? "80%" : "100%")};
     overflow: hidden;
-`
+`;
 
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
     width: 100%;
-    
+
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -120,15 +144,15 @@ const MetaContainer = styled.div`
     display: flex;
     align-items: center;
     margin-top: auto;
-    
+
     font-size: 10px;
-`
+`;
 
 const OutWrapper = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     margin: 0 auto;
-    border-bottom: 1px solid #ACB2BB;
+    border-bottom: 1px solid #acb2bb;
 `;
 
 const ImageContainer = styled.div`
@@ -148,10 +172,11 @@ const Image = styled.img`
 `;
 
 const Point = styled.div`
-    background: #78ADF9;
+    background: #78adf9;
     color: white;
     font-size: 9px;
-    width: ${(props) => `${20 + String(props.point).length * 2}px`};  /* 자릿수에 따라 width 조정 */
+    width: ${(props) =>
+        `${20 + String(props.point).length * 2}px`}; /* 자릿수에 따라 width 조정 */
     height: 12px;
     padding: 3px;
     border-radius: 10px;

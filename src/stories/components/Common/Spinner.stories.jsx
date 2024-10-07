@@ -1,7 +1,7 @@
-import { Spinner } from './Spinner';
+import { Spinner } from "./Spinner";
 
 const meta = {
-  component: Spinner,
+    component: Spinner,
 };
 
 export default meta;

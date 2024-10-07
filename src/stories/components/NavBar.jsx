@@ -1,9 +1,9 @@
 // components/NavBar.js
-import React, { useState, useEffect, useCallback } from 'react';
-import styled, { keyframes, css } from 'styled-components';
-import PropTypes from 'prop-types';
-import { useLocation, useNavigate } from 'react-router-dom';
-import useWindowSize from './Common/WindowSize';
+import React, { useState, useEffect, useCallback } from "react";
+import styled, { keyframes, css } from "styled-components";
+import PropTypes from "prop-types";
+import { useLocation, useNavigate } from "react-router-dom";
+import useWindowSize from "./Common/WindowSize";
 
 // 애니메이션 정의
 const jellyAnimation = keyframes`
@@ -25,11 +25,11 @@ const jellyAnimation = keyframes`
 `;
 
 const ICONS = {
-    Home: { enabled: '/Icons/Home_e.svg', disabled: '/Icons/Home_d.svg' },
-    QnA: { enabled: '/Icons/QnA_e.svg', disabled: '/Icons/QnA_d.svg' },
-    Board: { enabled: '/Icons/Board_e.svg', disabled: '/Icons/Board_d.svg' },
-    Tips: { enabled: '/Icons/Tips_e.svg', disabled: '/Icons/Tips_d.svg' },
-    Menu: { enabled: '/Icons/Mypage_e.svg', disabled: '/Icons/Mypage_d.svg' },
+    Home: { enabled: "/Icons/Home_e.svg", disabled: "/Icons/Home_d.svg" },
+    QnA: { enabled: "/Icons/QnA_e.svg", disabled: "/Icons/QnA_d.svg" },
+    Board: { enabled: "/Icons/Board_e.svg", disabled: "/Icons/Board_d.svg" },
+    Tips: { enabled: "/Icons/Tips_e.svg", disabled: "/Icons/Tips_d.svg" },
+    Menu: { enabled: "/Icons/Mypage_e.svg", disabled: "/Icons/Mypage_d.svg" },
 };
 
 // NavBar Component
@@ -50,16 +50,19 @@ const NavBar = ({ initialState }) => {
         return () => clearTimeout(timer);
     }, [location.pathname]);
 
-    const handleButtonClick = useCallback((path) => {
-        setAnimatingButton(null);  // 이전 애니메이션 상태를 리셋
-        setTimeout(() => {
-            setActiveButton(path);
-            setAnimatingButton(path);  // 새로운 애니메이션 상태 설정
-            navigate(path);
-        }, 0);  // 0ms 지연을 주어 애니메이션이 매번 실행되도록 함
-    }, [navigate]);
+    const handleButtonClick = useCallback(
+        (path) => {
+            setAnimatingButton(null); // 이전 애니메이션 상태를 리셋
+            setTimeout(() => {
+                setActiveButton(path);
+                setAnimatingButton(path); // 새로운 애니메이션 상태 설정
+                navigate(path);
+            }, 0); // 0ms 지연을 주어 애니메이션이 매번 실행되도록 함
+        },
+        [navigate]
+    );
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <BottomLayout maxWidth={windowSize}>
@@ -68,10 +71,14 @@ const NavBar = ({ initialState }) => {
                     key={buttonName}
                     path={`/${buttonName.toLowerCase()}`}
                     isActive={activeButton === `/${buttonName.toLowerCase()}`}
-                    onClick={() => handleButtonClick(`/${buttonName.toLowerCase()}`)}
+                    onClick={() =>
+                        handleButtonClick(`/${buttonName.toLowerCase()}`)
+                    }
                     disabledIconSrc={ICONS[buttonName].disabled}
                     enabledIconSrc={ICONS[buttonName].enabled}
-                    isAnimating={animatingButton === `/${buttonName.toLowerCase()}`}
+                    isAnimating={
+                        animatingButton === `/${buttonName.toLowerCase()}`
+                    }
                 >
                     {buttonName}
                 </NavButton>
@@ -81,18 +88,28 @@ const NavBar = ({ initialState }) => {
 };
 
 NavBar.propTypes = {
-    initialState: PropTypes.oneOf(Object.keys(ICONS).map((key) => `/${key.toLowerCase()}`)).isRequired,
+    initialState: PropTypes.oneOf(
+        Object.keys(ICONS).map((key) => `/${key.toLowerCase()}`)
+    ).isRequired,
 };
 
 NavBar.defaultProps = {
-    initialState: '/home',
+    initialState: "/home",
 };
 
 export default NavBar;
 
 // NavButton Component
-const NavButton = ({ isActive, disabledIconSrc, enabledIconSrc, children, onClick, isAnimating, ...props }) => {
-    const {width: windowSize} = useWindowSize();
+const NavButton = ({
+    isActive,
+    disabledIconSrc,
+    enabledIconSrc,
+    children,
+    onClick,
+    isAnimating,
+    ...props
+}) => {
+    const { width: windowSize } = useWindowSize();
     return (
         <Button
             isActive={isActive}
@@ -103,10 +120,13 @@ const NavButton = ({ isActive, disabledIconSrc, enabledIconSrc, children, onClic
             {...props}
             maxWidth={windowSize}
         >
-            <img src={isActive ? enabledIconSrc : disabledIconSrc} alt={children} />
+            <img
+                src={isActive ? enabledIconSrc : disabledIconSrc}
+                alt={children}
+            />
             {children}
         </Button>
-    )
+    );
 };
 
 NavButton.propTypes = {
@@ -125,14 +145,14 @@ const Button = styled.button`
     justify-content: center;
     align-items: center;
     gap: 5px;
-    width: ${(props) => props.maxWidth > 380 ? '65px' : '55px'};
+    width: ${(props) => (props.maxWidth > 380 ? "65px" : "55px")};
     height: 65px;
     border-radius: 16px;
     border: 0;
     background-color: #fff;
     font-size: 16px;
-    font-weight: ${(props) => (props.isActive ? '550' : '500')};
-    color: ${(props) => (props.isActive ? '#434b60' : '#acb2bb')};
+    font-weight: ${(props) => (props.isActive ? "550" : "500")};
+    color: ${(props) => (props.isActive ? "#434b60" : "#acb2bb")};
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -157,7 +177,6 @@ const Button = styled.button`
             content: url(${(props) => props.enabledIconSrc});
         }
     }
-
 `;
 
 const BottomLayout = styled.div`

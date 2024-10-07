@@ -8,17 +8,27 @@ const LoginPage = lazy(() => import("./stories/pages/OnBoarding/LoginPage"));
 const SignUpPage = lazy(() => import("./stories/pages/OnBoarding/SignUpPage"));
 const ResetPage = lazy(() => import("./stories/pages/OnBoarding/ResetPage"));
 const HomePage = lazy(() => import("./stories/pages/Home/HomePage"));
-const NotificationPage = lazy(() => import("./stories/pages/Home/NotificationPage"));
+const NotificationPage = lazy(
+    () => import("./stories/pages/Home/NotificationPage")
+);
 const QnAPage = lazy(() => import("./stories/pages/QnA/QnAPage"));
 const TipsPage = lazy(() => import("./stories/pages/Tips/TipsPage"));
 const Searching = lazy(() => import("./stories/pages/Searching"));
-const QnADetailPage = lazy(() => import("./stories/pages/QnADetail/QnADetailPage"));
-const TipsDetailPage = lazy(() => import("./stories/pages/TipsDetail/TipsDetailPage"));
+const QnADetailPage = lazy(
+    () => import("./stories/pages/QnADetail/QnADetailPage")
+);
+const TipsDetailPage = lazy(
+    () => import("./stories/pages/TipsDetail/TipsDetailPage")
+);
 const PostsDetail = lazy(() => import("./stories/pages/Posts/PostsDetail"));
 const PostTipPage = lazy(() => import("./stories/pages/PostTip/PostTipPage"));
-const PostQuestionPage = lazy(() => import("./stories/pages/PostQuestion/PostQuestionPage"));
+const PostQuestionPage = lazy(
+    () => import("./stories/pages/PostQuestion/PostQuestionPage")
+);
 const BoardHome = lazy(() => import("./stories/pages/Board/BoardHome"));
-const EditBoardPage = lazy(() => import("./stories/pages/EditBoard/EditBoardPage"));
+const EditBoardPage = lazy(
+    () => import("./stories/pages/EditBoard/EditBoardPage")
+);
 const UnifiedBoard = lazy(() => import("./stories/pages/Board/UnifiedBoard"));
 
 const MenuPage = lazy(() => import("./stories/pages/Menu/MenuPage"));
@@ -31,39 +41,41 @@ const MyBoard = lazy(() => import("./stories/pages/Menu/MyBoard"));
 const Bookmarks = lazy(() => import("./stories/pages/Menu/Bookmarks"));
 const Likes = lazy(() => import("./stories/pages/Menu/Likes"));
 const History = lazy(() => import("./stories/pages/Menu/History"));
-const TermsOfServicePage = lazy(() => import("./stories/pages/Menu/TermsOfServicePage"));
-const TermsOfPrivatePage = lazy(() => import("./stories/pages/Menu/TermsOfPrivatePage"));
-const PolicyPage = lazy(() => import("./stories/pages/Menu/PolicyPage"));
+const TermsOfServicePage = lazy(
+    () => import("./stories/pages/Menu/TermsOfServicePage")
+);
 const Notices = lazy(() => import("./stories/pages/Menu/Notices"));
 const MyContact = lazy(() => import("./stories/pages/Menu/MyContact"));
 const Contact = lazy(() => import("./stories/pages/Menu/Contact"));
 
-const ConfirmationPage = lazy(() => import("./stories/pages/Confirmation/ConfirmationPage"));
+const ConfirmationPage = lazy(
+    () => import("./stories/pages/Confirmation/ConfirmationPage")
+);
 const Submit = lazy(() => import("./stories/pages/Confirmation/Submit"));
 const Alert = lazy(() => import("./stories/pages/Confirmation/Alert"));
 
 const Error = lazy(() => import("./stories/pages/Error"));
 
 const App = () => {
-  const [loading, setLoading] = React.useState(true);
+    const [loading, setLoading] = React.useState(true);
 
-  const mainApi = async () => {
-    try {
-      // 여기에 API 호출 코드를 작성합니다.
-    } catch (error) {
-      window.alert("API 호출에 실패했습니다.");
-    } finally {
-      setLoading(false); // API 호출이 끝나면 로딩 상태를 false로 설정
+    const mainApi = async () => {
+        try {
+            // 여기에 API 호출 코드를 작성합니다.
+        } catch (error) {
+            window.alert("API 호출에 실패했습니다.");
+        } finally {
+            setLoading(false); // API 호출이 끝나면 로딩 상태를 false로 설정
+        }
+    };
+
+    useEffect(() => {
+        mainApi();
+    }, []);
+
+    if (loading) {
+        return <Loading />; // 로딩 중일 때 Loading 컴포넌트를 표시
     }
-  };
-
-  useEffect(() => {
-    mainApi();
-  }, []);
-
-  if (loading) {
-    return <Loading />; // 로딩 중일 때 Loading 컴포넌트를 표시
-  }
 
   return (
     <Router>
@@ -105,17 +117,20 @@ const App = () => {
           <Route path="/mycontact" element={<MyContact />} />
           <Route path="/contact" element={<Contact />} />
 
-          <Route path="/confirm" element={<ConfirmationPage />} />
-          <Route path="/confirm/newComer" element={<Submit />} />
-          <Route path="/confirm/registeredStudent" element={<Submit />} />
-          <Route path="/confirm/graduate" element={<Submit />} />
-          <Route path="/verify" element={<Alert />} />
+                    <Route path="/confirm" element={<ConfirmationPage />} />
+                    <Route path="/confirm/newComer" element={<Submit />} />
+                    <Route
+                        path="/confirm/registeredStudent"
+                        element={<Submit />}
+                    />
+                    <Route path="/confirm/graduate" element={<Submit />} />
+                    <Route path="/verify" element={<Alert />} />
 
-          <Route path="/*" element={<Error />} />
-        </Routes>
-      </Suspense>
-    </Router>
-  );
+                    <Route path="/*" element={<Error />} />
+                </Routes>
+            </Suspense>
+        </Router>
+    );
 };
 
 export default App;

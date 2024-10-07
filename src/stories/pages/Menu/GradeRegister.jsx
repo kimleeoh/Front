@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
-import Header from '../../components/Header';
-import Button from '../../components/Button';
-import Picker from '../../components/Common/Picker';
-import Modal from '../../components/Common/Modal';
-import FixedBottomContainer from '../../components/FixedBottomContainer';
-import Checker from '../../components/Common/Checker';
-import ImageUploadButton from '../Confirmation/ImageUploadButton';
-import useWindowSize from '../../components/Common/WindowSize';
+import React, { useState, useEffect, useRef } from "react";
+import styled from "styled-components";
+import Header from "../../components/Header";
+import Button from "../../components/Button";
+import Picker from "../../components/Common/Picker";
+import Modal from "../../components/Common/Modal";
+import FixedBottomContainer from "../../components/FixedBottomContainer";
+import Checker from "../../components/Common/Checker";
+import ImageUploadButton from "../Confirmation/ImageUploadButton";
+import useWindowSize from "../../components/Common/WindowSize";
 
 const GradeRegister = () => {
     const Grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "F"];
@@ -40,7 +40,7 @@ const GradeRegister = () => {
                 term: "2",
                 subject_list: ["디지털미디어실습", "영상기획론"],
                 grade_list: [2, 3], // A-와 B+에 해당하는 인덱스
-            }
+            },
         ];
         localStorage.setItem("semester_list", JSON.stringify(exampleData));
     };
@@ -50,15 +50,22 @@ const GradeRegister = () => {
         initializeLocalStorage();
 
         // 로컬 스토리지에서 학년도와 학기를 가져와 설정
-        const savedSemesters = JSON.parse(localStorage.getItem("semester_list")) || [];
-        const years = [...new Set(savedSemesters.map(semester => semester.year))];
+        const savedSemesters =
+            JSON.parse(localStorage.getItem("semester_list")) || [];
+        const years = [
+            ...new Set(savedSemesters.map((semester) => semester.year)),
+        ];
         setAvailableYears(years);
 
         // 선택된 학년에 따른 학기를 설정
         if (selectedYear) {
-            const terms = [...new Set(savedSemesters
-                .filter(semester => semester.year === selectedYear)
-                .map(semester => semester.term))];
+            const terms = [
+                ...new Set(
+                    savedSemesters
+                        .filter((semester) => semester.year === selectedYear)
+                        .map((semester) => semester.term)
+                ),
+            ];
             setAvailableTerms(terms);
         } else {
             setAvailableTerms([]);
@@ -67,15 +74,23 @@ const GradeRegister = () => {
 
     useEffect(() => {
         // 학년도와 학기가 변경될 때 해당 학기와 연도에 맞는 과목과 성적을 불러옴
-        const savedSemesters = JSON.parse(localStorage.getItem("semester_list")) || [];
+        const savedSemesters =
+            JSON.parse(localStorage.getItem("semester_list")) || [];
         if (selectedYear && selectedTerm) {
-            const currentSemester = savedSemesters.find(semester => `${selectedYear}-${selectedTerm}` === `${semester.year}-${semester.term}`);
+            const currentSemester = savedSemesters.find(
+                (semester) =>
+                    `${selectedYear}-${selectedTerm}` ===
+                    `${semester.year}-${semester.term}`
+            );
             if (currentSemester) {
                 setSubjects(currentSemester.subject_list);
-                setSubjectGrades(currentSemester.grade_list.reduce((acc, grade, index) => {
-                    acc[currentSemester.subject_list[index]] = Grades[grade];
-                    return acc;
-                }, {}));
+                setSubjectGrades(
+                    currentSemester.grade_list.reduce((acc, grade, index) => {
+                        acc[currentSemester.subject_list[index]] =
+                            Grades[grade];
+                        return acc;
+                    }, {})
+                );
             } else {
                 setSubjects([]);
                 setSubjectGrades({});
@@ -88,38 +103,59 @@ const GradeRegister = () => {
         setSubjectGrades(updatedGrades);
 
         // 로컬 스토리지에 업데이트된 성적을 저장
-        const savedSemesters = JSON.parse(localStorage.getItem("semester_list")) || [];
-        const currentSemesterIndex = savedSemesters.findIndex(semester => `${selectedYear}-${selectedTerm}` === `${semester.year}-${semester.term}`);
+        const savedSemesters =
+            JSON.parse(localStorage.getItem("semester_list")) || [];
+        const currentSemesterIndex = savedSemesters.findIndex(
+            (semester) =>
+                `${selectedYear}-${selectedTerm}` ===
+                `${semester.year}-${semester.term}`
+        );
         if (currentSemesterIndex !== -1) {
-            savedSemesters[currentSemesterIndex].grade_list = subjects.map((subj) => Grades.indexOf(updatedGrades[subj]));
-            localStorage.setItem("semester_list", JSON.stringify(savedSemesters));
+            savedSemesters[currentSemesterIndex].grade_list = subjects.map(
+                (subj) => Grades.indexOf(updatedGrades[subj])
+            );
+            localStorage.setItem(
+                "semester_list",
+                JSON.stringify(savedSemesters)
+            );
         }
     };
 
-    const {width: windowSize} = useWindowSize();
+    const { width: windowSize } = useWindowSize();
 
     return (
         <Wrapper maxWidth={windowSize}>
-            <Header text="성적 등록하기">
-            </Header>
+            <Header text="성적 등록하기"></Header>
             <TermPickerWrapper maxWidth={windowSize}>
-                <Picker items={availableYears} selectedItem={selectedYear} onChange={setSelectedYear} placeholder={'XXXX'} />
+                <Picker
+                    items={availableYears}
+                    selectedItem={selectedYear}
+                    onChange={setSelectedYear}
+                    placeholder={"XXXX"}
+                />
                 학년도
-                <Picker items={availableTerms} selectedItem={selectedTerm} onChange={setSelectedTerm} placeholder={'X'} />
+                <Picker
+                    items={availableTerms}
+                    selectedItem={selectedTerm}
+                    onChange={setSelectedTerm}
+                    placeholder={"X"}
+                />
                 학기
             </TermPickerWrapper>
             <CheckerWrapper maxWidth={windowSize}>
-                <Checker text="인증되지 않음" readOnly={true} type={'check'} />
+                <Checker text="인증되지 않음" readOnly={true} type={"check"} />
             </CheckerWrapper>
             {subjects.length > 0 && (
                 <SubjectWrapper maxWidth={windowSize}>
-                    {subjects.map(subject => (
+                    {subjects.map((subject) => (
                         <SubjectItem key={subject}>
                             <SubjectName>{subject}</SubjectName>
                             <Picker
                                 items={Grades}
                                 selectedItem={subjectGrades[subject]}
-                                onChange={(grade) => handleGradeChange(subject, grade)}
+                                onChange={(grade) =>
+                                    handleGradeChange(subject, grade)
+                                }
                                 placeholder="성적 선택"
                             />
                         </SubjectItem>
@@ -133,17 +169,31 @@ const GradeRegister = () => {
                     color="#fff"
                     backgroundColor="#007bff"
                     hoverBackgroundColor="#0056b3"
-                    style={{ marginTop: '20px' }}
+                    style={{ marginTop: "20px" }}
                 />
             </FixedBottomContainer>
 
-            <Modal ref={modalRef} width='300px'>
-                <span style={{ fontSize: '16px' }}>성적을 인증하시겠습니까?</span>
-                <ImageUploadButton label={'성적표 업로드'} width={'140px'}/>
+            <Modal ref={modalRef} width="300px">
+                <span style={{ fontSize: "16px" }}>
+                    성적을 인증하시겠습니까?
+                </span>
+                <ImageUploadButton label={"성적표 업로드"} width={"140px"} />
                 <ButtonWrapper>
-                    <Button onClick={() => modalRef.current.close()} label={'아니요'} backgroundColor={'#434B60'} hoverBackgroundColor={'#ACB2BB'} width={'130px'} />
-                
-                    <Button onClick={handleVerifyClick} label={'예'} backgroundColor={'#007bff'} hoverBackgroundColor={'#0056b3'} width={'130px'} />
+                    <Button
+                        onClick={() => modalRef.current.close()}
+                        label={"아니요"}
+                        backgroundColor={"#434B60"}
+                        hoverBackgroundColor={"#ACB2BB"}
+                        width={"130px"}
+                    />
+
+                    <Button
+                        onClick={handleVerifyClick}
+                        label={"예"}
+                        backgroundColor={"#007bff"}
+                        hoverBackgroundColor={"#0056b3"}
+                        width={"130px"}
+                    />
                 </ButtonWrapper>
             </Modal>
         </Wrapper>
@@ -161,34 +211,34 @@ const Wrapper = styled.div`
 `;
 
 const Verify = styled.button`
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: none;
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 
-  &:hover {
-    background-color: rgba(172, 178, 187, 0.3);
-  }
+    &:hover {
+        background-color: rgba(172, 178, 187, 0.3);
+    }
 
-  &:active {
-    scale: 0.95;
-  }
+    &:active {
+        scale: 0.95;
+    }
 
-  font-size: 16px;
-  font-weight: bold;
-  color: #434b60;
-  text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #434b60;
+    text-align: center;
 `;
 
 const TermPickerWrapper = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     box-sizing: border-box;
     padding: 0 10px;
     display: flex;
@@ -205,7 +255,7 @@ const TermPickerWrapper = styled.div`
 
 const SubjectWrapper = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     padding: 0 10px;
     box-sizing: border-box;
     margin-top: 20px;
@@ -234,5 +284,5 @@ const ButtonWrapper = styled.div`
 
 const CheckerWrapper = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? '400px' : props.maxWidth)};
-`
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+`;

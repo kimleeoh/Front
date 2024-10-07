@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled, { keyframes } from 'styled-components';
+import React from "react";
+import PropTypes from "prop-types";
+import styled, { keyframes } from "styled-components";
 
 const dropdownAnimation = keyframes`
     0% {
@@ -22,9 +22,7 @@ const dropdownAnimation = keyframes`
 const Popup = ({ children, title, onClose, position }) => {
     return (
         <PopupWrapper style={{ top: position.top, left: position.left }}>
-            <Header>
-                {title}
-            </Header>
+            <Header>{title}</Header>
             <Content>{children}</Content>
         </PopupWrapper>
     );
@@ -59,8 +57,8 @@ const Header = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 10px 16px 8px 16px;
-    
-    color: #ACB2BB;
+
+    color: #acb2bb;
     font-size: 12px;
     font-weight: 400;
 `;

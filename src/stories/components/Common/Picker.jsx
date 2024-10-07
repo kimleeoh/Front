@@ -17,7 +17,8 @@ const Picker = ({ items, selectedItem, onChange, placeholder, width }) => {
 
     const checkScroll = () => {
         if (dropdownRef.current) {
-            const { scrollTop, scrollHeight, clientHeight } = dropdownRef.current;
+            const { scrollTop, scrollHeight, clientHeight } =
+                dropdownRef.current;
             setIsScrollableTop(scrollTop > 0);
             setIsScrollableBottom(scrollTop + clientHeight < scrollHeight);
         }
@@ -61,16 +62,16 @@ const Picker = ({ items, selectedItem, onChange, placeholder, width }) => {
 };
 
 Picker.propTypes = {
-    items: PropTypes.arrayOf(PropTypes.string).isRequired,  // Picker에 표시될 요소 배열
-    selectedItem: PropTypes.string,  // 선택된 항목
-    onChange: PropTypes.func.isRequired,  // 선택 변경 시 호출될 함수
-    placeholder: PropTypes.string,  // 선택 전 표시될 텍스트
+    items: PropTypes.arrayOf(PropTypes.string).isRequired, // Picker에 표시될 요소 배열
+    selectedItem: PropTypes.string, // 선택된 항목
+    onChange: PropTypes.func.isRequired, // 선택 변경 시 호출될 함수
+    placeholder: PropTypes.string, // 선택 전 표시될 텍스트
 };
 
 const PickerContainer = styled.div`
     position: relative;
     display: inline-block;
-    width: ${({ width }) => width || '80px'};
+    width: ${({ width }) => width || "80px"};
 `;
 
 const PickerButton = styled.button`
@@ -78,7 +79,7 @@ const PickerButton = styled.button`
     height: 40px;
     padding: 5px 10px;
     font-size: 16px;
-    color: #434B60;
+    color: #434b60;
     border: none;
     border-radius: 16px;
     background-color: #f1f1f1;
@@ -96,7 +97,7 @@ const PickerButton = styled.button`
 
 const ArrowIcon = styled.div`
     transition: transform 0.3s ease;
-    transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+    transform: ${({ isOpen }) => (isOpen ? "rotate(180deg)" : "rotate(0deg)")};
 `;
 
 const dropdownAnimation = keyframes`
@@ -121,7 +122,7 @@ const DropdownContainer = styled.div`
     background-color: white;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
     z-index: 1;
-    max-height: calc(6.8 * 40px);  // 6.8개 항목을 기준으로 최대 높이 설정
+    max-height: calc(6.8 * 40px); // 6.8개 항목을 기준으로 최대 높이 설정
     animation: ${dropdownAnimation} 0.3s ease forwards;
     overflow: hidden;
 `;
@@ -137,7 +138,8 @@ const DropdownItem = styled.div`
     cursor: pointer;
     border-bottom: 1px solid #f1f1f1;
     transition: all 0.3s ease;
-    color: ${({ isSelected }) => (isSelected ? '#3182F7' : '#434b60')};  // 선택된 아이템 강조
+    color: ${({ isSelected }) =>
+        isSelected ? "#3182F7" : "#434b60"}; // 선택된 아이템 강조
 
     &:hover {
         background-color: #f1f1f1;
@@ -159,7 +161,10 @@ const ScrollHintTop = styled.div`
     right: 0;
     height: 20px;
     pointer-events: none;
-    background: ${({ isScrollable }) => (isScrollable ? 'linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))' : 'transparent')};
+    background: ${({ isScrollable }) =>
+        isScrollable
+            ? "linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))"
+            : "transparent"};
     z-index: 2;
 `;
 
@@ -170,7 +175,10 @@ const ScrollHintBottom = styled.div`
     right: 0;
     height: 20px;
     pointer-events: none;
-    background: ${({ isScrollable }) => (isScrollable ? 'linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))' : 'transparent')};
+    background: ${({ isScrollable }) =>
+        isScrollable
+            ? "linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))"
+            : "transparent"};
     z-index: 2;
 `;
 

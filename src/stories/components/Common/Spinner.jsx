@@ -49,12 +49,12 @@ const StyledCircular = styled.svg`
         stroke-dasharray: 1, 200;
         stroke-dashoffset: 0;
         animation: dash 1.5s ease-in-out infinite;
-        stroke: ${({ color }) => color || '#007bff'}; // 기본 색상은 blue
+        stroke: ${({ color }) => color || "#007bff"}; // 기본 색상은 blue
         stroke-linecap: round;
     }
 `;
 
-export function Spinner({ weight = 4, color = '#007bff', size = 32 }) {
+export function Spinner({ weight = 4, color = "#007bff", size = 32 }) {
     return (
         <StyledLoader size={size}>
             <StyledCircular viewBox="25 25 50 50" color={color}>
