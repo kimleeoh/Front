@@ -21,7 +21,7 @@ const HomePage = () => {
                 <div style={{ marginBottom: '10px', width: '100%' }}>
                     <Logo theme="darkgray" /> 
                 </div>
-                <PointButton onClick={() => navigate('/point')}>내 포인트: 3500P</PointButton>
+                <PointButton onClick={() => navigate('/points')}>내 포인트: 3500P</PointButton>
                 <NotificationButton onClick={() => navigate('/notification')}>
                     <img
                         src="/Icons/Bellnactive.svg"

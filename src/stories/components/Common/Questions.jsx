@@ -140,8 +140,8 @@ const Questions = ({ _id, title, content, subject, time, views, like, img, limit
                         <span style={{color: '#737373'}}>
                             {getTimeElapsed(time)} | {subject} | 조회수 {views} | 제한: {getLimitText(limit)}
                         </span>
-                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold', fontSize: '10px', transform: 'translateY(1px)'}}>
-                            <img src='/Icons/Thumb_c.svg' /> {like}
+                        <span style={{marginLeft: '10px', color: '#3182F7', fontWeight: 'bold', fontSize: '10px', transform: 'translateY(1px)', display: 'flex', gap:'2px'}}>
+                            <div style={{transform: 'translateY(1px)'}}><img src='/Icons/Thumb_c.svg' /></div> {like}
                         </span>
                         <Point>
                             <img src='/point_white.svg' width={'12px'} /> + {point}

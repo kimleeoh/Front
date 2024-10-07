@@ -10,7 +10,6 @@ import useWindowSize from '../../components/Common/WindowSize';
 import BaseAxios from '../../../axioses/BaseAxios';
 import SelectMajor from '../../components/Common/SelectMajor';
 
-
 const SignUpPage = () => {
   const {width: windowSize} = useWindowSize();
   const [step, setStep] = useState(1);
@@ -29,6 +28,7 @@ const SignUpPage = () => {
     hasSpecialChar: false,
   });
   const [errorMessage, setErrorMessage] = useState('');
+  const [emailVerified, setEmailVerified] = useState(false);
   const navigate = useNavigate();
 
   const handleSigninClick = () => {
@@ -81,7 +81,7 @@ const SignUpPage = () => {
 
   const handleNext = async () => {
     if (validateStep()) {
-      setErrorMessage('');  // 에러 메시지 초기화
+      setErrorMessage('');
       if (step < 4) {
         const a = await SignUpHandler(step, formData);
         if (a) {
@@ -101,6 +101,7 @@ const SignUpPage = () => {
           if (r.status === 200) {
             console.log("인증 성공");
             SignUpHandler(step - 1, formData);
+            setEmailVerified(true);
             setStep(prevStep => prevStep + 1);
           } else {
             console.log("인증 실패");
@@ -168,12 +169,13 @@ const SignUpPage = () => {
 
     return (
       <ButtonWrapper buttonCount={step === 1 || step === 6 ? 1 : 2} maxWidth={windowSize}>
-        {step > 1 && (
+        {step > 1 && step < 6 && (
           <Button
             label="이전"
             onClick={handlePrevious}
             backgroundColor="#434B60"
             hoverBackgroundColor="#5A6480"
+            disabled={emailVerified}
           />
         )}
         <Button
@@ -181,7 +183,6 @@ const SignUpPage = () => {
           onClick={step === 6 ? handleSubmit : handleNext}
           backgroundColor="#434B60"
           hoverBackgroundColor="#5A6480"
-          
           disabled={!isStepValid}
         />
       </ButtonWrapper>
@@ -329,6 +330,7 @@ const SignUpPage = () => {
         return null;
     }
   };
+  
   return (
     <Wrapper maxWidth={windowSize}>
       <FormWrapper maxWidth={windowSize}>

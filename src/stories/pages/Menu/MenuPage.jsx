@@ -77,8 +77,8 @@ const MenuPage = () => {
             <Modal ref={modalRef} width='300px'>
                 <span style={{fontSize: '16px'}}>정말 로그아웃 하시겠습니까?</span>
                 <ButtonWrapper>
-                    <Button onClick={confirmLogout} label={'예'} backgroundColor={'#FF3C3C'} hoverBackgroundColor={'red'} width={'130px'}/>
                     <Button onClick={() => modalRef.current.close()} label={'아니요'} backgroundColor={'#434B60'} hoverBackgroundColor={'#ACB2BB'} width={'130px'}/>
+                    <Button onClick={confirmLogout} label={'예'} backgroundColor={'#FF3C3C'} hoverBackgroundColor={'red'} width={'130px'}/>
                 </ButtonWrapper>
             </Modal>
         </Wrapper>
