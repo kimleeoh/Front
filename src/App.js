@@ -34,7 +34,6 @@ const UnifiedBoard = lazy(() => import("./stories/pages/Board/UnifiedBoard"));
 const MenuPage = lazy(() => import("./stories/pages/Menu/MenuPage"));
 const MyPage = lazy(() => import("./stories/pages/Menu/Mypage"));
 const MyPageEdit = lazy(() => import("./stories/pages/Menu/MypageEdit"));
-const PointPage = lazy(() => import("./stories/pages/Point/PointPage"));
 const Grades = lazy(() => import("./stories/pages/Menu/Grades"));
 const GradesRegister = lazy(() => import("./stories/pages/Menu/GradeRegister"));
 const MyBoard = lazy(() => import("./stories/pages/Menu/MyBoard"));
@@ -44,8 +43,6 @@ const History = lazy(() => import("./stories/pages/Menu/History"));
 const TermsOfServicePage = lazy(
     () => import("./stories/pages/Menu/TermsOfServicePage")
 );
-const TermsOfPrivatePage = lazy(() => import("./stories/pages/Menu/TermsOfPrivatePage"));
-const PolicyPage = lazy(() => import("./stories/pages/Menu/PolicyPage"));
 const Notices = lazy(() => import("./stories/pages/Menu/Notices"));
 const MyContact = lazy(() => import("./stories/pages/Menu/MyContact"));
 const Contact = lazy(() => import("./stories/pages/Menu/Contact"));
@@ -79,44 +76,48 @@ const App = () => {
         return <Loading />; // 로딩 중일 때 Loading 컴포넌트를 표시
     }
 
-  return (
-    <Router>
-      {/* Suspense로 컴포넌트를 로드할 때 보여줄 fallback UI */}
-      <Suspense fallback={<Loading />}>
-        <Routes>
-          <Route path="/" element={<StartPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/reset" element={<ResetPage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/notification" element={<NotificationPage />} />
-          <Route path="/qna" element={<QnAPage />} />
-          <Route path="/qna/:_id" element={<QnADetailPage />} />
-          <Route path="/qna/post" element={<PostQuestionPage />} />
-          <Route path="/tips" element={<TipsPage />} />
-          <Route path="/tips/:_id" element={<TipsDetailPage />} />
-          <Route path="/tips/post" element={<PostTipPage />} />
-          <Route path="/:category/:_id" element={<PostsDetail />} />
-          <Route path="/board" element={<BoardHome />} />
-          <Route path="/edit-board" element={<EditBoardPage />} />
-          <Route path="/board/:subject" element={<UnifiedBoard />} />
-          <Route path="/search" element={<Searching />} />
-          
-          <Route path="/menu" element={<MenuPage />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/mypage/edit" element={<MyPageEdit />} />
-          <Route path="/grades" element={<Grades />} />
-          <Route path="/grades/register" element={<GradesRegister />} />
-          <Route path="/myboard" element={<MyBoard />} />
-          <Route path="/bookmarks" element={<Bookmarks />} />
-          <Route path="/likes" element={<Likes />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/terms" element={<TermsOfServicePage />} />
-          <Route path="/privacy" element={<TermsOfPrivatePage />} />
-          <Route path="/policies" element={<PolicyPage />} />
-          <Route path="/notices" element={<Notices />} />
-          <Route path="/mycontact" element={<MyContact />} />
-          <Route path="/contact" element={<Contact />} />
+    return (
+        <Router>
+            {/* Suspense로 컴포넌트를 로드할 때 보여줄 fallback UI */}
+            <Suspense fallback={<Loading />}>
+                <Routes>
+                    <Route path="/" element={<StartPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignUpPage />} />
+                    <Route path="/reset" element={<ResetPage />} />
+                    <Route path="/home" element={<HomePage />} />
+                    <Route
+                        path="/notification"
+                        element={<NotificationPage />}
+                    />
+                    <Route path="/qna" element={<QnAPage />} />
+                    <Route path="/qna/:_id" element={<QnADetailPage />} />
+                    <Route path="/qna/post" element={<PostQuestionPage />} />
+                    <Route path="/tips" element={<TipsPage />} />
+                    <Route path="/tips/:_id" element={<TipsDetailPage />} />
+                    <Route path="/tips/post" element={<PostTipPage />} />
+                    <Route path="/:category/:_id" element={<PostsDetail />} />
+                    <Route path="/board" element={<BoardHome />} />
+                    <Route path="/edit-board" element={<EditBoardPage />} />
+                    <Route path="/board/:subject" element={<UnifiedBoard />} />
+                    <Route path="/search" element={<Searching />} />
+
+                    <Route path="/menu" element={<MenuPage />} />
+                    <Route path="/mypage" element={<MyPage />} />
+                    <Route path="/mypage/edit" element={<MyPageEdit />} />
+                    <Route path="/grades" element={<Grades />} />
+                    <Route
+                        path="/grades/register"
+                        element={<GradesRegister />}
+                    />
+                    <Route path="/myboard" element={<MyBoard />} />
+                    <Route path="/bookmarks" element={<Bookmarks />} />
+                    <Route path="/likes" element={<Likes />} />
+                    <Route path="/history" element={<History />} />
+                    <Route path="/terms" element={<TermsOfServicePage />} />
+                    <Route path="/notices" element={<Notices />} />
+                    <Route path="/mycontact" element={<MyContact />} />
+                    <Route path="/contact" element={<Contact />} />
 
                     <Route path="/confirm" element={<ConfirmationPage />} />
                     <Route path="/confirm/newComer" element={<Submit />} />

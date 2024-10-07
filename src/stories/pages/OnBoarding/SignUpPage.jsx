@@ -1,35 +1,34 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import TextField from '../../components/TextField';
-import Button from '../../components/Button';
-import Checker from '../../components/Common/Checker';
-import DiscreteProgressBar from './DiscreteProgressBar';
-import { SignUpHandler } from '../../../axioses/SignUpHandler';
-import useWindowSize from '../../components/Common/WindowSize';
-import BaseAxios from '../../../axioses/BaseAxios';
-import SelectMajor from '../../components/Common/SelectMajor';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import TextField from "../../components/TextField";
+import Button from "../../components/Button";
+import Checker from "../../components/Common/Checker";
+import DiscreteProgressBar from "./DiscreteProgressBar";
+import { SignUpHandler } from "../../../axioses/SignUpHandler";
+import useWindowSize from "../../components/Common/WindowSize";
+import BaseAxios from "../../../axioses/BaseAxios";
+import SelectMajor from "../../components/Common/SelectMajor";
 
 const SignUpPage = () => {
-  const {width: windowSize} = useWindowSize();
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    name: '',
-    department: '',
-    studentId: '',
-    email: '',
-    confirmEmail: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [passwordValid, setPasswordValid] = useState({
-    lengthValid: false,
-    hasNumber: false,
-    hasSpecialChar: false,
-  });
-  const [errorMessage, setErrorMessage] = useState('');
-  const [emailVerified, setEmailVerified] = useState(false);
-  const navigate = useNavigate();
+    const { width: windowSize } = useWindowSize();
+    const [step, setStep] = useState(1);
+    const [formData, setFormData] = useState({
+        name: "",
+        department: "",
+        studentId: "",
+        email: "",
+        confirmEmail: "",
+        password: "",
+        confirmPassword: "",
+    });
+    const [passwordValid, setPasswordValid] = useState({
+        lengthValid: false,
+        hasNumber: false,
+        hasSpecialChar: false,
+    });
+    const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
 
     const handleSigninClick = () => {
         navigate("/login");
@@ -89,45 +88,57 @@ const SignUpPage = () => {
         return { lengthValid, hasNumber, hasSpecialChar };
     };
 
-  const handleNext = async () => {
-    if (validateStep()) {
-      setErrorMessage('');
-      if (step < 4) {
-        const a = await SignUpHandler(step, formData);
-        if (a) {
-          setStep(prevStep => prevStep + 1);
+    const handleNext = async () => {
+        if (validateStep()) {
+            setErrorMessage(""); // 에러 메시지 초기화
+            if (step < 4) {
+                const a = await SignUpHandler(step, formData);
+                if (a) {
+                    setStep((prevStep) => prevStep + 1);
+                }
+            } else if (step === 4) {
+                const result = await BaseAxios.post(
+                    "/api/register/emailAlready",
+                    { email: formData.email }
+                );
+                if (result.status === 201) {
+                    alert("이미 가입된 이메일입니다.");
+                } else {
+                    BaseAxios.post("/api/register/email", {
+                        email: formData.email,
+                    });
+                    setStep((prevStep) => prevStep + 1);
+                }
+            } else if (step === 5) {
+                try {
+                    const r = await BaseAxios.post(
+                        "/api/register/emailAuthNum",
+                        {
+                            email: formData.email,
+                            authNum: formData.confirmEmail,
+                        }
+                    );
+                    if (r.status === 200) {
+                        console.log("인증 성공");
+                        SignUpHandler(step - 1, formData);
+                        setStep((prevStep) => prevStep + 1);
+                    } else {
+                        console.log("인증 실패");
+                        console.log(r.data);
+                        setErrorMessage(
+                            "인증번호가 올바르지 않습니다. 다시 입력해 주세요."
+                        );
+                        alert("인증에 실패했습니다. 다시 시도해 주세요.");
+                    }
+                } catch (error) {
+                    console.error("인증 오류", error);
+                    setErrorMessage(
+                        "인증 과정에서 오류가 발생했습니다. 다시 시도해 주세요."
+                    );
+                }
+            }
         }
-      } else if (step === 4) {
-        const result = await BaseAxios.post('/api/register/emailAlready', { email: formData.email }); 
-        if (result.status === 201) {
-          alert("이미 가입된 이메일입니다.");
-        } else {
-          BaseAxios.post('/api/register/email', { email: formData.email });
-          setStep(prevStep => prevStep + 1);
-        }
-      } else if (step === 5) {
-        try {
-          const r = await BaseAxios.post('/api/register/emailAuthNum', { email: formData.email, authNum: formData.confirmEmail });
-          if (r.status === 200) {
-            console.log("인증 성공");
-            SignUpHandler(step - 1, formData);
-            setEmailVerified(true);
-            setStep(prevStep => prevStep + 1);
-          } else {
-            console.log("인증 실패");
-            console.log(r.data);
-            setErrorMessage("인증번호가 올바르지 않습니다. 다시 입력해 주세요.");
-            alert("인증에 실패했습니다. 다시 시도해 주세요.");
-          }
-        } catch (error) {
-          console.error("인증 오류", error);
-          setErrorMessage("인증 과정에서 오류가 발생했습니다. 다시 시도해 주세요.");
-        }
-      }
-    }
-  };
-  
-  
+    };
 
     const handlePrevious = () => {
         setStep((prevStep) => prevStep - 1);
@@ -182,197 +193,231 @@ const SignUpPage = () => {
     const renderButtons = () => {
         const isStepValid = validateStep();
 
-    return (
-      <ButtonWrapper buttonCount={step === 1 || step === 6 ? 1 : 2} maxWidth={windowSize}>
-        {step > 1 && step < 6 && (
-          <Button
-            label="이전"
-            onClick={handlePrevious}
-            backgroundColor="#434B60"
-            hoverBackgroundColor="#5A6480"
-            disabled={emailVerified}
-          />
-        )}
-        <Button
-          label={step === 6 ? '제출' : '다음'}
-          onClick={step === 6 ? handleSubmit : handleNext}
-          backgroundColor="#434B60"
-          hoverBackgroundColor="#5A6480"
-          disabled={!isStepValid}
-        />
-      </ButtonWrapper>
-    );
-  };
+        return (
+            <ButtonWrapper
+                buttonCount={step === 1 || step === 6 ? 1 : 2}
+                maxWidth={windowSize}
+            >
+                {step > 1 && (
+                    <Button
+                        label="이전"
+                        onClick={handlePrevious}
+                        backgroundColor="#434B60"
+                        hoverBackgroundColor="#5A6480"
+                    />
+                )}
+                <Button
+                    label={step === 6 ? "제출" : "다음"}
+                    onClick={step === 6 ? handleSubmit : handleNext}
+                    backgroundColor="#434B60"
+                    hoverBackgroundColor="#5A6480"
+                    disabled={!isStepValid}
+                />
+            </ButtonWrapper>
+        );
+    };
 
-  const renderStepContent = () => {
-    switch (step) {
-      case 1:
-        return (
-          <>
-            <StepDescription>
-              <Title>이름 입력</Title>
-              <Subtitle>회원님의 전체 이름을 입력해 주세요.</Subtitle>
-            </StepDescription>
-            <TextField
-              label="이름"
-              value={formData.name}
-              onChange={handleChange}
-              name="name"
-            />
-          </>
-        );
-      case 2:
-        return (
-          <>
-            <StepDescription>
-              <Title>학부 입력</Title>
-              <Subtitle>현재 소속된 학부를 입력해 주세요.</Subtitle>
-            </StepDescription>
-            <SelectMajor
-              startId={'66ccbb8d63fd0fe4e81552b0'}
-              name="department"
-              onChange={handleChange}
-              placeholder={"학부 선택"}
-            />
-          </>
-        );
-      case 3:
-        return (
-          <>
-            <StepDescription>
-              <Title>학번 입력</Title>
-              <Subtitle>학교에서 부여받은 학번을 입력해 주세요.</Subtitle>
-            </StepDescription>
-            <TextField
-              label="학번"
-              value={formData.studentId}
-              onChange={handleChange}
-              name="studentId"
-            />
-            {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
-          </>
-        );
-      case 4:
-        return (
-          <>
-            <StepDescription>
-              <Title>이메일 입력 및 인증</Title>
-              <Subtitle>이메일 주소를 입력해 주세요.</Subtitle>
-            </StepDescription>
-            <TextFieldsWrapper>
-              <TextField
-                label="이메일"
-                value={formData.email}
-                onChange={handleChange}
-                name="email"
-              />
-              {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
-            </TextFieldsWrapper>
-          </>
-        );
-      case 5:
-        return (
-          <>
-            <StepDescription>
-              <Title>이메일 인증</Title>
-              <Subtitle>이메일로 전송된 인증번호를 입력해 주세요.</Subtitle>
-            </StepDescription>
-            <TextFieldsWrapper>
-              <TextField
-                label="인증번호"
-                value={formData.confirmEmail}
-                onChange={handleChange}
-                name="confirmEmail"
-              />
-            </TextFieldsWrapper>
-            <div style={{ marginTop: '-20px', display: 'flex' , alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-            <Button label="인증번호 재전송" width="160px"
-          height="40px"
-          color="#434B60"
-          hoverColor="#434B60"
-          backgroundColor="#e2e5e9"
-          hoverBackgroundColor="#ACB2BB"  />
-            </div>
-          </>
-        );
-      case 6:
-        return (
-          <>
-            <StepDescription>
-              <Title>비밀번호 입력 및 확인</Title>
-              <Subtitle>비밀번호와 확인 비밀번호를 입력해 주세요.</Subtitle>
-            </StepDescription>
-            <TextFieldsWrapper>
-              <TextField
-                label="비밀번호"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                name="password"
-              />
-              <TextField
-                label="비밀번호 확인"
-                type="password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                name="confirmPassword"
-              />
-              {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
-              <div style={{ marginTop: '-15px',  display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: {windowSize}}}>
-                <Checker
-                  text="비밀번호는 8~12자 이내로 입력하세요."
-                  type="check"
-                  readOnly={true}
-                  checked={passwordValid.lengthValid}
+    const renderStepContent = () => {
+        switch (step) {
+            case 1:
+                return (
+                    <>
+                        <StepDescription>
+                            <Title>이름 입력</Title>
+                            <Subtitle>
+                                회원님의 전체 이름을 입력해 주세요.
+                            </Subtitle>
+                        </StepDescription>
+                        <TextField
+                            label="이름"
+                            value={formData.name}
+                            onChange={handleChange}
+                            name="name"
+                        />
+                    </>
+                );
+            case 2:
+                return (
+                    <>
+                        <StepDescription>
+                            <Title>학부 입력</Title>
+                            <Subtitle>
+                                현재 소속된 학부를 입력해 주세요.
+                            </Subtitle>
+                        </StepDescription>
+                        <SelectMajor
+                            startId={"66ccbb8d63fd0fe4e81552b0"}
+                            name="department"
+                            onChange={handleChange}
+                            placeholder={"학부 선택"}
+                        />
+                    </>
+                );
+            case 3:
+                return (
+                    <>
+                        <StepDescription>
+                            <Title>학번 입력</Title>
+                            <Subtitle>
+                                학교에서 부여받은 학번을 입력해 주세요.
+                            </Subtitle>
+                        </StepDescription>
+                        <TextField
+                            label="학번"
+                            value={formData.studentId}
+                            onChange={handleChange}
+                            name="studentId"
+                        />
+                        {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+                    </>
+                );
+            case 4:
+                return (
+                    <>
+                        <StepDescription>
+                            <Title>이메일 입력 및 인증</Title>
+                            <Subtitle>이메일 주소를 입력해 주세요.</Subtitle>
+                        </StepDescription>
+                        <TextFieldsWrapper>
+                            <TextField
+                                label="이메일"
+                                value={formData.email}
+                                onChange={handleChange}
+                                name="email"
+                            />
+                            {errorMessage && (
+                                <ErrorText>{errorMessage}</ErrorText>
+                            )}
+                        </TextFieldsWrapper>
+                    </>
+                );
+            case 5:
+                return (
+                    <>
+                        <StepDescription>
+                            <Title>이메일 인증</Title>
+                            <Subtitle>
+                                이메일로 전송된 인증번호를 입력해 주세요.
+                            </Subtitle>
+                        </StepDescription>
+                        <TextFieldsWrapper>
+                            <TextField
+                                label="인증번호"
+                                value={formData.confirmEmail}
+                                onChange={handleChange}
+                                name="confirmEmail"
+                            />
+                        </TextFieldsWrapper>
+                        <div
+                            style={{
+                                marginTop: "-20px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: "100%",
+                            }}
+                        >
+                            <Button
+                                label="인증번호 재전송"
+                                width="160px"
+                                height="40px"
+                                color="#434B60"
+                                hoverColor="#434B60"
+                                backgroundColor="#e2e5e9"
+                                hoverBackgroundColor="#ACB2BB"
+                            />
+                        </div>
+                    </>
+                );
+            case 6:
+                return (
+                    <>
+                        <StepDescription>
+                            <Title>비밀번호 입력 및 확인</Title>
+                            <Subtitle>
+                                비밀번호와 확인 비밀번호를 입력해 주세요.
+                            </Subtitle>
+                        </StepDescription>
+                        <TextFieldsWrapper>
+                            <TextField
+                                label="비밀번호"
+                                type="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                name="password"
+                            />
+                            <TextField
+                                label="비밀번호 확인"
+                                type="password"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                name="confirmPassword"
+                            />
+                            {errorMessage && (
+                                <ErrorText>{errorMessage}</ErrorText>
+                            )}
+                            <div
+                                style={{
+                                    marginTop: "-15px",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "flex-start",
+                                    width: { windowSize },
+                                }}
+                            >
+                                <Checker
+                                    text="비밀번호는 8~12자 이내로 입력하세요."
+                                    type="check"
+                                    readOnly={true}
+                                    checked={passwordValid.lengthValid}
+                                />
+                                <Checker
+                                    text="숫자를 포함하세요."
+                                    type="check"
+                                    readOnly={true}
+                                    checked={passwordValid.hasNumber}
+                                />
+                                <Checker
+                                    text="특수문자를 포함하세요."
+                                    type="check"
+                                    readOnly={true}
+                                    checked={passwordValid.hasSpecialChar}
+                                />
+                            </div>
+                        </TextFieldsWrapper>
+                    </>
+                );
+            default:
+                return null;
+        }
+    };
+    return (
+        <Wrapper maxWidth={windowSize}>
+            <FormWrapper maxWidth={windowSize}>
+                <DiscreteProgressBar
+                    totalSteps={6}
+                    currentStep={step}
+                    width="100%"
+                    height="8px"
+                    gap={4}
                 />
-                <Checker
-                  text="숫자를 포함하세요."
-                  type="check"
-                  readOnly={true}
-                  checked={passwordValid.hasNumber}
+                {renderStepContent()}
+            </FormWrapper>
+            {renderButtons()}
+            <SigninWrapper>
+                <Button
+                    label="이미 계정이 있으신가요?"
+                    width="200px"
+                    height="40px"
+                    color="#434B60"
+                    hoverColor="#434B60"
+                    backgroundColor="transparent"
+                    hoverBackgroundColor="#ACB2BB"
+                    onClick={handleSigninClick}
                 />
-                <Checker
-                  text="특수문자를 포함하세요."
-                  type="check"
-                  readOnly={true}
-                  checked={passwordValid.hasSpecialChar}
-                />
-              </div>
-            </TextFieldsWrapper>
-          </>
-        );
-      default:
-        return null;
-    }
-  };
-  
-  return (
-    <Wrapper maxWidth={windowSize}>
-      <FormWrapper maxWidth={windowSize}>
-        <DiscreteProgressBar 
-          totalSteps={6} 
-          currentStep={step} 
-          width="100%" 
-          height="8px" 
-          gap={4} 
-        />
-        {renderStepContent()}
-      </FormWrapper>
-      {renderButtons()}
-      <SigninWrapper>
-        <Button 
-          label="이미 계정이 있으신가요?" 
-          width="200px"
-          height="40px"
-          color="#434B60"
-          hoverColor="#434B60"
-          backgroundColor="transparent"
-          hoverBackgroundColor="#ACB2BB" 
-          onClick={handleSigninClick}
-        />
-      </SigninWrapper>
-    </Wrapper>
-  );
+            </SigninWrapper>
+        </Wrapper>
+    );
 };
 
 export default SignUpPage;
