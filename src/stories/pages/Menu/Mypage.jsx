@@ -10,7 +10,7 @@ import BaseAxios from "../../../axioses/BaseAxios.js";
 
 const MyPage = () => {
     const [activeTab, setActiveTab] = useState("프로필");
-    const [name, setName] = useState(""); // 유저 이름 상태
+    const [name, setName] = useState("아궁빵"); // 유저 이름 상태
     const [exp, setExp] = useState(10); // 유저 경험치 (Exp)
     const [tipsCount, setTipsCount] = useState(20); // 작성한 꿀팁 수
     const [replyCount, setReplyCount] = useState(30); // 작성한 답변 수
@@ -51,7 +51,7 @@ const MyPage = () => {
                 <BackButton onClick={() => navigate("/menu")}>
                     <img src="/Icons/Icon_arrow.svg" alt="뒤로 가기" />
                 </BackButton>
-                <ProfileName>{name}</ProfileName>
+                <ProfileName></ProfileName>
                 <Edit onClick={() => navigate("/mypage/edit")}>편집</Edit>
             </Header>
             <Profile maxWidth={windowSize}>
