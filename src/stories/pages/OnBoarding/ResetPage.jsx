@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TextField from "../../components/TextField";
@@ -10,6 +10,7 @@ import Logo from "./Logo";
 import CryptoJS from "crypto-js";
 import { encryptAES } from "../../../axioses/SignUpHandler";
 import { Buffer } from "buffer";
+import { Spinner } from "../../components/Common/Spinner";
 
 const ResetPage = () => {
     const { width: windowSize } = useWindowSize();
@@ -60,11 +61,19 @@ const ResetPage = () => {
         const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
         return { lengthValid, hasNumber, hasSpecialChar };
     };
+    // 렌더링 되는 페이지에서 setIsLoading(false)를 하면 Too Many Renders 오류가 발생
+    const [isLoading, setIsLoading] = useState(false);
+    useEffect(() => {
+        if (step > 1) {
+            setIsLoading(false);
+        }
+    }, [step]);
 
     const handleNext = async () => {
         if (validateStep()) {
             try {
                 if (step === 1) {
+                    setIsLoading(true);
                     const response = await BaseAxios.post(
                         "/api/findPassword/email",
                         { email: formData.email }
@@ -96,6 +105,7 @@ const ResetPage = () => {
                     }
                 }
             } catch (error) {
+                setIsLoading(false);
                 console.error("Error:", error);
                 setErrorMessage("오류가 발생했습니다. 다시 시도해 주세요.");
             }
@@ -167,13 +177,21 @@ const ResetPage = () => {
         const isStepValid = validateStep();
 
         return (
-            <Button
-                label={step === 3 ? "완료" : "다음"}
-                onClick={step === 3 ? handleSubmit : handleNext}
-                backgroundColor="#434B60"
-                hoverBackgroundColor="#5A6480"
-                disabled={!isStepValid}
-            />
+            <>
+                <Button
+                    label={step === 3 ? "완료" : "다음"}
+                    onClick={step === 3 ? handleSubmit : handleNext}
+                    backgroundColor="#434B60"
+                    hoverBackgroundColor="#5A6480"
+                    disabled={!isStepValid || isLoading}
+                />
+                {isLoading && (
+                    <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                        <Spinner color="#434B60" size={32} />
+                        <LoadingMessage>인증번호 전송 중</LoadingMessage>
+                    </div>
+                )}
+            </>
         );
     };
 
@@ -394,4 +412,10 @@ const ErrorText = styled.p`
 const LogoWrapper = styled.div`
     width: 100%;
     height: 100px;
+`;
+
+const LoadingMessage = styled.p`
+    margin-top: 10px;
+    color: #434B60;
+    font-size: 14px;
 `;
