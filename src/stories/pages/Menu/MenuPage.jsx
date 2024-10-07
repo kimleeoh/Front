@@ -107,8 +107,6 @@ const MenuPage = () => {
                 </MenuList>
                 <Title> 기타 </Title>
                 <MenuList to="/terms"> 이용약관 </MenuList>
-                <MenuList to="/privacy"> 개인정보 처리방침 </MenuList>
-                <MenuList to="/policies"> 운영정책 </MenuList>
                 <MenuList onClick={handleLogoutClick}> 로그아웃 </MenuList>
             </Section>
 
