@@ -36,41 +36,34 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
             .then((response) => {
                 const fetchedCategories = response.data;
     
-                const newBoardOptions = fetchedCategories.sub_category_list_name.map(
-                    (subName, index) => ({
-                        value: subName,
-                        label: subName,
-                        id: fetchedCategories.sub_category_list_id[index],
-                        hasSubcategories: fetchedCategories.type !== 2  // type이 2가 아닐 때 하위 카테고리가 있음
-                    })
-                );
-    
-                if (fetchedCategories.type === 2) {
-                    // 최종 카테고리 처리 (변경 없음)
-                    Promise.all(
-                        newBoardOptions.map((option) =>
-                            BaseAxios.post("/api/dummy/category", {
-                                id: option.id,
-                            }).then((response) => ({
+                const newBoardOptions = fetchedCategories.sub_category_list_name.map((subName, index) => ({
+                    value: subName,
+                    label: subName,
+                    id: fetchedCategories.sub_category_list_id[index],
+                }));
+                if (fetchedCategories.type == 2) {
+                    Promise.all(newBoardOptions.map(option => 
+                        BaseAxios.post('/api/dummy/category', {id: option.id})
+                            .then(response => ({
                                 CategoryName: response.data.category_name,
                                 Professor: response.data.professor,
                                 TimeIcredit: response.data.timeIcredit,
                                 Sub_student: response.data.sub_student,
                             }))
-                        )
-                    ).then((newBoardOptions2) => {
+                    )).then(newBoardOptions2 => {
                         setFinalOptions(newBoardOptions2);
                         setIsBottomSheetVisible(true);
                         setIsOpen(false);
                     });
-                } else {
-                    setSubCategories(newBoardOptions);
                 }
+                console.log("response: ", response);
+                console.log("newBoardOptions: ", newBoardOptions);
+                setSubCategories(newBoardOptions);
             })
-            .catch((err) => {
-                console.error(err);
+            .catch(err => {
+              console.error(err);
             });
-    }, [selectedCategoryId]);
+        }, [selectedCategoryId]);
 
     const handleCategorySelect = (categoryId, categoryLabel) => {
         if (canSelect) {

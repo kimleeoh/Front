@@ -34,7 +34,6 @@ const PostQuestionPage = () => {
 
     const [showValidationMessages, setShowValidationMessages] = useState(false);
     const [isPointInputDisabled, setIsPointInputDisabled] = useState(false);
-    const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
     const [userData, setUserData] = useState([]);
 
