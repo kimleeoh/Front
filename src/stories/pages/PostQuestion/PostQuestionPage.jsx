@@ -10,6 +10,7 @@ import Checker from "../../components/Common/Checker";
 import Button from "../../components/Button";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
+import { useNavigate } from "react-router-dom";
 
 const initialUserData = [
     {
@@ -22,6 +23,7 @@ const initialUserData = [
 ];
 
 const PostQuestionPage = () => {
+    const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         title: "",
         board: [],
@@ -29,7 +31,6 @@ const PostQuestionPage = () => {
         images: [],
         point: "",
         limit: false,
-        time: "",
     });
 
     const [showValidationMessages, setShowValidationMessages] = useState(false);
@@ -60,11 +61,10 @@ const PostQuestionPage = () => {
         const user = userData[0] || {};
         const updatedFormValues = {
             ...formValues,
-            name: user.name,
-            major: user.major,
-            profileImg: user.profileImg,
             time: now,
+            point: Number(formValues.point)
         };
+        console.log("updatedFormValues: ", updatedFormValues);
 
         const { title, board, content, point } = formValues;
         const isFormValid =
@@ -74,9 +74,9 @@ const PostQuestionPage = () => {
             point.trim() !== "";
 
         if (isFormValid) {
-            // Add your API call here to send updatedFormValues to the backend.
             await BaseAxios.post("/api/qna/create/post", updatedFormValues);
-            console.log(updatedFormValues);
+            alert('작성이 완료되었습니다.');
+            navigate("/qna");
         } else {
             setShowValidationMessages(true);
         }
@@ -128,13 +128,6 @@ const PostQuestionPage = () => {
 
     const { width: windowSize } = useWindowSize();
 
-    const [selectedCategory, setSelectedCategory] = useState([]);
-
-    const handleCategorySelect = (options) => {
-        setSelectedCategory(options);
-        console.log("게시판 선택: ", selectedCategory);
-    };
-
     return (
         <Wrapper>
             <Header
@@ -152,7 +145,6 @@ const PostQuestionPage = () => {
             />
             <SelectBoard
                 onChange={(value) => handleInputChange("board", value)}
-                onCategorySelect={handleCategorySelect}
             />
             <TextArea
                 height={"300px"}

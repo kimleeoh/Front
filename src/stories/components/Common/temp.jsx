@@ -16,7 +16,7 @@ const dropdownAnimation = keyframes`
     }
 `;
 
-const SelectBoard = ({ startId, placeholder, onChange }) => {
+const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
     const { width: windowSize } = useWindowSize();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -81,10 +81,9 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
             ) {
                 setCategoryHistoryId([
                     ...categoryHistoryId,
-                    selectedCategoryId,
+                    categoryId
                 ]);
                 setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
-                setSubmitHistoryId([...submitHistoryId, categoryId]);
             }
         } else {
             setCategoryHistoryName((prevHistory) => {
@@ -103,10 +102,8 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
             setSelectedCategoryId(previousCategoryId); // Set previous category as selected
             if (!canSelect) {
                 setCategoryHistoryName(categoryHistoryName.slice(0, -2));
-                setSubmitHistoryId(submitHistoryId.slice(0, -2));
             } else {
                 setCategoryHistoryName(categoryHistoryName.slice(0, -1));
-                setSubmitHistoryId(submitHistoryId.slice(0, -1));
             }
         }
 
@@ -118,31 +115,39 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
 
     const handleFinalCategorySelect = (categoryId, categoryLabel) => {
         if (canSelect) {
+            setCategoryHistoryId([
+                ...categoryHistoryId,
+                categoryId
+            ]);
             setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
-            setSubmitHistoryId([...submitHistoryId, categoryId])
             setCanSelect(false);
         } else {
+            setCategoryHistoryId((prevHistory) => {
+                const newHistory = [...prevHistory];
+                newHistory[newHistory.length - 1] = categoryId;
+                return newHistory;
+            });
             setCategoryHistoryName((prevHistory) => {
                 const newHistory = [...prevHistory];
                 newHistory[newHistory.length - 1] = categoryLabel;
-                return newHistory;
-            });
-            setSubmitHistoryId((prevHistory) => {
-                const newHistory = [...prevHistory];
-                newHistory[newHistory.length - 1] = categoryId;
                 return newHistory;
             });
         }
     };
 
     const Save = () => {
-        const savedData = submitHistoryId.map((id, index) => ({
+        const savedData = categoryHistoryId.map((id, index) => ({
             [id]: categoryHistoryName[index],
         }));
+        onCategorySelect(categoryHistoryName[categoryHistoryName.length-1]);
         setIsOpen(false);
         setIsBottomSheetVisible(false);
         onChange(savedData);
     };
+
+    // console.log("subCategories: ", subCategories);
+    console.log("categoryHistoryId: ", categoryHistoryId);
+    console.log("categoryHistoryName: ", categoryHistoryName);
 
     useEffect(() => {
         const handleClickOutside = (event) => {

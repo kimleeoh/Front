@@ -24,6 +24,7 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
     const [subCategories, setSubCategories] = useState([]);
     const [categoryHistoryId, setCategoryHistoryId] = useState([]);
     const [categoryHistoryName, setCategoryHistoryName] = useState([]);
+    const [submitHistoryId, setSubmitHistoryId] = useState([]);
     const [canSelect, setCanSelect] = useState(true);
 
     const toggleDropdown = () => setIsOpen(!isOpen);
@@ -49,7 +50,6 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
                             })
                         );
                     console.log("response: ", response);
-                    console.log("newBoardOptions: ", newBoardOptions);
                     setSubCategories(newBoardOptions);
                 } else {
                     setCanSelect(false);
@@ -61,17 +61,15 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
     }, [selectedCategoryId]);
 
     const handleCategorySelect = (categoryId, categoryLabel) => {
+        setSelectedCategoryId(categoryId);
         if (canSelect) {
             if (
                 categoryLabel !==
                 categoryHistoryName[categoryHistoryName.length - 1]
             ) {
-                setCategoryHistoryId([
-                    ...categoryHistoryId,
-                    selectedCategoryId,
-                ]);
+                setCategoryHistoryId([...categoryHistoryId,selectedCategoryId,]);
                 setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
-                setSelectedCategoryId(categoryId);
+                setSubmitHistoryId([...submitHistoryId, categoryId]);
             }
         } else {
             setCategoryHistoryName((prevHistory) => {
@@ -89,9 +87,11 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
             if (!canSelect) {
                 setCategoryHistoryName(categoryHistoryName.slice(0, -2));
                 setCategoryHistoryId(categoryHistoryId.slice(0, -2));
+                setSubmitHistoryId(submitHistoryId.slice(0, -2));
             } else {
                 setCategoryHistoryName(categoryHistoryName.slice(0, -1));
                 setCategoryHistoryId(categoryHistoryId.slice(0, -1));
+                setSubmitHistoryId(submitHistoryId.slice(0, -1));
             }
         }
         setIsOpen(true);
@@ -107,10 +107,6 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
             setIsOpen(false);
         }
     };
-
-    console.log("subCategories: ", subCategories);
-    console.log("categoryHistoryId: ", categoryHistoryId);
-    console.log("categoryHistoryName: ", categoryHistoryName);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
