@@ -28,14 +28,20 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
     const [finalOptions, setFinalOptions] = useState([]);
     const [canSelect, setCanSelect] = useState(true);
     const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+    const [isFinalCategory, setIsFinalCategory] = useState(false);
 
-    const toggleDropdown = () => setIsOpen(!isOpen);
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
+        if (isFinalCategory){
+            setIsBottomSheetVisible(true);
+        }
+    }
 
     useEffect(() => {
         BaseAxios.post("/api/dummy/category", { id: selectedCategoryId })
             .then((response) => {
                 const fetchedCategories = response.data;
-    
+                console.log("fetchedCategories: ", fetchedCategories);
                 const newBoardOptions = fetchedCategories.sub_category_list_name.map((subName, index) => ({
                     value: subName,
                     label: subName,
@@ -54,6 +60,7 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
                         setFinalOptions(newBoardOptions2);
                         setIsBottomSheetVisible(true);
                         setIsOpen(false);
+                        setIsFinalCategory(true);
                     });
                 }
                 console.log("response: ", response);
@@ -103,6 +110,7 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
         setIsBottomSheetVisible(false);
         setIsOpen(true);
         setCanSelect(true);
+        setIsFinalCategory(false);
     };
 
     const handleFinalCategorySelect = (categoryLabel) => {
@@ -161,30 +169,32 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
                 {isOpen && (
                     <DropdownListContainer>
                         <DropdownList role="listbox">
-                        {subCategories.map((option) => ( // 이 부분 수정필요 - 하위카테고리 존재 시 화살표 추가해야됨
-    <ListItem
-        key={option.id}
-        onClick={() => handleCategorySelect(option.id, option.label)}
-    >
-        {option.label}
-        {option.hasSubcategories && (
-            <span style={{ transform: "rotate(270deg)" }}>
-                <img src="/Icons/Arrow.svg" alt="arrow" width={"12px"} />
-            </span>
-        )}
-    </ListItem>
-))}
+                            {subCategories.map((option) => ( // 이 부분 수정필요 - 하위카테고리 존재 시 화살표 추가해야됨
+                                !isBottomSheetVisible && (
+                                    <ListItem
+                                      key={option.id}
+                                      onClick={() => handleCategorySelect(option.id, option.label)}
+                                    >
+                                      {option.label}
+                                      {option.hasSubcategories && (
+                                        <span style={{ transform: "rotate(270deg)" }}>
+                                          <img src="/Icons/Arrow.svg" alt="arrow" width={"12px"} />
+                                        </span>
+                                      )}
+                                    </ListItem>
+                                  )
+                            ))}
                         </DropdownList>
-                        {categoryHistoryName.length > 0 && (
-                            <ButtonContainer>
-                                <BackButton onClick={handleGoBack}>
-                                    뒤로 가기
-                                </BackButton>
-                                <SaveButton onClick={Save}>저장</SaveButton>
-                            </ButtonContainer>
-                        )}
-                    </DropdownListContainer>
-                )}
+                    {categoryHistoryName.length > 0 && !isBottomSheetVisible && (
+                        <ButtonContainer>
+                            <BackButton onClick={handleGoBack}>
+                                뒤로 가기
+                            </BackButton>
+                            <SaveButton onClick={Save}>저장</SaveButton>
+                        </ButtonContainer>
+                    )}
+                </DropdownListContainer>
+            )}
             </DropdownContainer>
             {isBottomSheetVisible && (
                 <BottomSheet
