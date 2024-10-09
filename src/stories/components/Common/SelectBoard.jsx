@@ -36,6 +36,9 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
         if (isFinalCategory){
             setIsBottomSheetVisible(true);
         }
+        if (isBottomSheetVisible && !isOpen){
+            setIsBottomSheetVisible(false);
+        }
     }
 
     useEffect(() => {
@@ -177,7 +180,7 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
                     <DropdownListContainer>
                         <DropdownList role="listbox">
                             {subCategories.map((option) => ( // 이 부분 수정필요 - 하위카테고리 존재 시 화살표 추가해야됨
-                                !isBottomSheetVisible && (
+                                !isBottomSheetVisible && !isFinalCategory && (
                                     <ListItem
                                       key={option.id}
                                       onClick={() => handleCategorySelect(option.id, option.label)}
@@ -192,7 +195,7 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
                                   )
                             ))}
                         </DropdownList>
-                    {categoryHistoryName.length > 0 && !isBottomSheetVisible && (
+                    {categoryHistoryName.length > 0 && !isBottomSheetVisible && !isFinalCategory && (
                         <ButtonContainer>
                             <BackButton onClick={handleGoBack}>
                                 뒤로 가기

@@ -62,7 +62,8 @@ const PostQuestionPage = () => {
         const updatedFormValues = {
             ...formValues,
             time: now,
-            point: Number(formValues.point)
+            point: Number(formValues.point),
+            limit: Boolean(formValues.limit)
         };
         console.log("updatedFormValues: ", updatedFormValues);
 
