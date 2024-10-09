@@ -14,7 +14,7 @@ const NotificationPage = () => {
             />
             <Content>
                 <AlertMessage>새로운 알림이 있습니다!</AlertMessage>
-                <NotificationBox></NotificationBox>
+                <NotificationBox />
             </Content>
         </PageContainer>
     );

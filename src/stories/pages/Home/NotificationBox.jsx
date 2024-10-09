@@ -15,7 +15,7 @@ const timeDifference = (timestamp) => {
 // 알림 종류에 따라 내용을 다르게 처리하는 함수
 const getNotificationContent = (type, data) => {
     switch (type) {
-        case 1: return `알림 설정된 '${data.title}' 게시글에 답변이 작성되었습니다.`;
+        case 1: return `알림 설정된 '${data.title}' 게시글이 수정되었습니다.`;
         case 2: return `'${data.title}' 질문에 ${data.nickname} 님이 답변을 남겼습니다.`;
         case 3: return `게시글 '${data.title}'에 좋아요를 받았습니다.`;
         case 4: return `게시글 '${data.title}'이 스크랩되었습니다.`;
@@ -28,9 +28,26 @@ const getNotificationContent = (type, data) => {
     }
 };
 
-const NotificationBox = ({ type, timestamp, data, url }) => {
+// 알림 종류에 따른 이름 반환
+const getNotificationTypeName = (type) => {
+    switch (type) {
+        case 1: return '수정';
+        case 2: return '답변';
+        case 3: return '좋아요';
+        case 4: return '스크랩';
+        case 5: return '포인트';
+        case 6: return '포인트';
+        case 7: return '포인트';
+        case 8: return '배지';
+        case 9: return '신고';
+        default: return '알림';
+    }
+};
+
+const NotificationBox = ({ type, timestamp, data, url, checked }) => {
     const notificationTime = timeDifference(timestamp);
     const notificationContent = getNotificationContent(type, data);
+    const notificationType = getNotificationTypeName(type);
 
     const handleClick = () => {
         if (url) {
@@ -39,11 +56,12 @@ const NotificationBox = ({ type, timestamp, data, url }) => {
     };
 
     return (
-        <Wrapper onClick={handleClick}>
+        <Wrapper onClick={handleClick} checked={checked}>
             <Head>
-                <p>{notificationContent}</p>
+                <p>{notificationType}</p>
                 <p>{notificationTime}</p>
             </Head>
+            <Content>{notificationContent}</Content>
         </Wrapper>
     );
 };
@@ -53,7 +71,7 @@ export default NotificationBox;
 const Wrapper = styled.div`
     display: flex;
     width: 393px;
-    height: 99px;
+    height: auto;
     box-sizing: border-box;
     padding: 7px 21px;
     flex-direction: column;
@@ -68,6 +86,12 @@ const Wrapper = styled.div`
     font-weight: 500;
     line-height: normal;
     cursor: pointer;
+    background-color: ${({ checked }) => (checked ? '#fff' : '#F1F7FD')};
+    transition: all 0.3s;
+
+    &:active {
+        scale: 0.95;
+    }
 `;
 
 const Head = styled.div`
@@ -79,6 +103,13 @@ const Head = styled.div`
     font-family: Inter;
     font-size: 10px;
     font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+`;
+
+const Content = styled.div`
+    color: var(--Palate2_sub1, #434B60);
+    font-size: 12px;
     font-weight: 500;
     line-height: normal;
 `;
