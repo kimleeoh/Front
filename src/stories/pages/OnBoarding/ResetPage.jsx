@@ -117,14 +117,14 @@ const ResetPage = () => {
             const randomBytes = CryptoJS.lib.WordArray.random(16).toString();
             let key = CryptoJS.PBKDF2(formData.email, randomBytes, {
                 keySize: 32 / 4, // 32 bytes = 256 bits, keySize is in words (4 bytes each)
-                iterations: 100000,
+                iterations: 1000,
                 hasher: CryptoJS.algo.SHA256,
             });
             key = Buffer.from(key.toString(CryptoJS.enc.Hex), "hex");
             console.log(formData.confirmEmail);
             let ib = CryptoJS.PBKDF2(formData.confirmEmail, randomBytes, {
                 keySize: 16 / 4, // 16 bytes = 128 bits, keySize is in words (4 bytes each)
-                iterations: 100000,
+                iterations: 1000,
                 hasher: CryptoJS.algo.SHA256,
             });
             ib = Buffer.from(ib.toString(CryptoJS.enc.Hex), "hex");

@@ -26,7 +26,7 @@ const PostQuestionPage = () => {
     const [showValidationMessages, setShowValidationMessages] = useState(false);
     const [isPointInputDisabled, setIsPointInputDisabled] = useState(false);
 
-    const [originPoint, setOriginPoint] = useState([]);
+    const [originPoint, setOriginPoint] = useState(null);
 
     useEffect(() => {
         const fetchPoint = async () => {
@@ -41,7 +41,7 @@ const PostQuestionPage = () => {
     const handleInputChange = (name, value) => {
         setFormValues({ ...formValues, [name]: value });
     };
-
+    
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const now = new Date().toISOString();
@@ -117,7 +117,7 @@ const PostQuestionPage = () => {
 
     const { width: windowSize } = useWindowSize();
 
-    if(originPoint) return (
+    return (
         <Wrapper>
             <Header
                 showIcon={false}
