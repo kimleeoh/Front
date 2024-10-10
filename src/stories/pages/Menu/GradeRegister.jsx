@@ -25,99 +25,81 @@ const GradeRegister = () => {
     const [subjects, setSubjects] = useState([]);
     const [availableYears, setAvailableYears] = useState([]);
     const [availableTerms, setAvailableTerms] = useState([]);
-
-    // 로컬 스토리지에 예시 데이터를 저장하는 함수
-    const initializeLocalStorage = () => {
-        const exampleData = [
-            {
-                year: "2024",
-                term: "1",
-                subject_list: ["디지털미디어원리", "영상편집론"],
-                grade_list: [0, 1], // A+와 A0에 해당하는 인덱스
-            },
-            {
-                year: "2024",
-                term: "2",
-                subject_list: ["디지털미디어실습", "영상기획론"],
-                grade_list: [2, 3], // A-와 B+에 해당하는 인덱스
-            },
-        ];
-        localStorage.setItem("semester_list", JSON.stringify(exampleData));
-    };
+    const [confirmed, setConfirmed] = useState(false);
 
     useEffect(() => {
-        // 페이지가 로드될 때 로컬 스토리지에 예시 데이터를 저장
-        initializeLocalStorage();
+        const fetchSemesters = async () => {
+            try {
+                const response = await fetch("/api/grades"); // 학기 데이터를 백엔드에서 가져옴
+                const data = await response.json();
+                const years = [...new Set(data.semester_list.map((sem) => sem.year))];
+                setAvailableYears(years);
+            } catch (error) {
+                console.error("학기 데이터를 불러오는 중 오류 발생", error);
+            }
+        };
+        fetchSemesters();
+    }, []);
 
-        // 로컬 스토리지에서 학년도와 학기를 가져와 설정
-        const savedSemesters =
-            JSON.parse(localStorage.getItem("semester_list")) || [];
-        const years = [
-            ...new Set(savedSemesters.map((semester) => semester.year)),
-        ];
-        setAvailableYears(years);
-
-        // 선택된 학년에 따른 학기를 설정
-        if (selectedYear) {
-            const terms = [
-                ...new Set(
-                    savedSemesters
-                        .filter((semester) => semester.year === selectedYear)
-                        .map((semester) => semester.term)
-                ),
-            ];
-            setAvailableTerms(terms);
-        } else {
-            setAvailableTerms([]);
-        }
+    useEffect(() => {
+        const fetchTermData = async () => {
+            if (selectedYear) {
+                try {
+                    const response = await fetch(`/api/grades/${selectedYear}`);
+                    const data = await response.json();
+                    const terms = [...new Set(data.semester_list.map((sem) => sem.term))];
+                    setAvailableTerms(terms);
+                } catch (error) {
+                    console.error("학기 데이터를 불러오는 중 오류 발생", error);
+                }
+            }
+        };
+        fetchTermData();
     }, [selectedYear]);
 
     useEffect(() => {
-        // 학년도와 학기가 변경될 때 해당 학기와 연도에 맞는 과목과 성적을 불러옴
-        const savedSemesters =
-            JSON.parse(localStorage.getItem("semester_list")) || [];
-        if (selectedYear && selectedTerm) {
-            const currentSemester = savedSemesters.find(
-                (semester) =>
-                    `${selectedYear}-${selectedTerm}` ===
-                    `${semester.year}-${semester.term}`
-            );
-            if (currentSemester) {
-                setSubjects(currentSemester.subject_list);
-                setSubjectGrades(
-                    currentSemester.grade_list.reduce((acc, grade, index) => {
-                        acc[currentSemester.subject_list[index]] =
-                            Grades[grade];
-                        return acc;
-                    }, {})
-                );
-            } else {
-                setSubjects([]);
-                setSubjectGrades({});
+        const fetchSubjectData = async () => {
+            if (selectedYear && selectedTerm) {
+                try {
+                    const response = await fetch(
+                        `/api/grades/${selectedYear}/${selectedTerm}`
+                    );
+                    const data = await response.json();
+                    setSubjects(data.semester_list.subject_list);
+                    setSubjectGrades(
+                        data.semester_list.grade_list.reduce((acc, grade, index) => {
+                            acc[data.semester_list.subject_list[index]] = Grades[grade];
+                            return acc;
+                        }, {})
+                    );
+                    setConfirmed(data.semester_list.confirmed); // 인증 여부 설정
+                } catch (error) {
+                    console.error("과목 데이터를 불러오는 중 오류 발생", error);
+                }
             }
-        }
+        };
+        fetchSubjectData();
     }, [selectedYear, selectedTerm]);
 
-    const handleGradeChange = (subject, grade) => {
+    const handleGradeChange = async (subject, grade) => {
         const updatedGrades = { ...subjectGrades, [subject]: grade };
         setSubjectGrades(updatedGrades);
 
-        // 로컬 스토리지에 업데이트된 성적을 저장
-        const savedSemesters =
-            JSON.parse(localStorage.getItem("semester_list")) || [];
-        const currentSemesterIndex = savedSemesters.findIndex(
-            (semester) =>
-                `${selectedYear}-${selectedTerm}` ===
-                `${semester.year}-${semester.term}`
-        );
-        if (currentSemesterIndex !== -1) {
-            savedSemesters[currentSemesterIndex].grade_list = subjects.map(
-                (subj) => Grades.indexOf(updatedGrades[subj])
-            );
-            localStorage.setItem(
-                "semester_list",
-                JSON.stringify(savedSemesters)
-            );
+        try {
+            await fetch(`/api/grades/update`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    year: selectedYear,
+                    term: selectedTerm,
+                    subject,
+                    grade: Grades.indexOf(grade),
+                }),
+            });
+        } catch (error) {
+            console.error("성적 업데이트 중 오류 발생", error);
         }
     };
 
@@ -143,7 +125,11 @@ const GradeRegister = () => {
                 학기
             </TermPickerWrapper>
             <CheckerWrapper maxWidth={windowSize}>
-                <Checker text="인증되지 않음" readOnly={true} type={"check"} />
+                <Checker
+                    text={confirmed ? "인증됨" : "인증되지 않음"}
+                    readOnly={true}
+                    type={"check"}
+                />
             </CheckerWrapper>
             {subjects.length > 0 && (
                 <SubjectWrapper maxWidth={windowSize}>
@@ -153,9 +139,7 @@ const GradeRegister = () => {
                             <Picker
                                 items={Grades}
                                 selectedItem={subjectGrades[subject]}
-                                onChange={(grade) =>
-                                    handleGradeChange(subject, grade)
-                                }
+                                onChange={(grade) => handleGradeChange(subject, grade)}
                                 placeholder="성적 선택"
                             />
                         </SubjectItem>
@@ -201,6 +185,7 @@ const GradeRegister = () => {
 };
 
 export default GradeRegister;
+
 
 const Wrapper = styled.div`
     display: flex;
