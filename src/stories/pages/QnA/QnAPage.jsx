@@ -243,14 +243,12 @@ const QnAPage = () => {
                 backButton={false}
                 searchButton={true}
             />
-            <Head maxWidth={windowSize}>
-                <div style={{ width: "380px" }}>
-                    <Checker
-                        text={"A등급 제한"}
-                        onChange={handleCheckerChange}
-                    />
-                </div>
-            </Head>
+            <div style={{marginRight: 'auto', marginLeft: '10px'}}> 
+                <Checker
+                    text={"A등급 제한"}
+                    onChange={handleCheckerChange}
+                />
+            </div>
             {filteredQuestions.map((question) => {
                 const img = Array.isArray(question.img)
                     ? question.img[0]
@@ -294,14 +292,4 @@ const Wrapper = styled.div`
     margin-top: 120px;
     margin-bottom: 100px;
     width: 100%;
-`;
-
-const Head = styled.div`
-    display: flex;
-    width: 80%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "360px" : props.maxWidth)};
-    align-items: flex-start;
-    justify-content:;
-    gap: 10px;
-    flex-shrink: 0;
 `;

@@ -41,7 +41,11 @@ const PointInput = ({
 
     return (
         <Wrapper maxWidth={windowSize}>
-            <small style={{ marginRight: "auto" }}>보유 포인트: {point}p</small>
+            {point !== null ? (
+                 <small style={{ marginRight: "auto", marginLeft: '15px' }}>보유 포인트: {point}p</small>
+            ) : (
+                <small style={{ marginRight: "auto", color: '#d00303', marginLeft: '15px' }}>일정한 포인트가 지급됩니다.</small>
+            )}
 
             <StyledPointInput
                 value={content}
@@ -82,7 +86,7 @@ PointInput.defaultProps = {
     fontColor: "#434B60",
     backgroundColor: "#F0F2F4",
     fontSize: "16px",
-    point: 0,
+    point: null,
     disabled: false,
 };
 

@@ -22,6 +22,7 @@ const PostQuestionPage = () => {
         point: "",
         limit: false,
     });
+    console.log(formValues);
 
     const [showValidationMessages, setShowValidationMessages] = useState(false);
     const [isPointInputDisabled, setIsPointInputDisabled] = useState(false);
@@ -50,7 +51,6 @@ const PostQuestionPage = () => {
         const updatedFormValues = {
             ...formValues,
             time: now,
-            point: Number(formValues.point),
             limit: Boolean(formValues.limit)
         };
         console.log("updatedFormValues: ", updatedFormValues);
@@ -70,8 +70,6 @@ const PostQuestionPage = () => {
             setShowValidationMessages(true);
         }
     };
-
-    console.log(formValues);
 
     const handleCheckerChange = (isChecked) => {
         handleInputChange("limit", isChecked);
