@@ -7,6 +7,7 @@ import NavBar from "../../components/NavBar";
 import FixedBottomContainer from "../../components/FixedBottomContainer";
 import ChipFilter from "../../components/Common/ChipFilter";
 import BaseAxios from "../../../axioses/BaseAxios";
+import useWindowSize from "../../components/Common/WindowSize";
 
 const initialTipsData = [
     {
@@ -127,6 +128,8 @@ const TipsPage = () => {
         }
     };
 
+    const { width: windowSize } = useWindowSize();
+
     return (
         <Wrapper>
             <Header
@@ -135,12 +138,12 @@ const TipsPage = () => {
                 backButton={false}
                 searchButton={true}
             />
-            <div style={{marginRight: 'auto', marginLeft: "10px"}}>
+            <ChipFilterWrapper maxWidth={windowSize}>
                 <ChipFilter
                     onFilterChange={handleFilterChange}
                     marginTop={"10px"}
                 />
-            </div>
+            </ChipFilterWrapper>
             {TipsData.map((tip) => (
                 <Tips
                     _id={tip._id}
@@ -177,3 +180,10 @@ const Wrapper = styled.div`
     margin-bottom: 100px;
     width: 100%;
 `;
+
+const ChipFilterWrapper = styled.div`
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    padding-left: 10px;
+    box-sizing: border-box;
+`
