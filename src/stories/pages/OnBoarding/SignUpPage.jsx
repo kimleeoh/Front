@@ -203,6 +203,16 @@ const SignUpPage = () => {
       </ButtonWrapper>
     );
   };
+  const [selectedMajor, setSelectedMajor] = useState([]);
+  const [selectedId, setSelectedId] = useState([]);
+  const [canSelect, setCanSelect] = useState(true);
+  const [startId, setStartId] = useState('66ccbb8d63fd0fe4e81552b0')
+  const handleSelectedMajor = (major, id) => {
+      setSelectedMajor(major);
+      setSelectedId(id);
+      setCanSelect(false);
+      setStartId(id[id.length-1]);
+  }
 
   const renderStepContent = () => {
     switch (step) {
@@ -229,9 +239,13 @@ const SignUpPage = () => {
               <Subtitle>현재 소속된 학부를 입력해 주세요.</Subtitle>
             </StepDescription>
             <SelectMajor
-              startId={'66ccbb8d63fd0fe4e81552b0'}
+              startId={startId}
               name="department"
               onChange={handleChange}
+              onClick={handleSelectedMajor}
+              selectedMajor={selectedMajor}
+              selectedId={selectedId}
+              select={canSelect}
               placeholder={"학부 선택"}
             />
           </>

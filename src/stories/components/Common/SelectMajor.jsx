@@ -15,7 +15,7 @@ const dropdownAnimation = keyframes`
     }
 `;
 
-const SelectMajor = ({ startId, placeholder, onChange, name }) => {
+const SelectMajor = ({ startId, placeholder, onChange, onClick, selectedMajor, selectedId, select, name }) => {
     const { width: windowSize } = useWindowSize();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -30,11 +30,19 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     useEffect(() => {
-        setCategoryHistoryName([]);
-        setCategoryHistoryId([]);
+        if (selectedMajor && selectedMajor.length > 0){
+            setCategoryHistoryName(selectedMajor);
+            setCategoryHistoryId(selectedId);
+        }
+        else {
+            setCategoryHistoryName([]);
+            setCategoryHistoryId([]);
+        }
+        setCanSelect(select);
     }, []);
 
     useEffect(() => {
+        console.log("submitHistory: ", submitHistoryId)
         BaseAxios.post("/api/dummy/category", { id: selectedCategoryId })
             .then((response) => {
                 const fetchedCategories = response.data;
@@ -77,13 +85,18 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
                 newHistory[newHistory.length - 1] = categoryLabel;
                 return newHistory;
             });
+            setSubmitHistoryId((prevHistory) => {
+                const newHistory = [...prevHistory];
+                newHistory[newHistory.length - 1] = categoryId;
+                return newHistory;
+            });
         }
     };
 
     const handleGoBack = () => {
         if (categoryHistoryId.length > 0) {
             setCanSelect(true);
-            setSelectedCategoryId(startId); // Set previous category as selected
+            setSelectedCategoryId('66ccbb8d63fd0fe4e81552b0'); // Set initial category as selected
             if (!canSelect) {
                 setCategoryHistoryName(categoryHistoryName.slice(0, -2));
                 setCategoryHistoryId(categoryHistoryId.slice(0, -2));
@@ -104,6 +117,7 @@ const SelectMajor = ({ startId, placeholder, onChange, name }) => {
                     value: categoryHistoryName[categoryHistoryName.length - 1],
                 },
             });
+            onClick(categoryHistoryName ,categoryHistoryId)
             setIsOpen(false);
         }
     };
