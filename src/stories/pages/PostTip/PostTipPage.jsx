@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import TextInput from "../../components/Common/TextInput";
@@ -10,14 +10,16 @@ import ChipFilter from "../../components/Common/ChipFilter";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import PointInput from "../PostQuestion/PointInput";
+import { useNavigate } from "react-router-dom";
 
 const PostQuestionPage = () => {
+    const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         title: "",
         board: [],
         content: "",
         images: [],
-        type:"",
+        type: "",
         purchase_price: "",
         time: "",
     });
@@ -26,9 +28,12 @@ const PostQuestionPage = () => {
     const [isFormValid, setIsFormValid] = useState(false);
     const [showValidationMessages, setShowValidationMessages] = useState(false);
 
-    const handleInputChange = (name, value) => {
-        setFormValues({ ...formValues, [name]: value });
-    };
+    const handleInputChange = useCallback((name, value) => {
+        setFormValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
+    }, []);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -51,6 +56,8 @@ const PostQuestionPage = () => {
         if (isFormValid) {
             await BaseAxios.post("/api/tips/create/post", updatedFormValues);
             console.log(updatedFormValues);
+            alert("작성이 완료되었습니다.");
+            navigate("/tips");
         } else {
             setShowValidationMessages(true);
         }
@@ -71,20 +78,14 @@ const PostQuestionPage = () => {
         }
         if (type.length === 0) {
             return (
-                <ValidationMessage>
-                    카테고리를 선택해 주세요.
-                </ValidationMessage>
+                <ValidationMessage>카테고리를 선택해 주세요.</ValidationMessage>
             );
         }
         if (content.trim() === "") {
-            return (
-                <ValidationMessage>내용을 입력해 주세요.</ValidationMessage>
-            );
+            return <ValidationMessage>내용을 입력해 주세요.</ValidationMessage>;
         }
-        if (purchase_price.trim() == ""){
-            return (
-                <ValidationMessage>가격을 입력해 주세요.</ValidationMessage>
-            )
+        if (purchase_price.trim() == "") {
+            return <ValidationMessage>가격을 입력해 주세요.</ValidationMessage>;
         }
 
         return null;
@@ -132,7 +133,7 @@ const PostQuestionPage = () => {
             <ImageUploader
                 onChange={(value) => handleInputChange("images", value)}
             />
-            <PointInput 
+            <PointInput
                 onChange={(value) => handleInputChange("purchase_price", value)}
                 placeholder={"판매할 가격을 입력해 주세요."}
             />

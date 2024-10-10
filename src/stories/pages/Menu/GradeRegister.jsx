@@ -24,24 +24,38 @@ const GradeRegister = () => {
     const [selectedTerm, setSelectedTerm] = useState("");
     const [subjects, setSubjects] = useState([]);
     const [confirmed, setConfirmed] = useState(false);
-    const [newSubject, setNewSubject] = useState({ name: "", grade: "", isMajor: false });
+    const [newSubject, setNewSubject] = useState({
+        name: "",
+        grade: "",
+        isMajor: false,
+    });
 
     const currentYear = new Date().getFullYear();
-    const availableYears = Array.from({ length: currentYear - 2017 }, (_, i) => (2018 + i).toString());
+    const availableYears = Array.from({ length: currentYear - 2017 }, (_, i) =>
+        (2018 + i).toString()
+    );
     const availableTerms = ["1", "2"];
 
     useEffect(() => {
         const fetchSubjectData = async () => {
             if (selectedYear && selectedTerm) {
                 try {
-                    const index = (parseInt(selectedYear) - 2018) * 2 + (parseInt(selectedTerm) - 1);
+                    const index =
+                        (parseInt(selectedYear) - 2018) * 2 +
+                        (parseInt(selectedTerm) - 1);
                     const response = await fetch(`/api/grades/${index}`);
                     const data = await response.json();
-                    setSubjects(data.semester_list.subject_list.map((subject, index) => ({
-                        name: subject,
-                        grade: Grades[data.semester_list.grade_list[index]],
-                        isMajor: data.semester_list.ismajor_list[index]
-                    })));
+                    setSubjects(
+                        data.semester_list.subject_list.map(
+                            (subject, index) => ({
+                                name: subject,
+                                grade: Grades[
+                                    data.semester_list.grade_list[index]
+                                ],
+                                isMajor: data.semester_list.ismajor_list[index],
+                            })
+                        )
+                    );
                     setConfirmed(data.semester_list.confirmed);
                 } catch (error) {
                     console.error("과목 데이터를 불러오는 중 오류 발생", error);
@@ -175,30 +189,38 @@ const GradeRegister = () => {
                     <SubjectWrapper maxWidth={windowSize}>
                         <SubjectItem>
                             <SubjectName>과목명</SubjectName>
-                            성적
-                            전공여부
+                            성적 전공여부
                         </SubjectItem>
                         {subjects.map((subject, index) => (
                             <SubjectItem key={index}>
                                 <TextField
                                     value={subject.name}
-                                    onChange={(e) => handleSubjectNameChange(index, e.target.value)}
+                                    onChange={(e) =>
+                                        handleSubjectNameChange(
+                                            index,
+                                            e.target.value
+                                        )
+                                    }
                                     label="과목명"
                                     width={"200px"}
                                     height={"30px"}
                                 />
-                                <div style={{ display: 'flex' }}>
+                                <div style={{ display: "flex" }}>
                                     <Picker
                                         items={Grades}
                                         selectedItem={subject.grade}
-                                        onChange={(grade) => handleGradeChange(index, grade)}
+                                        onChange={(grade) =>
+                                            handleGradeChange(index, grade)
+                                        }
                                         placeholder="성적"
                                     />
                                     <Checker
                                         text=""
                                         checked={subject.isMajor}
-                                        onChange={(checked) => handleMajorChange(index, checked)}
-                                        type={'box'}
+                                        onChange={(checked) =>
+                                            handleMajorChange(index, checked)
+                                        }
+                                        type={"box"}
                                     />
                                 </div>
                             </SubjectItem>

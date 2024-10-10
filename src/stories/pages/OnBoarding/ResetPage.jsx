@@ -186,7 +186,7 @@ const ResetPage = () => {
                     disabled={!isStepValid || isLoading}
                 />
                 {isLoading && (
-                    <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                    <div style={{ marginTop: "20px", textAlign: "center" }}>
                         <Spinner color="#434B60" size={32} />
                         <LoadingMessage>인증번호 전송 중</LoadingMessage>
                     </div>
@@ -416,6 +416,6 @@ const LogoWrapper = styled.div`
 
 const LoadingMessage = styled.p`
     margin-top: 10px;
-    color: #434B60;
+    color: #434b60;
     font-size: 14px;
 `;

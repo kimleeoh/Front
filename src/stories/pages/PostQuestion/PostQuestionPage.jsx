@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import TextInput from "../../components/Common/TextInput";
@@ -42,7 +42,7 @@ const PostQuestionPage = () => {
     const handleInputChange = (name, value) => {
         setFormValues({ ...formValues, [name]: value });
     };
-    
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const now = new Date().toISOString();
@@ -51,7 +51,7 @@ const PostQuestionPage = () => {
         const updatedFormValues = {
             ...formValues,
             time: now,
-            limit: Boolean(formValues.limit)
+            limit: Boolean(formValues.limit),
         };
         console.log("updatedFormValues: ", updatedFormValues);
 
@@ -64,7 +64,7 @@ const PostQuestionPage = () => {
 
         if (isFormValid) {
             await BaseAxios.post("/api/qna/create/post", updatedFormValues);
-            alert('작성이 완료되었습니다.');
+            alert("작성이 완료되었습니다.");
             navigate("/qna");
         } else {
             setShowValidationMessages(true);
@@ -145,10 +145,10 @@ const PostQuestionPage = () => {
                 onChange={(value) => handleInputChange("images", value)}
             />
             <PointInput
-                    point={originPoint}
-                    onChange={(value) => handleInputChange("point", value)}
-                    disabled={isPointInputDisabled}
-                    placeholder={"포인트를 입력해 주세요"}
+                point={originPoint}
+                onChange={(value) => handleInputChange("point", value)}
+                disabled={isPointInputDisabled}
+                placeholder={"포인트를 입력해 주세요"}
             />
             <CheckerWrapper maxWidth={windowSize}>
                 <Checker

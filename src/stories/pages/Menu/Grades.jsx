@@ -19,7 +19,9 @@ const Grades = () => {
     const modalRef = useRef(null);
 
     const currentYear = new Date().getFullYear();
-    const years = Array.from({ length: currentYear - 2017 }, (_, i) => (2018 + i).toString()).reverse();
+    const years = Array.from({ length: currentYear - 2017 }, (_, i) =>
+        (2018 + i).toString()
+    ).reverse();
 
     const semesterOptions = ["1학기", "2학기"];
 
@@ -35,13 +37,15 @@ const Grades = () => {
                 );
                 setSemesters(filteredSemesters);
             } catch (error) {
-                console.error("성적 데이터를 불러오는 중 오류가 발생했습니다.", error);
+                console.error(
+                    "성적 데이터를 불러오는 중 오류가 발생했습니다.",
+                    error
+                );
             }
         };
-    
+
         fetchGrades();
     }, []);
-    
 
     const handleVerifyClick = () => {
         navigate("/grades/register");
@@ -52,11 +56,13 @@ const Grades = () => {
             modalRef.current.open(); // 모달 열기
         }
     };
-    
+
     const handleConfirmAddSemester = async () => {
         if (selectedYear && selectedSemester) {
-            const newSemesterIndex = (selectedYear - 2018) * 2 + (selectedSemester === "2학기" ? 1 : 0);
-    
+            const newSemesterIndex =
+                (selectedYear - 2018) * 2 +
+                (selectedSemester === "2학기" ? 1 : 0);
+
             try {
                 const response = await fetch("/api/grades/add-semester", {
                     method: "POST",
@@ -66,7 +72,9 @@ const Grades = () => {
                     body: JSON.stringify({ semesterIndex: newSemesterIndex }),
                 });
                 if (response.ok) {
-                    console.log(`새 학기 추가: ${selectedYear}년 ${selectedSemester}`);
+                    console.log(
+                        `새 학기 추가: ${selectedYear}년 ${selectedSemester}`
+                    );
                     // 성공적으로 추가 후 학기 목록 다시 불러오기
                     const updatedData = await response.json();
                     const filteredSemesters = updatedData.semester_list.filter(
@@ -79,7 +87,7 @@ const Grades = () => {
             } catch (error) {
                 console.error("학기 추가 중 오류 발생", error);
             }
-    
+
             if (modalRef.current) {
                 modalRef.current.close(); // 모달 닫기
             }
@@ -89,8 +97,6 @@ const Grades = () => {
             alert("연도와 학기를 모두 선택해주세요.");
         }
     };
-    
-    
 
     return (
         <Wrapper>
@@ -126,7 +132,12 @@ const Grades = () => {
                 /> */}
             </ContentWrapper>
 
-            <Modal ref={modalRef} width="300px" height="auto" isOpen={isModalOpen}>
+            <Modal
+                ref={modalRef}
+                width="300px"
+                height="auto"
+                isOpen={isModalOpen}
+            >
                 <ModalContent>
                     <h3>학기 추가</h3>
                     <PickerWrapper>
@@ -146,11 +157,13 @@ const Grades = () => {
                         />
                     </PickerWrapper>
                     <ModalButtonWrapper>
-                        <Button onClick={handleConfirmAddSemester} label="추가" />
+                        <Button
+                            onClick={handleConfirmAddSemester}
+                            label="추가"
+                        />
                     </ModalButtonWrapper>
                 </ModalContent>
             </Modal>
-
         </Wrapper>
     );
 };

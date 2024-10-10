@@ -121,7 +121,9 @@ const BottomSheet = ({ options, onClick, handleGoBack, save }) => {
                         professor={option.Professor}
                         timeIcredit={option.TimeIcredit}
                         sub_student={option.Sub_student}
-                        onClick={() => onClick(option.CategoryId, option.CategoryName)}
+                        onClick={() =>
+                            onClick(option.CategoryId, option.CategoryName)
+                        }
                     />
                 ))}
             </ScrollableContent>

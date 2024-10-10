@@ -5,17 +5,16 @@ import useWindowSize from "../../components/Common/WindowSize";
 import Button from "../../components/Button";
 import FixedBottomContainer from "../../components/FixedBottomContainer";
 
-const BadgeDetail= () => {
+const BadgeDetail = () => {
     const { width: windowSize } = useWindowSize();
 
     return (
         <Wrapper>
             <Header text="" searchButton={false} />
-        <FixedBottomContainer>
-            <Button label="닫기" />
-        </FixedBottomContainer>
+            <FixedBottomContainer>
+                <Button label="닫기" />
+            </FixedBottomContainer>
         </Wrapper>
-
     );
 };
 
@@ -34,6 +33,5 @@ const Wrapper = styled.div`
 
     width: 100%;
 `;
-
 
 export default BadgeDetail;

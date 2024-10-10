@@ -22,7 +22,7 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
     }, [categoryHistoryName]);
 
     useEffect(() => {
-        BaseAxios.post("/api/dummy/category", { id: selectedCategoryId })
+        BaseAxios.post("/api/category", { id: selectedCategoryId })
             .then((response) => {
                 const fetchedCategories = response.data;
 
@@ -37,7 +37,7 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
                 if (fetchedCategories.type == 2) {
                     Promise.all(
                         newBoardOptions.map((option) =>
-                            BaseAxios.post("/api/dummy/category", {
+                            BaseAxios.post("/api/category", {
                                 id: option.id,
                             }).then((response) => ({
                                 CategoryName: response.data.category_name,

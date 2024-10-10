@@ -133,7 +133,10 @@ const Bookmarks = () => {
             {activeTab === "Tips" && (
                 <>
                     <ChipFilterWrapper maxWidth={windowSize}>
-                        <ChipFilter onFilterChange={handleFilterChange} marginTop={'10px'}/>
+                        <ChipFilter
+                            onFilterChange={handleFilterChange}
+                            marginTop={"10px"}
+                        />
                     </ChipFilterWrapper>
                     {filteredTips
                         .filter((tip) => tip.subject === subject)
@@ -186,4 +189,4 @@ const ChipFilterWrapper = styled.div`
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     padding-left: 10px;
     box-sizing: border-box;
-`
+`;

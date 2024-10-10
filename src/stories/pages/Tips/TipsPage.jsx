@@ -76,8 +76,8 @@ const initialTipsData = [
         time: "2024-12-31T15:00:00.000Z",
         title: "제목",
         views: 0,
-        warn: 0
-    }
+        warn: 0,
+    },
 ];
 
 const TipsPage = () => {
@@ -88,11 +88,10 @@ const TipsPage = () => {
         localStorage.removeItem("TipsData");
         const TipsData = localStorage.getItem("TipsData");
         if (TipsData) {
-          setTipsData(JSON.parse(TipsData));
-
+            setTipsData(JSON.parse(TipsData));
         } else {
-          localStorage.setItem("TipsData", JSON.stringify(initialTipsData));
-          setTipsData(initialTipsData);
+            localStorage.setItem("TipsData", JSON.stringify(initialTipsData));
+            setTipsData(initialTipsData);
         }
 
         fetchChips([""]);
@@ -185,4 +184,4 @@ const ChipFilterWrapper = styled.div`
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     padding-left: 10px;
     box-sizing: border-box;
-`
+`;

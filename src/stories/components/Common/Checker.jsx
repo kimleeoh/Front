@@ -46,16 +46,16 @@ const Checker = ({ text, onChange, disabled, type, readOnly, checked }) => {
             >
                 <img src={getIconSrc(currentChecked)} alt="checkbox icon" />
                 {text && (
-                <span
-                    style={{
-                        color: currentChecked ? "#434B60" : "#ACB2BB",
-                        fontSize: "16px",
-                        fontWeight: "500",
-                        paddingLeft: "5px",
-                    }}
-                >
-                    {text}
-                </span>
+                    <span
+                        style={{
+                            color: currentChecked ? "#434B60" : "#ACB2BB",
+                            fontSize: "16px",
+                            fontWeight: "500",
+                            paddingLeft: "5px",
+                        }}
+                    >
+                        {text}
+                    </span>
                 )}
             </Button>
         </CheckerWrapper>

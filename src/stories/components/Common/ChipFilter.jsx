@@ -71,7 +71,7 @@ ChipFilter.propTypes = {
     postOnly: PropTypes.bool,
 };
 ChipFilter.defaultProps = {
-    postOnly: false
-}
+    postOnly: false,
+};
 
 export default ChipFilter;

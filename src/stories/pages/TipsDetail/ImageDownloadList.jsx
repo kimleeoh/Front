@@ -14,7 +14,7 @@ const ImageDownloadList = ({ images }) => {
 
     const handleConfirm = () => {
         images.forEach((image, index) => {
-            const link = document.createElement('a');
+            const link = document.createElement("a");
             link.href = image;
             link.download = `image${index + 1}`;
             document.body.appendChild(link);
@@ -28,7 +28,9 @@ const ImageDownloadList = ({ images }) => {
     const getFileNames = () => {
         const names = images.map((_, index) => `Image ${index + 1}`);
         const joinedNames = names.join(", ");
-        return joinedNames.length > 30 ? joinedNames.substring(0, 30) + "..." : joinedNames;
+        return joinedNames.length > 30
+            ? joinedNames.substring(0, 30) + "..."
+            : joinedNames;
     };
 
     return (
@@ -42,7 +44,9 @@ const ImageDownloadList = ({ images }) => {
                 </FileContainer>
             </DownloadContainer>
             <Modal ref={modalRef} width="300px">
-                <span style={{ fontSize: "16px" }}>정말로 구매하시겠습니까?</span>
+                <span style={{ fontSize: "16px" }}>
+                    정말로 구매하시겠습니까?
+                </span>
                 <ButtonWrapper>
                     <Button
                         onClick={handleConfirm}

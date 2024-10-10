@@ -1,5 +1,5 @@
 import React from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 // 시간 차이를 계산하는 함수 (현재 시간과 알림 시간의 차이를 계산)
 const timeDifference = (timestamp) => {
@@ -15,32 +15,52 @@ const timeDifference = (timestamp) => {
 // 알림 종류에 따라 내용을 다르게 처리하는 함수
 const getNotificationContent = (type, data) => {
     switch (type) {
-        case 1: return `알림 설정된 '${data.title}' 게시글이 수정되었습니다.`;
-        case 2: return `'${data.title}' 질문에 ${data.nickname} 님이 답변을 남겼습니다.`;
-        case 3: return `게시글 '${data.title}'에 좋아요를 받았습니다.`;
-        case 4: return `게시글 '${data.title}'이 스크랩되었습니다.`;
-        case 5: return `게시글 '${data.title}' 파일을 구매하여 포인트가 소비되었습니다.`;
-        case 6: return `누적 좋아요 ${data.totalLikes}개를 받아 포인트를 획득했습니다.`;
-        case 7: return `누적 좋아요 ${data.totalLikes}개를 눌러 포인트를 획득했습니다.`;
-        case 8: return `배지 '${data.badgeName}'을(를) 획득했습니다.`;
-        case 9: return `게시글 '${data.title}'이 신고 처리되었습니다.`;
-        default: return '알 수 없는 알림입니다.';
+        case 1:
+            return `알림 설정된 '${data.title}' 게시글이 수정되었습니다.`;
+        case 2:
+            return `'${data.title}' 질문에 ${data.nickname} 님이 답변을 남겼습니다.`;
+        case 3:
+            return `게시글 '${data.title}'에 좋아요를 받았습니다.`;
+        case 4:
+            return `게시글 '${data.title}'이 스크랩되었습니다.`;
+        case 5:
+            return `게시글 '${data.title}' 파일을 구매하여 포인트가 소비되었습니다.`;
+        case 6:
+            return `누적 좋아요 ${data.totalLikes}개를 받아 포인트를 획득했습니다.`;
+        case 7:
+            return `누적 좋아요 ${data.totalLikes}개를 눌러 포인트를 획득했습니다.`;
+        case 8:
+            return `배지 '${data.badgeName}'을(를) 획득했습니다.`;
+        case 9:
+            return `게시글 '${data.title}'이 신고 처리되었습니다.`;
+        default:
+            return "알 수 없는 알림입니다.";
     }
 };
 
 // 알림 종류에 따른 이름 반환
 const getNotificationTypeName = (type) => {
     switch (type) {
-        case 1: return '수정';
-        case 2: return '답변';
-        case 3: return '좋아요';
-        case 4: return '스크랩';
-        case 5: return '포인트';
-        case 6: return '포인트';
-        case 7: return '포인트';
-        case 8: return '배지';
-        case 9: return '신고';
-        default: return '알림';
+        case 1:
+            return "수정";
+        case 2:
+            return "답변";
+        case 3:
+            return "좋아요";
+        case 4:
+            return "스크랩";
+        case 5:
+            return "포인트";
+        case 6:
+            return "포인트";
+        case 7:
+            return "포인트";
+        case 8:
+            return "배지";
+        case 9:
+            return "신고";
+        default:
+            return "알림";
     }
 };
 
@@ -80,14 +100,14 @@ const Wrapper = styled.div`
     gap: 8px;
     flex-shrink: 0;
     text-align: left;
-    color: var(--Palate2_sub1, #434B60);
+    color: var(--Palate2_sub1, #434b60);
     font-family: Inter;
     font-size: 12px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
     cursor: pointer;
-    background-color: ${({ checked }) => (checked ? '#fff' : '#F1F7FD')};
+    background-color: ${({ checked }) => (checked ? "#fff" : "#F1F7FD")};
     transition: all 0.3s;
 
     &:active {
@@ -100,7 +120,7 @@ const Head = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: auto;
-    color: var(--Palate2_sub1, #434B60);
+    color: var(--Palate2_sub1, #434b60);
     font-family: Inter;
     font-size: 10px;
     font-style: normal;
@@ -109,7 +129,7 @@ const Head = styled.div`
 `;
 
 const Content = styled.div`
-    color: var(--Palate2_sub1, #434B60);
+    color: var(--Palate2_sub1, #434b60);
     font-size: 12px;
     font-weight: 500;
     line-height: normal;

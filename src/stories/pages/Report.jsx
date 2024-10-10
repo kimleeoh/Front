@@ -26,7 +26,10 @@ const Report = () => {
 
     const handleReportConfirm = () => {
         if (selectedReasons.length > 0) {
-            console.log("신고 이유:", selectedReasons.map(index => reportReasons[index]));
+            console.log(
+                "신고 이유:",
+                selectedReasons.map((index) => reportReasons[index])
+            );
             console.log("신고된 ID:", _id);
             // 여기에 신고 처리 로직을 추가할 수 있습니다.
             alert("신고가 접수되었습니다.");
@@ -50,11 +53,11 @@ const Report = () => {
     };
 
     const handleCheckerChange = (index) => (isChecked) => {
-        setSelectedReasons(prevReasons => {
+        setSelectedReasons((prevReasons) => {
             if (isChecked) {
                 return [...prevReasons, index];
             } else {
-                return prevReasons.filter(i => i !== index);
+                return prevReasons.filter((i) => i !== index);
             }
         });
     };
@@ -69,36 +72,51 @@ const Report = () => {
             />
             "" 게시글의 신고사유를 선택해주세요.
             <Container>
-            {reportReasons.map((reason, index) => (
-                <Checker
-                    key={index}
-                    text={reason}
-                    onChange={handleCheckerChange(index)}
-                    checked={selectedReasons.includes(index)}
-                    type="box"
-                />
-            ))}
+                {reportReasons.map((reason, index) => (
+                    <Checker
+                        key={index}
+                        text={reason}
+                        onChange={handleCheckerChange(index)}
+                        checked={selectedReasons.includes(index)}
+                        type="box"
+                    />
+                ))}
             </Container>
-
             <FixedBottomContainer>
                 <ButtonWrapper>
-                    <Button onClick={handleCancel} label="취소" backgroundColor={'#434B60'} hoverBackgroundColor={'#ACB2BB'}/>
+                    <Button
+                        onClick={handleCancel}
+                        label="취소"
+                        backgroundColor={"#434B60"}
+                        hoverBackgroundColor={"#ACB2BB"}
+                    />
                     <Button onClick={handleReportClick} label="신고하기" />
                 </ButtonWrapper>
             </FixedBottomContainer>
-
             <Modal ref={modalRef} width="300px" height="auto">
                 <ModalContent>
                     <h3>신고 확인</h3>
                     <p>다음 사유로 신고하시겠습니까?</p>
                     <ReasonList>
-                        {selectedReasons.map(index => (
-                            <ReasonItem key={index}>{reportReasons[index]}</ReasonItem>
+                        {selectedReasons.map((index) => (
+                            <ReasonItem key={index}>
+                                {reportReasons[index]}
+                            </ReasonItem>
                         ))}
                     </ReasonList>
                     <ModalButtonWrapper>
-                        <Button onClick={() => modalRef.current.close()} label="취소" backgroundColor={'#434B60'} hoverBackgroundColor={'#ACB2BB'}/>
-                        <Button onClick={handleReportConfirm} label="신고하기" backgroundColor={'#FF3C3C'} hoverBackgroundColor={'red'}/>
+                        <Button
+                            onClick={() => modalRef.current.close()}
+                            label="취소"
+                            backgroundColor={"#434B60"}
+                            hoverBackgroundColor={"#ACB2BB"}
+                        />
+                        <Button
+                            onClick={handleReportConfirm}
+                            label="신고하기"
+                            backgroundColor={"#FF3C3C"}
+                            hoverBackgroundColor={"red"}
+                        />
                     </ModalButtonWrapper>
                 </ModalContent>
             </Modal>

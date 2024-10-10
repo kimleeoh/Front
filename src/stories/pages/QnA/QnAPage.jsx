@@ -243,10 +243,7 @@ const QnAPage = () => {
                 searchButton={true}
             />
             <CheckerWrapper maxWidth={windowSize}>
-                <Checker
-                    text={"A등급 제한"}
-                    onChange={handleCheckerChange}
-                />
+                <Checker text={"A등급 제한"} onChange={handleCheckerChange} />
             </CheckerWrapper>
             {filteredQuestions.map((question) => {
                 const img = Array.isArray(question.img)
@@ -298,4 +295,4 @@ const CheckerWrapper = styled.div`
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     padding-left: 10px;
     box-sizing: border-box;
-`
+`;

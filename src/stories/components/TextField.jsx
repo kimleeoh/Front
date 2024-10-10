@@ -123,7 +123,7 @@ const TextFieldWrapper = styled.div`
     margin: 0;
     width: ${(props) => (props.width ? props.width : "100%")};
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    height: ${(props) => props.height ? props.height : "50px"};
+    height: ${(props) => (props.height ? props.height : "50px")};
     position: relative;
     padding: 0;
 `;

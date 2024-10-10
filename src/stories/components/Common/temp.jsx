@@ -33,31 +33,37 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
-        if (isFinalCategory){
+        if (isFinalCategory) {
             setIsBottomSheetVisible(true);
         }
-    }
+    };
 
     useEffect(() => {
         BaseAxios.post("/api/dummy/category", { id: selectedCategoryId })
             .then((response) => {
                 const fetchedCategories = response.data;
-                const newBoardOptions = fetchedCategories.sub_category_list_name.map((subName, index) => ({
-                    value: subName,
-                    label: subName,
-                    id: fetchedCategories.sub_category_list_id[index],
-                }));
+                const newBoardOptions =
+                    fetchedCategories.sub_category_list_name.map(
+                        (subName, index) => ({
+                            value: subName,
+                            label: subName,
+                            id: fetchedCategories.sub_category_list_id[index],
+                        })
+                    );
                 if (fetchedCategories.type == 2) {
-                    Promise.all(newBoardOptions.map(option => 
-                        BaseAxios.post('/api/dummy/category', {id: option.id})
-                            .then(response => ({
+                    Promise.all(
+                        newBoardOptions.map((option) =>
+                            BaseAxios.post("/api/dummy/category", {
+                                id: option.id,
+                            }).then((response) => ({
                                 CategoryName: response.data.category_name,
                                 CategoryId: option.id,
                                 Professor: response.data.professor,
                                 TimeIcredit: response.data.timeIcredit,
                                 Sub_student: response.data.sub_student,
                             }))
-                    )).then(newBoardOptions2 => {
+                        )
+                    ).then((newBoardOptions2) => {
                         setFinalOptions(newBoardOptions2);
                         setIsBottomSheetVisible(true);
                         setIsOpen(false);
@@ -67,10 +73,10 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
                 console.log("response: ", response);
                 setSubCategories(newBoardOptions);
             })
-            .catch(err => {
-              console.error(err);
+            .catch((err) => {
+                console.error(err);
             });
-        }, [selectedCategoryId]);
+    }, [selectedCategoryId]);
 
     const handleCategorySelect = (categoryId, categoryLabel) => {
         setSelectedCategoryId(categoryId);
@@ -79,10 +85,7 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
                 categoryLabel !==
                 categoryHistoryName[categoryHistoryName.length - 1]
             ) {
-                setCategoryHistoryId([
-                    ...categoryHistoryId,
-                    categoryId
-                ]);
+                setCategoryHistoryId([...categoryHistoryId, categoryId]);
                 setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
             }
         } else {
@@ -115,10 +118,7 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
 
     const handleFinalCategorySelect = (categoryId, categoryLabel) => {
         if (canSelect) {
-            setCategoryHistoryId([
-                ...categoryHistoryId,
-                categoryId
-            ]);
+            setCategoryHistoryId([...categoryHistoryId, categoryId]);
             setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
             setCanSelect(false);
         } else {
@@ -139,7 +139,7 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
         const savedData = categoryHistoryId.map((id, index) => ({
             [id]: categoryHistoryName[index],
         }));
-        onCategorySelect(categoryHistoryName[categoryHistoryName.length-1]);
+        onCategorySelect(categoryHistoryName[categoryHistoryName.length - 1]);
         setIsOpen(false);
         setIsBottomSheetVisible(false);
         onChange(savedData);
@@ -181,32 +181,50 @@ const SelectBoard = ({ startId, placeholder, onCategorySelect, onChange }) => {
                 {isOpen && (
                     <DropdownListContainer>
                         <DropdownList role="listbox">
-                            {subCategories.map((option) => ( // 이 부분 수정필요 - 하위카테고리 존재 시 화살표 추가해야됨
-                                !isBottomSheetVisible && (
-                                    <ListItem
-                                      key={option.id}
-                                      onClick={() => handleCategorySelect(option.id, option.label)}
-                                    >
-                                      {option.label}
-                                      {option.hasSubcategories && (
-                                        <span style={{ transform: "rotate(270deg)" }}>
-                                          <img src="/Icons/Arrow.svg" alt="arrow" width={"12px"} />
-                                        </span>
-                                      )}
-                                    </ListItem>
-                                  )
-                            ))}
+                            {subCategories.map(
+                                (
+                                    option // 이 부분 수정필요 - 하위카테고리 존재 시 화살표 추가해야됨
+                                ) =>
+                                    !isBottomSheetVisible && (
+                                        <ListItem
+                                            key={option.id}
+                                            onClick={() =>
+                                                handleCategorySelect(
+                                                    option.id,
+                                                    option.label
+                                                )
+                                            }
+                                        >
+                                            {option.label}
+                                            {option.hasSubcategories && (
+                                                <span
+                                                    style={{
+                                                        transform:
+                                                            "rotate(270deg)",
+                                                    }}
+                                                >
+                                                    <img
+                                                        src="/Icons/Arrow.svg"
+                                                        alt="arrow"
+                                                        width={"12px"}
+                                                    />
+                                                </span>
+                                            )}
+                                        </ListItem>
+                                    )
+                            )}
                         </DropdownList>
-                    {categoryHistoryName.length > 0 && !isBottomSheetVisible && (
-                        <ButtonContainer>
-                            <BackButton onClick={handleGoBack}>
-                                뒤로 가기
-                            </BackButton>
-                            <SaveButton onClick={Save}>저장</SaveButton>
-                        </ButtonContainer>
-                    )}
-                </DropdownListContainer>
-            )}
+                        {categoryHistoryName.length > 0 &&
+                            !isBottomSheetVisible && (
+                                <ButtonContainer>
+                                    <BackButton onClick={handleGoBack}>
+                                        뒤로 가기
+                                    </BackButton>
+                                    <SaveButton onClick={Save}>저장</SaveButton>
+                                </ButtonContainer>
+                            )}
+                    </DropdownListContainer>
+                )}
             </DropdownContainer>
             {isBottomSheetVisible && (
                 <BottomSheet
