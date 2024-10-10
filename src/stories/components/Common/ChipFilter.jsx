@@ -8,7 +8,6 @@ const Container = styled.div`
     height: 40px;
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -16,7 +15,7 @@ const Container = styled.div`
     margin-top: ${(props) => props.marginTop};
 `;
 
-const ChipFilter = ({ onFilterChange, marginTop }) => {
+const ChipFilter = ({ onFilterChange, marginTop, postOnly }) => {
     const [activeChips, setActiveChips] = useState([]);
 
     const chipFilterMapping = {
@@ -26,21 +25,30 @@ const ChipFilter = ({ onFilterChange, marginTop }) => {
     };
 
     const handleChipClick = (label) => {
-        const updatedChips = activeChips.includes(label)
-            ? activeChips.filter((badge) => badge !== label)
-            : [...activeChips, label];
+        let updatedChips;
+
+        if (postOnly) {
+            // If postOnly is true, only one chip can be active
+            updatedChips = activeChips.includes(label) ? [] : [label];
+        } else {
+            updatedChips = activeChips.includes(label)
+                ? activeChips.filter((badge) => badge !== label)
+                : [...activeChips, label];
+        }
 
         setActiveChips(updatedChips);
 
-        const activeFilters = updatedChips.map(
-            (chip) => chipFilterMapping[chip]
-        );
-        console.log(activeFilters);
+        // If postOnly is true, return the single chip as a string, otherwise return an array
+        const activeFilters = postOnly
+            ? updatedChips.length > 0
+                ? chipFilterMapping[updatedChips[0]]
+                : ""
+            : updatedChips.map((chip) => chipFilterMapping[chip]);
+
         onFilterChange(activeFilters);
     };
 
     const badges = ["필기공유", "시험정보", "수업꿀팁"];
-
     const { width: windowSize } = useWindowSize();
 
     return (
@@ -60,6 +68,10 @@ const ChipFilter = ({ onFilterChange, marginTop }) => {
 ChipFilter.propTypes = {
     onFilterChange: PropTypes.func.isRequired,
     marginTop: PropTypes.string,
+    postOnly: PropTypes.bool,
 };
+ChipFilter.defaultProps = {
+    postOnly: false
+}
 
 export default ChipFilter;

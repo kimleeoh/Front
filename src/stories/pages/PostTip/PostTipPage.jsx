@@ -8,69 +8,48 @@ import ImageUploader from "../../components/Common/ImageUploader2";
 import Button from "../../components/Button";
 import ChipFilter from "../../components/Common/ChipFilter";
 import useWindowSize from "../../components/Common/WindowSize";
-
-const initialUserData = [
-    {
-        id: 1,
-        name: "이예진",
-        major: "글로벌미디어학부",
-        point: 1020,
-    },
-];
+import BaseAxios from "../../../axioses/BaseAxios";
+import PointInput from "../PostQuestion/PointInput";
 
 const PostQuestionPage = () => {
     const [formValues, setFormValues] = useState({
         title: "",
         board: [],
-        tags: [],
         content: "",
         images: [],
+        type:"",
+        purchase_price: "",
         time: "",
     });
+    console.log(formValues);
 
     const [isFormValid, setIsFormValid] = useState(false);
     const [showValidationMessages, setShowValidationMessages] = useState(false);
-
-    const [userData, setUserData] = useState([]);
-
-    useEffect(() => {
-        const { title, board, tags, content } = formValues;
-        const isValid =
-            title.trim() !== "" &&
-            board.length > 0 &&
-            tags.length > 0 &&
-            content.trim() !== "";
-        setIsFormValid(isValid);
-        console.log(formValues);
-    }, [formValues]);
 
     const handleInputChange = (name, value) => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
 
         const now = new Date().toISOString();
 
-        const user = userData[0] || {};
         const updatedFormValues = {
             ...formValues,
-            name: user.name,
-            major: user.major,
-            profileImg: user.profileImg,
             time: now,
         };
 
-        const { title, board, tags, content } = formValues;
+        const { title, board, type, content, purchase_price } = formValues;
         const isFormValid =
             title.trim() !== "" &&
             board.length > 0 &&
-            tags.length > 0 &&
-            content.trim() !== "";
+            type.trim() !== "" &&
+            content.trim() !== "" &&
+            purchase_price.trim() !== "";
 
         if (isFormValid) {
-            // Add your API call here to send updatedFormValues to the backend.
+            await BaseAxios.post("/api/tips/create/post", updatedFormValues);
             console.log(updatedFormValues);
         } else {
             setShowValidationMessages(true);
@@ -78,7 +57,7 @@ const PostQuestionPage = () => {
     };
 
     const renderValidationMessages = () => {
-        const { title, board, tags, content } = formValues;
+        const { title, board, type, content, purchase_price } = formValues;
 
         if (title.trim() === "") {
             return (
@@ -90,16 +69,22 @@ const PostQuestionPage = () => {
                 <ValidationMessage> 게시판을 선택해 주세요.</ValidationMessage>
             );
         }
-        if (tags.length === 0) {
+        if (type.length === 0) {
             return (
                 <ValidationMessage>
-                    {" "}
                     카테고리를 선택해 주세요.
                 </ValidationMessage>
             );
         }
         if (content.trim() === "") {
-            return <ValidationMessage>내용을 입력해 주세요.</ValidationMessage>;
+            return (
+                <ValidationMessage>내용을 입력해 주세요.</ValidationMessage>
+            );
+        }
+        if (purchase_price.trim() == ""){
+            return (
+                <ValidationMessage>가격을 입력해 주세요.</ValidationMessage>
+            )
         }
 
         return null;
@@ -133,7 +118,8 @@ const PostQuestionPage = () => {
                 onCategorySelect={handleCategorySelect}
             />
             <ChipFilter
-                onFilterChange={(value) => handleInputChange("tags", value)}
+                onFilterChange={(value) => handleInputChange("type", value)}
+                postOnly={true}
             />
             <TextArea
                 height={"300px"}
@@ -146,9 +132,10 @@ const PostQuestionPage = () => {
             <ImageUploader
                 onChange={(value) => handleInputChange("images", value)}
             />
-            <StyledDiv maxWidth={windowSize}>
-                <span>일정 포인트를 자동으로 지급해줘요.</span>
-            </StyledDiv>
+            <PointInput 
+                onChange={(value) => handleInputChange("purchase_price", value)}
+                placeholder={"판매할 가격을 입력해 주세요."}
+            />
             <Button
                 label={"등록하기"}
                 style={{ marginTop: "15px" }}
@@ -171,21 +158,6 @@ const Wrapper = styled.div`
     width: 100%;
     box-sizing: border-box;
     padding: 0 20px;
-`;
-
-const StyledDiv = styled.div`
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border: none;
-    border-radius: 15px;
-    color: #434b60;
-    background-color: #f0f2f4;
-
-    margin-top: 10px;
-
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
 `;
 
 const ValidationMessage = styled.div`
