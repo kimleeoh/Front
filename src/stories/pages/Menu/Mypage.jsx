@@ -94,10 +94,10 @@ const MyPage = () => {
                 <Content maxWidth={windowSize}>
                     <Title>배지</Title>
                     <BadgeContainer>
-                        <BadgeBox />
-                        <BadgeBox />
-                        <BadgeBox />
-                        <BadgeBox />
+                        <BadgeBox onClick={() => navigate("/badge")}/>
+                        <BadgeBox onClick={() => navigate("/badge")}/>
+                        <BadgeBox onClick={() => navigate("/badge")}/>
+                        <BadgeBox onClick={() => navigate("/badge")}/>
                     </BadgeContainer>
                     <BoardTitle text="성적" />
                     <SubjectWrapper>

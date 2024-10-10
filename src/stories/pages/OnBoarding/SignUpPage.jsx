@@ -220,8 +220,8 @@ const SignUpPage = () => {
         return (
           <>
             <StepDescription>
-              <Title>이름 입력</Title>
-              <Subtitle>회원님의 전체 이름을 입력해 주세요.</Subtitle>
+              <Title>닉네임 입력</Title>
+              <Subtitle>사용하실 닉네임을 입력해 주세요.</Subtitle>
             </StepDescription>
             <TextField
               label="이름"

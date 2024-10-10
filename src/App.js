@@ -34,6 +34,7 @@ const UnifiedBoard = lazy(() => import("./stories/pages/Board/UnifiedBoard"));
 const MenuPage = lazy(() => import("./stories/pages/Menu/MenuPage"));
 const MyPage = lazy(() => import("./stories/pages/Menu/Mypage"));
 const MyPageEdit = lazy(() => import("./stories/pages/Menu/MypageEdit"));
+const BadgeDetail = lazy(() => import("./stories/pages/Menu/BadgeDetail"));
 const PointPage = lazy(() => import("./stories/pages/Point/PointPage"));
 const Grades = lazy(() => import("./stories/pages/Menu/Grades"));
 const GradesRegister = lazy(() => import("./stories/pages/Menu/GradeRegister"));
@@ -103,6 +104,7 @@ const App = () => {
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/edit" element={<MyPageEdit />} />
+            <Route path="/badge" element={<BadgeDetail />} />
           <Route path="/points" element={<PointPage />} />
           <Route path="/grades" element={<Grades />} />
           <Route path="/grades/register" element={<GradesRegister />} />

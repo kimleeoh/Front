@@ -1,8 +1,9 @@
 import React from "react";
 import Header from "../../components/Header"; // Header 컴포넌트의 경로를 정확히 설정하세요.
 import styled from "styled-components";
+import NotificationBox from "./NotificationBox";
 
-const AlertPage = () => {
+const NotificationPage = () => {
     return (
         <PageContainer>
             <Header
@@ -13,23 +14,23 @@ const AlertPage = () => {
             />
             <Content>
                 <AlertMessage>새로운 알림이 있습니다!</AlertMessage>
+                <NotificationBox />
             </Content>
         </PageContainer>
     );
 };
 
-export default AlertPage;
+export default NotificationPage;
 
 const PageContainer = styled.div`
     width: 100%;
     max-width: 380px;
     margin: 0 auto;
-    padding-top: 80px; /* 헤더 높이만큼 padding 설정 */
+    padding-top: 120px; /* 헤더 높이만큼 padding 설정 */
     box-sizing: border-box;
 `;
 
 const Content = styled.div`
-    padding: 20px;
     text-align: center;
 `;
 
