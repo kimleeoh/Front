@@ -9,20 +9,28 @@ import useWindowSize from "../../components/Common/WindowSize";
 
 const Grades = () => {
     const navigate = useNavigate();
-    const [subjectGrades, setSubjectGrades] = useState({});
+    const [subjectGrades, setSubjectGrades] = useState([]);
+    const [semesters, setSemesters] = useState([]);
+    const { width: windowSize } = useWindowSize();
 
     useEffect(() => {
-        // 로컬 스토리지에서 과목 성적 불러오기
-        const savedGrades =
-            JSON.parse(localStorage.getItem("subjectGrades")) || {};
-        setSubjectGrades(savedGrades);
+        // 백엔드 API 호출하여 데이터 가져오기
+        const fetchGrades = async () => {
+            try {
+                const response = await fetch("/api/grades"); // API 엔드포인트에 맞게 수정
+                const data = await response.json();
+                setSemesters(data.semester_list); // 학기별 성적 데이터 저장
+            } catch (error) {
+                console.error("성적 데이터를 불러오는 중 오류가 발생했습니다.", error);
+            }
+        };
+
+        fetchGrades();
     }, []);
 
     const handleVerifyClick = () => {
         navigate("/grades/register");
     };
-
-    const { width: windowSize } = useWindowSize();
 
     return (
         <Wrapper>
@@ -30,38 +38,23 @@ const Grades = () => {
                 <Verify onClick={handleVerifyClick}>등록</Verify>
             </Header>
             <ContentWrapper maxWidth={windowSize}>
-                <BoardTitle text="2024학년도 1학기" />
-                <SubjectWrapper maxWidth={windowSize}>
-                    <ScrollableSubjectList>
-                        <SubjectList
-                            subject={"디지털미디어원리"}
-                            disableLink={true}
-                            rate={subjectGrades["디지털미디어원리"]}
-                        />
-                        <SubjectList
-                            subject={"영상편집론"}
-                            disableLink={true}
-                            rate={subjectGrades["영상편집론"]}
-                        />
-                        {/* ...다른 과목들도 추가 */}
-                    </ScrollableSubjectList>
-                </SubjectWrapper>
-                <BoardTitle text="2024학년도 2학기" />
-                <SubjectWrapper>
-                    <ScrollableSubjectList>
-                        <SubjectList
-                            subject={"디지털미디어실습"}
-                            disableLink={true}
-                            rate={subjectGrades["디지털미디어실습"]}
-                        />
-                        <SubjectList
-                            subject={"영상기획론"}
-                            disableLink={true}
-                            rate={subjectGrades["영상기획론"]}
-                        />
-                        {/* ...다른 과목들도 추가 */}
-                    </ScrollableSubjectList>
-                </SubjectWrapper>
+                {semesters.map((semester, index) => (
+                    <div key={index}>
+                        <BoardTitle text={`2024학년도 ${index + 1}학기`} />
+                        <SubjectWrapper maxWidth={windowSize}>
+                            <ScrollableSubjectList>
+                                {semester.subject_list.map((subject, idx) => (
+                                    <SubjectList
+                                        key={idx}
+                                        subject={subject}
+                                        disableLink={true}
+                                        rate={semester.grade_list[idx]} // 과목의 성적
+                                    />
+                                ))}
+                            </ScrollableSubjectList>
+                        </SubjectWrapper>
+                    </div>
+                ))}
                 <Button
                     label={"+ 학기 추가하기"}
                     color={"#ACB2BB"}
@@ -86,7 +79,6 @@ const Wrapper = styled.div`
     background-color: #f0f2f4;
     min-height: 100vh;
     position: relative;
-
     width: 100%;
     margin: 0 auto;
 `;

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Popup from "../Popup";
 
-const MeatballMenu = ({ _id, onReportClick }) => {
+const MeatballMenu = ({ _id }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
+    const navigate = useNavigate();
 
     const handleTogglePopup = (event) => {
         const rect = event.currentTarget.getBoundingClientRect();
@@ -16,7 +18,7 @@ const MeatballMenu = ({ _id, onReportClick }) => {
     };
 
     const handleReportClick = () => {
-        onReportClick(_id);
+        navigate(`/report/${_id}`);
         setIsPopupOpen(false);
     };
 
