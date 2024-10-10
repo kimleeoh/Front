@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Tips from "./Tips";
@@ -8,93 +8,97 @@ import FixedBottomContainer from "../../components/FixedBottomContainer";
 import ChipFilter from "../../components/Common/ChipFilter";
 import BaseAxios from "../../../axioses/BaseAxios";
 import useWindowSize from "../../components/Common/WindowSize";
+import { useNavigate } from "react-router-dom";
+import Modal from "../../components/Common/Modal";
+import Button from "../../components/Button";
 
 const initialTipsData = [
-    {
-        _id: "48578979aeb59a6b4e9668",
-        name: "김난슬",
-        major: "글로벌미디어학부",
-        subject: "디지털미디어원리",
-        title: "디미원 전공책 150 페이지 필기본 올립니다",
-        content: "학생분들에게 도움이 되길 바랍니다",
-        time: "2024-08-12T10:21:34.123Z",
-        views: 30,
-        like: 24,
-        img: ["/Icons/1607-2.jpg", "/Icons/22376525_6628724.jpg"],
-        filter: "필기공유",
-    },
-    {
-        _id: "789516539dib587bb4e9w88",
-        name: "오준우",
-        major: "글로벌미디어학부",
-        subject: "컴퓨터시스템개론",
-        title: "OOO교수님 수업",
-        content: "+ 항상 채워주십니다. 진짜 최고예요 ㅠㅠ",
-        time: "2024-08-13T10:21:34.123Z",
-        views: 88,
-        like: 18,
-        img: "/Icons/1607-2.jpg",
-        filter: "수업꿀팁",
-    },
-    {
-        _id: "1297268189apq577bb4e609e",
-        Rfile: "19dfjakdf35gdi45892949",
-        Rnotifyusers_list: [],
-        Ruser: "5029ajd295anlf391030de",
-        content:
-            "숭실대 건물들 화장실의 등급을 나눠봤습니다. 이용하실 때 참고 바랍니다.",
-        help_good: 45,
-        point: 0,
-        preview_img: "/Icons/1607-2.jpg",
-        time: "2024-08-14T05:45:30.246Z",
-        title: "숭실대 화장실 등급",
-        views: 30,
-        warn: 0,
-        filter: "수업꿀팁",
-
-        name: "이예진",
-        major: "글로벌미디어학부",
-        subject: "화장실론",
-        title: "숭실대 화장실 등급",
-        content:
-            "숭실대 건물들 화장실의 등급을 나눠봤습니다. 이용하실 때 참고 바랍니다.",
-        time: "2024-08-14T05:45:30.246Z",
-        views: 30,
-        like: 45,
-        img: "/Icons/1607-2.jpg",
-        filter: "수업꿀팁",
-    },
     // {
-    //     _id: "66adba28edf9ee3930e54570",
-    //     Rfile: "66adbacbd44fdc72c7e842bc",
+    //     _id: "48578979aeb59a6b4e9668",
+    //     name: "김난슬",
+    //     major: "글로벌미디어학부",
+    //     subject: "디지털미디어원리",
+    //     title: "디미원 전공책 150 페이지 필기본 올립니다",
+    //     content: "학생분들에게 도움이 되길 바랍니다",
+    //     time: "2024-08-12T10:21:34.123Z",
+    //     views: 30,
+    //     like: 24,
+    //     img: ["/Icons/1607-2.jpg", "/Icons/22376525_6628724.jpg"],
+    //     filter: "필기공유",
+    // },
+    // {
+    //     _id: "789516539dib587bb4e9w88",
+    //     name: "오준우",
+    //     major: "글로벌미디어학부",
+    //     subject: "컴퓨터시스템개론",
+    //     title: "OOO교수님 수업",
+    //     content: "+ 항상 채워주십니다. 진짜 최고예요 ㅠㅠ",
+    //     time: "2024-08-13T10:21:34.123Z",
+    //     views: 88,
+    //     like: 18,
+    //     img: "/Icons/1607-2.jpg",
+    //     filter: "수업꿀팁",
+    // },
+    // {
+    //     _id: "1297268189apq577bb4e609e",
+    //     Rfile: "19dfjakdf35gdi45892949",
     //     Rnotifyusers_list: [],
-    //     Ruser: "66adbab3d44fdc72c7e842bb",
-    //     content: "어쩌구",
-    //     help_good: 0,
+    //     Ruser: "5029ajd295anlf391030de",
+    //     content:
+    //         "숭실대 건물들 화장실의 등급을 나눠봤습니다. 이용하실 때 참고 바랍니다.",
+    //     help_good: 45,
     //     point: 0,
-    //     preview_img: "",
-    //     time: "2024-12-31T15:00:00.000Z",
-    //     title: "제목",
-    //     views: 0,
-    //     warn: 0
-    // }
+    //     preview_img: "/Icons/1607-2.jpg",
+    //     time: "2024-08-14T05:45:30.246Z",
+    //     title: "숭실대 화장실 등급",
+    //     views: 30,
+    //     warn: 0,
+    //     filter: "수업꿀팁",
+
+    //     name: "이예진",
+    //     major: "글로벌미디어학부",
+    //     subject: "화장실론",
+    //     title: "숭실대 화장실 등급",
+    //     content:
+    //         "숭실대 건물들 화장실의 등급을 나눠봤습니다. 이용하실 때 참고 바랍니다.",
+    //     time: "2024-08-14T05:45:30.246Z",
+    //     views: 30,
+    //     like: 45,
+    //     img: "/Icons/1607-2.jpg",
+    //     filter: "수업꿀팁",
+    // },
+    {
+        _id: "66adba28edf9ee3930e54570",
+        Rfile: "66adbacbd44fdc72c7e842bc",
+        Rnotifyusers_list: [],
+        Ruser: "66adbab3d44fdc72c7e842bb",
+        content: "어쩌구",
+        help_good: 0,
+        point: 0,
+        preview_img: "",
+        time: "2024-12-31T15:00:00.000Z",
+        title: "제목",
+        views: 0,
+        warn: 0
+    }
 ];
 
 const TipsPage = () => {
     const [TipsData, setTipsData] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedTipId, setSelectedTipId] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // // Load TipsData from localStorage or initialize it
-        // localStorage.removeItem("TipsData");
-        // const TipsData = localStorage.getItem("TipsData");
-        // if (TipsData) {
-        //   setTipsData(JSON.parse(TipsData));
-        //   setFilteredTips(JSON.parse(TipsData)); // Initialize filteredTips with all tips
-        // } else {
-        //   localStorage.setItem("TipsData", JSON.stringify(initialTipsData));
-        //   setTipsData(initialTipsData);
-        //   setFilteredTips(initialTipsData); // Initialize filteredTips with all tips
-        // }
+        // Load TipsData from localStorage or initialize it
+        localStorage.removeItem("TipsData");
+        const TipsData = localStorage.getItem("TipsData");
+        if (TipsData) {
+          setTipsData(JSON.parse(TipsData));
+        } else {
+          localStorage.setItem("TipsData", JSON.stringify(initialTipsData));
+          setTipsData(initialTipsData);
+        }
 
         fetchChips([""]);
     }, []);
@@ -128,6 +132,25 @@ const TipsPage = () => {
         }
     };
 
+    const handleTipClick = (tipId) => {
+        setSelectedTipId(tipId);
+        modalRef.current.open();
+    };
+
+    const handleModalClose = () => {
+        setSelectedTipId(null);
+        modalRef.current.close();
+    };
+
+    const handleConfirm = () => {
+        if (selectedTipId) {
+            navigate(`/tips/${selectedTipId}`);
+        }
+        handleModalClose();
+    };
+
+    const modalRef = useRef();
+
     const { width: windowSize } = useWindowSize();
 
     return (
@@ -145,22 +168,39 @@ const TipsPage = () => {
                 />
             </ChipFilterWrapper>
             {TipsData.map((tip) => (
-                <Tips
-                    _id={tip._id}
-                    Ruser={tip.Ruser}
-                    title={tip.title}
-                    content={tip.content}
-                    preview_img={tip.preview_img}
-                    likes={tip.likes}
-                    point={tip.point}
-                    views={tip.views}
-                    time={tip.time}
-                    // img={Array.isArray(tip.img) ? tip.img[0] : tip.img} // Only the first image
-                    // name={tip.name}
-                    // major={tip.major}
-                    // subject={tip.subject}
-                />
+                <div key={tip._id} onClick={() => handleTipClick(tip._id)} style={{width: '100%'}}>
+                    <Tips
+                        _id={tip._id}
+                        Ruser={tip.Ruser}
+                        title={tip.title}
+                        content={tip.content}
+                        preview_img={tip.preview_img}
+                        likes={tip.likes}
+                        point={tip.point}
+                        views={tip.views}
+                        time={tip.time}
+                    />
+            </div>
             ))}
+            <Modal ref={modalRef} width="300px">
+                <span style={{ fontSize: "16px" }}>정말로 구매하시겠습니까?</span>
+                <ButtonWrapper>
+                    <Button
+                        onClick={handleConfirm}
+                        label={"예"}
+                        backgroundColor={"#FF3C3C"}
+                        hoverBackgroundColor={"red"}
+                        width={"130px"}
+                    />
+                    <Button
+                        onClick={handleModalClose}
+                        label={"아니요"}
+                        backgroundColor={"#434B60"}
+                        hoverBackgroundColor={"#ACB2BB"}
+                        width={"130px"}
+                    />
+                </ButtonWrapper>
+            </Modal>
             <FixedIcon src="/Icons/Pen.svg" url={"/tips/post"} />
             <FixedBottomContainer>
                 <NavBar state="Tips" />
@@ -187,3 +227,10 @@ const ChipFilterWrapper = styled.div`
     padding-left: 10px;
     box-sizing: border-box;
 `
+
+const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    gap: 10px;
+`;
