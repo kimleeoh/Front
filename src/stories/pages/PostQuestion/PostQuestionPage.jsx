@@ -12,16 +12,6 @@ import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import { useNavigate } from "react-router-dom";
 
-const initialUserData = [
-    {
-        id: 1,
-        name: "이예진",
-        major: "글로벌미디어학부",
-        profileImg: "/Icons/Download.svg",
-        point: 1020,
-    },
-];
-
 const PostQuestionPage = () => {
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
@@ -36,29 +26,27 @@ const PostQuestionPage = () => {
     const [showValidationMessages, setShowValidationMessages] = useState(false);
     const [isPointInputDisabled, setIsPointInputDisabled] = useState(false);
 
-    const [userData, setUserData] = useState([]);
+    const [originPoint, setOriginPoint] = useState(null);
 
     useEffect(() => {
-        // Local storage operations for user data
-        localStorage.removeItem("userData");
-        const userData = localStorage.getItem("userData");
-        if (userData) {
-            setUserData(JSON.parse(userData));
-        } else {
-            localStorage.setItem("userData", JSON.stringify(initialUserData));
-            setUserData(initialUserData);
-        }
+        const fetchPoint = async () => {
+            // Simulate fetching point value
+            const fetchedPoint = await BaseAxios.get("/api/point");
+            setOriginPoint(fetchedPoint.data.point);
+        };
+
+        fetchPoint();
     }, []);
 
     const handleInputChange = (name, value) => {
         setFormValues({ ...formValues, [name]: value });
     };
-
+    
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const now = new Date().toISOString();
 
-        const user = userData[0] || {};
+        // const user = userData[0] || {};
         const updatedFormValues = {
             ...formValues,
             time: now,
@@ -158,16 +146,12 @@ const PostQuestionPage = () => {
             <ImageUploader
                 onChange={(value) => handleInputChange("images", value)}
             />
-            {initialUserData.map((user) => (
-                <PointInput
-                    key={user.id}
-                    name={user.name}
-                    point={user.point}
+            <PointInput
+                    point={originPoint}
                     onChange={(value) => handleInputChange("point", value)}
                     disabled={isPointInputDisabled}
                     placeholder={"포인트를 입력해 주세요"}
-                />
-            ))}
+            />
             <CheckerWrapper maxWidth={windowSize}>
                 <Checker
                     text={"A 이상의 답변만 받고 싶어요."}
