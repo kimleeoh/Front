@@ -189,7 +189,8 @@ const GradeRegister = () => {
                     <SubjectWrapper maxWidth={windowSize}>
                         <SubjectItem>
                             <SubjectName>과목명</SubjectName>
-                            성적 전공여부
+                            <span style={{margin:'0 0 0 125px'}}>성적</span>
+                            <span style={{margin:'0 5px 0 0'}}>전공</span>
                         </SubjectItem>
                         {subjects.map((subject, index) => (
                             <SubjectItem key={index}>
@@ -205,7 +206,7 @@ const GradeRegister = () => {
                                     width={"200px"}
                                     height={"30px"}
                                 />
-                                <div style={{ display: "flex" }}>
+                                
                                     <Picker
                                         items={Grades}
                                         selectedItem={subject.grade}
@@ -214,6 +215,7 @@ const GradeRegister = () => {
                                         }
                                         placeholder="성적"
                                     />
+                                <div style={{ display: 'flex', transform: 'translateY(-4px)'}}>
                                     <Checker
                                         text=""
                                         checked={subject.isMajor}
@@ -241,7 +243,6 @@ const GradeRegister = () => {
             ) : (
                 <NoSelectionMessage>학기를 선택해주세요!</NoSelectionMessage>
             )}
-            <FixedBottomContainer>
                 <Button
                     label="인증"
                     onClick={handleVerifyClick}
@@ -250,7 +251,6 @@ const GradeRegister = () => {
                     hoverBackgroundColor="#0056b3"
                     style={{ marginTop: "20px" }}
                 />
-            </FixedBottomContainer>
 
             <Modal ref={modalRef} width="300px">
                 <span style={{ fontSize: "16px" }}>
@@ -286,6 +286,8 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     padding-top: 100px;
+    padding-bottom: 100px;
+    height: auto;
 `;
 
 const TermPickerWrapper = styled.div`
@@ -312,7 +314,7 @@ const SubjectWrapper = styled.div`
     padding: 0 15px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 25px;
     margin-top: 20px;
     font-family: Inter;
     font-size: 16px;
