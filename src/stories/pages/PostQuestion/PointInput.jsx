@@ -42,9 +42,9 @@ const PointInput = ({
     return (
         <Wrapper maxWidth={windowSize}>
             {point !== null ? (
-                 <small style={{ marginRight: "auto" }}>보유 포인트: {point}p</small>
+                 <small style={{ marginRight: "auto", marginLeft: '15px' }}>보유 포인트: {point}p</small>
             ) : (
-                <small style={{ marginRight: "auto" }}>일정한 포인트가 지급됩니다.</small>
+                <small style={{ marginRight: "auto", color: '#d00303', marginLeft: '15px' }}>일정한 포인트가 지급됩니다.</small>
             )}
 
             <StyledPointInput

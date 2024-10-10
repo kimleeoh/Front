@@ -135,10 +135,12 @@ const TipsPage = () => {
                 backButton={false}
                 searchButton={true}
             />
-            <ChipFilter
-                onFilterChange={handleFilterChange}
-                marginTop={"10px"}
-            />
+            <div style={{marginRight: 'auto', marginLeft: "10px"}}>
+                <ChipFilter
+                    onFilterChange={handleFilterChange}
+                    marginTop={"10px"}
+                />
+            </div>
             {TipsData.map((tip) => (
                 <Tips
                     _id={tip._id}
