@@ -8,7 +8,6 @@ import FixedBottomContainer from "../../components/FixedBottomContainer";
 import AnswersDetail from "./AnswersDetail";
 import UserComment from "./UserComment";
 import useWindowSize from "../../components/Common/WindowSize";
-import ModalReport from "../../components/Common/ModalReport";
 
 const initialQuestionData = [
     {
@@ -299,12 +298,6 @@ const QnADetailPage = () => {
                         limit={currentQuestion.restricted_type}
                     />
                 ))}
-
-            <ModalReport
-                isOpen={isReportModalOpen}
-                onClose={handleCloseReportModal}
-                reportId={currentReportId}
-            />
 
             <FixedBottomContainer />
         </Wrapper>
