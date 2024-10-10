@@ -98,11 +98,10 @@ const GradeRegister = () => {
     };
 
     const handleAddSubject = async () => {
-        // 공란의 새 과목을 추가
         const blankSubject = { name: "", grade: "", isMajor: false };
         const updatedSubjects = [...subjects, blankSubject];
         setSubjects(updatedSubjects);
-    
+
         try {
             await fetch(`/api/grades/add-subject`, {
                 method: "POST",
@@ -124,7 +123,7 @@ const GradeRegister = () => {
         const updatedSubjects = [...subjects];
         updatedSubjects[index].name = newName;
         setSubjects(updatedSubjects);
-    
+
         try {
             fetch(`/api/grades/update-subject-name`, {
                 method: "POST",
@@ -142,8 +141,6 @@ const GradeRegister = () => {
             console.error("과목명 업데이트 중 오류 발생", error);
         }
     };
-    
-    
 
     const { width: windowSize } = useWindowSize();
 
@@ -166,57 +163,62 @@ const GradeRegister = () => {
                 />
                 학기
             </TermPickerWrapper>
-            <CheckerWrapper maxWidth={windowSize}>
-                <Checker
-                    text={confirmed ? "인증됨" : "인증되지 않음"}
-                    readOnly={true}
-                    type={"check"}
-                />
-            </CheckerWrapper>
-            {subjects.length > 0 && (
-                <SubjectWrapper maxWidth={windowSize}>
-                    <SubjectItem>
+            {selectedYear && selectedTerm ? (
+                <>
+                    <CheckerWrapper maxWidth={windowSize}>
+                        <Checker
+                            text={confirmed ? "인증됨" : "인증되지 않음"}
+                            readOnly={true}
+                            type={"check"}
+                        />
+                    </CheckerWrapper>
+                    <SubjectWrapper maxWidth={windowSize}>
+                        <SubjectItem>
                             <SubjectName>과목명</SubjectName>
                             성적
                             전공여부
                         </SubjectItem>
-                    {subjects.map((subject, index) => (
-                        <SubjectItem key={index}>
-                            <TextField
-                                value={subject.name}
-                                onChange={(e) => handleSubjectNameChange(index, e.target.value)}
-                                label="과목명"
-                                width={"200px"}
-                                height={"30px"}
-                            />
-                            <div style={{display: 'flex'}}>
-                            <Picker
-                                items={Grades}
-                                selectedItem={subject.grade}
-                                onChange={(grade) => handleGradeChange(index, grade)}
-                                placeholder="성적"
-                            />
-                            <Checker
-                                text=""
-                                checked={subject.isMajor}
-                                onChange={(checked) => handleMajorChange(index, checked)}
-                                type={'box'}
-                            />
-                            </div>
-                        </SubjectItem>
-                    ))}
-                </SubjectWrapper>
+                        {subjects.map((subject, index) => (
+                            <SubjectItem key={index}>
+                                <TextField
+                                    value={subject.name}
+                                    onChange={(e) => handleSubjectNameChange(index, e.target.value)}
+                                    label="과목명"
+                                    width={"200px"}
+                                    height={"30px"}
+                                />
+                                <div style={{ display: 'flex' }}>
+                                    <Picker
+                                        items={Grades}
+                                        selectedItem={subject.grade}
+                                        onChange={(grade) => handleGradeChange(index, grade)}
+                                        placeholder="성적"
+                                    />
+                                    <Checker
+                                        text=""
+                                        checked={subject.isMajor}
+                                        onChange={(checked) => handleMajorChange(index, checked)}
+                                        type={'box'}
+                                    />
+                                </div>
+                            </SubjectItem>
+                        ))}
+                    </SubjectWrapper>
+                    <AddSubjectWrapper maxWidth={windowSize}>
+                        <Button
+                            label="+ 과목 추가하기"
+                            width="180px"
+                            onClick={handleAddSubject}
+                            color={"#ACB2BB"}
+                            backgroundColor={"#F1F2F4"}
+                            hoverColor={"#ACB2BB"}
+                            hoverBackgroundColor={"#E5E9F2"}
+                        />
+                    </AddSubjectWrapper>
+                </>
+            ) : (
+                <NoSelectionMessage>학기를 선택해주세요!</NoSelectionMessage>
             )}
-            <AddSubjectWrapper maxWidth={windowSize}>
-                <Button
-                    label="과목 추가"
-                    width="180px"
-                    onClick={handleAddSubject}
-                    color="#fff"
-                    backgroundColor="#007bff"
-                    hoverBackgroundColor="#0056b3"
-                />
-            </AddSubjectWrapper>
             <FixedBottomContainer>
                 <Button
                     label="인증"
@@ -284,49 +286,51 @@ const TermPickerWrapper = styled.div`
 const SubjectWrapper = styled.div`
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    padding: 0 10px 20px 10px;
     box-sizing: border-box;
-    margin-top: 20px;
+    padding: 0 15px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 10px;
+    margin-top: 20px;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 `;
 
 const SubjectItem = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: center;
 `;
 
-const SubjectName = styled.div`
-    font-size: 16px;
-    font-weight: 700;
-    flex: 1;
+const SubjectName = styled.span`
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+`;
+
+const AddSubjectWrapper = styled.div`
+    margin-top: 20px;
+`;
+
+const CheckerWrapper = styled.div`
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
 `;
 
 const ButtonWrapper = styled.div`
     display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-    gap: 10px;
+    justify-content: space-between;
+    margin-top: 15px;
+    width: 100%;
 `;
 
-const CheckerWrapper = styled.div`
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    padding: 0 15px;
-    box-sizing: border-box;
-`;
-
-const AddSubjectWrapper = styled.div`
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    padding: 0 10px;
-    box-sizing: border-box;
+const NoSelectionMessage = styled.div`
     margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    justify-content: center;
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
 `;

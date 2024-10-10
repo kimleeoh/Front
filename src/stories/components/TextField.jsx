@@ -125,7 +125,7 @@ const TextFieldWrapper = styled.div`
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     height: ${(props) => props.height ? props.height : "50px"};
     position: relative;
-    padding: 0 20px;
+    padding: 0;
 `;
 
 const StyledLabel = styled.label`
