@@ -268,7 +268,7 @@ const TermPickerWrapper = styled.div`
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     box-sizing: border-box;
-    padding: 0 10px;
+    padding: 0 15px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -314,6 +314,8 @@ const ButtonWrapper = styled.div`
 const CheckerWrapper = styled.div`
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    padding: 0 15px;
+    box-sizing: border-box;
 `;
 
 const AddSubjectWrapper = styled.div`

@@ -9,8 +9,6 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Modal from "../../components/Common/Modal";
 import { useNavigate } from "react-router-dom";
 import useWindowSize from "../../components/Common/WindowSize";
-import SubjectInfo from "../../components/Common/SubjectInfo";
-import BaseAxios from "../../../axioses/BaseAxios";
 import SelectSubject from "../../components/Common/SelectSubject";
 
 const EditBoardPage = () => {

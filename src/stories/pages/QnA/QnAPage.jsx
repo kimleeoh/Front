@@ -234,7 +234,6 @@ const QnAPage = () => {
         : questionData;
 
     const { width: windowSize } = useWindowSize();
-
     return (
         <Wrapper>
             <Header
@@ -243,12 +242,12 @@ const QnAPage = () => {
                 backButton={false}
                 searchButton={true}
             />
-            <div style={{marginRight: 'auto', marginLeft: '10px'}}> 
+            <CheckerWrapper maxWidth={windowSize}>
                 <Checker
                     text={"A등급 제한"}
                     onChange={handleCheckerChange}
                 />
-            </div>
+            </CheckerWrapper>
             {filteredQuestions.map((question) => {
                 const img = Array.isArray(question.img)
                     ? question.img[0]
@@ -293,3 +292,10 @@ const Wrapper = styled.div`
     margin-bottom: 100px;
     width: 100%;
 `;
+
+const CheckerWrapper = styled.div`
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    padding-left: 10px;
+    box-sizing: border-box;
+`

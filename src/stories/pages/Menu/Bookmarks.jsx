@@ -132,7 +132,9 @@ const Bookmarks = () => {
             )}
             {activeTab === "Tips" && (
                 <>
-                    <ChipFilter onFilterChange={handleFilterChange} />
+                    <ChipFilterWrapper maxWidth={windowSize}>
+                        <ChipFilter onFilterChange={handleFilterChange} marginTop={'10px'}/>
+                    </ChipFilterWrapper>
                     {filteredTips
                         .filter((tip) => tip.subject === subject)
                         .map((tip) => (
@@ -175,4 +177,13 @@ const Wrapper = styled.div`
 const CheckerWrapper = styled.div`
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    padding-left: 10px;
+    box-sizing: border-box;
 `;
+
+const ChipFilterWrapper = styled.div`
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    padding-left: 10px;
+    box-sizing: border-box;
+`
