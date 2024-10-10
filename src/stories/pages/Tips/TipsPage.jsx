@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Tips from "./Tips";
@@ -8,9 +8,6 @@ import FixedBottomContainer from "../../components/FixedBottomContainer";
 import ChipFilter from "../../components/Common/ChipFilter";
 import BaseAxios from "../../../axioses/BaseAxios";
 import useWindowSize from "../../components/Common/WindowSize";
-import { useNavigate } from "react-router-dom";
-import Modal from "../../components/Common/Modal";
-import Button from "../../components/Button";
 
 const initialTipsData = [
     // {
@@ -85,9 +82,6 @@ const initialTipsData = [
 
 const TipsPage = () => {
     const [TipsData, setTipsData] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedTipId, setSelectedTipId] = useState(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         // Load TipsData from localStorage or initialize it
@@ -95,6 +89,7 @@ const TipsPage = () => {
         const TipsData = localStorage.getItem("TipsData");
         if (TipsData) {
           setTipsData(JSON.parse(TipsData));
+
         } else {
           localStorage.setItem("TipsData", JSON.stringify(initialTipsData));
           setTipsData(initialTipsData);
@@ -132,25 +127,6 @@ const TipsPage = () => {
         }
     };
 
-    const handleTipClick = (tipId) => {
-        setSelectedTipId(tipId);
-        modalRef.current.open();
-    };
-
-    const handleModalClose = () => {
-        setSelectedTipId(null);
-        modalRef.current.close();
-    };
-
-    const handleConfirm = () => {
-        if (selectedTipId) {
-            navigate(`/tips/${selectedTipId}`);
-        }
-        handleModalClose();
-    };
-
-    const modalRef = useRef();
-
     const { width: windowSize } = useWindowSize();
 
     return (
@@ -168,39 +144,22 @@ const TipsPage = () => {
                 />
             </ChipFilterWrapper>
             {TipsData.map((tip) => (
-                <div key={tip._id} onClick={() => handleTipClick(tip._id)} style={{width: '100%'}}>
-                    <Tips
-                        _id={tip._id}
-                        Ruser={tip.Ruser}
-                        title={tip.title}
-                        content={tip.content}
-                        preview_img={tip.preview_img}
-                        likes={tip.likes}
-                        point={tip.point}
-                        views={tip.views}
-                        time={tip.time}
-                    />
-            </div>
+                <Tips
+                    _id={tip._id}
+                    Ruser={tip.Ruser}
+                    title={tip.title}
+                    content={tip.content}
+                    preview_img={tip.preview_img}
+                    likes={tip.likes}
+                    point={tip.point}
+                    views={tip.views}
+                    time={tip.time}
+                    // img={Array.isArray(tip.img) ? tip.img[0] : tip.img} // Only the first image
+                    // name={tip.name}
+                    // major={tip.major}
+                    // subject={tip.subject}
+                />
             ))}
-            <Modal ref={modalRef} width="300px">
-                <span style={{ fontSize: "16px" }}>정말로 구매하시겠습니까?</span>
-                <ButtonWrapper>
-                    <Button
-                        onClick={handleConfirm}
-                        label={"예"}
-                        backgroundColor={"#FF3C3C"}
-                        hoverBackgroundColor={"red"}
-                        width={"130px"}
-                    />
-                    <Button
-                        onClick={handleModalClose}
-                        label={"아니요"}
-                        backgroundColor={"#434B60"}
-                        hoverBackgroundColor={"#ACB2BB"}
-                        width={"130px"}
-                    />
-                </ButtonWrapper>
-            </Modal>
             <FixedIcon src="/Icons/Pen.svg" url={"/tips/post"} />
             <FixedBottomContainer>
                 <NavBar state="Tips" />
@@ -227,10 +186,3 @@ const ChipFilterWrapper = styled.div`
     padding-left: 10px;
     box-sizing: border-box;
 `
-
-const ButtonWrapper = styled.div`
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-    gap: 10px;
-`;

@@ -19,38 +19,40 @@ const Tips = ({
     const { width: windowSize } = useWindowSize();
     return (
         <OutWrapper maxWidth={windowSize}>
-            <Wrapper>
-                <ContentWrapper>
-                    <TextWrapper hasImage={Boolean(preview_img)}>
-                        <Title>{title}</Title>
-                        <Content>{content}</Content>
-                    </TextWrapper>
+            <StyledLink to={`/tips/${_id}`}>
+                <Wrapper>
+                    <ContentWrapper>
+                        <TextWrapper hasImage={Boolean(preview_img)}>
+                            <Title>{title}</Title>
+                            <Content>{content}</Content>
+                        </TextWrapper>
 
-                    {preview_img && (
-                        <ImageContainer>
-                            <Image src={preview_img} />
-                        </ImageContainer>
-                    )}
-                </ContentWrapper>
+                        {preview_img && (
+                            <ImageContainer>
+                                <Image src={preview_img} />
+                            </ImageContainer>
+                        )}
+                    </ContentWrapper>
 
-                <MetaContainer>
-                    {/* <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {major} {name} | 조회수 {views} </span> */}
-                    <span
-                        style={{
-                            marginLeft: "10px",
-                            color: "#3182F7",
-                            fontWeight: "bold",
-                        }}
-                    >
-                        {" "}
-                        {likes}{" "}
-                    </span>
-                    <Point>
-                        <img src="/point_white.svg" width={"12px"} /> -{" "}
-                        {point}
-                    </Point>
-                </MetaContainer>
-            </Wrapper>
+                    <MetaContainer>
+                        {/* <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {major} {name} | 조회수 {views} </span> */}
+                        <span
+                            style={{
+                                marginLeft: "10px",
+                                color: "#3182F7",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            {" "}
+                            {likes}{" "}
+                        </span>
+                        <Point>
+                            <img src="/point_white.svg" width={"12px"} /> -{" "}
+                            {point}
+                        </Point>
+                    </MetaContainer>
+                </Wrapper>
+            </StyledLink>
         </OutWrapper>
     );
 };
