@@ -10,6 +10,7 @@ const TextField = ({
     disabled,
     type,
     width,
+    height,
     name,
 }) => {
     const [inputValue, setInputValue] = useState(externalValue || "");
@@ -43,7 +44,7 @@ const TextField = ({
     const { width: windowSize } = useWindowSize();
 
     return (
-        <TextFieldWrapper width={width} maxWidth={windowSize}>
+        <TextFieldWrapper width={width} maxWidth={windowSize} height={height}>
             <InputWrapper>
                 <StyledLabel
                     hasValue={inputValue !== ""}
@@ -99,6 +100,7 @@ TextField.propTypes = {
     onChange: PropTypes.func,
     disabled: PropTypes.bool,
     width: PropTypes.string,
+    height: PropTypes.string,
     type: PropTypes.string,
     name: PropTypes.string, // name prop 추가
 };
@@ -109,6 +111,7 @@ TextField.defaultProps = {
     disabled: false,
     type: "text",
     name: "", // 기본값 추가
+    height: "50px",
 };
 
 export default TextField;
@@ -120,9 +123,9 @@ const TextFieldWrapper = styled.div`
     margin: 0;
     width: ${(props) => (props.width ? props.width : "100%")};
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    height: 50px;
+    height: ${(props) => props.height ? props.height : "50px"};
     position: relative;
-    padding: 0 20px;
+    padding: 0;
 `;
 
 const StyledLabel = styled.label`

@@ -45,6 +45,7 @@ const Checker = ({ text, onChange, disabled, type, readOnly, checked }) => {
                 readOnly={readOnly} // readOnly prop 추가
             >
                 <img src={getIconSrc(currentChecked)} alt="checkbox icon" />
+                {text && (
                 <span
                     style={{
                         color: currentChecked ? "#434B60" : "#ACB2BB",
@@ -55,6 +56,7 @@ const Checker = ({ text, onChange, disabled, type, readOnly, checked }) => {
                 >
                     {text}
                 </span>
+                )}
             </Button>
         </CheckerWrapper>
     );

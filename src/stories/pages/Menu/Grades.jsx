@@ -115,7 +115,7 @@ const Grades = () => {
                         </SubjectWrapper>
                     </div>
                 ))}
-                <Button
+                {/* <Button
                     label={"+ 학기 추가하기"}
                     color={"#ACB2BB"}
                     backgroundColor={"#F1F2F4"}
@@ -123,7 +123,7 @@ const Grades = () => {
                     hoverBackgroundColor={"#E5E9F2"}
                     style={{ marginTop: "20px" }}
                     onClick={handleAddSemester}
-                />
+                /> */}
             </ContentWrapper>
 
             <Modal ref={modalRef} width="300px" height="auto" isOpen={isModalOpen}>

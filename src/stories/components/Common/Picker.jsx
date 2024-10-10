@@ -89,6 +89,7 @@ const PickerButton = styled.button`
     justify-content: space-between;
     align-items: center;
     transition: all 0.3s ease;
+    white-space: nowrap;
 
     &:active {
         transform: scale(0.95);

@@ -8,6 +8,7 @@ import FixedBottomContainer from "../../components/FixedBottomContainer";
 import Checker from "../../components/Common/Checker";
 import ImageUploadButton from "../Confirmation/ImageUploadButton";
 import useWindowSize from "../../components/Common/WindowSize";
+import TextField from "../../components/TextField";
 
 const GradeRegister = () => {
     const Grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "F"];
@@ -21,58 +22,27 @@ const GradeRegister = () => {
 
     const [selectedYear, setSelectedYear] = useState("");
     const [selectedTerm, setSelectedTerm] = useState("");
-    const [subjectGrades, setSubjectGrades] = useState({});
     const [subjects, setSubjects] = useState([]);
-    const [availableYears, setAvailableYears] = useState([]);
-    const [availableTerms, setAvailableTerms] = useState([]);
     const [confirmed, setConfirmed] = useState(false);
+    const [newSubject, setNewSubject] = useState({ name: "", grade: "", isMajor: false });
 
-    useEffect(() => {
-        const fetchSemesters = async () => {
-            try {
-                const response = await fetch("/api/grades"); // 학기 데이터를 백엔드에서 가져옴
-                const data = await response.json();
-                const years = [...new Set(data.semester_list.map((sem) => sem.year))];
-                setAvailableYears(years);
-            } catch (error) {
-                console.error("학기 데이터를 불러오는 중 오류 발생", error);
-            }
-        };
-        fetchSemesters();
-    }, []);
-
-    useEffect(() => {
-        const fetchTermData = async () => {
-            if (selectedYear) {
-                try {
-                    const response = await fetch(`/api/grades/${selectedYear}`);
-                    const data = await response.json();
-                    const terms = [...new Set(data.semester_list.map((sem) => sem.term))];
-                    setAvailableTerms(terms);
-                } catch (error) {
-                    console.error("학기 데이터를 불러오는 중 오류 발생", error);
-                }
-            }
-        };
-        fetchTermData();
-    }, [selectedYear]);
+    const currentYear = new Date().getFullYear();
+    const availableYears = Array.from({ length: currentYear - 2017 }, (_, i) => (2018 + i).toString());
+    const availableTerms = ["1", "2"];
 
     useEffect(() => {
         const fetchSubjectData = async () => {
             if (selectedYear && selectedTerm) {
                 try {
-                    const response = await fetch(
-                        `/api/grades/${selectedYear}/${selectedTerm}`
-                    );
+                    const index = (parseInt(selectedYear) - 2018) * 2 + (parseInt(selectedTerm) - 1);
+                    const response = await fetch(`/api/grades/${index}`);
                     const data = await response.json();
-                    setSubjects(data.semester_list.subject_list);
-                    setSubjectGrades(
-                        data.semester_list.grade_list.reduce((acc, grade, index) => {
-                            acc[data.semester_list.subject_list[index]] = Grades[grade];
-                            return acc;
-                        }, {})
-                    );
-                    setConfirmed(data.semester_list.confirmed); // 인증 여부 설정
+                    setSubjects(data.semester_list.subject_list.map((subject, index) => ({
+                        name: subject,
+                        grade: Grades[data.semester_list.grade_list[index]],
+                        isMajor: data.semester_list.ismajor_list[index]
+                    })));
+                    setConfirmed(data.semester_list.confirmed);
                 } catch (error) {
                     console.error("과목 데이터를 불러오는 중 오류 발생", error);
                 }
@@ -81,9 +51,10 @@ const GradeRegister = () => {
         fetchSubjectData();
     }, [selectedYear, selectedTerm]);
 
-    const handleGradeChange = async (subject, grade) => {
-        const updatedGrades = { ...subjectGrades, [subject]: grade };
-        setSubjectGrades(updatedGrades);
+    const handleGradeChange = async (index, grade) => {
+        const updatedSubjects = [...subjects];
+        updatedSubjects[index].grade = grade;
+        setSubjects(updatedSubjects);
 
         try {
             await fetch(`/api/grades/update`, {
@@ -94,7 +65,7 @@ const GradeRegister = () => {
                 body: JSON.stringify({
                     year: selectedYear,
                     term: selectedTerm,
-                    subject,
+                    subject: subjects[index].name,
                     grade: Grades.indexOf(grade),
                 }),
             });
@@ -103,11 +74,79 @@ const GradeRegister = () => {
         }
     };
 
+    const handleMajorChange = async (index, isMajor) => {
+        const updatedSubjects = [...subjects];
+        updatedSubjects[index].isMajor = isMajor;
+        setSubjects(updatedSubjects);
+
+        try {
+            await fetch(`/api/grades/update-major`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    year: selectedYear,
+                    term: selectedTerm,
+                    subject: subjects[index].name,
+                    isMajor,
+                }),
+            });
+        } catch (error) {
+            console.error("전공 여부 업데이트 중 오류 발생", error);
+        }
+    };
+
+    const handleAddSubject = async () => {
+        const blankSubject = { name: "", grade: "", isMajor: false };
+        const updatedSubjects = [...subjects, blankSubject];
+        setSubjects(updatedSubjects);
+
+        try {
+            await fetch(`/api/grades/add-subject`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    year: selectedYear,
+                    term: selectedTerm,
+                    ...blankSubject,
+                }),
+            });
+        } catch (error) {
+            console.error("과목 추가 중 오류 발생", error);
+        }
+    };
+
+    const handleSubjectNameChange = (index, newName) => {
+        const updatedSubjects = [...subjects];
+        updatedSubjects[index].name = newName;
+        setSubjects(updatedSubjects);
+
+        try {
+            fetch(`/api/grades/update-subject-name`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    year: selectedYear,
+                    term: selectedTerm,
+                    subject: updatedSubjects[index].name,
+                    newName,
+                }),
+            });
+        } catch (error) {
+            console.error("과목명 업데이트 중 오류 발생", error);
+        }
+    };
+
     const { width: windowSize } = useWindowSize();
 
     return (
         <Wrapper maxWidth={windowSize}>
-            <Header text="성적 등록하기"></Header>
+            <Header text="성적 등록하기" />
             <TermPickerWrapper maxWidth={windowSize}>
                 <Picker
                     items={availableYears}
@@ -124,27 +163,61 @@ const GradeRegister = () => {
                 />
                 학기
             </TermPickerWrapper>
-            <CheckerWrapper maxWidth={windowSize}>
-                <Checker
-                    text={confirmed ? "인증됨" : "인증되지 않음"}
-                    readOnly={true}
-                    type={"check"}
-                />
-            </CheckerWrapper>
-            {subjects.length > 0 && (
-                <SubjectWrapper maxWidth={windowSize}>
-                    {subjects.map((subject) => (
-                        <SubjectItem key={subject}>
-                            <SubjectName>{subject}</SubjectName>
-                            <Picker
-                                items={Grades}
-                                selectedItem={subjectGrades[subject]}
-                                onChange={(grade) => handleGradeChange(subject, grade)}
-                                placeholder="성적 선택"
-                            />
+            {selectedYear && selectedTerm ? (
+                <>
+                    <CheckerWrapper maxWidth={windowSize}>
+                        <Checker
+                            text={confirmed ? "인증됨" : "인증되지 않음"}
+                            readOnly={true}
+                            type={"check"}
+                        />
+                    </CheckerWrapper>
+                    <SubjectWrapper maxWidth={windowSize}>
+                        <SubjectItem>
+                            <SubjectName>과목명</SubjectName>
+                            성적
+                            전공여부
                         </SubjectItem>
-                    ))}
-                </SubjectWrapper>
+                        {subjects.map((subject, index) => (
+                            <SubjectItem key={index}>
+                                <TextField
+                                    value={subject.name}
+                                    onChange={(e) => handleSubjectNameChange(index, e.target.value)}
+                                    label="과목명"
+                                    width={"200px"}
+                                    height={"30px"}
+                                />
+                                <div style={{ display: 'flex' }}>
+                                    <Picker
+                                        items={Grades}
+                                        selectedItem={subject.grade}
+                                        onChange={(grade) => handleGradeChange(index, grade)}
+                                        placeholder="성적"
+                                    />
+                                    <Checker
+                                        text=""
+                                        checked={subject.isMajor}
+                                        onChange={(checked) => handleMajorChange(index, checked)}
+                                        type={'box'}
+                                    />
+                                </div>
+                            </SubjectItem>
+                        ))}
+                    </SubjectWrapper>
+                    <AddSubjectWrapper maxWidth={windowSize}>
+                        <Button
+                            label="+ 과목 추가하기"
+                            width="180px"
+                            onClick={handleAddSubject}
+                            color={"#ACB2BB"}
+                            backgroundColor={"#F1F2F4"}
+                            hoverColor={"#ACB2BB"}
+                            hoverBackgroundColor={"#E5E9F2"}
+                        />
+                    </AddSubjectWrapper>
+                </>
+            ) : (
+                <NoSelectionMessage>학기를 선택해주세요!</NoSelectionMessage>
             )}
             <FixedBottomContainer>
                 <Button
@@ -170,7 +243,6 @@ const GradeRegister = () => {
                         hoverBackgroundColor={"#ACB2BB"}
                         width={"130px"}
                     />
-
                     <Button
                         onClick={handleVerifyClick}
                         label={"예"}
@@ -186,39 +258,12 @@ const GradeRegister = () => {
 
 export default GradeRegister;
 
-
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding-top: 100px;
-`;
-
-const Verify = styled.button`
-    width: 60px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: none;
-    border: none;
-    border-radius: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-        background-color: rgba(172, 178, 187, 0.3);
-    }
-
-    &:active {
-        scale: 0.95;
-    }
-
-    font-size: 16px;
-    font-weight: bold;
-    color: #434b60;
-    text-align: center;
 `;
 
 const TermPickerWrapper = styled.div`
@@ -241,35 +286,51 @@ const TermPickerWrapper = styled.div`
 const SubjectWrapper = styled.div`
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    padding: 0 10px;
     box-sizing: border-box;
-    margin-top: 20px;
+    padding: 0 15px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
+    margin-top: 20px;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 `;
 
 const SubjectItem = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: center;
 `;
 
-const SubjectName = styled.div`
-    font-size: 16px;
-    font-weight: 700;
+const SubjectName = styled.span`
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+`;
+
+const AddSubjectWrapper = styled.div`
+    margin-top: 20px;
+`;
+
+const CheckerWrapper = styled.div`
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
 `;
 
 const ButtonWrapper = styled.div`
     display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-    gap: 10px;
+    justify-content: space-between;
+    margin-top: 15px;
+    width: 100%;
 `;
 
-const CheckerWrapper = styled.div`
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    padding: 0 15px;
-    box-sizing: border-box;
+const NoSelectionMessage = styled.div`
+    margin-top: 20px;
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
 `;
