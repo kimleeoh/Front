@@ -130,7 +130,7 @@ const TextFieldWrapper = styled.div`
 
 const StyledLabel = styled.label`
     position: absolute;
-    left: 3%;
+    left: 5%;
     top: ${(props) => (props.hasValue || props.isFocused ? "5px" : "50%")};
     transform: translateY(-40%);
     font-size: ${(props) =>

@@ -220,7 +220,6 @@ const GradeRegister = () => {
             ) : (
                 <NoSelectionMessage>학기를 선택해주세요!</NoSelectionMessage>
             )}
-            <FixedBottomContainer>
                 <Button
                     label="인증"
                     onClick={handleVerifyClick}
@@ -229,7 +228,6 @@ const GradeRegister = () => {
                     hoverBackgroundColor="#0056b3"
                     style={{ marginTop: "20px" }}
                 />
-            </FixedBottomContainer>
 
             <Modal ref={modalRef} width="300px">
                 <span style={{ fontSize: "16px" }}>
@@ -265,6 +263,8 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     padding-top: 100px;
+    padding-bottom: 100px;
+    height: auto;
 `;
 
 const TermPickerWrapper = styled.div`
