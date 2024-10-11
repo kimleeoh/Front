@@ -5,6 +5,7 @@ import SearchField from "../components/Common/SearchField";
 import BaseAxios from "../../axioses/BaseAxios";
 import Questions from "../components/Common/Questions"; // 필요에 따라 import 조정
 import { Spinner } from "../components/Common/Spinner"; // Spinner 임포트 경로 조정
+import useWindowSize from "../components/Common/WindowSize";
 
 const Searching = () => {
     const [posts, setPosts] = useState([]); // 포스트 데이터를 저장할 상태
@@ -24,12 +25,15 @@ const Searching = () => {
         }
     };
 
+    const { width: windowSize } = useWindowSize();
+    const searchFieldWidth = windowSize > 400 ? "300px" : windowSize > 320 ? "95%" : "80%";
+
     return (
         <Wrapper>
             <Header text="" searchButton={false}>
                 <SearchField
                     placeholder="검색어를 입력하세요"
-                    width="300px"
+                    width={searchFieldWidth}
                     onSearch={handleSearch}
                 />
                 <div style={{ padding: "10px" }} />
