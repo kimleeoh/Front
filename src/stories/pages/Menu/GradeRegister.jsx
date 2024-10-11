@@ -189,8 +189,8 @@ const GradeRegister = () => {
                     <SubjectWrapper maxWidth={windowSize}>
                         <SubjectItem>
                             <SubjectName>과목명</SubjectName>
-                            <span style={{margin:'0 0 0 125px'}}>성적</span>
-                            <span style={{margin:'0 5px 0 0'}}>전공</span>
+                            <span style={{ margin: "0 0 0 125px" }}>성적</span>
+                            <span style={{ margin: "0 5px 0 0" }}>전공</span>
                         </SubjectItem>
                         {subjects.map((subject, index) => (
                             <SubjectItem key={index}>
@@ -206,16 +206,21 @@ const GradeRegister = () => {
                                     width={"200px"}
                                     height={"30px"}
                                 />
-                                
-                                    <Picker
-                                        items={Grades}
-                                        selectedItem={subject.grade}
-                                        onChange={(grade) =>
-                                            handleGradeChange(index, grade)
-                                        }
-                                        placeholder="성적"
-                                    />
-                                <div style={{ display: 'flex', transform: 'translateY(-4px)'}}>
+
+                                <Picker
+                                    items={Grades}
+                                    selectedItem={subject.grade}
+                                    onChange={(grade) =>
+                                        handleGradeChange(index, grade)
+                                    }
+                                    placeholder="성적"
+                                />
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        transform: "translateY(-4px)",
+                                    }}
+                                >
                                     <Checker
                                         text=""
                                         checked={subject.isMajor}
@@ -243,14 +248,14 @@ const GradeRegister = () => {
             ) : (
                 <NoSelectionMessage>학기를 선택해주세요!</NoSelectionMessage>
             )}
-                <Button
-                    label="인증"
-                    onClick={handleVerifyClick}
-                    color="#fff"
-                    backgroundColor="#007bff"
-                    hoverBackgroundColor="#0056b3"
-                    style={{ marginTop: "20px" }}
-                />
+            <Button
+                label="인증"
+                onClick={handleVerifyClick}
+                color="#fff"
+                backgroundColor="#007bff"
+                hoverBackgroundColor="#0056b3"
+                style={{ marginTop: "20px" }}
+            />
 
             <Modal ref={modalRef} width="300px">
                 <span style={{ fontSize: "16px" }}>

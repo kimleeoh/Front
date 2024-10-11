@@ -54,7 +54,12 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
                             id: fetchedCategories.sub_category_list_id[index],
                         })
                     );
-                if (fetchedCategories.type == 2 || selectedCategoryId == "66a65c1f3a766b3cd29d4cfc" || selectedCategoryId == "6707a5ac74a03d21860970ce" || selectedCategoryId == "6707a5ac74a03d21860970cd") {
+                if (
+                    fetchedCategories.type == 2 ||
+                    selectedCategoryId == "66a65c1f3a766b3cd29d4cfc" ||
+                    selectedCategoryId == "6707a5ac74a03d21860970ce" ||
+                    selectedCategoryId == "6707a5ac74a03d21860970cd"
+                ) {
                     Promise.all(
                         newBoardOptions.map((option) =>
                             BaseAxios.post("/api/category", {

@@ -26,7 +26,8 @@ const Searching = () => {
     };
 
     const { width: windowSize } = useWindowSize();
-    const searchFieldWidth = windowSize > 400 ? "300px" : windowSize > 320 ? "95%" : "80%";
+    const searchFieldWidth =
+        windowSize > 400 ? "300px" : windowSize > 320 ? "95%" : "80%";
 
     return (
         <Wrapper>

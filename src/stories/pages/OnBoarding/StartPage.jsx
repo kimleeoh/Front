@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import Logo from "./Logo";
 import useWindowSize from "../../components/Common/WindowSize";
+import { Spinner } from "../../components/Common/Spinner";
 
 const StartPage = () => {
     const navigate = useNavigate();
     const { width: windowSize } = useWindowSize();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleLoginClick = () => {
+        setIsLoading(true);
+        navigate("/login");
+    };
 
     return (
         <Wrapper maxWidth={windowSize}>
@@ -23,9 +30,15 @@ const StartPage = () => {
                     label="로그인"
                     backgroundColor="#434B60"
                     hoverBackgroundColor="#5A6480"
-                    onClick={() => navigate("/login")}
+                    onClick={handleLoginClick}
                 />
             </ButtonWrapper>
+            {isLoading && (
+                <div style={{ marginTop: "20px", textAlign: "center" }}>
+                    <Spinner color="#434B60" size={32} />
+                    <LoadingMessage>로그인 페이지로 이동 중</LoadingMessage>
+                </div>
+            )}
         </Wrapper>
     );
 };
@@ -68,4 +81,10 @@ const ButtonWrapper = styled.div`
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     padding: 0 20px;
     box-sizing: border-box;
+`;
+
+const LoadingMessage = styled.p`
+    margin-top: 10px;
+    color: #434b60;
+    font-size: 14px;
 `;
