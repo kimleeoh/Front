@@ -30,6 +30,7 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
     const [canSelect, setCanSelect] = useState(true);
     const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
     const [isFinalCategory, setIsFinalCategory] = useState(false);
+    const [tempType, setTempType] = useState(0); // type을 임의로 2로 설정하기 위함
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -53,7 +54,7 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
                             id: fetchedCategories.sub_category_list_id[index],
                         })
                     );
-                if (fetchedCategories.type == 2) {
+                if (fetchedCategories.type == 2 || selectedCategoryId == "66a65c1f3a766b3cd29d4cfc" || selectedCategoryId == "6707a5ac74a03d21860970ce" || selectedCategoryId == "6707a5ac74a03d21860970cd") {
                     Promise.all(
                         newBoardOptions.map((option) =>
                             BaseAxios.post("/api/category", {
@@ -73,6 +74,7 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
                         setIsFinalCategory(true);
                     });
                 }
+                console.log("selectedCategoryId: ", selectedCategoryId);
                 console.log("response: ", response);
                 setSubCategories(newBoardOptions);
             })
@@ -80,6 +82,7 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
                 console.error(err);
             });
     }, [selectedCategoryId]);
+    console.log("categoryHistoryName: ", categoryHistoryName);
 
     const handleCategorySelect = (categoryId, categoryLabel) => {
         setSelectedCategoryId(categoryId);
@@ -192,7 +195,6 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
                                     !isBottomSheetVisible &&
                                     !isFinalCategory && (
                                         <ListItem
-                                            key={option.id}
                                             onClick={() =>
                                                 handleCategorySelect(
                                                     option.id,
