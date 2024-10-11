@@ -44,7 +44,6 @@ const PostQuestionPage = () => {
             ...formValues,
             time: now,
         };
-
         const { title, board, type, content, purchase_price } = formValues;
         const isFormValid =
             title.trim() !== "" &&
@@ -52,7 +51,6 @@ const PostQuestionPage = () => {
             type.trim() !== "" &&
             content.trim() !== "" &&
             purchase_price.trim() !== "";
-
         if (isFormValid) {
             await BaseAxios.post("/api/tips/create/post", updatedFormValues);
             console.log(updatedFormValues);
