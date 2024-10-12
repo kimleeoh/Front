@@ -165,8 +165,8 @@ const Header = styled.div`
     justify-content: space-between;
     align-items: flex-end;
     flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(3px);
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
     color: #434b60;
     font-size: 24px;
     font-style: normal;

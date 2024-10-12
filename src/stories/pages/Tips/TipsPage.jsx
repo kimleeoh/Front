@@ -111,7 +111,7 @@ const TipsPage = () => {
                         content={tip.content}
                         preview_img={tip.preview_img}
                         likes={tip.likes}
-                        point={tip.point}
+                        point={tip.purchase_price}
                         views={tip.views}
                         time={tip.time}
                     />

@@ -508,6 +508,7 @@ const MyPage = () => {
     const [level, setLevel] = useState(10); // 유저 경험치 (Exp)
     const [tipsCount, setTipsCount] = useState(20); // 작성한 꿀팁 수
     const [replyCount, setReplyCount] = useState(30); // 작성한 답변 수
+    const [hakbu, setHakbu] = useState("컴퓨터공학과"); // 학부
     const [intro, setIntro] = useState("소개기본"); // 유저 소개 (Intro)
     const navigate = useNavigate();
     const { width: windowSize } = useWindowSize();
@@ -524,6 +525,7 @@ const MyPage = () => {
             setLevel(data.level); // Exp 설정
             setTipsCount(data.tipsCount); // 꿀팁 수 설정
             setReplyCount(data.replyCount); // 답변 수 설정
+            setHakbu(data.hakbu); // 학부 설정
             setIntro(data.intro); // 소개(Intro) 설정
         } catch (error) {
             console.error("Error fetching user data:", error);
@@ -575,6 +577,7 @@ const MyPage = () => {
                     </InfoBox>
                 </ProfileInfo>
             </Profile>
+            {hakbu && <Hakbu>{hakbu}</Hakbu>}   
             <Introduction maxWidth={windowSize}>
                 소개
                 <IntroductionBox>{intro}</IntroductionBox>
@@ -984,4 +987,21 @@ const Edit = styled.button`
     font-weight: bold;
     color: #434b60;
     text-align: center;
+`;
+
+const Hakbu = styled.div`
+
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 380px;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    box-sizing: border-box;
+    background: rgba(240, 242, 244, 0.3);
+    backdrop-filter: blur(3px);
+    color: #434b60;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: normal;
+    padding: 5px 0 0 20px;
 `;
