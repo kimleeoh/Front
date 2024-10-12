@@ -15,7 +15,7 @@ const StartPage = () => {
         setIsLoading(true);
         setTimeout(() => {
             navigate("/login"); // Navigate after a delay
-        }, 100);
+        }, 500);
     };
     console.log("isLoading: ", isLoading);
 
