@@ -35,7 +35,6 @@ const Tips = ({
                     </ContentWrapper>
 
                     <MetaContainer>
-                        {/* <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {major} {name} | 조회수 {views} </span> */}
                         <span style={{ color: "#737373" }}>
                             {" "}
                             {getTimeElapsed(time)} | {Ruser.hakbu} {Ruser.name}{" "}
