@@ -132,6 +132,7 @@ const Title = styled.div`
     font-weight: bold;
     margin-bottom: 10px;
     width: 100%;
+    color: #434b60;
 
     overflow: hidden;
     white-space: nowrap;
@@ -142,6 +143,7 @@ const Content = styled.div`
     font-size: 16px;
     font-weight: regular;
     margin-bottom: 10px;
+    color: #434b60;
 
     display: -webkit-box;
     -webkit-line-clamp: 2;

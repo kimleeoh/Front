@@ -49,6 +49,7 @@ const TextWrapper = styled.div`
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
+    color: #434b60;
     margin-bottom: 10px;
     width: 100%;
 
@@ -60,6 +61,7 @@ const Title = styled.div`
 const Content = styled.div`
     font-size: 16px;
     font-weight: regular;
+    color: #434b60;
     margin-bottom: 10px;
 
     display: -webkit-box;
@@ -149,7 +151,7 @@ const Questions = ({
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span style={{ color: "#737373" }}>
+                        <span style={{ color: "#434b60" }}>
                             {getTimeElapsed(time)} | {subject} | 조회수 {views}{" "}
                             | 제한: {getLimitText(limit)}
                         </span>
