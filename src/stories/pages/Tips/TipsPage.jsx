@@ -108,13 +108,8 @@ const TipsPage = () => {
                         _id={index} // 임시 ID, 실제 구현시 적절한 ID 필요
                         title="광고 제목"
                         content="광고 내용"
-                        subject="광고 주제"
-                        time={new Date().toISOString()}
-                        views={0}
-                        like={0}
                         img={null}
-                        limit={0}
-                        point={0}
+                        link="https://example.com/ad-link"
                     />
                 );
             }
@@ -193,5 +188,5 @@ const Content = styled.div`
     font-weight: regular;
     padding: 10px;
     margin-top: 10px;
-    color: #737373;
+    color: #acb2bb;
 `;

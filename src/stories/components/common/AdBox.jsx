@@ -1,27 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import useWindowSize from "./WindowSize";
 
 const OutWrapper = styled.div`
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-
     margin: 0 auto;
     border-bottom: 1px solid #acb2bb;
 `;
 
-const StyledLink = styled(Link)`
+const StyledAnchor = styled.a`
     text-decoration: none;
     color: black;
+    display: block;
 `;
 
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-
     height: 80px;
     padding: 20px 20px;
     border-radius: 20px;
@@ -48,9 +46,9 @@ const TextWrapper = styled.div`
 const Title = styled.div`
     font-size: 20px;
     font-weight: bold;
+    color: #434b60;
     margin-bottom: 10px;
     width: 100%;
-
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -59,22 +57,21 @@ const Title = styled.div`
 const Content = styled.div`
     font-size: 16px;
     font-weight: regular;
+    color: #434b60;
     margin-bottom: 10px;
-
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-
     text-overflow: ellipsis;
     overflow: hidden;
 `;
 
 const MetaContainer = styled.div`
+    color: #434b60;
     display: flex;
     align-items: center;
     align-content: center;
     margin-top: auto;
-
     font-size: 10px;
 `;
 
@@ -99,12 +96,13 @@ const AdBox = ({
     title,
     content,
     img,
+    link
 }) => {
     const { width: windowSize } = useWindowSize();
     
     return (
         <OutWrapper maxWidth={windowSize}>
-            <StyledLink to={`/qna/${_id}`}>
+            <StyledAnchor href={link} target="_blank" rel="noopener noreferrer">
                 <Wrapper>
                     <ContentWrapper>
                         <TextWrapper hasImage={Boolean(img)}>
@@ -114,7 +112,7 @@ const AdBox = ({
 
                         {img && (
                             <ImageContainer>
-                                <Image src={img} />
+                                <Image src={img} alt={title} />
                             </ImageContainer>
                         )}
                     </ContentWrapper>
@@ -123,7 +121,7 @@ const AdBox = ({
                         광고
                     </MetaContainer>
                 </Wrapper>
-            </StyledLink>
+            </StyledAnchor>
         </OutWrapper>
     );
 };
@@ -131,14 +129,16 @@ const AdBox = ({
 export default AdBox;
 
 AdBox.propTypes = {
-    _id: PropTypes.number.isRequired, // id prop을 추가합니다.
+    _id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-    img: PropTypes.array,
+    img: PropTypes.string,
+    link: PropTypes.string.isRequired,
 };
 
 AdBox.defaultProps = {
     title: "제목",
     content: "내용",
     img: null,
+    link: "#",
 };
