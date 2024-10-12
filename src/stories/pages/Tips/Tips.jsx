@@ -36,15 +36,26 @@ const Tips = ({
 
                     <MetaContainer>
                         {/* <span style={{color: '#737373'}}> {getTimeElapsed(time)} | {major} {name} | 조회수 {views} </span> */}
+                        <span style={{ color: "#737373" }}>
+                            {" "}
+                            {getTimeElapsed(time)} | {Ruser.hakbu} {Ruser.name}{" "}
+                            | 조회수 {views}{" "}
+                        </span>
                         <span
                             style={{
                                 marginLeft: "10px",
                                 color: "#3182F7",
                                 fontWeight: "bold",
+                                fontSize: "10px",
+                                transform: "translateY(1px)",
+                                display: "flex",
+                                gap: "2px",
                             }}
                         >
-                            {" "}
-                            {likes}{" "}
+                            <div style={{ transform: "translateY(1px)" }}>
+                                <img src="/Icons/Thumb_c.svg" />
+                            </div>{" "}
+                            {likes}
                         </span>
                         <Point>
                             <img src="/point_white.svg" width={"12px"} /> -{" "}

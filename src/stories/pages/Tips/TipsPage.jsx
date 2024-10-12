@@ -38,7 +38,8 @@ const TipsPage = () => {
             setLoading(true);
             console.log("chips: ", chips);
             try {
-                const filtersArray = chips.length > 0 ? chips : [""];
+                const filtersArray =
+                    chips.length > 0 ? chips : ["test", "pilgy", "honey"];
                 const response = await BaseAxios.post("/api/bulletin/tips", {
                     filters: filtersArray,
                 });
@@ -74,7 +75,9 @@ const TipsPage = () => {
     const handleFilterChange = (activeChips) => {
         setTipsData([]);
         setHasMore(true);
-        setChips(activeChips.length === 0 ? [""] : activeChips);
+        setChips(
+            activeChips.length === 0 ? ["test", "pilgy", "honey"] : activeChips
+        );
     };
     console.log("tipsData: ", tipsData);
 
