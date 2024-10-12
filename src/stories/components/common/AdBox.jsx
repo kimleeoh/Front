@@ -91,15 +91,9 @@ const Image = styled.img`
     border-radius: 8px;
 `;
 
-const AdBox = ({
-    _id,
-    title,
-    content,
-    img,
-    link
-}) => {
+const AdBox = ({ _id, title, content, img, link }) => {
     const { width: windowSize } = useWindowSize();
-    
+
     return (
         <OutWrapper maxWidth={windowSize}>
             <StyledAnchor href={link} target="_blank" rel="noopener noreferrer">
@@ -117,9 +111,7 @@ const AdBox = ({
                         )}
                     </ContentWrapper>
 
-                    <MetaContainer>
-                        광고
-                    </MetaContainer>
+                    <MetaContainer>광고</MetaContainer>
                 </Wrapper>
             </StyledAnchor>
         </OutWrapper>

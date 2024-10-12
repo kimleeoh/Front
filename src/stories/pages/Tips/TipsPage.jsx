@@ -17,6 +17,7 @@ const TipsPage = () => {
     const [hasMore, setHasMore] = useState(true);
     const [chips, setChips] = useState([]);
     const [isEmpty, setIsEmpty] = useState(false);
+    const [message, setMessage] = useState();
     const observer = useRef();
     const { width: windowSize } = useWindowSize();
 
@@ -43,9 +44,17 @@ const TipsPage = () => {
                 const response = await BaseAxios.post("/api/bulletin/tips", {
                     filters: filtersArray,
                 });
+                console.log("response: ", response);
+                console.log("filters: ", chips);
                 const newTips = response.data;
-                if (newTips.length == 0) {
+                if (newTips.message === "uniqueSubjectIds is null or empty") {
                     setIsEmpty(true);
+                    setMessage("uniqueSubjectIds is null or empty");
+                } else if (
+                    newTips.message === "Filtered categorylists are null"
+                ) {
+                    setIsEmpty(true);
+                    setMessage("Filtered categorylists are null");
                 } else {
                     setIsEmpty(false);
                 }
@@ -81,12 +90,18 @@ const TipsPage = () => {
     };
 
     const renderTipsWithAds = () => {
+        if (!Array.isArray(tipsData) || tipsData.length === 0) {
+            return;
+        }
+
         const tipsWithAds = [];
         tipsData.forEach((tip, index) => {
             tipsWithAds.push(
                 <div
                     key={`tip-${tip._id}`}
-                    ref={index === tipsData.length - 1 ? lastTipElementRef : null}
+                    ref={
+                        index === tipsData.length - 1 ? lastTipElementRef : null
+                    }
                     style={{ width: "100%" }}
                 >
                     <Tips
@@ -129,10 +144,7 @@ const TipsPage = () => {
                 searchButton={true}
             />
             <ChipFilterWrapper maxWidth={windowSize}>
-                <ChipFilter
-                    onFilterChange={handleFilterChange}
-                    marginTop={"10px"}
-                />
+                <ChipFilter onFilterChange={handleFilterChange} />
             </ChipFilterWrapper>
             {renderTipsWithAds()}
             {loading && <Spinner color="#434B60" size={32} />}
@@ -140,7 +152,9 @@ const TipsPage = () => {
                 <EmptyBox>
                     <Icon src="/Icons/Alert_gray.svg" />
                     <Content>
-                        board에 과목을 추가하고 관련글들을 받아보세요
+                        {message == "uniqueSubjectIds is null or empty"
+                            ? "board에서 관심있는 과목을 담고 그에 대한 글들을 받아보세요!"
+                            : "아직 관련과목들에 대한 글이 없어요! 글을 작성해주세요!"}
                     </Content>
                 </EmptyBox>
             )}
@@ -186,10 +200,12 @@ const Icon = styled.img`
 const Content = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align-center;
     box-sizing: border-box;
     font-size: 15px;
     font-weight: regular;
-    padding: 10px;
+    padding: 15px;
     margin-top: 10px;
     color: #acb2bb;
 `;
