@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Tips from "./Tips";
+import AdBox from "../../components/Common/AdBox";
 import FixedIcon from "../../components/Common/FixedIcon";
 import NavBar from "../../components/NavBar";
 import FixedBottomContainer from "../../components/FixedBottomContainer";
@@ -36,7 +37,6 @@ const TipsPage = () => {
     const fetchTips = useCallback(
         async (isInitial = false) => {
             setLoading(true);
-            console.log("chips: ", chips);
             try {
                 const filtersArray = chips.length > 0 ? chips : [""];
                 const response = await BaseAxios.post("/api/bulletin/tips", {
@@ -76,7 +76,51 @@ const TipsPage = () => {
         setHasMore(true);
         setChips(activeChips.length === 0 ? [""] : activeChips);
     };
-    console.log("tipsData: ", tipsData);
+
+    const renderTipsWithAds = () => {
+        const tipsWithAds = [];
+        tipsData.forEach((tip, index) => {
+            tipsWithAds.push(
+                <div
+                    key={`tip-${tip._id}`}
+                    ref={index === tipsData.length - 1 ? lastTipElementRef : null}
+                    style={{ width: "100%" }}
+                >
+                    <Tips
+                        _id={tip._id}
+                        Ruser={tip.Ruser}
+                        title={tip.title}
+                        content={tip.content}
+                        preview_img={tip.preview_img}
+                        likes={tip.likes}
+                        point={tip.point}
+                        views={tip.views}
+                        time={tip.time}
+                    />
+                </div>
+            );
+
+            // 매 5번째 팁 이후에 광고 삽입
+            if ((index + 1) % 5 === 0 && index !== tipsData.length - 1) {
+                tipsWithAds.push(
+                    <AdBox
+                        key={`ad-${index}`}
+                        _id={index} // 임시 ID, 실제 구현시 적절한 ID 필요
+                        title="광고 제목"
+                        content="광고 내용"
+                        subject="광고 주제"
+                        time={new Date().toISOString()}
+                        views={0}
+                        like={0}
+                        img={null}
+                        limit={0}
+                        point={0}
+                    />
+                );
+            }
+        });
+        return tipsWithAds;
+    };
 
     return (
         <Wrapper>
@@ -92,26 +136,7 @@ const TipsPage = () => {
                     marginTop={"10px"}
                 />
             </ChipFilterWrapper>
-            {tipsData.map((tip, index) => (
-                <div
-                    ref={
-                        index === tipsData.length - 1 ? lastTipElementRef : null
-                    }
-                    style={{ width: "100%" }}
-                >
-                    <Tips
-                        _id={tip._id}
-                        Ruser={tip.Ruser}
-                        title={tip.title}
-                        content={tip.content}
-                        preview_img={tip.preview_img}
-                        likes={tip.likes}
-                        point={tip.point}
-                        views={tip.views}
-                        time={tip.time}
-                    />
-                </div>
-            ))}
+            {renderTipsWithAds()}
             {loading && <Spinner color="#434B60" size={32} />}
             {isEmpty && (
                 <EmptyBox>
