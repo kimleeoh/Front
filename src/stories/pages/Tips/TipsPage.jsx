@@ -84,15 +84,15 @@ const TipsPage = () => {
     const [TipsData, setTipsData] = useState([]);
 
     useEffect(() => {
-        // Load TipsData from localStorage or initialize it
-        localStorage.removeItem("TipsData");
-        const TipsData = localStorage.getItem("TipsData");
-        if (TipsData) {
-            setTipsData(JSON.parse(TipsData));
-        } else {
-            localStorage.setItem("TipsData", JSON.stringify(initialTipsData));
-            setTipsData(initialTipsData);
-        }
+        // // Load TipsData from localStorage or initialize it
+        // localStorage.removeItem("TipsData");
+        // const TipsData = localStorage.getItem("TipsData");
+        // if (TipsData) {
+        //     setTipsData(JSON.parse(TipsData));
+        // } else {
+        //     localStorage.setItem("TipsData", JSON.stringify(initialTipsData));
+        //     setTipsData(initialTipsData);
+        // }
 
         fetchChips([""]);
     }, []);
@@ -112,6 +112,7 @@ const TipsPage = () => {
             const response = await BaseAxios.post("/api/bulletin/tips", {
                 filters: filtersArray,
             });
+            console.log("response: ", response);
             setTipsData(response.data);
         } catch (error) {
             console.error("Error fetching question data:", error);

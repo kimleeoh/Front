@@ -13,8 +13,11 @@ const StartPage = () => {
 
     const handleLoginClick = () => {
         setIsLoading(true);
-        navigate("/login");
+        setTimeout(() => {
+            navigate("/login"); // Navigate after a delay
+        }, 100);
     };
+    console.log("isLoading: ", isLoading);
 
     return (
         <Wrapper maxWidth={windowSize}>

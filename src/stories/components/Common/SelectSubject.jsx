@@ -34,7 +34,12 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
                             id: fetchedCategories.sub_category_list_id[index],
                         })
                     );
-                if (fetchedCategories.type == 2) {
+                if (
+                    fetchedCategories.type == 2 ||
+                    selectedCategoryId == "66a65c1f3a766b3cd29d4cfc" ||
+                    selectedCategoryId == "6707a5ac74a03d21860970ce" ||
+                    selectedCategoryId == "6707a5ac74a03d21860970cd"
+                ) {
                     Promise.all(
                         newBoardOptions.map((option) =>
                             BaseAxios.post("/api/category", {
@@ -106,7 +111,7 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
         <Wrapper>
             {finalOptions.length === 0
                 ? subCategories.map((option) => (
-                      <ListItemContainer key={option.id}>
+                      <ListItemContainer>
                           <ListItem
                               onClick={() =>
                                   handleCategorySelect(option.id, option.label)
