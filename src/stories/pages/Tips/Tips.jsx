@@ -14,7 +14,7 @@ const Tips = ({
     preview_img,
     target,
     likes,
-    point,
+    purchase_price,
     views,
     time,
 }) => {
@@ -76,7 +76,7 @@ const Tips = ({
                         </span>
                         <Point>
                             <img src="/point_white.svg" width={"12px"} /> -{" "}
-                            {point}
+                            {purchase_price}
                         </Point>
                     </MetaContainer>
                 </Wrapper>

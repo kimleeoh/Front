@@ -112,7 +112,7 @@ const TipsPage = () => {
                         title={tip.title}
                         preview_img={tip.preview_img}
                         likes={tip.likes}
-                        point={tip.purchase_price}
+                        purchase_price={tip.purchase_price}
                         target={tip.target}
                         views={tip.views}
                         time={tip.time}

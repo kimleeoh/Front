@@ -13,58 +13,95 @@ import useWindowSize from "../../components/Common/WindowSize";
 
 const TipsDetail = ({
     _id,
-    name,
-    major,
+    Ruser,
     title,
-    subject,
-    content,
-    time,
-    views,
-    like,
+    category_name,
+    category_type,
     img,
+    content,
+    target,
+    likes,
+    preview_img,
+    purchase_price,
+    views,
+    time,
 }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
     const { width: windowSize } = useWindowSize();
+    const [isPurchased, setIsPurchased] = useState(false);
 
     return (
         <OutWrapper maxWidth={windowSize}>
             <Wrapper>
                 <span style={{ marginBottom: "15px", fontSize: "15px" }}>
-                    {subject}
+                    {category_name} | {category_type}
                 </span>
                 <Title>{title}</Title>
                 <MetaContainer>
                     <span>
                         {" "}
-                        {getTimeElapsed(time)} | {major} {name} | 조회수 {views}{" "}
+                        {getTimeElapsed(time)} | {Ruser.hakbu} {Ruser.name} |
+                        조회수 {views}{" "}
                     </span>
                 </MetaContainer>
-                <Content>{content}</Content>
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "10px",
-                    }}
-                >
-                    {images.length > 0 && (
-                        <ImageContainer>
-                            {/*이미지 하나만 보이게 하기*/}
-                            <Image src={images[0]} />
-                        </ImageContainer>
-                    )}
+                {!isPurchased ? (
+                    <>
+                        <Content>{content}</Content>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "10px",
+                            }}
+                        >
+                            {images.length > 0 && (
+                                <ImageContainer>
+                                    {/*이미지 하나만 보이게 하기*/}
+                                    <Image src={images[0]} />
+                                </ImageContainer>
+                            )}
 
-                    {/* Download section for multiple images */}
-                    <ImageDownloadList images={images} />
+                            {/* Download section for multiple images */}
+                            <ImageDownloadList images={images} />
 
-                    <ToolContainer>
-                        <Votes like={like} />
-                        <div>
-                            {" "}
-                            <Notification /> <Scrap />{" "}
+                            <ToolContainer>
+                                <Votes like={likes} />
+                                <div>
+                                    {" "}
+                                    <Notification /> <Scrap />{" "}
+                                </div>
+                            </ToolContainer>
                         </div>
-                    </ToolContainer>
-                </div>
+                    </>
+                ) : (
+                    <>
+                        <Content>
+                            {target}에게 도움이 돼요. 이 정보를 열람하기 위해{" "}
+                            {purchase_price}p가 차감됩니다. 한 번 열람한 후에는
+                            영구적으로 볼 수 있습니다.
+                        </Content>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "10px",
+                            }}
+                        >
+                            {images.length > 0 && (
+                                <ImageContainer>
+                                    <Image src={preview_img} />
+                                </ImageContainer>
+                            )}
+                            <ToolContainer>
+                                <Votes like={likes} />
+                                <div>
+                                    {" "}
+                                    <Notification /> <Scrap />{" "}
+                                </div>
+                            </ToolContainer>
+                        </div>
+                    </>
+                )}
             </Wrapper>
         </OutWrapper>
     );
