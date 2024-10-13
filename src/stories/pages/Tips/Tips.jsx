@@ -9,14 +9,25 @@ const Tips = ({
     _id,
     Ruser,
     title,
-    content,
+    category_name,
+    category_type,
     preview_img,
+    target,
     likes,
     point,
     views,
     time,
 }) => {
     const { width: windowSize } = useWindowSize();
+    const conversion = (category_type) => {
+        if (category_type == "test") {
+            return "시험정보";
+        } else if (category_type == "pilgy") {
+            return "필기공유";
+        } else {
+            return "수업꿀팁";
+        }
+    };
     return (
         <OutWrapper maxWidth={windowSize}>
             <StyledLink to={`/tips/${_id}`}>
@@ -24,7 +35,14 @@ const Tips = ({
                     <ContentWrapper>
                         <TextWrapper hasImage={Boolean(preview_img)}>
                             <Title>{title}</Title>
-                            <Content>{content}</Content>
+                            <MetaContainer>
+                                <span style={{ color: "#737373" }}>
+                                    {" "}
+                                    {category_name} |{" "}
+                                    {conversion(category_type)}{" "}
+                                </span>
+                            </MetaContainer>
+                            <Content>{target}에게 도움이 돼요.</Content>
                         </TextWrapper>
 
                         {preview_img && (
@@ -150,6 +168,7 @@ const Content = styled.div`
 
     text-overflow: ellipsis;
     overflow: hidden;
+    margin-top: 10px;
 `;
 
 const MetaContainer = styled.div`

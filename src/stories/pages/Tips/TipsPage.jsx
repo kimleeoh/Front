@@ -107,11 +107,13 @@ const TipsPage = () => {
                     <Tips
                         _id={tip._id}
                         Ruser={tip.Ruser}
+                        category_name={tip.category_name}
+                        category_type={tip.category_type}
                         title={tip.title}
-                        content={tip.content}
                         preview_img={tip.preview_img}
                         likes={tip.likes}
                         point={tip.purchase_price}
+                        target={tip.target}
                         views={tip.views}
                         time={tip.time}
                     />

@@ -687,7 +687,6 @@ const MyPageEdit = () => {
         }
     };
 
-
     const { width: windowSize } = useWindowSize();
 
     return (

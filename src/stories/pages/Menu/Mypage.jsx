@@ -577,7 +577,7 @@ const MyPage = () => {
                     </InfoBox>
                 </ProfileInfo>
             </Profile>
-            {hakbu && <Hakbu>{hakbu}</Hakbu>}   
+            {hakbu && <Hakbu>{hakbu}</Hakbu>}
             <Introduction maxWidth={windowSize}>
                 소개
                 <IntroductionBox>{intro}</IntroductionBox>
@@ -990,7 +990,6 @@ const Edit = styled.button`
 `;
 
 const Hakbu = styled.div`
-
     display: flex;
     justify-content: start;
     align-items: center;
