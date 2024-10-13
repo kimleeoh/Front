@@ -11,19 +11,15 @@ const PointInput = ({
     backgroundColor,
     fontSize,
     onChange,
-    point,
     disabled,
 }) => {
     const [content, setContent] = useState("");
     const [isFocused, setIsFocused] = useState(false);
 
     const handleChange = (e) => {
-        const value = e.target.value;
-        if (/^\d*$/.test(value)) {
-            setContent(value);
-            if (onChange) {
-                onChange(value);
-            }
+        setContent(e.target.value);
+        if (onChange) {
+            onChange(e.target.value);
         }
     };
 
@@ -40,37 +36,33 @@ const PointInput = ({
     const { width: windowSize } = useWindowSize();
 
     return (
-        <Wrapper maxWidth={windowSize}>
-            {point !== null ? (
-                <small style={{ marginRight: "auto", marginLeft: "15px" }}>
-                    보유 포인트: {point}p
-                </small>
-            ) : (
-                <small
-                    style={{
-                        marginRight: "auto",
-                        color: "#d00303",
-                        marginLeft: "15px",
-                    }}
-                >
-                    일정한 포인트가 지급됩니다.
-                </small>
-            )}
-
-            <StyledPointInput
-                value={content}
-                onChange={handleChange}
-                placeholder={isFocused ? "" : placeholder}
-                width={width}
-                height={height}
-                fontColor={fontColor}
-                backgroundColor={backgroundColor}
-                fontSize={fontSize}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                disabled={disabled}
-                maxWidth={windowSize}
-            />
+        <Wrapper maxWidth={windowSize} width={width}>
+            <small
+                style={{
+                    marginRight: "auto",
+                    color: "#d00303",
+                    marginLeft: "15px",
+                }}
+            >
+                자세히 적을수록 구매비율이 높아져요
+            </small>
+            <SubWrapper>
+                <StyledPointInput
+                    value={content}
+                    onChange={handleChange}
+                    placeholder={isFocused ? "" : placeholder}
+                    width={width}
+                    height={height}
+                    fontColor={fontColor}
+                    backgroundColor={backgroundColor}
+                    fontSize={fontSize}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    disabled={disabled}
+                    maxWidth={windowSize}
+                />
+                <span style={{ marginLeft: "10px" }}>에게 도움이 돼요</span>
+            </SubWrapper>
         </Wrapper>
     );
 };
@@ -113,10 +105,10 @@ const StyledPointInput = styled.input`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 50%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     height: ${(props) => props.height};
-    padding: 10px 0;
+    padding: 10px;
     border: none;
     border-radius: 20px;
     background-color: ${(props) => props.backgroundColor};
@@ -131,4 +123,12 @@ const StyledPointInput = styled.input`
         color: #434b60;
         font-size: ${(props) => props.fontSize};
     }
+`;
+
+const SubWrapper = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
 `;

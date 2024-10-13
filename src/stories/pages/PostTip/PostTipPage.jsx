@@ -10,6 +10,7 @@ import ChipFilter from "../../components/Common/ChipFilter";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import PointInput from "../PostQuestion/PointInput";
+import TargetInput from "../PostQuestion/TargetInput";
 import { useNavigate } from "react-router-dom";
 
 const PostQuestionPage = () => {
@@ -44,13 +45,15 @@ const PostQuestionPage = () => {
             ...formValues,
             time: now,
         };
-        const { title, board, type, content, purchase_price } = formValues;
+        const { title, board, type, content, purchase_price, target } =
+            formValues;
         const isFormValid =
             title.trim() !== "" &&
             board.length > 0 &&
             type.trim() !== "" &&
             content.trim() !== "" &&
-            purchase_price.trim() !== "";
+            purchase_price.trim() !== "" &&
+            target.trim() !== "";
         if (isFormValid) {
             await BaseAxios.post("/api/tips/create/post", updatedFormValues);
             console.log(updatedFormValues);
@@ -62,7 +65,8 @@ const PostQuestionPage = () => {
     };
 
     const renderValidationMessages = () => {
-        const { title, board, type, content, purchase_price } = formValues;
+        const { title, board, type, content, purchase_price, target } =
+            formValues;
 
         if (title.trim() === "") {
             return (
@@ -84,6 +88,13 @@ const PostQuestionPage = () => {
         }
         if (purchase_price.trim() == "") {
             return <ValidationMessage>가격을 입력해 주세요.</ValidationMessage>;
+        }
+        if (target.trim() == "") {
+            return (
+                <ValidationMessage>
+                    도움이 될 사람을 입력해 주세요.
+                </ValidationMessage>
+            );
         }
 
         return null;
@@ -135,6 +146,9 @@ const PostQuestionPage = () => {
                 onChange={(value) => handleInputChange("purchase_price", value)}
                 placeholder={"판매할 가격을 입력해 주세요."}
             />
+            <TargetInput
+                onChange={(value) => handleInputChange("target", value)}
+            />
             <Button
                 label={"등록하기"}
                 style={{ marginTop: "15px" }}
@@ -163,4 +177,11 @@ const ValidationMessage = styled.div`
     color: #d00303;
     font-size: 12px;
     margin-top: 5px;
+`;
+
+const TargetWrapper = styled.div`
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 10px;
 `;
