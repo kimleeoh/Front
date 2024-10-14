@@ -39,6 +39,7 @@ const MyPage = lazy(() => import("./stories/pages/Menu/Mypage"));
 const MyPageEdit = lazy(() => import("./stories/pages/Menu/MypageEdit"));
 const BadgeDetail = lazy(() => import("./stories/pages/Menu/BadgeDetail"));
 const PointPage = lazy(() => import("./stories/pages/Point/PointPage"));
+const Purchased = lazy(() => import("./stories/pages/Menu/Purchased"));
 const Grades = lazy(() => import("./stories/pages/Menu/Grades"));
 const GradesRegister = lazy(() => import("./stories/pages/Menu/GradeRegister"));
 const MyBoard = lazy(() => import("./stories/pages/Menu/MyBoard"));
@@ -137,6 +138,7 @@ const App = () => {
                         <Route path="/mypage/edit" element={<MyPageEdit />} />
                         <Route path="/badge" element={<BadgeDetail />} />
                         <Route path="/points" element={<PointPage />} />
+                        <Route path="/purchased" element={<Purchased />} />
                         <Route path="/grades" element={<Grades />} />
                         <Route
                             path="/grades/register"
