@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import useWindowSize from "./WindowSize";
@@ -11,14 +11,21 @@ const TextArea = ({
     backgroundColor,
     fontSize,
     onChange,
+    value: externalValue,
+    name, // 추가: name prop 추가
 }) => {
-    const [content, setContent] = useState("");
+    const [content, setContent] = useState(externalValue || "");
     const [isfocused, setisfocused] = useState(false);
 
+    useEffect(() => {
+        setContent(externalValue || "");
+    }, [externalValue]); // 추가: externalValue가 변경될 때마다 상태 업데이트
+
     const handleChange = (e) => {
-        setContent(e.target.value);
+        const newValue = e.target.value;
+        setContent(newValue);
         if (onChange) {
-            onChange(e.target.value);
+            onChange({ target: { name, value: newValue } }); // 변경: TextField와 동일한 형태로 onChange 호출
         }
     };
 
@@ -47,8 +54,32 @@ const TextArea = ({
             onFocus={handleFocus}
             onBlur={handleBlur}
             maxWidth={windowSize}
+            name={name} // 추가: name prop 전달
         />
     );
+};
+
+TextArea.propTypes = {
+    width: PropTypes.string,
+    height: PropTypes.string,
+    placeholder: PropTypes.string,
+    fontColor: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    fontSize: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.string, // 추가: value prop 추가
+    name: PropTypes.string, // 추가: name prop 추가
+};
+
+TextArea.defaultProps = {
+    width: "100%",
+    height: "100px",
+    placeholder: "내용을 입력하세요.",
+    fontColor: "#434B60",
+    backgroundColor: "white",
+    fontSize: "18px",
+    value: "", // 기본값 추가
+    name: "", // 기본값 추가
 };
 
 export default TextArea;
@@ -80,22 +111,3 @@ const StyledTextArea = styled.textarea`
 
     font-family: Arial, sans-serif;
 `;
-
-TextArea.propTypes = {
-    width: PropTypes.string,
-    height: PropTypes.string,
-    placeholder: PropTypes.string,
-    fontColor: PropTypes.string,
-    backgroundColor: PropTypes.string,
-    fontSize: PropTypes.string,
-    onChange: PropTypes.func,
-};
-
-TextArea.defaultProps = {
-    width: "100%",
-    height: "100px",
-    placeholder: "내용을 입력하세요.",
-    fontColor: "#434B60",
-    backgroundColor: "white",
-    fontSize: "18px",
-};
