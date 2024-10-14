@@ -40,7 +40,7 @@ const HomePage = () => {
             <Content maxWidth={maxWidth}>{/* 메인 콘텐츠 */}</Content>
             <Suspense fallback={<div>Loading...</div>}>
                 <FixedBottomContainer>
-                    <NavBar initialState="Home" />
+                    <NavBar initialState="/home" />
                 </FixedBottomContainer>
             </Suspense>
         </Wrapper>

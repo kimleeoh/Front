@@ -15,7 +15,7 @@ const PointInput = ({
     disabled,
 }) => {
     const [content, setContent] = useState("");
-    const [isFocused, setIsFocused] = useState(false);
+    const [isfocused, setisfocused] = useState(false);
 
     const handleChange = (e) => {
         const value = e.target.value;
@@ -28,12 +28,12 @@ const PointInput = ({
     };
 
     const handleFocus = () => {
-        setIsFocused(true);
+        setisfocused(true);
     };
 
     const handleBlur = () => {
         if (!content) {
-            setIsFocused(false);
+            setisfocused(false);
         }
     };
 
@@ -60,7 +60,7 @@ const PointInput = ({
             <StyledPointInput
                 value={content}
                 onChange={handleChange}
-                placeholder={isFocused ? "" : placeholder}
+                placeholder={isfocused ? "" : placeholder}
                 width={width}
                 height={height}
                 fontColor={fontColor}

@@ -14,7 +14,7 @@ const TextField = ({
     name,
 }) => {
     const [inputValue, setInputValue] = useState(externalValue || "");
-    const [isFocused, setIsFocused] = useState(false);
+    const [isfocused, setisfocused] = useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false); // 1. 상태 추가
 
     useEffect(() => {
@@ -48,7 +48,7 @@ const TextField = ({
             <InputWrapper>
                 <StyledLabel
                     hasValue={inputValue !== ""}
-                    isFocused={isFocused}
+                    isfocused={isfocused}
                     disabled={disabled}
                 >
                     {label}
@@ -59,14 +59,14 @@ const TextField = ({
                     } // 2. 타입 변경
                     value={inputValue}
                     onChange={handleChange}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
+                    onFocus={() => setisfocused(true)}
+                    onBlur={() => setisfocused(false)}
                     disabled={disabled}
                     name={name} // name 속성 추가
                 />
                 {inputValue &&
                     !disabled &&
-                    isFocused && // 3. 조건부 렌더링
+                    isfocused && // 3. 조건부 렌더링
                     (type === "password" ? (
                         <ToggleButton
                             onMouseDown={togglePasswordVisibility}
@@ -131,10 +131,10 @@ const TextFieldWrapper = styled.div`
 const StyledLabel = styled.label`
     position: absolute;
     left: 5%;
-    top: ${(props) => (props.hasValue || props.isFocused ? "5px" : "50%")};
+    top: ${(props) => (props.hasValue || props.isfocused ? "5px" : "50%")};
     transform: translateY(-40%);
     font-size: ${(props) =>
-        props.hasValue || props.isFocused ? "12px" : "16px"};
+        props.hasValue || props.isfocused ? "12px" : "16px"};
     color: ${(props) => (props.disabled ? "#acb2bb" : "#434b60")};
     transition: all 0.2s ease;
 `;

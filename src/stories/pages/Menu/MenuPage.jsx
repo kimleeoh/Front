@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -9,25 +9,39 @@ import Modal from "../../components/Common/Modal";
 import Button from "../../components/Button";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
+import { UserContext } from "../../context/UserContext";
 
 const MenuPage = () => {
     const modalRef = useRef();
     const navigate = useNavigate();
-    const handleLogoutClick = () => {
-        modalRef.current.open();
-    };
+    const { userData, fetchUserData } = useContext(UserContext);
 
-    const confirmLogout = () => {
-        // 로그아웃 로직을 여기에 추가합니다.
+    // 최초 마운트 시에만 데이터를 가져옵니다.
+    useEffect(() => {
+        if (!userData) {
+            fetchUserData();
+        }
+    }, []);
+
+    // userData에서 파생되는 값들을 memoize
+    const { name, profile_Img } = useMemo(() => ({
+        name: userData?.name || 'Guest',
+        profile_Img: userData?.profile_Img || "/Profile.svg"
+    }), [userData]);
+
+    const handleLogoutClick = useCallback(() => {
+        modalRef.current.open();
+    }, []);
+
+    const confirmLogout = useCallback(async () => {
         try {
-            BaseAxios.delete("/api/logout");
+            await BaseAxios.delete("/api/logout");
             modalRef.current.close();
             navigate("/");
         } catch (e) {
             console.log(e);
         }
-        // 예를 들어, 로그아웃 API를 호출하거나, 로그인 페이지로 이동
-    };
+    }, [navigate]);
 
     const { width: windowSize } = useWindowSize();
 
@@ -39,16 +53,15 @@ const MenuPage = () => {
                 style={{ textDecoration: "none", width: "100%" }}
             >
                 <MyPage maxWidth={windowSize}>
-                    <Profile>
-                        <img
-                            src="/Profile.svg"
-                            alt="profile"
-                            width="62px"
-                            height="62px"
-                            style={{ borderRadius: "50%" }}
-                        />
-                        Guest
-                    </Profile>
+                <Profile>
+                    <img
+                    src={profile_Img}
+                    alt="프로필"
+                    width="62px"
+                    height="62px"
+                    />
+                    {name}
+                </Profile>
                     <MyPageArrow>
                         마이페이지
                         <svg

@@ -14,7 +14,7 @@ const TextInput = ({
     onChange,
 }) => {
     const [content, setContent] = useState("");
-    const [isFocused, setIsFocused] = useState(false);
+    const [isfocused, setisfocused] = useState(false);
 
     const handleChange = (e) => {
         setContent(e.target.value);
@@ -24,12 +24,12 @@ const TextInput = ({
     };
 
     const handleFocus = () => {
-        setIsFocused(true);
+        setisfocused(true);
     };
 
     const handleBlur = () => {
         if (!content) {
-            setIsFocused(false);
+            setisfocused(false);
         }
     };
 
@@ -39,7 +39,7 @@ const TextInput = ({
         <StyledTextInput
             value={content}
             onChange={handleChange}
-            placeholder={isFocused ? "" : placeholder}
+            placeholder={isfocused ? "" : placeholder}
             width={width}
             height={height}
             fontColor={fontColor}
