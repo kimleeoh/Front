@@ -59,6 +59,28 @@ const Submit = lazy(() => import("./stories/pages/Confirmation/Submit"));
 const Alert = lazy(() => import("./stories/pages/Confirmation/Alert"));
 
 const Error = lazy(() => import("./stories/pages/Error"));
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError(error) {
+        return { hasError: true };
+    }
+
+    componentDidCatch(error, errorInfo) {
+        console.error("Error caught in Error Boundary:", error);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return <h1>Something went wrong.</h1>;
+        }
+
+        return this.props.children; 
+    }
+}
 
 const App = () => {
     const [loading, setLoading] = React.useState(true);
@@ -82,6 +104,7 @@ const App = () => {
     }
 
     return (
+        <ErrorBoundary>
         <UserProvider>
             <Router>
                 {/* Suspense로 컴포넌트를 로드할 때 보여줄 fallback UI */}
@@ -142,6 +165,7 @@ const App = () => {
                 </Suspense>
             </Router>
         </UserProvider>
+        </ErrorBoundary>
     );
 };
 

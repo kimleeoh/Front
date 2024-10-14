@@ -15,12 +15,13 @@ const MyPage = () => {
     const navigate = useNavigate();
     const { width: windowSize } = useWindowSize();
     const userContext = useContext(UserContext);
+    const { userData, fetchUserData, isLoading, error } = useContext(UserContext);
 
     useEffect(() => {
-        if (userContext && !userContext.userData) {
-            userContext.fetchUserData();
+        if (!userData && !isLoading && !error) {
+            fetchUserData();
         }
-    }, [userContext]);
+    }, [userData, isLoading, error, fetchUserData]);
 
 
     const handleTabChange = (tab) => {
@@ -30,8 +31,6 @@ const MyPage = () => {
     if (!userContext) {
         return <div>Loading user context...</div>;
     }
-
-    const { userData, isLoading, error } = userContext;
 
     if (isLoading) return <Loading/>;
     if (error) return <div>Error: {error.message}</div>;

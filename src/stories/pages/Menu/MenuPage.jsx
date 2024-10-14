@@ -14,14 +14,15 @@ import { UserContext } from "../../context/UserContext";
 const MenuPage = () => {
     const modalRef = useRef();
     const navigate = useNavigate();
-    const { userData, fetchUserData } = useContext(UserContext);
+    const { userData, fetchUserData, isLoading, error } = useContext(UserContext);
 
     // 최초 마운트 시에만 데이터를 가져옵니다.
     useEffect(() => {
-        if (!userData) {
+        if (!userData && !isLoading && !error) {
             fetchUserData();
         }
-    }, []);
+    }, [userData, isLoading, error, fetchUserData]);
+
 
     // userData에서 파생되는 값들을 memoize
     const { name, profile_Img } = useMemo(() => ({

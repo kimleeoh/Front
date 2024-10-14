@@ -17,7 +17,7 @@ export const UserProvider = ({ children }) => {
     } catch (error) {
       console.error("Error fetching user data:", error);
       setError(error);
-      if (error.response && error.response.status === 401) {
+      if (error.response && error.response.status === 401) { //에러시 로그아웃 처리
         try {
           await BaseAxios.delete("/api/logout");
           setUserData(null); // 로그아웃 시 사용자 데이터 초기화
@@ -44,7 +44,8 @@ export const UserProvider = ({ children }) => {
     userData,
     isLoading,
     error,
-    refreshUserData,
+    fetchUserData,
+    refreshUserData: fetchUserData,
   };
 
   return (

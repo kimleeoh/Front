@@ -1,39 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-import TabNavigation from "../../components/Common/TabNavigation";
 import { useNavigate } from "react-router-dom";
-import ProgressBar from "../../components/Common/ProgressBar";
-import BoardTitle from "../../components/Common/BoardTitle";
-import SubjectList from "../../components/Common/SubjectList";
+import BaseAxios from "../../../axioses/BaseAxios";
+import Header from "../../components/Header";
+import { UserContext } from "../../context/UserContext";
+import Loading from "../Loading";
 import TextField from "../../components/TextField";
 import TextArea from "../../components/Common/TextArea";
 import useWindowSize from "../../components/Common/WindowSize";
-import BaseAxios from "../../../axioses/BaseAxios";
-import Header from "../../components/Header";
+import TabNavigation from "../../components/Common/TabNavigation";
+import ProgressBar from "../../components/Common/ProgressBar";
+import BoardTitle from "../../components/Common/BoardTitle";
+import SubjectList from "../../components/Common/SubjectList";
 
 const MyPageEdit = () => {
     const [activeTab, setActiveTab] = useState("프로필");
-    const [name, setName] = useState(""); // 유저 이름 상태
-    const [level, setLevel] = useState(10); // 유저 경험치 (Exp)
-    const [tipsCount, setTipsCount] = useState(20); // 작성한 꿀팁 수
-    const [replyCount, setReplyCount] = useState(30); // 작성한 답변 수
-    const [hakbu, setHakbu] = useState(""); // 학부
-    const [intro, setIntro] = useState(""); // 유저 소개 (Intro)
-    const [profileImage, setProfileImage] = useState("/Profile.svg"); // 기본 프로필 이미지
-    const [profileImg, setProfileImg] = useState(""); // 프로필 이미지 URL
-
-    const navigate = useNavigate();
-
     const handleTabChange = (tab) => {
         setActiveTab(tab);
     };
+
+    const { userData, isLoading, error, refreshUserData } = useContext(UserContext);
+    const [name, setName] = useState("");
+    const [intro, setIntro] = useState("");
+    const [profileImg, setProfileImg] = useState("");
+    // const { level, tipsCount, replyCount, hakbu, profile_img } = userData;
+    const navigate = useNavigate();
+    const { width: windowSize } = useWindowSize();
+
+    useEffect(() => {
+        if (userData) {
+            setName(userData.name || "");
+            setIntro(userData.intro || "");
+            setProfileImg(userData.profile_img || "");
+        }
+    }, [userData]);
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
             const imageUrl = URL.createObjectURL(file);
-            setProfileImage(imageUrl); // 이미지 업로드 후 업데이트
-            setProfileImg(imageUrl); // 실제 업로드된 이미지의 URL 설정
+            setProfileImg(imageUrl);
         }
     };
 
@@ -42,15 +48,13 @@ const MyPageEdit = () => {
             const response = await BaseAxios.post("/api/update-profile", {
                 name,
                 intro,
-                profile_img: profileImg, // 서버로 전송할 데이터
+                profile_img: profileImg,
             });
 
             if (response.status === 200) {
                 alert("프로필이 성공적으로 업데이트되었습니다.");
-
-                // 업데이트 후 최신 데이터를 다시 불러오기
-                // await fetchUserData();
-                navigate("/mypage"); // 마이페이지로 이동
+                await refreshUserData();
+                navigate("/mypage");
             } else {
                 alert("프로필 업데이트에 실패했습니다. 다시 시도해주세요.");
             }
@@ -60,27 +64,26 @@ const MyPageEdit = () => {
         }
     };
 
-    const { width: windowSize } = useWindowSize();
+    if (isLoading) return <Loading />;
+    if (error) return <div>Error: {error.message}</div>;
+    if (!userData) return <div>No user data available</div>;
 
     return (
         <Wrapper>
             <Header maxWidth={windowSize} text=''>
-                <Save onClick={handleUpdateProfile}>저장</Save>{" "}
-                {/* 저장 버튼에 프로필 업데이트 기능 연결 */}
+                <Save onClick={handleUpdateProfile}>저장</Save>
             </Header>
             <Profile maxWidth={windowSize}>
                 <ProfileImageWrapper>
                     <img
-                        src={profileImage}
+                        src={profileImg || "/Profile.svg"}
                         alt="프로필"
                         width="100px"
                         height="100px"
                         style={{ borderRadius: "50%" }}
                     />
                     <EditButton
-                        onClick={() =>
-                            document.getElementById("imageUpload").click()
-                        }
+                        onClick={() => document.getElementById("imageUpload").click()}
                     />
                     <HiddenFileInput
                         id="imageUpload"
@@ -90,21 +93,23 @@ const MyPageEdit = () => {
                     />
                 </ProfileImageWrapper>
                 <ProfileInfo>
-                    <TextField
-                        value={name}
-                        width={"85%"}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                    {/* 이름 입력 */}
+                    <div style={{ display: "flex", flexDirection: "row", whiteSpace: "nowrap", alignItems:"center", gap: "4px" }}>
+                        {userData.hakbu}
+                        <TextField
+                            value={name}
+                            width={"85%"}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </div>
                     <InfoBox>
                         <DetailInfo>
-                            작성한 꿀팁<Measurement>20</Measurement>
+                            작성한 꿀팁<Measurement>{userData.tipsCount}</Measurement>
                         </DetailInfo>
                         <DetailInfo>
-                            작성한 답변<Measurement>20</Measurement>
+                            작성한 답변<Measurement>{userData.replyCount}</Measurement>
                         </DetailInfo>
                         <DetailInfo>
-                            명성<Measurement>1000</Measurement>
+                            명성<Measurement>{userData.level}</Measurement>
                         </DetailInfo>
                     </InfoBox>
                 </ProfileInfo>
@@ -117,7 +122,7 @@ const MyPageEdit = () => {
                         backgroundColor={"#e2e5e9"}
                         fontSize={"14px"}
                         value={intro}
-                        onChange={(e) => setIntro(e.target.value)} // 소개 입력
+                        onChange={(e) => setIntro(e.target.value)}
                     />
                 </IntroductionBox>
             </Introduction>
@@ -159,7 +164,7 @@ const MyPageEdit = () => {
                 <Content maxWidth={windowSize}>
                     <Title>명성</Title>
                     <Reputation>
-                        {level} {/* 유저 레벨 */}
+                        level {/* 유저 레벨 */}
                         <ProgressBarContainer>
                             다음 단계까지 700점 남음
                             <ProgressBar
