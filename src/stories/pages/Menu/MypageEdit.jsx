@@ -103,13 +103,13 @@ const MyPageEdit = () => {
                     </div>
                     <InfoBox>
                         <DetailInfo>
-                            작성한 꿀팁<Measurement>{userData.tipsCount}</Measurement>
+                            작성한 팁 수 <Measurement>{userData.tipsCount}</Measurement>
                         </DetailInfo>
                         <DetailInfo>
-                            작성한 답변<Measurement>{userData.replyCount}</Measurement>
+                            작성한 답변 수 <Measurement>{userData.replyCount}</Measurement>
                         </DetailInfo>
                         <DetailInfo>
-                            명성<Measurement>{userData.level}</Measurement>
+                            레벨<Measurement>{userData.level}</Measurement>
                         </DetailInfo>
                     </InfoBox>
                 </ProfileInfo>
