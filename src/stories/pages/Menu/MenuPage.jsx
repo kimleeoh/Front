@@ -41,6 +41,7 @@ const MenuPage = () => {
             navigate("/");
         } catch (e) {
             console.log(e);
+            navigate("/");
         }
     }, [navigate]);
 
