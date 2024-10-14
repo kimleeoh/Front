@@ -127,7 +127,7 @@ const PostQuestionPage = () => {
                 height={"30px"}
                 fontSize={"15px"}
                 placeholder={"제목 입력"}
-                marginTop={"20px"}
+                marginTop={"0"}
                 onChange={(value) => handleInputChange("title", value)}
             />
             <SelectBoard
@@ -187,7 +187,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 100px;
+    margin-top: 120px;
     margin-bottom: 100px;
     width: 100%;
     box-sizing: border-box;

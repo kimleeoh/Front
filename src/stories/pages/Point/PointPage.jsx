@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import useWindowSize from "../../components/Common/WindowSize";
 import Button from "../../components/Button";
+import BaseAxios from "../../../axioses/BaseAxios";
 
 const PointPage = () => {
     const { width: windowSize } = useWindowSize();
+
+    const [originPoint, setOriginPoint] = useState(null);
+
+    useEffect(() => {
+        const fetchPoint = async () => {
+            // Simulate fetching point value
+            const fetchedPoint = await BaseAxios.get("/api/point");
+            setOriginPoint(fetchedPoint.data.point);
+        };
+
+        fetchPoint();
+    }, []);
 
     return (
         <PageContainer>
             <Header text="내 포인트: " searchButton={false} />
             <Content maxWidth={windowSize}>
+                {originPoint}
                 <Title>배너 광고</Title>
                 알림컴포넌트?
             </Content>
@@ -25,7 +39,7 @@ const PageContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 100px;
+    margin-top: 120px;
     margin-bottom: 100px;
     gap: 20px;
     padding: 0 20px;
