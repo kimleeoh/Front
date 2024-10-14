@@ -22,9 +22,8 @@ const PointPage = () => {
 
     return (
         <PageContainer>
-            <Header text="내 포인트: " searchButton={false} />
+            <Header text={`내 포인트: ${originPoint}P`} searchButton={false} />
             <Content maxWidth={windowSize}>
-                {originPoint}
                 <Title>배너 광고</Title>
                 알림컴포넌트?
             </Content>
