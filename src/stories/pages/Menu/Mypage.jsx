@@ -40,7 +40,7 @@ const MyPage = () => {
 
     return (
         <Wrapper>
-            <Header maxWidth={windowSize} text=''> 
+            <Header maxWidth={windowSize} text='' backurl='/menu'> 
                 <Edit onClick={() => navigate("/mypage/edit")}>편집</Edit>
             </Header>
             <Profile maxWidth={windowSize}>

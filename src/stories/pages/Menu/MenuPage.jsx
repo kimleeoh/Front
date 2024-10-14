@@ -93,6 +93,10 @@ const MenuPage = () => {
                     {" "}
                     내 포인트{" "}
                 </MenuList>
+                <MenuList to="/purchased" src={"/icons/purchased.svg"}>
+                    {" "}
+                    내 구입목록{" "}
+                </MenuList>
                 <Title> 게시물 </Title>
                 <MenuList to="/myboard" src={"/icons/pencil.svg"}>
                     {" "}
