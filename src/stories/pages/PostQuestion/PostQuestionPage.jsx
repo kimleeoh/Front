@@ -56,9 +56,9 @@ const PostQuestionPage = () => {
         updatedFormValues.append("time", now);
         updatedFormValues.append("limit", formValues.limit);
         formValues.images.forEach((image, index) => {
-          updatedFormValues.append('images', image);
-      });
-           
+            updatedFormValues.append("images", image);
+        });
+
         console.log("updatedFormValues: ", updatedFormValues);
 
         const { title, board, content, point } = formValues;
@@ -69,13 +69,12 @@ const PostQuestionPage = () => {
             point.trim() !== "";
 
         if (isFormValid) {
-          console.log(updatedFormValues.images);
-            await BaseAxios.post("/api/qna/create/post", updatedFormValues,
-              {
+            console.log(updatedFormValues.images);
+            await BaseAxios.post("/api/qna/create/post", updatedFormValues, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                },}
-            );
+                },
+            });
             alert("작성이 완료되었습니다.");
             navigate("/qna");
         } else {
