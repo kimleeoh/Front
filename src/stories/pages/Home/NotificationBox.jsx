@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import BaseAxios from "../../../axioses/BaseAxios";
 
-// 시간 차이를 계산하는 함수 (현재 시간과 알림 시간의 차이를 계산)
 const timeDifference = (timestamp) => {
     const now = new Date();
-    const timeDiff = Math.floor((now - new Date(timestamp)) / 1000); // 초 단위 차이 계산
+    const timeDiff = Math.floor((now - new Date(timestamp)) / 1000);
 
     if (timeDiff < 60) return `${timeDiff}초 전`;
     if (timeDiff < 3600) return `${Math.floor(timeDiff / 60)}분 전`;
@@ -12,7 +12,6 @@ const timeDifference = (timestamp) => {
     return `${Math.floor(timeDiff / 86400)}일 전`;
 };
 
-// 알림 종류에 따라 내용을 다르게 처리하는 함수
 const getNotificationContent = (type, data) => {
     switch (type) {
         case 1:
@@ -38,7 +37,6 @@ const getNotificationContent = (type, data) => {
     }
 };
 
-// 알림 종류에 따른 이름 반환
 const getNotificationTypeName = (type) => {
     const types = [
         "",
@@ -55,14 +53,25 @@ const getNotificationTypeName = (type) => {
     return types[type] || "알림";
 };
 
-const NotificationBox = ({ type, timestamp, data, url, checked }) => {
+const NotificationBox = ({ _id, type, timestamp, data, url, checked }) => {
     const notificationTime = timeDifference(timestamp);
     const notificationContent = getNotificationContent(type, data);
     const notificationType = getNotificationTypeName(type);
 
-    const handleClick = () => {
+    const handleClick = async () => {
         if (url) {
-            window.location.href = url; // 클릭 시 URL로 이동
+            if (!checked) {
+                try {
+                    // 백엔드로 checked 상태 전송
+                    await BaseAxios.post("/api/notify/check", { notificationId: _id });
+                } catch (error) {
+                    console.error("Failed to update notification status:", error);
+                    // 에러 발생 시 사용자에게 알림 (선택사항)
+                    // alert("알림 상태 업데이트에 실패했습니다.");
+                }
+            }
+            // checked 상태와 관계없이 URL로 이동
+            window.location.href = url;
         }
     };
 
