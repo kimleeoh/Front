@@ -37,19 +37,21 @@ const NotificationPage = () => {
                 ) : notifications.length > 0 ? (
                     <>
                         <AlertMessage>새로운 알림이 있습니다!</AlertMessage>
-                        {notifications.map((notification) => (
-                            <NotificationBox
-                                key={notification._id}
-                                type={notification.types}
-                                timestamp={notification.time}
-                                data={{
-                                    title: notification.Rdoc_title,
-                                    nickname: notification.who_user,
-                                }}
-                                url={`/qna/${notification.Rdoc}`}
-                                checked={false} // You might want to add a 'checked' field to your schema
-                            />
-                        ))}
+                        <NotificationList>
+                            {notifications.map((notification) => (
+                                <NotificationBox
+                                    key={notification._id}
+                                    type={notification.types}
+                                    timestamp={notification.time}
+                                    data={{
+                                        title: notification.Rdoc_title,
+                                        nickname: notification.who_user,
+                                    }}
+                                    url={`/qna/${notification.Rdoc}`}
+                                    checked={false} // You might want to add a 'checked' field to your schema
+                                />
+                            ))}
+                        </NotificationList>
                     </>
                 ) : (
                     <AlertMessage>새로운 알림이 없습니다.</AlertMessage>
@@ -76,4 +78,11 @@ const Content = styled.div`
 const AlertMessage = styled.p`
     font-size: 16px;
     color: #434b60;
+    margin-bottom: 20px;
+`;
+
+const NotificationList = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 `;
