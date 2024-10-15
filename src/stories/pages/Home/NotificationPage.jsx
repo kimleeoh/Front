@@ -40,15 +40,17 @@ const NotificationPage = () => {
                         <NotificationList>
                             {notifications.map((notification) => (
                                 <NotificationBox
-                                    key={notification._id}
+                                    _id={notification._id}
                                     type={notification.types}
                                     timestamp={notification.time}
                                     data={{
                                         title: notification.Rdoc_title,
                                         nickname: notification.who_user,
+                                        badgeName: notification.badge_name,
+                                        totalLikes: notification.total_likes,
                                     }}
-                                    url={`/qna/${notification.Rdoc}`}
-                                    checked={false} // You might want to add a 'checked' field to your schema
+                                    url={notification.Rdoc}
+                                    checked={notification.checked}
                                 />
                             ))}
                         </NotificationList>
