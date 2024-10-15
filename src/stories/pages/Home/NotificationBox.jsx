@@ -4,12 +4,19 @@ import BaseAxios from "../../../axioses/BaseAxios";
 
 const timeDifference = (timestamp) => {
     const now = new Date();
-    const timeDiff = Math.floor((now - new Date(timestamp)) / 1000);
+    const pastDate = new Date(timestamp);
+    const timeDiff = Math.floor((now - pastDate) / 1000);
 
     if (timeDiff < 60) return `${timeDiff}초 전`;
     if (timeDiff < 3600) return `${Math.floor(timeDiff / 60)}분 전`;
     if (timeDiff < 86400) return `${Math.floor(timeDiff / 3600)}시간 전`;
-    return `${Math.floor(timeDiff / 86400)}일 전`;
+    if (timeDiff < 86400 * 60) return `${Math.floor(timeDiff / 86400)}일 전`;
+
+    // 60일 이상 경과한 경우 년도와 월일을 출력
+    const year = pastDate.getFullYear();
+    const month = String(pastDate.getMonth() + 1).padStart(2, "0");
+    const day = String(pastDate.getDate()).padStart(2, "0");
+    return `${year}년 ${month}월 ${day}일`;
 };
 
 const getNotificationContent = (type, data) => {
