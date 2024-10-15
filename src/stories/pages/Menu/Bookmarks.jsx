@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Questions from "../../components/Common/Questions";
@@ -11,20 +10,18 @@ import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 
 const Bookmarks = () => {
-    const { subject } = useParams();
     const [questionData, setQuestionData] = useState([]);
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
     const [tipsData, setTipsData] = useState([]);
-    const [filteredTips, setFilteredTips] = useState([]);
     const [activeTab, setActiveTab] = useState("전체");
+    const observerRef = useRef();
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [message, setMessage] = useState();
 
     const tabs = ["전체", "QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
 
     const { width: windowSize } = useWindowSize();
-
-    useEffect(() => {
-        fetchData();
-    }, [activeTab]);
 
     const fetchApi = async (filtersArray) => {
         try {
@@ -33,18 +30,19 @@ const Bookmarks = () => {
                 filters: filtersArray,
             });
             console.log("response:", response);
-            return response.documents; // Return response data
+            return response.data; // Return response data
         } catch (error) {
             console.error("Error in fetchApi:", error);
             throw error;
         }
     };
 
-    const fetchData = async () => {
+    const fetchData = async (filtersArray = null) => {
         try {
             let questionResponse, tipsResponse;
-
-            if (activeTab === "전체") {
+            if (filtersArray) {
+                tipsResponse = await fetchApi(filtersArray);
+            } else if (activeTab === "전체") {
                 [questionResponse, tipsResponse] = await Promise.all([
                     fetchApi(["qna"]),
                     fetchApi(["test", "pilgy", "honey"]),
@@ -55,12 +53,48 @@ const Bookmarks = () => {
                 tipsResponse = await fetchApi(["test", "pilgy", "honey"]);
             }
 
-            if (questionResponse) setQuestionData(questionResponse);
-            if (tipsResponse) setTipsData(tipsResponse);
+            if (questionResponse?.documents.length) {
+                setQuestionData((prev) => [
+                    ...prev,
+                    ...questionResponse.documents,
+                ]);
+                console.log("questionData: ", questionData);
+            }
+            if (tipsResponse?.documents.length) {
+                setTipsData((prev) => [...prev, ...tipsResponse.documents]);
+                console.log("tipsData: ", tipsData);
+            }
         } catch (error) {
             console.error("Error fetching tips data:", error);
         }
     };
+
+    const fetchMore = () => {
+        if (!loading && hasMore) {
+            fetchData();
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [activeTab]);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !loading) {
+                    fetchMore(); // Fetch more data when reaching the bottom
+                }
+            },
+            { threshold: 1.0 }
+        );
+
+        if (observerRef.current) observer.observe(observerRef.current);
+
+        return () => {
+            if (observerRef.current) observer.unobserve(observerRef.current);
+        };
+    }, [fetchData, hasMore, loading]);
 
     const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
@@ -68,6 +102,9 @@ const Bookmarks = () => {
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
+        // 늦게 반영되므로 데이터 뭐가 들었는지 보고 싶으면 아래 두 개 주석 처리
+        setQuestionData([]);
+        setTipsData([]);
     };
 
     const filteredQuestions = isAGradeOnly
@@ -75,14 +112,11 @@ const Bookmarks = () => {
         : questionData;
 
     const handleFilterChange = (activeChips) => {
-        if (activeChips.length === 0) {
-            setFilteredTips(tipsData);
-        } else {
-            const filtered = tipsData.filter((tip) =>
-                activeChips.includes(tip.filter)
-            );
-            setFilteredTips(filtered);
-        }
+        setTipsData([]);
+        setHasMore(true);
+        fetchData(
+            activeChips.length === 0 ? ["test", "pilgy", "honey"] : activeChips
+        );
     };
 
     return (
@@ -100,47 +134,49 @@ const Bookmarks = () => {
             />
             {activeTab === "전체" && (
                 <>
-                    {filteredQuestions
-                        .filter((question) => question.subject === subject)
-                        .map((question) => (
+                    {questionData.map((question) => {
+                        const img = Array.isArray(question.img_list)
+                            ? question.img_list[0]
+                            : question.img_list;
+
+                        const lastCategory =
+                            question.now_category_list[
+                                question.now_category_list.length - 1
+                            ];
+
+                        // 동적으로 키를 가져와서 값 반환
+                        const value =
+                            lastCategory[Object.keys(lastCategory)[0]];
+                        return (
                             <Questions
-                                key={question.id}
-                                id={question.id}
+                                _id={question._id}
                                 title={question.title}
                                 content={question.content}
-                                subject={question.subject}
+                                subject={value}
                                 time={question.time}
                                 views={question.views}
                                 like={question.like}
-                                img={
-                                    Array.isArray(question.img)
-                                        ? question.img[0]
-                                        : question.img
-                                }
-                                limit={question.limit}
+                                img={img}
+                                limit={question.restricted_type}
                             />
-                        ))}
-                    {filteredTips
-                        .filter((tip) => tip.subject === subject)
-                        .map((tip) => (
-                            <Tips
-                                key={tip.id}
-                                id={tip.id}
-                                name={tip.name}
-                                major={tip.major}
-                                subject={tip.subject}
-                                title={tip.title}
-                                content={tip.content}
-                                time={tip.time}
-                                views={tip.views}
-                                like={tip.like}
-                                img={
-                                    Array.isArray(tip.img)
-                                        ? tip.img[0]
-                                        : tip.img
-                                }
-                            />
-                        ))}
+                        );
+                    })}
+                    {tipsData.map((tip) => (
+                        <Tips
+                            _id={tip._id}
+                            Ruser={tip.Ruser}
+                            category_name={tip.category_name}
+                            category_type={tip.category_type}
+                            title={tip.title}
+                            preview_img={tip.preview_img}
+                            likes={tip.likes}
+                            purchase_price={tip.purchase_price}
+                            target={tip.target}
+                            views={tip.views}
+                            time={tip.time}
+                        />
+                    ))}
+                    <div ref={observerRef} />
                 </>
             )}
             {activeTab === "QnA" && (
@@ -151,26 +187,30 @@ const Bookmarks = () => {
                             onChange={handleCheckerChange}
                         />
                     </CheckerWrapper>
-                    {filteredQuestions
-                        .filter((question) => question.subject === subject)
-                        .map((question) => (
+                    {filteredQuestions.map((question) => {
+                        const lastCategory =
+                            question.now_category_list[
+                                question.now_category_list.length - 1
+                            ];
+
+                        // 동적으로 키를 가져와서 값 반환
+                        const value =
+                            lastCategory[Object.keys(lastCategory)[0]];
+                        return (
                             <Questions
-                                key={question.id}
-                                id={question.id}
+                                _id={question._id}
                                 title={question.title}
                                 content={question.content}
-                                subject={question.subject}
+                                subject={value}
                                 time={question.time}
                                 views={question.views}
                                 like={question.like}
-                                img={
-                                    Array.isArray(question.img)
-                                        ? question.img[0]
-                                        : question.img
-                                }
-                                limit={question.limit}
+                                img={question.img_list}
+                                limit={question.restricted_type}
                             />
-                        ))}
+                        );
+                    })}
+                    <div ref={observerRef} />
                 </>
             )}
             {activeTab === "Tips" && (
@@ -181,27 +221,22 @@ const Bookmarks = () => {
                             marginTop={"10px"}
                         />
                     </ChipFilterWrapper>
-                    {filteredTips
-                        .filter((tip) => tip.subject === subject)
-                        .map((tip) => (
-                            <Tips
-                                key={tip.id}
-                                id={tip.id}
-                                name={tip.name}
-                                major={tip.major}
-                                subject={tip.subject}
-                                title={tip.title}
-                                content={tip.content}
-                                time={tip.time}
-                                views={tip.views}
-                                like={tip.like}
-                                img={
-                                    Array.isArray(tip.img)
-                                        ? tip.img[0]
-                                        : tip.img
-                                }
-                            />
-                        ))}
+                    {tipsData.map((tip) => (
+                        <Tips
+                            _id={tip._id}
+                            Ruser={tip.Ruser}
+                            category_name={tip.category_name}
+                            category_type={tip.category_type}
+                            title={tip.title}
+                            preview_img={tip.preview_img}
+                            likes={tip.likes}
+                            purchase_price={tip.purchase_price}
+                            target={tip.target}
+                            views={tip.views}
+                            time={tip.time}
+                        />
+                    ))}
+                    <div ref={observerRef} />
                 </>
             )}
         </Wrapper>

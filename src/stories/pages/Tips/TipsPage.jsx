@@ -98,7 +98,6 @@ const TipsPage = () => {
         tipsData.forEach((tip, index) => {
             tipsWithAds.push(
                 <div
-                    key={`tip-${tip._id}`}
                     ref={
                         index === tipsData.length - 1 ? lastTipElementRef : null
                     }
