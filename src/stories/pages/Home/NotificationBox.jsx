@@ -64,14 +64,15 @@ const NotificationBox = ({ _id, type, timestamp, data, url, checked }) => {
                 try {
                     // 백엔드로 checked 상태 전송
                     await BaseAxios.post("/api/notify/check", { notificationId: _id });
+                    checked=true;
                 } catch (error) {
                     console.error("Failed to update notification status:", error);
                     // 에러 발생 시 사용자에게 알림 (선택사항)
                     // alert("알림 상태 업데이트에 실패했습니다.");
                 }
             }
-            // checked 상태와 관계없이 URL로 이동
-            window.location.href = url;
+            window.location.href = url;// checked 상태와 관계없이 URL로 이동
+            
         }
     };
 

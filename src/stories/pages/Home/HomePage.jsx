@@ -33,6 +33,10 @@ const HomePage = () => {
         fetchPoint();
     }, []);
 
+    if (originPoint === null) {
+        return <div>Loading...</div>; // Or any loading indicator
+    }
+
     return (
         <Wrapper>
             <Header maxWidth={maxWidth}>

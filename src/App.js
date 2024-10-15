@@ -106,7 +106,7 @@ const App = () => {
 
     return (
         <ErrorBoundary>
-            <UserProvider>
+            
                 <Router>
                     {/* Suspense로 컴포넌트를 로드할 때 보여줄 fallback UI */}
                     <Suspense fallback={<Loading />}>
@@ -205,7 +205,7 @@ const App = () => {
                         </Routes>
                     </Suspense>
                 </Router>
-            </UserProvider>
+            
         </ErrorBoundary>
     );
 };

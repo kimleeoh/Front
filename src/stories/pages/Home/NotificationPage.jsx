@@ -23,6 +23,8 @@ const NotificationPage = () => {
         fetchNotifications();
     }, []);
 
+    if(!notifications) {return <div>loading...</div>};
+
     return (
         <PageContainer>
             <Header
@@ -46,7 +48,7 @@ const NotificationPage = () => {
                                     data={{
                                         title: notification.Rdoc_title,
                                         nickname: notification.who_user,
-                                        badgeName: notification.badge_name,
+                                        //badgeName: notification.badge_name,
                                         totalLikes: notification.total_likes,
                                     }}
                                     url={notification.Rdoc}
