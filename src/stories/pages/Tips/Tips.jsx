@@ -36,10 +36,14 @@ const Tips = ({
                         <TextWrapper hasImage={Boolean(preview_img)}>
                             <Title>{title}</Title>
                             <MetaContainer>
-                                <span style={{ color: "#737373" }}>
+                                <span
+                                    style={{
+                                        color: "#ACB2BB",
+                                        fontSize: "10px",
+                                    }}
+                                >
                                     {" "}
-                                    {category_name} |{" "}
-                                    {conversion(category_type)}{" "}
+                                    {Ruser.hakbu} {Ruser.name}{" "}
                                 </span>
                             </MetaContainer>
                             <Content>{target}에게 도움이 돼요.</Content>
@@ -55,8 +59,8 @@ const Tips = ({
                     <MetaContainer>
                         <span style={{ color: "#737373" }}>
                             {" "}
-                            {getTimeElapsed(time)} | {Ruser.hakbu} {Ruser.name}{" "}
-                            | 조회수 {views}{" "}
+                            {getTimeElapsed(time)} | {category_name} |{" "}
+                            {conversion(category_type)} | 조회수 {views}{" "}
                         </span>
                         <span
                             style={{
@@ -159,7 +163,6 @@ const Title = styled.div`
 const Content = styled.div`
     font-size: 16px;
     font-weight: regular;
-    margin-bottom: 10px;
     color: #434b60;
 
     display: -webkit-box;
@@ -176,7 +179,7 @@ const MetaContainer = styled.div`
     align-items: center;
     margin-top: auto;
 
-    font-size: 10px;
+    font-size: 12px;
 `;
 
 const OutWrapper = styled.div`
