@@ -42,9 +42,12 @@ const TipsDetail = ({
                         {" "}
                         {getTimeElapsed(time)} | {Ruser.hakbu} {Ruser.name} |
                         조회수 {views}{" "}
+                        {/* {" "}
+                        {getTimeElapsed(time)} | 학부 이름 |
+                        조회수 {views}{" "} */}
                     </span>
                 </MetaContainer>
-                {!isPurchased ? (
+                {isPurchased == true ? (
                     <>
                         <Content>{content}</Content>
                         <div
@@ -110,29 +113,35 @@ const TipsDetail = ({
 export default TipsDetail;
 
 TipsDetail.propTypes = {
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    major: PropTypes.string.isRequired,
-    subject: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
-    time: PropTypes.string.isRequired,
-    views: PropTypes.number.isRequired,
-    like: PropTypes.number.isRequired,
+    _id: PropTypes.string,
+    Ruser: PropTypes.string,
+    title: PropTypes.string,
+    category_name: PropTypes.string,
+    category_type: PropTypes.string,
     img: PropTypes.arrayOf(PropTypes.string),
+    content: PropTypes.string,
+    target: PropTypes.string,
+    likes: PropTypes.number,
+    preview_img: PropTypes.string,
+    purchase_price: PropTypes.number,
+    views: PropTypes.number,
+    time: PropTypes.string,
 };
 
 TipsDetail.defaultProps = {
-    _id: 0,
-    name: "이름",
-    major: "전공",
+    _id: "id",
+    Ruser: "유저정보",
     title: "제목",
-    subject: "과목",
+    category_name: "과목",
+    category_type: "게시판 종류",
+    img: "/Icons/1607-2.jpg",
     content: "내용",
-    time: 0,
+    target: "타겟",
+    likes: 0,
+    preview_img: "/Icons/1607-2.jpg",
+    purchase_price: 0,
     views: 0,
-    like: 0,
-    img: null,
+    time: "2024-10-11T17:47:00.638Z",
 };
 
 const Wrapper = styled.div`

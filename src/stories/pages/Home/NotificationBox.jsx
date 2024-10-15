@@ -40,7 +40,18 @@ const getNotificationContent = (type, data) => {
 
 // 알림 종류에 따른 이름 반환
 const getNotificationTypeName = (type) => {
-    const types = ["", "수정", "답변", "좋아요", "스크랩", "포인트", "포인트", "포인트", "배지", "신고"];
+    const types = [
+        "",
+        "수정",
+        "답변",
+        "좋아요",
+        "스크랩",
+        "포인트",
+        "포인트",
+        "포인트",
+        "배지",
+        "신고",
+    ];
     return types[type] || "알림";
 };
 

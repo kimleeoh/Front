@@ -19,7 +19,8 @@ const MyPageEdit = () => {
         setActiveTab(tab);
     };
 
-    const { userData, isLoading, error, refreshUserData } = useContext(UserContext);
+    const { userData, isLoading, error, refreshUserData } =
+        useContext(UserContext);
     const [name, setName] = useState("");
     const [intro, setIntro] = useState("");
     const [profileImg, setProfileImg] = useState("");
@@ -70,7 +71,7 @@ const MyPageEdit = () => {
 
     return (
         <Wrapper>
-            <Header maxWidth={windowSize} text=''>
+            <Header maxWidth={windowSize} text="">
                 <Save onClick={handleUpdateProfile}>저장</Save>
             </Header>
             <Profile maxWidth={windowSize}>
@@ -83,7 +84,9 @@ const MyPageEdit = () => {
                         style={{ borderRadius: "50%" }}
                     />
                     <EditButton
-                        onClick={() => document.getElementById("imageUpload").click()}
+                        onClick={() =>
+                            document.getElementById("imageUpload").click()
+                        }
                     />
                     <HiddenFileInput
                         id="imageUpload"
@@ -93,7 +96,15 @@ const MyPageEdit = () => {
                     />
                 </ProfileImageWrapper>
                 <ProfileInfo>
-                    <div style={{ display: "flex", flexDirection: "row", whiteSpace: "nowrap", alignItems:"center", gap: "4px" }}>
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            whiteSpace: "nowrap",
+                            alignItems: "center",
+                            gap: "4px",
+                        }}
+                    >
                         {userData.hakbu}
                         <TextField
                             value={name}
@@ -103,10 +114,12 @@ const MyPageEdit = () => {
                     </div>
                     <InfoBox>
                         <DetailInfo>
-                            작성한 팁 수 <Measurement>{userData.tipsCount}</Measurement>
+                            작성한 팁 수{" "}
+                            <Measurement>{userData.tipsCount}</Measurement>
                         </DetailInfo>
                         <DetailInfo>
-                            작성한 답변 수 <Measurement>{userData.replyCount}</Measurement>
+                            작성한 답변 수{" "}
+                            <Measurement>{userData.replyCount}</Measurement>
                         </DetailInfo>
                         <DetailInfo>
                             레벨<Measurement>{userData.level}</Measurement>
@@ -176,29 +189,137 @@ const MyPageEdit = () => {
                     </Reputation>
                     <div style={{ padding: "0px 20px 20px" }}>
                         <InfoBox>
-                        <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
-                <img src="/Icons/Vote_c.svg" alt="투표" width='35px' height='35px'/>
-                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
-                <div style={{fontSize: '10px', color: '#ACB2BB'}}>받은 투표 수</div>
-                </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "8px",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <img
+                                    src="/Icons/Vote_c.svg"
+                                    alt="투표"
+                                    width="35px"
+                                    height="35px"
+                                />
+                                <div
+                                    style={{
+                                        fontSize: "16px",
+                                        color: "#434B60",
+                                        fontWeight: "700",
+                                    }}
+                                >
+                                    20
+                                </div>
+                                <div
+                                    style={{
+                                        fontSize: "10px",
+                                        color: "#ACB2BB",
+                                    }}
+                                >
+                                    받은 투표 수
+                                </div>
+                            </div>
 
-                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
-                <img src="/Icons/Bookmark_c.svg" alt="스크랩" width='20px' height='28px'/>
-                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
-                <div style={{fontSize: '10px', color: '#ACB2BB'}}>스크랩 수</div>
-                </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "8px",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <img
+                                    src="/Icons/Bookmark_c.svg"
+                                    alt="스크랩"
+                                    width="20px"
+                                    height="28px"
+                                />
+                                <div
+                                    style={{
+                                        fontSize: "16px",
+                                        color: "#434B60",
+                                        fontWeight: "700",
+                                    }}
+                                >
+                                    20
+                                </div>
+                                <div
+                                    style={{
+                                        fontSize: "10px",
+                                        color: "#ACB2BB",
+                                    }}
+                                >
+                                    스크랩 수
+                                </div>
+                            </div>
 
-                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
-                <img src="/Icons/Crown_c.svg" alt="꿀팁" width='40px' height='40px'/>
-                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
-                <div style={{fontSize: '10px', color: '#ACB2BB'}}>채택 수</div>
-                </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "8px",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <img
+                                    src="/Icons/Crown_c.svg"
+                                    alt="꿀팁"
+                                    width="40px"
+                                    height="40px"
+                                />
+                                <div
+                                    style={{
+                                        fontSize: "16px",
+                                        color: "#434B60",
+                                        fontWeight: "700",
+                                    }}
+                                >
+                                    20
+                                </div>
+                                <div
+                                    style={{
+                                        fontSize: "10px",
+                                        color: "#ACB2BB",
+                                    }}
+                                >
+                                    채택 수
+                                </div>
+                            </div>
 
-                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center'}}>
-                <img src="/Icons/Global_c.svg" alt="답변" width='28px' height='28px'/>
-                <div style={{fontSize: '16px', color: '#434B60', fontWeight: '700'}}>20</div>
-                <div style={{fontSize: '10px', color: '#ACB2BB'}}>조회 수</div>
-                </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "8px",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <img
+                                    src="/Icons/Global_c.svg"
+                                    alt="답변"
+                                    width="28px"
+                                    height="28px"
+                                />
+                                <div
+                                    style={{
+                                        fontSize: "16px",
+                                        color: "#434B60",
+                                        fontWeight: "700",
+                                    }}
+                                >
+                                    20
+                                </div>
+                                <div
+                                    style={{
+                                        fontSize: "10px",
+                                        color: "#ACB2BB",
+                                    }}
+                                >
+                                    조회 수
+                                </div>
+                            </div>
                         </InfoBox>
                     </div>
                 </Content>

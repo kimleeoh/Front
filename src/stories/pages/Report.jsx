@@ -20,28 +20,32 @@ const reportReasons = [
 ];
 
 const Report = () => {
-    const [selectedReasons, setSelectedReasons] = useState(new Array(8).fill(false));
+    const [selectedReasons, setSelectedReasons] = useState(
+        new Array(8).fill(false)
+    );
     const [isLoading, setIsLoading] = useState(false);
     const { _id } = useParams();
     const navigate = useNavigate();
     const modalRef = useRef();
 
     const handleReportConfirm = async () => {
-        if (selectedReasons.some(reason => reason)) {
+        if (selectedReasons.some((reason) => reason)) {
             setIsLoading(true);
             try {
-                const response = await BaseAxios.post('/api/warn', {
-                    filters: 'qna', // 또는 적절한 필터 값
+                const response = await BaseAxios.post("/api/warn", {
+                    filters: "qna", // 또는 적절한 필터 값
                     warn_why: selectedReasons,
-                    id: _id
+                    id: _id,
                 });
-                
-                if (response.status === 200) {  
+
+                if (response.status === 200) {
                     alert("신고가 접수되었습니다.");
                     modalRef.current.close();
                     navigate(-1);
                 } else {
-                    alert("신고 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
+                    alert(
+                        "신고 처리 중 오류가 발생했습니다. 다시 시도해 주세요."
+                    );
                 }
             } catch (error) {
                 console.error("신고 처리 중 오류:", error);
@@ -55,7 +59,7 @@ const Report = () => {
     };
 
     const handleReportClick = () => {
-        if (selectedReasons.some(reason => reason)) {
+        if (selectedReasons.some((reason) => reason)) {
             modalRef.current.open();
         } else {
             alert("신고 이유를 선택해주세요.");
@@ -67,7 +71,7 @@ const Report = () => {
     };
 
     const handleCheckerChange = (index) => (isChecked) => {
-        setSelectedReasons(prevReasons => {
+        setSelectedReasons((prevReasons) => {
             const newReasons = [...prevReasons];
             newReasons[index] = isChecked;
             return newReasons;
@@ -102,7 +106,11 @@ const Report = () => {
                         backgroundColor={"#434B60"}
                         hoverBackgroundColor={"#ACB2BB"}
                     />
-                    <Button onClick={handleReportClick} label="신고하기" disabled={isLoading} />
+                    <Button
+                        onClick={handleReportClick}
+                        label="신고하기"
+                        disabled={isLoading}
+                    />
                 </ButtonWrapper>
             </FixedBottomContainer>
             <Modal ref={modalRef} width="300px" height="auto">
@@ -110,9 +118,14 @@ const Report = () => {
                     <h3>신고 확인</h3>
                     <p>다음 사유로 신고하시겠습니까?</p>
                     <ReasonList>
-                        {selectedReasons.map((isSelected, index) => (
-                            isSelected && <ReasonItem key={index}>{reportReasons[index]}</ReasonItem>
-                        ))}
+                        {selectedReasons.map(
+                            (isSelected, index) =>
+                                isSelected && (
+                                    <ReasonItem key={index}>
+                                        {reportReasons[index]}
+                                    </ReasonItem>
+                                )
+                        )}
                     </ReasonList>
                     <ModalButtonWrapper>
                         <Button

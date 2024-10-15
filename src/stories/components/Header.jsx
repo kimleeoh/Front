@@ -5,7 +5,18 @@ import { useNavigate } from "react-router-dom";
 import useWindowSize from "./Common/WindowSize";
 
 const Header = forwardRef(
-    ({ showIcon, text, backButton, searchButton, onClick, children, backurl }, ref) => {
+    (
+        {
+            showIcon,
+            text,
+            backButton,
+            searchButton,
+            onClick,
+            children,
+            backurl,
+        },
+        ref
+    ) => {
         const navigate = useNavigate();
 
         const handleBackClick = (e) => {

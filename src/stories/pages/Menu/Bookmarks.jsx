@@ -8,10 +8,7 @@ import TabNavigation from "../../components/Common/TabNavigation";
 import ChipFilter from "../../components/Common/ChipFilter";
 import Tips from "../Tips/Tips";
 import useWindowSize from "../../components/Common/WindowSize";
-
-const initialQuestionData = [];
-
-const initialTipsData = [];
+import BaseAxios from "../../../axioses/BaseAxios";
 
 const Bookmarks = () => {
     const { subject } = useParams();
@@ -21,22 +18,49 @@ const Bookmarks = () => {
     const [filteredTips, setFilteredTips] = useState([]);
     const [activeTab, setActiveTab] = useState("전체");
 
+    const tabs = ["전체", "QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
+
     const { width: windowSize } = useWindowSize();
 
     useEffect(() => {
-        // 데이터 로딩 로직
-        const loadData = () => {
-            const questionData = localStorage.getItem("questionData");
-            setQuestionData(
-                questionData ? JSON.parse(questionData) : initialQuestionData
-            );
+        fetchData();
+    }, [activeTab]);
 
-            const tipsData = localStorage.getItem("TipsData");
-            setTipsData(tipsData ? JSON.parse(tipsData) : initialTipsData);
-            setFilteredTips(tipsData ? JSON.parse(tipsData) : initialTipsData);
-        };
-        loadData();
-    }, []);
+    const fetchApi = async (filtersArray) => {
+        try {
+            console.log("Sending filters:", filtersArray);
+            const response = await BaseAxios.post("/api/menu/scraplist", {
+                filters: filtersArray,
+            });
+            console.log("response:", response);
+            return response.documents; // Return response data
+        } catch (error) {
+            console.error("Error in fetchApi:", error);
+            throw error;
+        }
+    };
+
+    const fetchData = async () => {
+        try {
+            let questionResponse, tipsResponse;
+
+            if (activeTab === "전체") {
+                [questionResponse, tipsResponse] = await Promise.all([
+                    fetchApi(["qna"]),
+                    fetchApi(["test", "pilgy", "honey"]),
+                ]);
+            } else if (activeTab === "QnA") {
+                questionResponse = await fetchApi(["qna"]);
+            } else {
+                tipsResponse = await fetchApi(["test", "pilgy", "honey"]);
+            }
+
+            if (questionResponse) setQuestionData(questionResponse);
+            if (tipsResponse) setTipsData(tipsResponse);
+        } catch (error) {
+            console.error("Error fetching tips data:", error);
+        }
+    };
 
     const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
@@ -60,8 +84,6 @@ const Bookmarks = () => {
             setFilteredTips(filtered);
         }
     };
-
-    const tabs = ["전체", "QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
 
     return (
         <Wrapper>
@@ -96,6 +118,27 @@ const Bookmarks = () => {
                                         : question.img
                                 }
                                 limit={question.limit}
+                            />
+                        ))}
+                    {filteredTips
+                        .filter((tip) => tip.subject === subject)
+                        .map((tip) => (
+                            <Tips
+                                key={tip.id}
+                                id={tip.id}
+                                name={tip.name}
+                                major={tip.major}
+                                subject={tip.subject}
+                                title={tip.title}
+                                content={tip.content}
+                                time={tip.time}
+                                views={tip.views}
+                                like={tip.like}
+                                img={
+                                    Array.isArray(tip.img)
+                                        ? tip.img[0]
+                                        : tip.img
+                                }
                             />
                         ))}
                 </>

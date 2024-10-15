@@ -1,4 +1,10 @@
-import React, { useRef, useContext, useEffect, useMemo, useCallback } from "react";
+import React, {
+    useRef,
+    useContext,
+    useEffect,
+    useMemo,
+    useCallback,
+} from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -14,7 +20,8 @@ import { UserContext } from "../../context/UserContext";
 const MenuPage = () => {
     const modalRef = useRef();
     const navigate = useNavigate();
-    const { userData, fetchUserData, isLoading, error } = useContext(UserContext);
+    const { userData, fetchUserData, isLoading, error } =
+        useContext(UserContext);
 
     // 최초 마운트 시에만 데이터를 가져옵니다.
     useEffect(() => {
@@ -23,12 +30,14 @@ const MenuPage = () => {
         }
     }, [userData, isLoading, error, fetchUserData]);
 
-
     // userData에서 파생되는 값들을 memoize
-    const { name, profile_Img } = useMemo(() => ({
-        name: userData?.name || 'Guest',
-        profile_Img: userData?.profile_Img || "/Profile.svg"
-    }), [userData]);
+    const { name, profile_Img } = useMemo(
+        () => ({
+            name: userData?.name || "Guest",
+            profile_Img: userData?.profile_Img || "/Profile.svg",
+        }),
+        [userData]
+    );
 
     const handleLogoutClick = useCallback(() => {
         modalRef.current.open();
@@ -55,15 +64,15 @@ const MenuPage = () => {
                 style={{ textDecoration: "none", width: "100%" }}
             >
                 <MyPage maxWidth={windowSize}>
-                <Profile>
-                    <img
-                    src={profile_Img}
-                    alt="프로필"
-                    width="62px"
-                    height="62px"
-                    />
-                    {name}
-                </Profile>
+                    <Profile>
+                        <img
+                            src={profile_Img}
+                            alt="프로필"
+                            width="62px"
+                            height="62px"
+                        />
+                        {name}
+                    </Profile>
                     <MyPageArrow>
                         마이페이지
                         <svg

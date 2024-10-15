@@ -60,6 +60,7 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
                     selectedCategoryId == "6707a5ac74a03d21860970ce" ||
                     selectedCategoryId == "6707a5ac74a03d21860970cd"
                 ) {
+                    console.log("newBoardOptions: ", newBoardOptions);
                     Promise.all(
                         newBoardOptions.map((option) =>
                             BaseAxios.post("/api/category", {

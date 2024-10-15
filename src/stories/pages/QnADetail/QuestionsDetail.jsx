@@ -68,7 +68,7 @@ const QuestionsDetail = ({
                     <MeatballMenu
                         _id={_id}
                         onReportClick={() => onReportClick(_id)}
-                        category='qna'
+                        category="qna"
                     />
                 </TopBar>
                 <Title>

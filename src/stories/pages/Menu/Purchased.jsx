@@ -37,7 +37,6 @@ const History = () => {
         loadData();
     }, []);
 
-
     return (
         <Wrapper>
             <Header
@@ -46,7 +45,6 @@ const History = () => {
                 backButton={true}
                 searchButton={true}
             />
-            
         </Wrapper>
     );
 };
