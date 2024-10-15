@@ -24,7 +24,7 @@ const NotificationPage = () => {
 
         const checkNewNotifications = async () => {
             try {
-                const response = await BaseAxios.get("/api/notify/new");
+                const response = await BaseAxios.get("/api/notify/new", {send:false});
                 setHasNewNotifications(response.data.newNotify);
             } catch (error) {
                 console.error("Failed to check for new notifications:", error);
@@ -50,7 +50,7 @@ const NotificationPage = () => {
                 ) : notifications.length > 0 ? (
                     <>
                     
-                        { !hasNewNotifications && <AlertMessage>새로운 알림이 있습니다!</AlertMessage> }
+                        { hasNewNotifications && <AlertMessage>새로운 알림이 있습니다!</AlertMessage> }
                         <NotificationList>
                             {notifications.map((notification) => ( // 구분선 컨투어 로직 question, tips와 다름
                                 <>

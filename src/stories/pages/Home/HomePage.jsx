@@ -28,8 +28,8 @@ const HomePage = () => {
         };
 
         const checkNotification = async () => {
-            const response = await BaseAxios.get("/api/notify/new");
-            setHasNewNotification(response.data.hasNewNotification); // true or false
+            const response = await BaseAxios.get("/api/notify/new", {send:false});
+            setHasNewNotification(response.data.newNotify); // true or false
         };
 
         fetchPoint();
@@ -147,8 +147,8 @@ const BlueDot = styled.div`
     position: absolute;
     top: 0;
     right: 0;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     background-color: #007bff;
     border-radius: 50%;
 `;
