@@ -17,7 +17,7 @@ const Bookmarks = () => {
     const observerRef = useRef();
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-    const [message, setMessage] = useState();
+    const [isEmpty, setIsEmpty] = useState(false);
 
     const tabs = ["전체", "QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
 
@@ -29,7 +29,12 @@ const Bookmarks = () => {
             const response = await BaseAxios.post("/api/menu/scraplist", {
                 filters: filtersArray,
             });
+            if (response.data.message) {
+                setIsEmpty(true);
+                return;
+            }
             console.log("response:", response);
+            setIsEmpty(false);
             return response.data; // Return response data
         } catch (error) {
             console.error("Error in fetchApi:", error);
@@ -53,14 +58,14 @@ const Bookmarks = () => {
                 tipsResponse = await fetchApi(["test", "pilgy", "honey"]);
             }
 
-            if (questionResponse?.documents.length) {
+            if (!isEmpty && questionResponse?.documents.length) {
                 setQuestionData((prev) => [
                     ...prev,
                     ...questionResponse.documents,
                 ]);
                 console.log("questionData: ", questionData);
             }
-            if (tipsResponse?.documents.length) {
+            if (!isEmpty && tipsResponse?.documents.length) {
                 setTipsData((prev) => [...prev, ...tipsResponse.documents]);
                 console.log("tipsData: ", tipsData);
             }
@@ -83,6 +88,7 @@ const Bookmarks = () => {
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting && hasMore && !loading) {
+                    console.log("fetchMore !");
                     fetchMore(); // Fetch more data when reaching the bottom
                 }
             },
@@ -94,7 +100,7 @@ const Bookmarks = () => {
         return () => {
             if (observerRef.current) observer.unobserve(observerRef.current);
         };
-    }, [fetchData, hasMore, loading]);
+    }, [hasMore, loading]);
 
     const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
@@ -176,7 +182,6 @@ const Bookmarks = () => {
                             time={tip.time}
                         />
                     ))}
-                    <div ref={observerRef} />
                 </>
             )}
             {activeTab === "QnA" && (
@@ -210,7 +215,6 @@ const Bookmarks = () => {
                             />
                         );
                     })}
-                    <div ref={observerRef} />
                 </>
             )}
             {activeTab === "Tips" && (
@@ -236,8 +240,18 @@ const Bookmarks = () => {
                             time={tip.time}
                         />
                     ))}
-                    <div ref={observerRef} />
                 </>
+            )}
+            {isEmpty ? (
+                <EmptyBox>
+                    <Icon src="/Icons/Alert_gray.svg" />
+                    <Content>
+                        아직 스크랩한 글이 없어요! 또 보고 싶은 글은 스크랩
+                        해보세요!
+                    </Content>
+                </EmptyBox>
+            ) : (
+                <div ref={observerRef} />
             )}
         </Wrapper>
     );
@@ -267,4 +281,29 @@ const ChipFilterWrapper = styled.div`
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     padding-left: 10px;
     box-sizing: border-box;
+`;
+
+const EmptyBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const Icon = styled.img`
+    width: 70px;
+    height: 70px;
+    margin-top: 120px;
+`;
+
+const Content = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align-center;
+    box-sizing: border-box;
+    font-size: 15px;
+    font-weight: regular;
+    padding: 15px;
+    margin-top: 10px;
+    color: #acb2bb;
 `;
