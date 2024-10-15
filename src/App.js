@@ -1,7 +1,7 @@
 import React, { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Loading from "./stories/pages/Loading"; // 로딩 컴포넌트
-import UserProvider from "./stories/context/UserContext"; // UserProvider 컴포넌트
+import UserProvider, { UserContext } from "./stories/context/UserContext"; // UserProvider 컴포넌트
 import { User } from "lucide-react";
 
 // React.lazy를 이용한 동적 import
@@ -106,7 +106,7 @@ const App = () => {
 
     return (
         <ErrorBoundary>
-            
+            <UserProvider>
                 <Router>
                     {/* Suspense로 컴포넌트를 로드할 때 보여줄 fallback UI */}
                     <Suspense fallback={<Loading />}>
@@ -156,13 +156,14 @@ const App = () => {
                                 element={<UnifiedBoard />}
                             />
                             <Route path="/search" element={<Searching />} />
-
+                            
                             <Route path="/menu" element={<MenuPage />} />
                             <Route path="/mypage" element={<MyPage />} />
                             <Route
                                 path="/mypage/edit"
                                 element={<MyPageEdit />}
                             />
+                            
                             <Route path="/badge" element={<BadgeDetail />} />
                             <Route path="/points" element={<PointPage />} />
                             <Route path="/purchased" element={<Purchased />} />
@@ -205,7 +206,7 @@ const App = () => {
                         </Routes>
                     </Suspense>
                 </Router>
-            
+            </UserProvider> 
         </ErrorBoundary>
     );
 };
