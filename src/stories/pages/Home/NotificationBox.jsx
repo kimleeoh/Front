@@ -66,7 +66,10 @@ const NotificationBox = ({ _id, type, timestamp, data, url, checked }) => {
                     await BaseAxios.post("/api/notify/check", { notificationId: _id });
                     checked=true;
                 } catch (error) {
-                    console.error("Failed to update notification status:", error);
+                    console.error(
+                        "Failed to update notification status:",
+                        error
+                    );
                     // 에러 발생 시 사용자에게 알림 (선택사항)
                     // alert("알림 상태 업데이트에 실패했습니다.");
                 }

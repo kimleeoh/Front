@@ -9,6 +9,7 @@ export const UserProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     const fetchUserData = useCallback(async () => {
+        console.log("fetchUserData called");  // 이 로그 추가
         setIsLoading(true);
         setError(null);
         try {
@@ -30,16 +31,6 @@ export const UserProvider = ({ children }) => {
             setIsLoading(false);
         }
     }, []);
-
-    // 컴포넌트 마운트 시 한 번만 데이터 가져오기
-    useEffect(() => {
-        fetchUserData();
-    }, []);
-
-    // 수동으로 사용자 데이터를 갱신하는 함수
-    const refreshUserData = () => {
-        fetchUserData();
-    };
 
     const value = {
         userData,
