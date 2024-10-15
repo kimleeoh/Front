@@ -1,8 +1,9 @@
-import React, { Suspense, lazy, useMemo } from "react";
+import React, { Suspense, lazy, useMemo, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../OnBoarding/Logo";
 import useWindowSize from "../../components/Common/WindowSize";
+import BaseAxios from "../../../axioses/BaseAxios";
 
 // Dynamic imports for code splitting
 const NavBar = lazy(() => import("../../components/NavBar"));
@@ -20,6 +21,18 @@ const HomePage = () => {
         [windowSize]
     );
 
+    const [originPoint, setOriginPoint] = useState(null);
+
+    useEffect(() => {
+        const fetchPoint = async () => {
+            // Simulate fetching point value
+            const fetchedPoint = await BaseAxios.get("/api/point");
+            setOriginPoint(fetchedPoint.data.point);
+        };
+
+        fetchPoint();
+    }, []);
+
     return (
         <Wrapper>
             <Header maxWidth={maxWidth}>
@@ -27,7 +40,7 @@ const HomePage = () => {
                     <Logo theme="darkgray" />
                 </div>
                 <PointButton onClick={() => navigate("/points")}>
-                    내 포인트: 3500P
+                    내 포인트: {originPoint}P
                 </PointButton>
                 <NotificationButton onClick={() => navigate("/notification")}>
                     <img
@@ -40,7 +53,7 @@ const HomePage = () => {
             <Content maxWidth={maxWidth}>{/* 메인 콘텐츠 */}</Content>
             <Suspense fallback={<div>Loading...</div>}>
                 <FixedBottomContainer>
-                    <NavBar initialState="Home" />
+                    <NavBar initialState="/home" />
                 </FixedBottomContainer>
             </Suspense>
         </Wrapper>

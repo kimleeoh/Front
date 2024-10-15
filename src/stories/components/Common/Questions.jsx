@@ -100,17 +100,16 @@ const Image = styled.img`
 const Point = styled.div`
     background: #78adf9;
     color: white;
-    font-size: 9px;
-    width: ${(props) =>
-        `${20 + String(props.point).length * 2}px`}; /* 자릿수에 따라 width 조정 */
-    height: 12px;
-    padding: 3px;
-    border-radius: 10px;
+    font-size: 11px;
+    min-width: 25px; /* 최소 너비 설정 */
+    height: 16px;
+    padding: 4px 4px;
+    border-radius: 14px;
+    display: inline-flex;
     align-items: center;
-    align-content: center;
+    justify-content: center;
     margin-left: auto;
     white-space: nowrap;
-    display: flex;
     gap: 3px;
 `;
 
@@ -172,7 +171,7 @@ const Questions = ({
                             {like}
                         </span>
                         <Point>
-                            <img src="/point_white.svg" width={"12px"} /> +{" "}
+                            <img src="/point_white.svg" width={"16px"} /> +{" "}
                             {point}
                         </Point>
                     </MetaContainer>

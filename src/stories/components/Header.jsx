@@ -5,13 +5,26 @@ import { useNavigate } from "react-router-dom";
 import useWindowSize from "./Common/WindowSize";
 
 const Header = forwardRef(
-    ({ showIcon, text, backButton, searchButton, onClick, children }, ref) => {
+    (
+        {
+            showIcon,
+            text,
+            backButton,
+            searchButton,
+            onClick,
+            children,
+            backurl,
+        },
+        ref
+    ) => {
         const navigate = useNavigate();
 
         const handleBackClick = (e) => {
             e.preventDefault();
             if (onClick) {
                 onClick();
+            } else if (backurl) {
+                navigate(backurl);
             } else {
                 navigate(-1);
             }
@@ -63,6 +76,7 @@ Header.propTypes = {
     searchButton: PropTypes.bool.isRequired,
     onClick: PropTypes.func,
     children: PropTypes.node,
+    backurl: PropTypes.string,
 };
 
 Header.defaultProps = {
@@ -70,6 +84,7 @@ Header.defaultProps = {
     text: "Q&A",
     backButton: true,
     searchButton: false,
+    backurl: "",
 };
 
 export default Header;

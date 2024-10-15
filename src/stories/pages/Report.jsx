@@ -6,6 +6,7 @@ import FixedBottomContainer from "../components/FixedBottomContainer";
 import Button from "../components/Button";
 import Checker from "../components/Common/Checker";
 import Modal from "../components/Common/Modal";
+import BaseAxios from "../../axioses/BaseAxios";
 
 const reportReasons = [
     "게시판 성격에 부적합함",
@@ -19,29 +20,46 @@ const reportReasons = [
 ];
 
 const Report = () => {
-    const [selectedReasons, setSelectedReasons] = useState([]);
+    const [selectedReasons, setSelectedReasons] = useState(
+        new Array(8).fill(false)
+    );
+    const [isLoading, setIsLoading] = useState(false);
     const { _id } = useParams();
     const navigate = useNavigate();
     const modalRef = useRef();
 
-    const handleReportConfirm = () => {
-        if (selectedReasons.length > 0) {
-            console.log(
-                "신고 이유:",
-                selectedReasons.map((index) => reportReasons[index])
-            );
-            console.log("신고된 ID:", _id);
-            // 여기에 신고 처리 로직을 추가할 수 있습니다.
-            alert("신고가 접수되었습니다.");
-            modalRef.current.close();
-            navigate(-1); // 이전 페이지로 돌아갑니다.
+    const handleReportConfirm = async () => {
+        if (selectedReasons.some((reason) => reason)) {
+            setIsLoading(true);
+            try {
+                const response = await BaseAxios.post("/api/warn", {
+                    filters: "qna", // 또는 적절한 필터 값
+                    warn_why: selectedReasons,
+                    id: _id,
+                });
+
+                if (response.status === 200) {
+                    alert("신고가 접수되었습니다.");
+                    modalRef.current.close();
+                    navigate(-1);
+                } else {
+                    alert(
+                        "신고 처리 중 오류가 발생했습니다. 다시 시도해 주세요."
+                    );
+                }
+            } catch (error) {
+                console.error("신고 처리 중 오류:", error);
+                alert("신고 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
+            } finally {
+                setIsLoading(false);
+            }
         } else {
             alert("신고 이유를 선택해주세요.");
         }
     };
 
     const handleReportClick = () => {
-        if (selectedReasons.length > 0) {
+        if (selectedReasons.some((reason) => reason)) {
             modalRef.current.open();
         } else {
             alert("신고 이유를 선택해주세요.");
@@ -49,16 +67,14 @@ const Report = () => {
     };
 
     const handleCancel = () => {
-        navigate(-1); // 이전 페이지로 돌아갑니다.
+        navigate(-1);
     };
 
     const handleCheckerChange = (index) => (isChecked) => {
         setSelectedReasons((prevReasons) => {
-            if (isChecked) {
-                return [...prevReasons, index];
-            } else {
-                return prevReasons.filter((i) => i !== index);
-            }
+            const newReasons = [...prevReasons];
+            newReasons[index] = isChecked;
+            return newReasons;
         });
     };
 
@@ -77,7 +93,7 @@ const Report = () => {
                         key={index}
                         text={reason}
                         onChange={handleCheckerChange(index)}
-                        checked={selectedReasons.includes(index)}
+                        checked={selectedReasons[index]}
                         type="box"
                     />
                 ))}
@@ -90,7 +106,11 @@ const Report = () => {
                         backgroundColor={"#434B60"}
                         hoverBackgroundColor={"#ACB2BB"}
                     />
-                    <Button onClick={handleReportClick} label="신고하기" />
+                    <Button
+                        onClick={handleReportClick}
+                        label="신고하기"
+                        disabled={isLoading}
+                    />
                 </ButtonWrapper>
             </FixedBottomContainer>
             <Modal ref={modalRef} width="300px" height="auto">
@@ -98,11 +118,14 @@ const Report = () => {
                     <h3>신고 확인</h3>
                     <p>다음 사유로 신고하시겠습니까?</p>
                     <ReasonList>
-                        {selectedReasons.map((index) => (
-                            <ReasonItem key={index}>
-                                {reportReasons[index]}
-                            </ReasonItem>
-                        ))}
+                        {selectedReasons.map(
+                            (isSelected, index) =>
+                                isSelected && (
+                                    <ReasonItem key={index}>
+                                        {reportReasons[index]}
+                                    </ReasonItem>
+                                )
+                        )}
                     </ReasonList>
                     <ModalButtonWrapper>
                         <Button
@@ -110,12 +133,14 @@ const Report = () => {
                             label="취소"
                             backgroundColor={"#434B60"}
                             hoverBackgroundColor={"#ACB2BB"}
+                            disabled={isLoading}
                         />
                         <Button
                             onClick={handleReportConfirm}
-                            label="신고하기"
+                            label={isLoading ? "처리 중..." : "신고하기"}
                             backgroundColor={"#FF3C3C"}
                             hoverBackgroundColor={"red"}
+                            disabled={isLoading}
                         />
                     </ModalButtonWrapper>
                 </ModalContent>
@@ -125,6 +150,8 @@ const Report = () => {
 };
 
 export default Report;
+
+// 스타일 컴포넌트는 이전과 동일하므로 생략했습니다.
 
 const Wrapper = styled.div`
     display: flex;

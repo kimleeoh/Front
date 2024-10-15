@@ -40,28 +40,19 @@ const getNotificationContent = (type, data) => {
 
 // 알림 종류에 따른 이름 반환
 const getNotificationTypeName = (type) => {
-    switch (type) {
-        case 1:
-            return "수정";
-        case 2:
-            return "답변";
-        case 3:
-            return "좋아요";
-        case 4:
-            return "스크랩";
-        case 5:
-            return "포인트";
-        case 6:
-            return "포인트";
-        case 7:
-            return "포인트";
-        case 8:
-            return "배지";
-        case 9:
-            return "신고";
-        default:
-            return "알림";
-    }
+    const types = [
+        "",
+        "수정",
+        "답변",
+        "좋아요",
+        "스크랩",
+        "포인트",
+        "포인트",
+        "포인트",
+        "배지",
+        "신고",
+    ];
+    return types[type] || "알림";
 };
 
 const NotificationBox = ({ type, timestamp, data, url, checked }) => {
@@ -94,10 +85,10 @@ const Wrapper = styled.div`
     height: auto;
     border-radius: 12px;
     box-sizing: border-box;
-    padding: 7px 21px;
+    padding: 20px 21px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 16px;
     flex-shrink: 0;
     text-align: left;
     color: var(--Palate2_sub1, #434b60);
@@ -118,11 +109,12 @@ const Wrapper = styled.div`
 const Head = styled.div`
     display: flex;
     width: 100%;
+    height: 20px;
     justify-content: space-between;
-    align-items: auto;
+    align-items: center;
     color: var(--Palate2_sub1, #434b60);
     font-family: Inter;
-    font-size: 10px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
@@ -130,7 +122,7 @@ const Head = styled.div`
 
 const Content = styled.div`
     color: var(--Palate2_sub1, #434b60);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     line-height: normal;
 `;

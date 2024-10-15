@@ -97,7 +97,7 @@ const PageContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 100px;
+    margin-top: 120px;
     margin-bottom: 100px;
     gap: 20px;
     padding: 0 20px;

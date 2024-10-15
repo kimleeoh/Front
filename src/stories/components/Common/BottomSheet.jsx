@@ -23,6 +23,7 @@ const BottomSheet = ({ options, onClick, handleGoBack, save }) => {
     const [isDragging, setIsDragging] = useState(false);
     const minHeight = 100;
     const maxHeight = window.innerHeight * 0.8; // 80% of screen height
+    console.log("options: ", options);
 
     const handleTouchStart = (e) => {
         setStartY(e.touches[0].clientY);

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Popup from "../Popup";
 
-const MeatballMenu = ({ _id }) => {
+const MeatballMenu = ({ _id, categories }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const MeatballMenu = ({ _id }) => {
     };
 
     const handleReportClick = () => {
-        navigate(`/report/${_id}`);
+        navigate(`/${categories}/${_id}/report`);
         setIsPopupOpen(false);
     };
 

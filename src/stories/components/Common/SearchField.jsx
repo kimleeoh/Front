@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const SearchField = ({ placeholder, onSearch, width }) => {
     const [query, setQuery] = useState("");
-    const [isFocused, setIsFocused] = useState(false);
+    const [isfocused, setisfocused] = useState(false);
     const inputRef = useRef(null); // input에 대한 ref 생성
 
     const handleInputChange = (e) => {
@@ -27,11 +27,11 @@ const SearchField = ({ placeholder, onSearch, width }) => {
     };
 
     const handleFocus = () => {
-        setIsFocused(true);
+        setisfocused(true);
     };
 
     const handleBlur = () => {
-        setIsFocused(false);
+        setisfocused(false);
     };
 
     return (
@@ -49,7 +49,7 @@ const SearchField = ({ placeholder, onSearch, width }) => {
                 onBlur={handleBlur}
                 placeholder={placeholder || "검색어를 입력하세요"}
             />
-            {query && isFocused && (
+            {query && isfocused && (
                 <ClearButton onMouseDown={clearSearch}>×</ClearButton>
             )}
         </SearchContainer>

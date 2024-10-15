@@ -196,7 +196,7 @@ const EmptyBox = styled.div`
 const Icon = styled.img`
     width: 70px;
     height: 70px;
-    margin-top: 100px;
+    margin-top: 120px;
 `;
 
 const Content = styled.div`
