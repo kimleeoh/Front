@@ -3,11 +3,13 @@ import Header from "../../components/Header";
 import styled from "styled-components";
 import NotificationBox from "./NotificationBox";
 import BaseAxios from "../../../axioses/BaseAxios";
+import { useNavigate } from 'react-router-dom';
 
 const NotificationPage = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [hasNewNotifications, setHasNewNotifications] = useState(false);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -38,6 +40,15 @@ const NotificationPage = () => {
 
     if(!notifications) {return <div>loading...</div>};
 
+    const revertNewHandler = async() => {
+        try {
+            await BaseAxios.get("/api/notify/new", {send:true});
+            navigate(-1);
+        } catch (error) {
+            console.error("Failed to revert new notifications:", error);
+        }
+    };
+
     return (
         <PageContainer>
             <Header
@@ -45,6 +56,7 @@ const NotificationPage = () => {
                 text="알림"
                 backButton={true}
                 searchButton={false}
+                onClick={revertNewHandler}
             />
             <Content>
                 {loading ? (
@@ -64,7 +76,7 @@ const NotificationPage = () => {
                                         title: notification.Rdoc_title,
                                         nickname: notification.who_user,
                                         //badgeName: notification.badge_name,
-                                        totalLikes: notification.total_likes,
+                                        totalLikes: notification.count,
                                     }}
                                     url={notification.Rdoc}
                                     checked={notification.checked}
