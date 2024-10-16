@@ -28,7 +28,7 @@ const Likes = () => {
     const fetchApi = async (filtersArray) => {
         try {
             console.log("Sending filters:", filtersArray);
-            const response = await BaseAxios.post("/api/menu/scraplist", {
+            const response = await BaseAxios.post("/api/menu/likelist", {
                 filters: filtersArray,
             });
             if (response.data.message) {

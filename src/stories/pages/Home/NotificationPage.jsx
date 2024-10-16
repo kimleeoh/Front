@@ -3,14 +3,13 @@ import Header from "../../components/Header";
 import styled from "styled-components";
 import NotificationBox from "./NotificationBox";
 import BaseAxios from "../../../axioses/BaseAxios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const NotificationPage = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [hasNewNotifications, setHasNewNotifications] = useState(false);
     const navigate = useNavigate();
-
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -26,23 +25,26 @@ const NotificationPage = () => {
 
         const checkNewNotifications = async () => {
             try {
-                const response = await BaseAxios.get("/api/notify/new", {send:false});
+                const response = await BaseAxios.get("/api/notify/new", {
+                    send: false,
+                });
                 setHasNewNotifications(response.data.newNotify);
             } catch (error) {
                 console.error("Failed to check for new notifications:", error);
             }
         };
-        
 
         fetchNotifications();
         checkNewNotifications();
     }, []);
 
-    if(!notifications) {return <div>loading...</div>};
+    if (!notifications) {
+        return <div>loading...</div>;
+    }
 
-    const revertNewHandler = async() => {
+    const revertNewHandler = async () => {
         try {
-            await BaseAxios.get("/api/notify/new", {send:true});
+            await BaseAxios.get("/api/notify/new", { send: true });
             navigate(-1);
         } catch (error) {
             console.error("Failed to revert new notifications:", error);
@@ -63,27 +65,32 @@ const NotificationPage = () => {
                     <AlertMessage>알림을 불러오는 중...</AlertMessage>
                 ) : notifications.length > 0 ? (
                     <>
-                    
-                        { hasNewNotifications && <AlertMessage>새로운 알림이 있습니다!</AlertMessage> }
+                        {hasNewNotifications && (
+                            <AlertMessage>새로운 알림이 있습니다!</AlertMessage>
+                        )}
                         <NotificationList>
-                            {notifications.map((notification) => ( // 구분선 컨투어 로직 question, tips와 다름
-                                <>
-                                <NotificationBox
-                                    _id={notification._id}
-                                    type={notification.types}
-                                    timestamp={notification.time}
-                                    data={{
-                                        title: notification.Rdoc_title,
-                                        nickname: notification.who_user,
-                                        //badgeName: notification.badge_name,
-                                        totalLikes: notification.count,
-                                    }}
-                                    url={notification.Rdoc}
-                                    checked={notification.checked}
-                                />
-                                <Contour /> 
-                                </>
-                            ))}
+                            {notifications.map(
+                                (
+                                    notification // 구분선 컨투어 로직 question, tips와 다름
+                                ) => (
+                                    <>
+                                        <NotificationBox
+                                            _id={notification._id}
+                                            type={notification.types}
+                                            timestamp={notification.time}
+                                            data={{
+                                                title: notification.Rdoc_title,
+                                                nickname: notification.who_user,
+                                                //badgeName: notification.badge_name,
+                                                totalLikes: notification.count,
+                                            }}
+                                            url={notification.Rdoc}
+                                            checked={notification.checked}
+                                        />
+                                        <Contour />
+                                    </>
+                                )
+                            )}
                         </NotificationList>
                     </>
                 ) : (

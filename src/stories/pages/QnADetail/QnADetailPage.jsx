@@ -254,7 +254,6 @@ const QnADetailPage = () => {
             />
             {currentQuestion && (
                 <QuestionsDetail
-                    
                     _id={currentQuestion._id}
                     user_main={currentQuestion.user_main}
                     title={currentQuestion.title}
