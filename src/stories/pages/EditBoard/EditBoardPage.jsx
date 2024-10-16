@@ -345,4 +345,6 @@ const ModalHeader = styled.div`
     cursor: pointer;
     color: #434b60;
     font-size: 12px;
+    overflow-x: auto;
+    white-space: nowrap;
 `;
