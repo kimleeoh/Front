@@ -268,6 +268,7 @@ const QnAPage = () => {
                         like={question.like}
                         img={img}
                         limit={question.restricted_type}
+                        user_main={question.user_main}
                     />
                 );
             })}

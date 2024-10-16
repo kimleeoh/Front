@@ -62,7 +62,6 @@ const Content = styled.div`
     font-size: 16px;
     font-weight: regular;
     color: #434b60;
-    margin-bottom: 10px;
 
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -70,6 +69,7 @@ const Content = styled.div`
 
     text-overflow: ellipsis;
     overflow: hidden;
+    margin-top: 10px;
 `;
 
 const MetaContainer = styled.div`
@@ -124,6 +124,7 @@ const Questions = ({
     img,
     limit,
     point,
+    user_main,
 }) => {
     const { width: windowSize } = useWindowSize();
     // const getLimitText = (limit) => {
@@ -144,7 +145,7 @@ const Questions = ({
                     <ContentWrapper>
                         <TextWrapper hasImage={Boolean(img)}>
                             <Title>{title}</Title>
-                            {/* <MetaContainer>
+                            <MetaContainer>
                                 <span
                                     style={{
                                         color: "#ACB2BB",
@@ -152,9 +153,9 @@ const Questions = ({
                                     }}
                                 >
                                     {" "}
-                                    {Ruser.hakbu} {Ruser.name}{" "}
+                                    {user_main}{" "}
                                 </span>
-                            </MetaContainer> */}
+                            </MetaContainer>
                             <Content>{content}</Content>
                         </TextWrapper>
 
@@ -167,8 +168,21 @@ const Questions = ({
 
                     <MetaContainer>
                         <span style={{ color: "#434b60" }}>
-                            {getTimeElapsed(time)} | {subject} | 조회수 {views}{" "}
-                            | 제한: {getLimitText(limit)}
+                            {getTimeElapsed(time)} |{" "}
+                            <span
+                                style={{
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    maxWidth: "80px",
+                                    display: "inline-block",
+                                    verticalAlign: "middle",
+                                    lineHeight: "1",
+                                }}
+                            >
+                                {subject}
+                            </span>{" "}
+                            | 조회수 {views} | 제한: {getLimitText(limit)}
                         </span>
                         <span
                             style={{

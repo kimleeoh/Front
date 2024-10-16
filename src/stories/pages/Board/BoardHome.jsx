@@ -138,6 +138,7 @@ const BoardHome = () => {
                                 <SubjectList
                                     key={bookmark}
                                     subject={bookmark}
+                                    marginLeft={"10px"}
                                     onClick={() => handleSubjectClick(bookmark)}
                                     actions={[]} // Optional actions
                                 />
@@ -152,6 +153,7 @@ const BoardHome = () => {
                                 <SubjectList
                                     key={subject}
                                     subject={subject}
+                                    marginLeft={"10px"}
                                     onClick={() => handleSubjectClick(subject)}
                                     actions={[]} // Optional actions
                                 />

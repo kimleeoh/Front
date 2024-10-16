@@ -168,6 +168,7 @@ const Bookmarks = () => {
                                 like={question.like}
                                 img={img}
                                 limit={question.restricted_type}
+                                user_main={question.user_main}
                             />
                         );
                     })}
@@ -216,6 +217,7 @@ const Bookmarks = () => {
                                 like={question.like}
                                 img={question.img_list}
                                 limit={question.restricted_type}
+                                user_main={question.user_main}
                             />
                         );
                     })}

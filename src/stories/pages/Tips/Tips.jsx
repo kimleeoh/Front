@@ -59,8 +59,22 @@ const Tips = ({
                     <MetaContainer>
                         <span style={{ color: "#737373" }}>
                             {" "}
-                            {getTimeElapsed(time)} | {category_name} |{" "}
-                            {conversion(category_type)} | 조회수 {views}{" "}
+                            {getTimeElapsed(time)} |{" "}
+                            <span
+                                style={{
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    maxWidth: "80px",
+                                    display: "inline-block",
+                                    verticalAlign: "middle",
+                                    lineHeight: "1",
+                                }}
+                            >
+                                {" "}
+                                {category_name}{" "}
+                            </span>{" "}
+                            | {conversion(category_type)} | 조회수 {views}{" "}
                         </span>
                         <span
                             style={{
