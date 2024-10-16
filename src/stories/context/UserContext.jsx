@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     const fetchUserData = useCallback(async () => {
-        console.log("fetchUserData called");  // 이 로그 추가
+        console.log("fetchUserData called"); // 이 로그 추가
         setIsLoading(true);
         setError(null);
         try {

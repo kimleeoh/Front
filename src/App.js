@@ -156,14 +156,14 @@ const App = () => {
                                 element={<UnifiedBoard />}
                             />
                             <Route path="/search" element={<Searching />} />
-                            
+
                             <Route path="/menu" element={<MenuPage />} />
                             <Route path="/mypage" element={<MyPage />} />
                             <Route
                                 path="/mypage/edit"
                                 element={<MyPageEdit />}
                             />
-                            
+
                             <Route path="/badge" element={<BadgeDetail />} />
                             <Route path="/points" element={<PointPage />} />
                             <Route path="/purchased" element={<Purchased />} />
@@ -206,7 +206,7 @@ const App = () => {
                         </Routes>
                     </Suspense>
                 </Router>
-            </UserProvider> 
+            </UserProvider>
         </ErrorBoundary>
     );
 };

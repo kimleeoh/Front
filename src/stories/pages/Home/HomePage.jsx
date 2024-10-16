@@ -28,7 +28,9 @@ const HomePage = () => {
         };
 
         const checkNotification = async () => {
-            const response = await BaseAxios.get("/api/notify/new", {send:false});
+            const response = await BaseAxios.get("/api/notify/new", {
+                send: false,
+            });
             setHasNewNotification(response.data.newNotify); // true or false
         };
 
@@ -55,7 +57,7 @@ const HomePage = () => {
                         alt="Notification"
                         loading="lazy"
                     />
-                    {hasNewNotification && <BlueDot />} 
+                    {hasNewNotification && <BlueDot />}
                     {/* 알림이 있으면 파란 점 표시 */}
                 </NotificationButton>
             </Header>

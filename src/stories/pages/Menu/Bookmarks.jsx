@@ -8,6 +8,7 @@ import ChipFilter from "../../components/Common/ChipFilter";
 import Tips from "../Tips/Tips";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
+import { Spinner } from "../../components/Common/Spinner";
 
 const Bookmarks = () => {
     const [questionData, setQuestionData] = useState([]);
@@ -44,6 +45,7 @@ const Bookmarks = () => {
 
     const fetchData = async (filtersArray = null) => {
         try {
+            setLoading(true);
             let questionResponse, tipsResponse;
             if (filtersArray) {
                 tipsResponse = await fetchApi(filtersArray);
@@ -71,6 +73,8 @@ const Bookmarks = () => {
             }
         } catch (error) {
             console.error("Error fetching tips data:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -242,6 +246,7 @@ const Bookmarks = () => {
                     ))}
                 </>
             )}
+            {loading && <Spinner color="#434B60" size={32} />}
             {isEmpty ? (
                 <EmptyBox>
                     <Icon src="/Icons/Alert_gray.svg" />

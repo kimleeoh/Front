@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../../components/Header";
@@ -8,35 +8,104 @@ import TabNavigation from "../../components/Common/TabNavigation";
 import ChipFilter from "../../components/Common/ChipFilter";
 import Tips from "../Tips/Tips";
 import useWindowSize from "../../components/Common/WindowSize";
-
-const initialQuestionData = [];
-
-const initialTipsData = [];
+import BaseAxios from "../../../axioses/BaseAxios";
+import { Spinner } from "../../components/Common/Spinner";
 
 const Likes = () => {
-    const { subject } = useParams();
     const [questionData, setQuestionData] = useState([]);
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
     const [tipsData, setTipsData] = useState([]);
-    const [filteredTips, setFilteredTips] = useState([]);
     const [activeTab, setActiveTab] = useState("전체");
+    const observerRef = useRef();
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [isEmpty, setIsEmpty] = useState(false);
+
+    const tabs = ["전체", "QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
 
     const { width: windowSize } = useWindowSize();
 
-    useEffect(() => {
-        // 데이터 로딩 로직
-        const loadData = () => {
-            const questionData = localStorage.getItem("questionData");
-            setQuestionData(
-                questionData ? JSON.parse(questionData) : initialQuestionData
-            );
+    const fetchApi = async (filtersArray) => {
+        try {
+            console.log("Sending filters:", filtersArray);
+            const response = await BaseAxios.post("/api/menu/likelist", {
+                filters: filtersArray,
+            });
+            if (response.data.message) {
+                setIsEmpty(true);
+                return;
+            }
+            console.log("response:", response);
+            setIsEmpty(false);
+            return response.data; // Return response data
+        } catch (error) {
+            console.error("Error in fetchApi:", error);
+            throw error;
+        }
+    };
 
-            const tipsData = localStorage.getItem("TipsData");
-            setTipsData(tipsData ? JSON.parse(tipsData) : initialTipsData);
-            setFilteredTips(tipsData ? JSON.parse(tipsData) : initialTipsData);
+    const fetchData = async (filtersArray = null) => {
+        try {
+            setLoading(true);
+            let questionResponse, tipsResponse;
+            if (filtersArray) {
+                tipsResponse = await fetchApi(filtersArray);
+            } else if (activeTab === "전체") {
+                [questionResponse, tipsResponse] = await Promise.all([
+                    fetchApi(["qna"]),
+                    fetchApi(["test", "pilgy", "honey"]),
+                ]);
+            } else if (activeTab === "QnA") {
+                questionResponse = await fetchApi(["qna"]);
+            } else {
+                tipsResponse = await fetchApi(["test", "pilgy", "honey"]);
+            }
+
+            if (!isEmpty && questionResponse?.documents.length) {
+                setQuestionData((prev) => [
+                    ...prev,
+                    ...questionResponse.documents,
+                ]);
+                console.log("questionData: ", questionData);
+            }
+            if (!isEmpty && tipsResponse?.documents.length) {
+                setTipsData((prev) => [...prev, ...tipsResponse.documents]);
+                console.log("tipsData: ", tipsData);
+            }
+        } catch (error) {
+            console.error("Error fetching tips data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchMore = () => {
+        if (!loading && hasMore) {
+            fetchData();
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [activeTab]);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !loading) {
+                    console.log("fetchMore !");
+                    fetchMore(); // Fetch more data when reaching the bottom
+                }
+            },
+            { threshold: 1.0 }
+        );
+
+        if (observerRef.current) observer.observe(observerRef.current);
+
+        return () => {
+            if (observerRef.current) observer.unobserve(observerRef.current);
         };
-        loadData();
-    }, []);
+    }, [hasMore, loading]);
 
     const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
@@ -44,6 +113,9 @@ const Likes = () => {
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
+        // 늦게 반영되므로 데이터 뭐가 들었는지 보고 싶으면 아래 두 개 주석 처리
+        setQuestionData([]);
+        setTipsData([]);
     };
 
     const filteredQuestions = isAGradeOnly
@@ -51,17 +123,12 @@ const Likes = () => {
         : questionData;
 
     const handleFilterChange = (activeChips) => {
-        if (activeChips.length === 0) {
-            setFilteredTips(tipsData);
-        } else {
-            const filtered = tipsData.filter((tip) =>
-                activeChips.includes(tip.filter)
-            );
-            setFilteredTips(filtered);
-        }
+        setTipsData([]);
+        setHasMore(true);
+        fetchData(
+            activeChips.length === 0 ? ["test", "pilgy", "honey"] : activeChips
+        );
     };
-
-    const tabs = ["전체", "QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
 
     return (
         <Wrapper>
@@ -78,26 +145,48 @@ const Likes = () => {
             />
             {activeTab === "전체" && (
                 <>
-                    {filteredQuestions
-                        .filter((question) => question.subject === subject)
-                        .map((question) => (
+                    {questionData.map((question) => {
+                        const img = Array.isArray(question.img_list)
+                            ? question.img_list[0]
+                            : question.img_list;
+
+                        const lastCategory =
+                            question.now_category_list[
+                                question.now_category_list.length - 1
+                            ];
+
+                        // 동적으로 키를 가져와서 값 반환
+                        const value =
+                            lastCategory[Object.keys(lastCategory)[0]];
+                        return (
                             <Questions
-                                key={question.id}
-                                id={question.id}
+                                _id={question._id}
                                 title={question.title}
                                 content={question.content}
-                                subject={question.subject}
+                                subject={value}
                                 time={question.time}
                                 views={question.views}
                                 like={question.like}
-                                img={
-                                    Array.isArray(question.img)
-                                        ? question.img[0]
-                                        : question.img
-                                }
-                                limit={question.limit}
+                                img={img}
+                                limit={question.restricted_type}
                             />
-                        ))}
+                        );
+                    })}
+                    {tipsData.map((tip) => (
+                        <Tips
+                            _id={tip._id}
+                            Ruser={tip.Ruser}
+                            category_name={tip.category_name}
+                            category_type={tip.category_type}
+                            title={tip.title}
+                            preview_img={tip.preview_img}
+                            likes={tip.likes}
+                            purchase_price={tip.purchase_price}
+                            target={tip.target}
+                            views={tip.views}
+                            time={tip.time}
+                        />
+                    ))}
                 </>
             )}
             {activeTab === "QnA" && (
@@ -108,26 +197,29 @@ const Likes = () => {
                             onChange={handleCheckerChange}
                         />
                     </CheckerWrapper>
-                    {filteredQuestions
-                        .filter((question) => question.subject === subject)
-                        .map((question) => (
+                    {filteredQuestions.map((question) => {
+                        const lastCategory =
+                            question.now_category_list[
+                                question.now_category_list.length - 1
+                            ];
+
+                        // 동적으로 키를 가져와서 값 반환
+                        const value =
+                            lastCategory[Object.keys(lastCategory)[0]];
+                        return (
                             <Questions
-                                key={question.id}
-                                id={question.id}
+                                _id={question._id}
                                 title={question.title}
                                 content={question.content}
-                                subject={question.subject}
+                                subject={value}
                                 time={question.time}
                                 views={question.views}
                                 like={question.like}
-                                img={
-                                    Array.isArray(question.img)
-                                        ? question.img[0]
-                                        : question.img
-                                }
-                                limit={question.limit}
+                                img={question.img_list}
+                                limit={question.restricted_type}
                             />
-                        ))}
+                        );
+                    })}
                 </>
             )}
             {activeTab === "Tips" && (
@@ -138,28 +230,34 @@ const Likes = () => {
                             marginTop={"10px"}
                         />
                     </ChipFilterWrapper>
-                    {filteredTips
-                        .filter((tip) => tip.subject === subject)
-                        .map((tip) => (
-                            <Tips
-                                key={tip.id}
-                                id={tip.id}
-                                name={tip.name}
-                                major={tip.major}
-                                subject={tip.subject}
-                                title={tip.title}
-                                content={tip.content}
-                                time={tip.time}
-                                views={tip.views}
-                                like={tip.like}
-                                img={
-                                    Array.isArray(tip.img)
-                                        ? tip.img[0]
-                                        : tip.img
-                                }
-                            />
-                        ))}
+                    {tipsData.map((tip) => (
+                        <Tips
+                            _id={tip._id}
+                            Ruser={tip.Ruser}
+                            category_name={tip.category_name}
+                            category_type={tip.category_type}
+                            title={tip.title}
+                            preview_img={tip.preview_img}
+                            likes={tip.likes}
+                            purchase_price={tip.purchase_price}
+                            target={tip.target}
+                            views={tip.views}
+                            time={tip.time}
+                        />
+                    ))}
                 </>
+            )}
+            {loading && <Spinner color="#434B60" size={32} />}
+            {isEmpty ? (
+                <EmptyBox>
+                    <Icon src="/Icons/Alert_gray.svg" />
+                    <Content>
+                        아직 스크랩한 글이 없어요! 또 보고 싶은 글은 스크랩
+                        해보세요!
+                    </Content>
+                </EmptyBox>
+            ) : (
+                <div ref={observerRef} />
             )}
         </Wrapper>
     );
@@ -189,4 +287,29 @@ const ChipFilterWrapper = styled.div`
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     padding-left: 10px;
     box-sizing: border-box;
+`;
+
+const EmptyBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const Icon = styled.img`
+    width: 70px;
+    height: 70px;
+    margin-top: 120px;
+`;
+
+const Content = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align-center;
+    box-sizing: border-box;
+    font-size: 15px;
+    font-weight: regular;
+    padding: 15px;
+    margin-top: 10px;
+    color: #acb2bb;
 `;

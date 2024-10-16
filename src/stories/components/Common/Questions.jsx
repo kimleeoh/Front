@@ -126,10 +126,15 @@ const Questions = ({
     point,
 }) => {
     const { width: windowSize } = useWindowSize();
+    // const getLimitText = (limit) => {
+    //     if (limit === 0) return "없음";
+    //     if (limit === 1) return "A";
+    //     if (limit === 2) return "B";
+    //     return ""; // 그 외의 값에 대한 처리 (필요에 따라 추가)
+    // };
     const getLimitText = (limit) => {
-        if (limit === 0) return "없음";
-        if (limit === 1) return "A";
-        if (limit === 2) return "B";
+        if (limit === false) return "없음";
+        else return "A등급 제한";
         return ""; // 그 외의 값에 대한 처리 (필요에 따라 추가)
     };
     return (
@@ -139,6 +144,17 @@ const Questions = ({
                     <ContentWrapper>
                         <TextWrapper hasImage={Boolean(img)}>
                             <Title>{title}</Title>
+                            {/* <MetaContainer>
+                                <span
+                                    style={{
+                                        color: "#ACB2BB",
+                                        fontSize: "10px",
+                                    }}
+                                >
+                                    {" "}
+                                    {Ruser.hakbu} {Ruser.name}{" "}
+                                </span>
+                            </MetaContainer> */}
                             <Content>{content}</Content>
                         </TextWrapper>
 
