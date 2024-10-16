@@ -199,7 +199,7 @@ const QnAPage = () => {
 
     useEffect(() => {
         //로컬 스토리지에서 질문 데이터 로드 또는 초기화
-        //BaseAxios
+        //BaseAxios.get()
         //localStorage.removeItem("questionData");
         const questionData = localStorage.getItem("questionData");
         if (questionData) {
