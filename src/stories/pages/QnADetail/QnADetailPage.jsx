@@ -214,6 +214,7 @@ const QnADetailPage = () => {
 
     useEffect(() => {
         // 실제 환경에서는 API 호출로 대체
+        //await BaseAxios.get("/api/questions");
         const storedData = localStorage.getItem("questionData");
         if (storedData) {
             setQuestionData(JSON.parse(storedData));
@@ -253,7 +254,7 @@ const QnADetailPage = () => {
             />
             {currentQuestion && (
                 <QuestionsDetail
-                    key={currentQuestion._id}
+                    
                     _id={currentQuestion._id}
                     user_main={currentQuestion.user_main}
                     title={currentQuestion.title}
@@ -273,7 +274,6 @@ const QnADetailPage = () => {
                 currentQuestion.answer_list &&
                 currentQuestion.answer_list.map((answer) => (
                     <AnswersDetail
-                        key={answer.Ranswer}
                         _id={answer.Ranswer}
                         major={answer.hakbu}
                         name={answer.name}
@@ -288,7 +288,6 @@ const QnADetailPage = () => {
             {currentQuestion &&
                 initialUserData.map((user) => (
                     <UserComment
-                        key={user.id}
                         post_id={currentQuestion._id}
                         name={user.name}
                         level={user.level}

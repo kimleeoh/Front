@@ -5,7 +5,6 @@ import Logo from "../OnBoarding/Logo";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 
-// Dynamic imports for code splitting
 const NavBar = lazy(() => import("../../components/NavBar"));
 const FixedBottomContainer = lazy(
     () => import("../../components/FixedBottomContainer")
@@ -14,24 +13,32 @@ const FixedBottomContainer = lazy(
 const HomePage = () => {
     const navigate = useNavigate();
     const { width: windowSize } = useWindowSize();
-
-    // Memoizing maxWidth to prevent unnecessary recalculations
     const maxWidth = useMemo(
         () => (windowSize > 430 ? "400px" : windowSize),
         [windowSize]
     );
 
     const [originPoint, setOriginPoint] = useState(null);
+    const [hasNewNotification, setHasNewNotification] = useState(false);
 
     useEffect(() => {
         const fetchPoint = async () => {
-            // Simulate fetching point value
             const fetchedPoint = await BaseAxios.get("/api/point");
             setOriginPoint(fetchedPoint.data.point);
         };
 
+        const checkNotification = async () => {
+            const response = await BaseAxios.get("/api/notify/new", {send:false});
+            setHasNewNotification(response.data.newNotify); // true or false
+        };
+
         fetchPoint();
+        checkNotification();
     }, []);
+
+    if (originPoint === null) {
+        return <div>Loading...</div>; // Or any loading indicator
+    }
 
     return (
         <Wrapper>
@@ -46,8 +53,10 @@ const HomePage = () => {
                     <img
                         src="/Icons/Bellnactive.svg"
                         alt="Notification"
-                        loading="lazy" // Lazy loading for image
+                        loading="lazy"
                     />
+                    {hasNewNotification && <BlueDot />} 
+                    {/* 알림이 있으면 파란 점 표시 */}
                 </NotificationButton>
             </Header>
             <Content maxWidth={maxWidth}>{/* 메인 콘텐츠 */}</Content>
@@ -70,7 +79,7 @@ const Wrapper = styled.div`
     background-color: #f0f2f4;
     min-height: 100vh;
     position: relative;
-    padding-top: 88px; /* 헤더 공간만큼 패딩 추가 */
+    padding-top: 88px;
     padding-bottom: 100px;
     box-sizing: border-box;
     width: 100%;
@@ -120,6 +129,7 @@ const NotificationButton = styled.button`
     border: none;
     width: 40px;
     height: 40px;
+    position: relative;
     border-radius: 12px;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -128,13 +138,23 @@ const NotificationButton = styled.button`
         width: 100%;
         height: auto;
         object-fit: contain;
-        loading: lazy; // Lazy loading for notification icon
+        loading: lazy;
     }
 
     &:active {
         transform: scale(0.95);
         background: rgba(0, 0, 0, 0.1);
     }
+`;
+
+const BlueDot = styled.div`
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background-color: #007bff;
+    border-radius: 50%;
 `;
 
 const Content = styled.div`

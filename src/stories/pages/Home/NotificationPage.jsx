@@ -3,10 +3,14 @@ import Header from "../../components/Header";
 import styled from "styled-components";
 import NotificationBox from "./NotificationBox";
 import BaseAxios from "../../../axioses/BaseAxios";
+import { useNavigate } from 'react-router-dom';
 
 const NotificationPage = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [hasNewNotifications, setHasNewNotifications] = useState(false);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -20,8 +24,30 @@ const NotificationPage = () => {
             }
         };
 
+        const checkNewNotifications = async () => {
+            try {
+                const response = await BaseAxios.get("/api/notify/new", {send:false});
+                setHasNewNotifications(response.data.newNotify);
+            } catch (error) {
+                console.error("Failed to check for new notifications:", error);
+            }
+        };
+        
+
         fetchNotifications();
+        checkNewNotifications();
     }, []);
+
+    if(!notifications) {return <div>loading...</div>};
+
+    const revertNewHandler = async() => {
+        try {
+            await BaseAxios.get("/api/notify/new", {send:true});
+            navigate(-1);
+        } catch (error) {
+            console.error("Failed to revert new notifications:", error);
+        }
+    };
 
     return (
         <PageContainer>
@@ -30,15 +56,18 @@ const NotificationPage = () => {
                 text="알림"
                 backButton={true}
                 searchButton={false}
+                onClick={revertNewHandler}
             />
             <Content>
                 {loading ? (
                     <AlertMessage>알림을 불러오는 중...</AlertMessage>
                 ) : notifications.length > 0 ? (
                     <>
-                        <AlertMessage>새로운 알림이 있습니다!</AlertMessage>
+                    
+                        { hasNewNotifications && <AlertMessage>새로운 알림이 있습니다!</AlertMessage> }
                         <NotificationList>
-                            {notifications.map((notification) => (
+                            {notifications.map((notification) => ( // 구분선 컨투어 로직 question, tips와 다름
+                                <>
                                 <NotificationBox
                                     _id={notification._id}
                                     type={notification.types}
@@ -46,12 +75,14 @@ const NotificationPage = () => {
                                     data={{
                                         title: notification.Rdoc_title,
                                         nickname: notification.who_user,
-                                        badgeName: notification.badge_name,
-                                        totalLikes: notification.total_likes,
+                                        //badgeName: notification.badge_name,
+                                        totalLikes: notification.count,
                                     }}
                                     url={notification.Rdoc}
                                     checked={notification.checked}
                                 />
+                                <Contour /> 
+                                </>
                             ))}
                         </NotificationList>
                     </>
@@ -85,6 +116,15 @@ const AlertMessage = styled.p`
 
 const NotificationList = styled.div`
     display: flex;
+    align-items: center;
+
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
+`;
+
+const Contour = styled.div`
+    width: 100%;
+    height: 0px;
+    border-bottom: 1px solid #acb2bb;
+    align-self: center;
 `;
