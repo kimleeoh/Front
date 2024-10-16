@@ -3,7 +3,13 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import useWindowSize from "./WindowSize";
 
-const SubjectList = ({ subject, actions, onClick, rate }) => {
+const SubjectList = ({
+    subject,
+    actions,
+    onClick,
+    rate,
+    marginLeft = "0px",
+}) => {
     const handleClick = () => {
         if (onClick) {
             onClick(subject); // 부모 컴포넌트에서 전달된 onClick 함수 호출
@@ -16,7 +22,7 @@ const SubjectList = ({ subject, actions, onClick, rate }) => {
         <Line onClick={handleClick}>
             <Wrapper maxWidth={windowSize}>
                 <SubjectTitle>
-                    <span style={{ marginLeft: "10px" }}>{subject}</span>
+                    <span style={{ marginLeft }}>{subject}</span>
                 </SubjectTitle>
                 {actions?.map((action, index) => (
                     <ActionButton

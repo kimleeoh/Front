@@ -123,6 +123,7 @@ const BoardHome = () => {
                                 <SubjectList
                                     key={subject}
                                     subject={subject}
+                                    marginLeft={"10px"}
                                     onClick={() => handleSubjectClick(subject)}
                                     actions={[]} // Optional actions
                                 />

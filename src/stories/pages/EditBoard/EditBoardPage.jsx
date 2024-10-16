@@ -45,9 +45,11 @@ const EditBoardPage = () => {
         setSubjects(items);
     };
 
-    console.log(subjects);
+    console.log("subjects: ", subjects);
 
-    const handleSave = () => {};
+    const handleSave = () => {
+        alert("저장되었습니다.");
+    };
 
     const modalRef = useRef();
     const subjectModalRef = useRef();
@@ -67,6 +69,11 @@ const EditBoardPage = () => {
         modalRef.current.close();
         navigate(-1);
         // 예를 들어, 로그아웃 API를 호출하거나, 로그인 페이지로 이동
+    };
+
+    const refuseSave = () => {
+        modalRef.current.close();
+        navigate(-1);
     };
 
     const handleAddSubjectClick = () => {
@@ -90,11 +97,19 @@ const EditBoardPage = () => {
     };
 
     const saveSubject = () => {
-        if (selectedCategory) {
-            // 저장 api 저장할 때 selectedCategory의 맨 마지막 인덱스에 있는 값 넣어야 함
-            console.log("저장되었습니다. 추가 목록: ", selectedCategory);
+        if (selectedCategory.length > 0) {
+            const newSubject = {
+                subject: selectedCategory[selectedCategory.length - 1],
+                id: `subject-${subjects.length}`,
+            };
+
+            const updatedSubjects = [...subjects, newSubject]; // Add the new subject
+            setSubjects(updatedSubjects); // Update the state
+            setSaveChanges(true); // Mark changes as saved
+
+            console.log("추가 목록: ", updatedSubjects);
+            subjectModalRef.current.close();
         }
-        subjectModalRef.current.close();
     };
 
     const { width, height } = useWindowSize();
@@ -194,7 +209,7 @@ const EditBoardPage = () => {
                         width={"130px"}
                     />
                     <Button
-                        onClick={() => modalRef.current.close()}
+                        onClick={refuseSave}
                         label={"아니요"}
                         backgroundColor={"#434B60"}
                         hoverBackgroundColor={"#ACB2BB"}
@@ -208,6 +223,11 @@ const EditBoardPage = () => {
                 width="300px"
                 height={`${height - 150}px`}
             >
+                <ModalHeader>
+                    {selectedCategory.length === 0
+                        ? "전체"
+                        : selectedCategory.map((option) => option).join(" > ")}
+                </ModalHeader>
                 <ScrollableContent>
                     <SelectSubject
                         isBackClicked={isBackClicked}
@@ -309,4 +329,18 @@ const ScrollableContent = styled.div`
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     width: 100%;
+`;
+
+const ModalHeader = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 30px;
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    background-color: white;
+    cursor: pointer;
+    color: #434b60;
+    font-size: 12px;
 `;
