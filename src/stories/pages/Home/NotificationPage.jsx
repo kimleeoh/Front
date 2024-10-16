@@ -26,7 +26,7 @@ const NotificationPage = () => {
 
         const checkNewNotifications = async () => {
             try {
-                const response = await BaseAxios.get("/api/notify/new", {send:false});
+                const response = await BaseAxios.get("/api/notify/new");
                 setHasNewNotifications(response.data.newNotify);
             } catch (error) {
                 console.error("Failed to check for new notifications:", error);
@@ -42,7 +42,7 @@ const NotificationPage = () => {
 
     const revertNewHandler = async() => {
         try {
-            await BaseAxios.get("/api/notify/new", {send:true});
+            await BaseAxios.post("/api/notify/unnew");
             navigate(-1);
         } catch (error) {
             console.error("Failed to revert new notifications:", error);

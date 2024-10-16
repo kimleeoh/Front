@@ -56,6 +56,7 @@ const EditBoardPage = () => {
     const handleBackClick = () => {
         if (saveChanges) {
             modalRef.current.open();
+            //백에 저장하는 api필요할듯
         } else {
             // Navigate back without showing modal
             navigate(-1);
@@ -63,10 +64,8 @@ const EditBoardPage = () => {
     };
 
     const confirmSave = () => {
-        // 로그아웃 로직을 여기에 추가합니다.
         modalRef.current.close();
         navigate(-1);
-        // 예를 들어, 로그아웃 API를 호출하거나, 로그인 페이지로 이동
     };
 
     const handleAddSubjectClick = () => {
@@ -86,6 +85,8 @@ const EditBoardPage = () => {
     };
 
     const handleCategorySelect = (category) => {
+        //setSelectedCategory할때 _id도 받아와서 저장해야하는데 id는 못받아오고 있음.
+        //컴포넌트를 수정해야하는듯
         setSelectedCategory(category);
     };
 
@@ -93,6 +94,7 @@ const EditBoardPage = () => {
         if (selectedCategory) {
             // 저장 api 저장할 때 selectedCategory의 맨 마지막 인덱스에 있는 값 넣어야 함
             console.log("저장되었습니다. 추가 목록: ", selectedCategory);
+            //여기에 subject에 추가하는 api 필요할듯
         }
         subjectModalRef.current.close();
     };
