@@ -57,7 +57,7 @@ const Tips = ({
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span style={{ color: "#737373" }}>
+                        <span style={{ color: "#434b60" }}>
                             {" "}
                             {getTimeElapsed(time)} |{" "}
                             <span

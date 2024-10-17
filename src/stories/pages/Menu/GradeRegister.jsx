@@ -198,8 +198,8 @@ const GradeRegister = () => {
                         {subjects.map((subject, index) => (
                             <SubjectItem key={index}>
                                 <SelectBoardWrapper>
-                                    <SelectBoard 
-                                        placeholder={'과목 선택'}
+                                    <SelectBoard
+                                        placeholder={"과목 선택"}
                                         onChange={() => {}}
                                     />
                                 </SelectBoardWrapper>
@@ -364,4 +364,4 @@ const NoSelectionMessage = styled.div`
 const SelectBoardWrapper = styled.div`
     display: flex;
     width: 200px;
-`
+`;

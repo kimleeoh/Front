@@ -36,7 +36,6 @@ const Likes = () => {
                 return;
             }
             console.log("response:", response);
-            setIsEmpty(false);
             return response.data;
         } catch (error) {
             console.error("Error in fetchApi:", error);
@@ -112,6 +111,7 @@ const Likes = () => {
         setActiveTab(tab);
         setQuestionData([]);
         setTipsData([]);
+        setIsEmpty(false);
     };
 
     const filteredQuestions = isAGradeOnly

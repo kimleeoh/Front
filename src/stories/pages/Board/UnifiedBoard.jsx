@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import BaseAxios from "../../../axioses/BaseAxios";
 import { useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -12,6 +12,7 @@ import TabNavigation from "../../components/Common/TabNavigation";
 import ChipFilter from "../../components/Common/ChipFilter";
 import Tips from "../Tips/Tips";
 import useWindowSize from "../../components/Common/WindowSize";
+import { Spinner } from "../../components/Common/Spinner";
 
 const UnifiedBoard = () => {
     const { subject } = useParams();
@@ -19,8 +20,11 @@ const UnifiedBoard = () => {
     const [questionData, setQuestionData] = useState([]);
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
     const [tipsData, setTipsData] = useState([]);
-    const [filteredTips, setFilteredTips] = useState([]);
     const [activeTab, setActiveTab] = useState("QnA");
+    const observerRef = useRef();
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(false);
+    const [isEmpty, setIsEmpty] = useState(false);
 
     const { width: windowSize } = useWindowSize();
 
@@ -32,6 +36,10 @@ const UnifiedBoard = () => {
                 subjectId: state.id,
                 filters: filtersArray,
             });
+            if (response.data.message) {
+                setIsEmpty(true);
+                return;
+            }
             console.log("response: ", response);
             return response.data;
         } catch (error) {
@@ -42,6 +50,7 @@ const UnifiedBoard = () => {
 
     const fetchData = async (filtersArray = null) => {
         try {
+            setLoading(true);
             let questionResponse, tipsResponse;
             if (filtersArray) {
                 tipsResponse = await fetchApi(filtersArray);
@@ -50,14 +59,52 @@ const UnifiedBoard = () => {
             } else {
                 tipsResponse = await fetchApi(["test", "pilgy", "honey"]);
             }
+            console.log("isEmpty: ", isEmpty);
+            if (!isEmpty && questionResponse?.documents.length) {
+                setQuestionData((prev) => [
+                    ...prev,
+                    ...questionResponse.documents,
+                ]);
+                console.log("questionData: ", questionData);
+            }
+            if (!isEmpty && tipsResponse?.documents.length) {
+                setTipsData((prev) => [...prev, ...tipsResponse.documents]);
+                console.log("tipsData: ", tipsData);
+            }
         } catch (error) {
             console.error("Error fetching question data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchMore = () => {
+        if (!loading && hasMore) {
+            fetchData();
         }
     };
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [activeTab]);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !loading) {
+                    console.log("fetchMore !");
+                    fetchMore(); // Fetch more data when reaching the bottom
+                }
+            },
+            { threshold: 1.0 }
+        );
+
+        if (observerRef.current) observer.observe(observerRef.current);
+
+        return () => {
+            if (observerRef.current) observer.unobserve(observerRef.current);
+        };
+    }, [hasMore, loading]);
 
     const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
@@ -65,21 +112,21 @@ const UnifiedBoard = () => {
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
+        setQuestionData([]);
+        setTipsData([]);
+        setIsEmpty(false);
     };
 
     const filteredQuestions = isAGradeOnly
-        ? questionData.filter((question) => question.restricted_type > 0)
+        ? questionData.filter((question) => question.restricted_type === "true")
         : questionData;
 
     const handleFilterChange = (activeChips) => {
-        if (activeChips.length === 0) {
-            setFilteredTips(tipsData);
-        } else {
-            const filtered = tipsData.filter((tip) =>
-                activeChips.includes(tip.filter)
-            );
-            setFilteredTips(filtered);
-        }
+        setTipsData([]);
+        setHasMore(true);
+        fetchData(
+            activeChips.length === 0 ? ["test", "pilgy", "honey"] : activeChips
+        );
     };
 
     const tabs = ["QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
@@ -105,38 +152,30 @@ const UnifiedBoard = () => {
                             onChange={handleCheckerChange}
                         />
                     </CheckerWrapper>
-                    {filteredQuestions
-                        .filter(
-                            (question) =>
-                                question.now_category_list[
-                                    question.now_category_list.length - 1
-                                ] === subject
-                        )
-                        .map((question) => {
-                            const img = Array.isArray(question.img)
-                                ? question.img[0]
-                                : question.img;
+                    {filteredQuestions.map((question) => {
+                        const lastCategory =
+                            question.now_category_list[
+                                question.now_category_list.length - 1
+                            ];
 
-                            return (
-                                <Questions
-                                    key={question._id}
-                                    _id={question._id}
-                                    title={question.title}
-                                    content={question.content}
-                                    subject={
-                                        question.now_category_list[
-                                            question.now_category_list.length -
-                                                1
-                                        ]
-                                    }
-                                    time={question.time}
-                                    views={question.views}
-                                    like={question.like}
-                                    img={img}
-                                    limit={question.restricted_type}
-                                />
-                            );
-                        })}
+                        // 동적으로 키를 가져와서 값 반환
+                        const value =
+                            lastCategory[Object.keys(lastCategory)[0]];
+                        return (
+                            <Questions
+                                _id={question._id}
+                                title={question.title}
+                                content={question.content}
+                                subject={value}
+                                time={question.time}
+                                views={question.views}
+                                like={question.like}
+                                img={question.img_list}
+                                limit={question.restricted_type}
+                                user_main={question.user_main}
+                            />
+                        );
+                    })}
                     <FixedIcon src="/Icons/Question.svg" url={"/qna/post"} />
                 </>
             )}
@@ -145,29 +184,35 @@ const UnifiedBoard = () => {
                     <ChipFilterWrapper maxWidth={windowSize}>
                         <ChipFilter onFilterChange={handleFilterChange} />
                     </ChipFilterWrapper>
-                    {filteredTips
-                        .filter((tip) => tip.subject === subject)
-                        .map((tip) => (
-                            <Tips
-                                key={tip._id}
-                                _id={tip._id}
-                                name={tip.name}
-                                major={tip.major}
-                                subject={tip.subject}
-                                title={tip.title}
-                                content={tip.content}
-                                time={tip.time}
-                                views={tip.views}
-                                like={tip.like}
-                                img={
-                                    Array.isArray(tip.img)
-                                        ? tip.img[0]
-                                        : tip.img
-                                }
-                            />
-                        ))}
+                    {tipsData.map((tip) => (
+                        <Tips
+                            _id={tip._id}
+                            Ruser={tip.Ruser}
+                            category_name={tip.category_name}
+                            category_type={tip.category_type}
+                            title={tip.title}
+                            preview_img={tip.preview_img}
+                            likes={tip.likes}
+                            purchase_price={tip.purchase_price}
+                            target={tip.target}
+                            views={tip.views}
+                            time={tip.time}
+                        />
+                    ))}
                     <FixedIcon src="/Icons/Pen.svg" url={"/tips/post"} />
                 </>
+            )}
+            {loading && <Spinner color="#434B60" size={32} />}
+            {isEmpty ? (
+                <EmptyBox>
+                    <Icon src="/Icons/Alert_gray.svg" />
+                    <Content>
+                        아직 스크랩한 글이 없어요! 또 보고 싶은 글은 스크랩
+                        해보세요!
+                    </Content>
+                </EmptyBox>
+            ) : (
+                <div ref={observerRef} />
             )}
             <FixedBottomContainer>
                 <NavBar state="Board" />
@@ -200,4 +245,29 @@ const ChipFilterWrapper = styled.div`
     padding-left: 10px;
     padding-top: 10px;
     box-sizing: border-box;
+`;
+
+const EmptyBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const Icon = styled.img`
+    width: 70px;
+    height: 70px;
+    margin-top: 120px;
+`;
+
+const Content = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align-center;
+    box-sizing: border-box;
+    font-size: 15px;
+    font-weight: regular;
+    padding: 15px;
+    margin-top: 10px;
+    color: #acb2bb;
 `;

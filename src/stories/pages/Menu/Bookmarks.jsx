@@ -36,7 +36,6 @@ const Bookmarks = () => {
                 return;
             }
             console.log("response:", response);
-            setIsEmpty(false);
             return response.data; // Return response data
         } catch (error) {
             console.error("Error in fetchApi:", error);
@@ -116,6 +115,7 @@ const Bookmarks = () => {
         // 늦게 반영되므로 데이터 뭐가 들었는지 보고 싶으면 아래 두 개 주석 처리
         setQuestionData([]);
         setTipsData([]);
+        setIsEmpty(false);
     };
 
     const filteredQuestions = isAGradeOnly
