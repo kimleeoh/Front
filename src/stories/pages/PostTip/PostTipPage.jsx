@@ -23,6 +23,7 @@ const PostQuestionPage = () => {
         type: "",
         purchase_price: "",
         time: "",
+        target: "",
     });
     console.log(formValues);
 
@@ -53,6 +54,8 @@ const PostQuestionPage = () => {
             type.trim() !== "" &&
             content.trim() !== "" &&
             purchase_price.trim() !== "" &&
+            Number(purchase_price) > 0 &&
+            Number(purchase_price) <= 200 &&
             target.trim() !== "";
         if (isFormValid) {
             await BaseAxios.post("/api/tips/create/post", updatedFormValues);
@@ -88,6 +91,13 @@ const PostQuestionPage = () => {
         }
         if (purchase_price.trim() == "") {
             return <ValidationMessage>가격을 입력해 주세요.</ValidationMessage>;
+        }
+        if (Number(purchase_price) <= 0 || Number(purchase_price) > 200) {
+            return (
+                <ValidationMessage>
+                    0~200p 사이를 입력해 주세요.
+                </ValidationMessage>
+            );
         }
         if (target.trim() == "") {
             return (
@@ -137,6 +147,7 @@ const PostQuestionPage = () => {
                 placeholder={
                     "답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."
                 }
+                isPostPage={true}
                 onChange={(value) => handleInputChange("content", value)}
             />
             <ImageUploader
@@ -144,7 +155,7 @@ const PostQuestionPage = () => {
             />
             <PointInput
                 onChange={(value) => handleInputChange("purchase_price", value)}
-                placeholder={"판매할 가격을 입력해 주세요."}
+                placeholder={"판매할 가격을 입력해 주세요. (0~200p)"}
             />
             <TargetInput
                 onChange={(value) => handleInputChange("target", value)}

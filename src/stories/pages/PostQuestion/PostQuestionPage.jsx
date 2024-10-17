@@ -47,7 +47,6 @@ const PostQuestionPage = () => {
         e.preventDefault();
         const now = new Date().toISOString();
 
-        // const user = userData[0] || {};
         const updatedFormValues = new FormData();
         updatedFormValues.append("title", formValues.title);
         updatedFormValues.append("board", formValues.board);
@@ -66,7 +65,9 @@ const PostQuestionPage = () => {
             title.trim() !== "" &&
             board.length > 0 &&
             content.trim() !== "" &&
-            point.trim() !== "";
+            point.trim() !== "" &&
+            Number(point) > 0 &&
+            Number(point) <= 200;
 
         if (isFormValid) {
             console.log(updatedFormValues.images);
@@ -120,6 +121,20 @@ const PostQuestionPage = () => {
                 </ValidationMessage>
             );
         }
+        if (Number(point) > originPoint) {
+            return (
+                <ValidationMessage maxWidth={windowSize}>
+                    포인트가 부족합니다.
+                </ValidationMessage>
+            );
+        }
+        if (Number(point) <= 0 || Number(point) > 200) {
+            return (
+                <ValidationMessage maxWidth={windowSize}>
+                    0~200p 사이를 입력해 주세요.
+                </ValidationMessage>
+            );
+        }
 
         return null;
     };
@@ -150,6 +165,7 @@ const PostQuestionPage = () => {
                 placeholder={
                     "답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요.*"
                 }
+                isPostPage={true}
                 onChange={(value) => handleInputChange("content", value)}
             />
             <ImageUploader

@@ -13,6 +13,7 @@ const TextArea = ({
     onChange,
     value: externalValue,
     name, // 추가: name prop 추가
+    isPostPage = false, // 게시물 작성 창인가?
 }) => {
     const [content, setContent] = useState(externalValue || "");
     const [isfocused, setisfocused] = useState(false);
@@ -24,8 +25,13 @@ const TextArea = ({
     const handleChange = (e) => {
         const newValue = e.target.value;
         setContent(newValue);
+
         if (onChange) {
-            onChange({ target: { name, value: newValue } }); // 변경: TextField와 동일한 형태로 onChange 호출
+            if (isPostPage) {
+                onChange(newValue); // Send raw value on post page
+            } else {
+                onChange({ target: { name, value: newValue } }); // Send as event-like object
+            }
         }
     };
 
