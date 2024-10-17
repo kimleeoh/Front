@@ -61,7 +61,9 @@ const HomePage = () => {
                     {/* 알림이 있으면 파란 점 표시 */}
                 </NotificationButton>
             </Header>
-            <Content maxWidth={maxWidth}>{/* 메인 콘텐츠 */}</Content>
+            <Content maxWidth={maxWidth}>{/* 메인 콘텐츠 */}
+
+            </Content>
             <Suspense fallback={<div>Loading...</div>}>
                 <FixedBottomContainer>
                     <NavBar initialState="/home" />

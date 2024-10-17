@@ -4,11 +4,9 @@ import Header from "../../components/Header";
 import Button from "../../components/Button";
 import Picker from "../../components/Common/Picker";
 import Modal from "../../components/Common/Modal";
-import FixedBottomContainer from "../../components/FixedBottomContainer";
 import Checker from "../../components/Common/Checker";
 import ImageUploadButton from "../Confirmation/ImageUploadButton";
 import useWindowSize from "../../components/Common/WindowSize";
-import TextField from "../../components/TextField";
 import SelectBoard from "../../components/Common/SelectBoard";
 
 const GradeRegister = () => {
@@ -131,29 +129,6 @@ const GradeRegister = () => {
             });
         } catch (error) {
             console.error("과목 추가 중 오류 발생", error);
-        }
-    };
-
-    const handleSubjectNameChange = (index, newName) => {
-        const updatedSubjects = [...subjects];
-        updatedSubjects[index].name = newName;
-        setSubjects(updatedSubjects);
-
-        try {
-            fetch(`/api/grades/update-subject-name`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    year: selectedYear,
-                    term: selectedTerm,
-                    subject: updatedSubjects[index].name,
-                    newName,
-                }),
-            });
-        } catch (error) {
-            console.error("과목명 업데이트 중 오류 발생", error);
         }
     };
 

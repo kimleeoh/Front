@@ -153,6 +153,7 @@ const BottomSheetContainer = styled.div`
     display: flex;
     flex-direction: column;
     animation: ${slideUp} 0.5s ease-out;
+    z-index: 1000;
 `;
 
 const Handle = styled.div`
