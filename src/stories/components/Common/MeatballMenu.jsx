@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Popup from "../Popup";
@@ -6,14 +6,20 @@ import Popup from "../Popup";
 const MeatballMenu = ({ _id, categories }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
+    const menuRef = useRef(null);
     const navigate = useNavigate();
 
-    const handleTogglePopup = (event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        setPopupPosition({
-            top: rect.bottom,
-            left: rect.right - 195,
-        });
+    const handleTogglePopup = () => {
+        if (!isPopupOpen) {
+            const rect = menuRef.current.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            
+            setPopupPosition({
+                top: rect.bottom + scrollTop,
+                left: rect.right - 195 + scrollLeft,
+            });
+        }
         setIsPopupOpen(!isPopupOpen);
     };
 
@@ -22,8 +28,21 @@ const MeatballMenu = ({ _id, categories }) => {
         setIsPopupOpen(false);
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsPopupOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     return (
-        <div>
+        <div ref={menuRef}>
             <MenuButton onClick={handleTogglePopup}>
                 <img src="/Icons/meatballs.svg" alt="Meatball Menu" />
             </MenuButton>
