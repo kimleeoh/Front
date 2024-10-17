@@ -13,6 +13,7 @@ import ChipFilter from "../../components/Common/ChipFilter";
 import Tips from "../Tips/Tips";
 import useWindowSize from "../../components/Common/WindowSize";
 import { Spinner } from "../../components/Common/Spinner";
+import AdBox from "../../components/Common/AdBox";
 
 const UnifiedBoard = () => {
     const { subject } = useParams();
@@ -129,7 +130,41 @@ const UnifiedBoard = () => {
         );
     };
 
-    const tabs = ["QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
+    const renderPostsWithAds = (posts, renderFunction) => {
+        if (!Array.isArray(posts) || posts.length === 0) {
+            return;
+        }
+
+        const postsWithAds = [];
+        posts.forEach((post, index) => {
+            postsWithAds.push(
+                <div
+                    key={post._id}
+                    ref={index === posts.length - 1 ? observerRef : null}
+                    style={{ width: "100%" }}
+                >
+                    {renderFunction(post)}
+                </div>
+            );
+
+            // 매 5번째 포스트 이후에 광고 삽입, 마지막 포스트 제외
+            if ((index + 1) % 5 === 0 && index !== posts.length - 1) {
+                postsWithAds.push(
+                    <AdBox
+                        key={`ad-${index}`}
+                        _id={index}
+                        title="광고 제목"
+                        content="광고 내용"
+                        img={null}
+                        link="https://example.com/ad-link"
+                    />
+                );
+            }
+        });
+        return postsWithAds;
+    };
+
+    const tabs = ["QnA", "Tips"];
 
     return (
         <Wrapper>
@@ -152,13 +187,11 @@ const UnifiedBoard = () => {
                             onChange={handleCheckerChange}
                         />
                     </CheckerWrapper>
-                    {filteredQuestions.map((question) => {
+                    {renderPostsWithAds(filteredQuestions, (question) => {
                         const lastCategory =
                             question.now_category_list[
                                 question.now_category_list.length - 1
                             ];
-
-                        // 동적으로 키를 가져와서 값 반환
                         const value =
                             lastCategory[Object.keys(lastCategory)[0]];
                         return (
@@ -184,7 +217,7 @@ const UnifiedBoard = () => {
                     <ChipFilterWrapper maxWidth={windowSize}>
                         <ChipFilter onFilterChange={handleFilterChange} />
                     </ChipFilterWrapper>
-                    {tipsData.map((tip) => (
+                    {renderPostsWithAds(tipsData, (tip) => (
                         <Tips
                             _id={tip._id}
                             Ruser={tip.Ruser}

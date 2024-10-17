@@ -9,6 +9,7 @@ import Tips from "../Tips/Tips";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import { Spinner } from "../../components/Common/Spinner";
+import AdBox from "../../components/Common/AdBox";
 
 const Bookmarks = () => {
     const [questionData, setQuestionData] = useState([]);
@@ -21,7 +22,7 @@ const Bookmarks = () => {
     // hasMore가 true일 때 fetchMore() 할 수 있음. 지금은 false로 지정해놓고 백에서 데이터 보내는 형식 수정하면 그때 데이터가 더 있는지 없는지 판단하여 setHasMore(). 그래서 지금은 fetchMore()가 안 됨. A등급 제한 checker 눌렀을 때 생기는 오류를 방지하기 위함. fetchMore() 하고 싶으면 true로 설정해 주기만 하면 됨.
     const [isEmpty, setIsEmpty] = useState(false);
 
-    const tabs = ["전체", "QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
+    const tabs = ["전체", "QnA", "Tips"];
 
     const { width: windowSize } = useWindowSize();
 
@@ -130,6 +131,40 @@ const Bookmarks = () => {
         );
     };
 
+    const renderPostsWithAds = (posts, renderFunction) => {
+        if (!Array.isArray(posts) || posts.length === 0) {
+            return;
+        }
+
+        const postsWithAds = [];
+        posts.forEach((post, index) => {
+            postsWithAds.push(
+                <div
+                    key={post._id}
+                    ref={index === posts.length - 1 ? observerRef : null}
+                    style={{ width: "100%" }}
+                >
+                    {renderFunction(post)}
+                </div>
+            );
+
+            // Insert an ad after every 5th post, except for the last post
+            if ((index + 1) % 5 === 0 && index !== posts.length - 1) {
+                postsWithAds.push(
+                    <AdBox
+                        key={`ad-${index}`}
+                        _id={index}
+                        title="광고 제목"
+                        content="광고 내용"
+                        img={null}
+                        link="https://example.com/ad-link"
+                    />
+                );
+            }
+        });
+        return postsWithAds;
+    };
+
     return (
         <Wrapper>
             <Header
@@ -145,35 +180,35 @@ const Bookmarks = () => {
             />
             {activeTab === "전체" && (
                 <>
-                    {questionData.map((question) => {
-                        const img = Array.isArray(question.img_list)
-                            ? question.img_list[0]
-                            : question.img_list;
-
-                        const lastCategory =
-                            question.now_category_list[
-                                question.now_category_list.length - 1
-                            ];
-
-                        // 동적으로 키를 가져와서 값 반환
-                        const value =
-                            lastCategory[Object.keys(lastCategory)[0]];
-                        return (
-                            <Questions
-                                _id={question._id}
-                                title={question.title}
-                                content={question.content}
-                                subject={value}
-                                time={question.time}
-                                views={question.views}
-                                like={question.like}
-                                img={img}
-                                limit={question.restricted_type}
-                                user_main={question.user_main}
-                            />
-                        );
-                    })}
-                    {tipsData.map((tip) => (
+                    {renderPostsWithAds(questionData, (question) => (
+                        <Questions
+                            _id={question._id}
+                            title={question.title}
+                            content={question.content}
+                            subject={
+                                question.now_category_list[
+                                    question.now_category_list.length - 1
+                                ][
+                                    Object.keys(
+                                        question.now_category_list[
+                                            question.now_category_list.length - 1
+                                        ]
+                                    )[0]
+                                ]
+                            }
+                            time={question.time}
+                            views={question.views}
+                            like={question.like}
+                            img={
+                                Array.isArray(question.img_list)
+                                    ? question.img_list[0]
+                                    : question.img_list
+                            }
+                            limit={question.restricted_type}
+                            user_main={question.user_main}
+                        />
+                    ))}
+                    {renderPostsWithAds(tipsData, (tip) => (
                         <Tips
                             _id={tip._id}
                             Ruser={tip.Ruser}
@@ -198,30 +233,30 @@ const Bookmarks = () => {
                             onChange={handleCheckerChange}
                         />
                     </CheckerWrapper>
-                    {filteredQuestions.map((question) => {
-                        const lastCategory =
-                            question.now_category_list[
-                                question.now_category_list.length - 1
-                            ];
-
-                        // 동적으로 키를 가져와서 값 반환
-                        const value =
-                            lastCategory[Object.keys(lastCategory)[0]];
-                        return (
-                            <Questions
-                                _id={question._id}
-                                title={question.title}
-                                content={question.content}
-                                subject={value}
-                                time={question.time}
-                                views={question.views}
-                                like={question.like}
-                                img={question.img_list}
-                                limit={question.restricted_type}
-                                user_main={question.user_main}
-                            />
-                        );
-                    })}
+                    {renderPostsWithAds(filteredQuestions, (question) => (
+                        <Questions
+                            _id={question._id}
+                            title={question.title}
+                            content={question.content}
+                            subject={
+                                question.now_category_list[
+                                    question.now_category_list.length - 1
+                                ][
+                                    Object.keys(
+                                        question.now_category_list[
+                                            question.now_category_list.length - 1
+                                        ]
+                                    )[0]
+                                ]
+                            }
+                            time={question.time}
+                            views={question.views}
+                            like={question.like}
+                            img={question.img_list}
+                            limit={question.restricted_type}
+                            user_main={question.user_main}
+                        />
+                    ))}
                 </>
             )}
             {activeTab === "Tips" && (
@@ -232,7 +267,7 @@ const Bookmarks = () => {
                             marginTop={"10px"}
                         />
                     </ChipFilterWrapper>
-                    {tipsData.map((tip) => (
+                    {renderPostsWithAds(tipsData, (tip) => (
                         <Tips
                             _id={tip._id}
                             Ruser={tip.Ruser}
@@ -250,7 +285,7 @@ const Bookmarks = () => {
                 </>
             )}
             {loading && <Spinner color="#434B60" size={32} />}
-            {isEmpty ? (
+            {isEmpty && (
                 <EmptyBox>
                     <Icon src="/Icons/Alert_gray.svg" />
                     <Content>
@@ -258,8 +293,6 @@ const Bookmarks = () => {
                         해보세요!
                     </Content>
                 </EmptyBox>
-            ) : (
-                <div ref={observerRef} />
             )}
         </Wrapper>
     );

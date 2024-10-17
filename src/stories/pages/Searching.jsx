@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import SearchField from "../components/Common/SearchField";
@@ -29,6 +29,15 @@ const Searching = () => {
     const searchFieldWidth =
         windowSize > 400 ? "300px" : windowSize > 320 ? "95%" : "80%";
 
+    const tempAlert = () => {
+        alert("준비중인 기능입니다.");
+    };
+
+    useEffect(() => {
+        // 컴포넌트 마운트 시 실행
+        tempAlert();
+    }, []);
+    
     return (
         <Wrapper>
             <Header text="" searchButton={false}>

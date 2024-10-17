@@ -8,6 +8,7 @@ import Checker from "../../components/Common/Checker";
 import FixedIcon from "../../components/Common/FixedIcon";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
+import AdBox from "../../components/Common/AdBox";
 
 const initialQuestionData = [
     {
@@ -198,12 +199,9 @@ const QnAPage = () => {
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
 
     useEffect(() => {
-        //로컬 스토리지에서 질문 데이터 로드 또는 초기화
-        //BaseAxios.get()
-        //localStorage.removeItem("questionData");
-        const questionData = localStorage.getItem("questionData");
-        if (questionData) {
-            setQuestionData(JSON.parse(questionData));
+        const storedQuestionData = localStorage.getItem("questionData");
+        if (storedQuestionData) {
+            setQuestionData(JSON.parse(storedQuestionData));
         } else {
             localStorage.setItem(
                 "questionData",
@@ -236,6 +234,49 @@ const QnAPage = () => {
         : questionData;
 
     const { width: windowSize } = useWindowSize();
+
+    const renderPostsWithAds = (posts) => {
+        if (!Array.isArray(posts) || posts.length === 0) {
+            return;
+        }
+
+        const postsWithAds = [];
+        posts.forEach((post, index) => {
+            postsWithAds.push(
+                <Questions
+                    key={post._id}
+                    _id={post._id}
+                    title={post.title}
+                    content={post.content}
+                    subject={
+                        post.now_category_list[post.now_category_list.length - 1]
+                    }
+                    time={post.time}
+                    views={post.views}
+                    like={post.like}
+                    img={Array.isArray(post.img) ? post.img[0] : post.img}
+                    limit={post.restricted_type}
+                    user_main={post.user_main}
+                />
+            );
+
+            // 매 5번째 포스트 이후에 광고 삽입, 마지막 포스트 제외
+            if ((index + 1) % 5 === 0 && index !== posts.length - 1) {
+                postsWithAds.push(
+                    <AdBox
+                        key={`ad-${index}`}
+                        _id={index}
+                        title="광고 제목"
+                        content="광고 내용"
+                        img={null}
+                        link="https://example.com/ad-link"
+                    />
+                );
+            }
+        });
+        return postsWithAds;
+    };
+
     return (
         <Wrapper>
             <Header
@@ -247,32 +288,7 @@ const QnAPage = () => {
             <CheckerWrapper maxWidth={windowSize}>
                 <Checker text={"A등급 제한"} onChange={handleCheckerChange} />
             </CheckerWrapper>
-            {filteredQuestions.map((question) => {
-                const img = Array.isArray(question.img)
-                    ? question.img[0]
-                    : question.img;
-
-                return (
-                    <Questions
-                        key={question._id}
-                        _id={question._id}
-                        title={question.title}
-                        content={question.content}
-                        subject={
-                            question.now_category_list[
-                                question.now_category_list.length - 1
-                            ]
-                        }
-                        time={question.time}
-                        views={question.views}
-                        like={question.like}
-                        img={img}
-                        limit={question.restricted_type}
-                        user_main={question.user_main}
-                    />
-                );
-            })}
-
+            {renderPostsWithAds(filteredQuestions)}
             <FixedIcon src="/Icons/Question.svg" url={"/qna/post"} />
             <FixedBottomContainer>
                 <NavBar state="QnA" />
