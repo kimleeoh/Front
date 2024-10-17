@@ -11,6 +11,8 @@ const History = () => {
     const [tipsData, setTipsData] = useState([]);
     const [isEmpty, setIsEmpty] = useState(false);
     const observerRef = useRef();
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(false);
 
     const { width: windowSize } = useWindowSize();
 
@@ -18,10 +20,24 @@ const History = () => {
         try {
             const response = await BaseAxios.get("/api/menu/recentlist");
             console.log("response: ", response);
-            if (response.data.message) {
+            const fetchedData = response.data;
+
+            if (fetchedData.message) {
                 setIsEmpty(true);
                 return;
             }
+
+            const questions = fetchedData.documents.filter(
+                (doc) => doc.type === "qna"
+            );
+            const tips = fetchedData.documents.filter(
+                (doc) => doc.type === "tips"
+            );
+
+            setQuestionData(questions);
+            setTipsData(tips);
+            console.log("questionData: ", questionData);
+            console.log("tipsData: ", tipsData);
         } catch (error) {
             console.error("Error in fetchApi:", error);
             throw error;
