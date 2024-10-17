@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import Chip from "./Chip";
 import PropTypes from "prop-types";
@@ -17,6 +17,7 @@ const Container = styled.div`
 
 const ChipFilter = ({ onFilterChange, marginTop, postOnly }) => {
     const [activeChips, setActiveChips] = useState([]);
+    const isDebouncing = useRef(false); // Track debounce state
 
     const chipFilterMapping = {
         필기공유: "pilgy",
@@ -24,29 +25,41 @@ const ChipFilter = ({ onFilterChange, marginTop, postOnly }) => {
         수업꿀팁: "honey",
     };
 
-    const handleChipClick = (label) => {
-        let updatedChips;
+    const handleChipClick = useCallback(
+        (label) => {
+            if (!postOnly) {
+                if (isDebouncing.current) return; // Prevent click during debounce
 
-        if (postOnly) {
-            // If postOnly is true, only one chip can be active
-            updatedChips = activeChips.includes(label) ? [] : [label];
-        } else {
-            updatedChips = activeChips.includes(label)
-                ? activeChips.filter((badge) => badge !== label)
-                : [...activeChips, label];
-        }
+                isDebouncing.current = true; // Start debounce timer
+                setTimeout(() => {
+                    isDebouncing.current = false; // End debounce timer after 500ms
+                }, 1000);
+            }
 
-        setActiveChips(updatedChips);
+            let updatedChips;
 
-        // If postOnly is true, return the single chip as a string, otherwise return an array
-        const activeFilters = postOnly
-            ? updatedChips.length > 0
-                ? chipFilterMapping[updatedChips[0]]
-                : ""
-            : updatedChips.map((chip) => chipFilterMapping[chip]);
+            if (postOnly) {
+                // If postOnly is true, only one chip can be active
+                updatedChips = activeChips.includes(label) ? [] : [label];
+            } else {
+                updatedChips = activeChips.includes(label)
+                    ? activeChips.filter((badge) => badge !== label)
+                    : [...activeChips, label];
+            }
 
-        onFilterChange(activeFilters);
-    };
+            setActiveChips(updatedChips);
+
+            // If postOnly is true, return the single chip as a string, otherwise return an array
+            const activeFilters = postOnly
+                ? updatedChips.length > 0
+                    ? chipFilterMapping[updatedChips[0]]
+                    : ""
+                : updatedChips.map((chip) => chipFilterMapping[chip]);
+
+            onFilterChange(activeFilters);
+        },
+        [activeChips, postOnly, onFilterChange]
+    );
 
     const badges = ["필기공유", "시험정보", "수업꿀팁"];
     const { width: windowSize } = useWindowSize();
