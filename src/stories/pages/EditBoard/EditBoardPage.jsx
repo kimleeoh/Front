@@ -10,19 +10,22 @@ import Modal from "../../components/Common/Modal";
 import { useNavigate } from "react-router-dom";
 import useWindowSize from "../../components/Common/WindowSize";
 import SelectSubject from "../../components/Common/SelectSubject";
+import BaseAxios from "../../../axioses/BaseAxios";
 
 const EditBoardPage = () => {
     const location = useLocation();
     const { listData, title } = location.state || { listData: [], title: "" }; // Get the list data passed from BoardHome
+    console.log("listData: ", listData);
 
     const [saveChanges, setSaveChanges] = useState(false);
 
     const [subjects, setSubjects] = useState(
-        listData.map((item, index) => ({
-            ...item,
-            id: item.id || `subject-${index}`,
+        listData.map((item) => ({
+            id: item.id || `subject-${item.name}`,
+            subject: item.name,
         }))
     );
+    console.log("subjects: ", subjects);
 
     const handleSubjectDelete = (subject) => {
         const updatedSubjects = subjects.filter(
@@ -45,10 +48,23 @@ const EditBoardPage = () => {
         setSubjects(items);
     };
 
-    console.log("subjects: ", subjects);
-
     const handleSave = () => {
-        alert("저장되었습니다.");
+        const combinedArray = subjects.reduce((acc, item) => {
+            acc[item.subject] = item.id;
+            return acc; // Add this line
+        }, {});
+
+        console.log("combinedArray: ", combinedArray);
+        BaseAxios.post("/api/board/edit", {
+            subject: subjects,
+        }).then((response) => {
+            if (response.data == "OK") {
+                alert("저장되었습니다.");
+                navigate(-1);
+            } else {
+                alert("Failed to save changes. Please try again.");
+            }
+        });
     };
 
     const modalRef = useRef();
@@ -66,9 +82,22 @@ const EditBoardPage = () => {
     };
 
     const confirmSave = () => {
-        // 로그아웃 로직을 여기에 추가합니다.
-        modalRef.current.close();
-        navigate(-1);
+        const combinedArray = subjects.reduce((acc, item) => {
+            acc[item.subject] = item.id;
+            return acc; // Add this line
+        }, {});
+
+        console.log("combinedArray: ", combinedArray);
+        BaseAxios.post("/api/board/edit", {
+            subject: subjects,
+        }).then((response) => {
+            if (response.data == "OK") {
+                alert("저장되었습니다.");
+                navigate(-1);
+            } else {
+                alert("Failed to save changes. Please try again.");
+            }
+        });
     };
 
     const refuseSave = () => {
@@ -82,6 +111,7 @@ const EditBoardPage = () => {
 
     const [isBackClicked, setIsBackClicked] = useState(0);
     const [selectedCategory, setSelectedCategory] = useState([]);
+    const [selectedId, setSelectedId] = useState([]);
 
     const handleGoBack = () => {
         if (selectedCategory.length == 0) {
@@ -92,24 +122,24 @@ const EditBoardPage = () => {
         }
     };
 
-    const handleCategorySelect = (category) => {
-        //setSelectedCategory할때 _id도 받아와서 저장해야하는데 id는 못받아오고 있음.
-        //컴포넌트를 수정해야하는듯
+    const handleCategorySelect = (category, id) => {
         setSelectedCategory(category);
+        setSelectedId(id);
     };
+    console.log("selectedId: ", selectedId);
 
     const saveSubject = () => {
         if (selectedCategory.length > 0) {
             const newSubject = {
+                id: selectedId[selectedId.length - 1],
                 subject: selectedCategory[selectedCategory.length - 1],
-                id: `subject-${subjects.length}`,
             };
 
             const updatedSubjects = [...subjects, newSubject]; // Add the new subject
             setSubjects(updatedSubjects); // Update the state
             setSaveChanges(true); // Mark changes as saved
 
-            console.log("추가 목록: ", updatedSubjects);
+            console.log("subjects: ", updatedSubjects);
             subjectModalRef.current.close();
         }
     };

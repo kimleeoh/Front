@@ -174,7 +174,7 @@ const Questions = ({
                                     overflow: "hidden",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
-                                    maxWidth: "80px",
+                                    maxWidth: "50px",
                                     display: "inline-block",
                                     verticalAlign: "middle",
                                     lineHeight: "1",

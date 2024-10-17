@@ -8,6 +8,7 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
     const [subCategories, setSubCategories] = useState([]);
     const [categoryHistoryId, setCategoryHistoryId] = useState([]);
     const [categoryHistoryName, setCategoryHistoryName] = useState([]);
+    const [submitHistoryId, setSubmitHistoryId] = useState([]);
     const [finalOptions, setFinalOptions] = useState([]);
     const [canSelect, setCanSelect] = useState(true);
 
@@ -18,7 +19,7 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
     }, [isBackClicked]);
 
     useEffect(() => {
-        onCategorySelect(categoryHistoryName);
+        onCategorySelect(categoryHistoryName, submitHistoryId);
     }, [categoryHistoryName]);
 
     useEffect(() => {
@@ -72,6 +73,7 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
             setCategoryHistoryId([...categoryHistoryId, selectedCategoryId]);
             setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
             setSelectedCategoryId(categoryId);
+            setSubmitHistoryId([...submitHistoryId, categoryId]);
         }
     };
 

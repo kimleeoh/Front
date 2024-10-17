@@ -180,11 +180,26 @@ const Likes = () => {
                             _id={question._id}
                             title={question.title}
                             content={question.content}
-                            subject={question.now_category_list[question.now_category_list.length - 1][Object.keys(question.now_category_list[question.now_category_list.length - 1])[0]]}
+                            subject={
+                                question.now_category_list[
+                                    question.now_category_list.length - 1
+                                ][
+                                    Object.keys(
+                                        question.now_category_list[
+                                            question.now_category_list.length -
+                                                1
+                                        ]
+                                    )[0]
+                                ]
+                            }
                             time={question.time}
                             views={question.views}
                             like={question.like}
-                            img={Array.isArray(question.img_list) ? question.img_list[0] : question.img_list}
+                            img={
+                                Array.isArray(question.img_list)
+                                    ? question.img_list[0]
+                                    : question.img_list
+                            }
                             limit={question.restricted_type}
                             user_main={question.user_main}
                         />
@@ -219,11 +234,26 @@ const Likes = () => {
                             _id={question._id}
                             title={question.title}
                             content={question.content}
-                            subject={question.now_category_list[question.now_category_list.length - 1][Object.keys(question.now_category_list[question.now_category_list.length - 1])[0]]}
+                            subject={
+                                question.now_category_list[
+                                    question.now_category_list.length - 1
+                                ][
+                                    Object.keys(
+                                        question.now_category_list[
+                                            question.now_category_list.length -
+                                                1
+                                        ]
+                                    )[0]
+                                ]
+                            }
                             time={question.time}
                             views={question.views}
                             like={question.like}
-                            img={Array.isArray(question.img_list) ? question.img_list[0] : question.img_list}
+                            img={
+                                Array.isArray(question.img_list)
+                                    ? question.img_list[0]
+                                    : question.img_list
+                            }
                             limit={question.restricted_type}
                             user_main={question.user_main}
                         />

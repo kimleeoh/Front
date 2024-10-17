@@ -4,6 +4,7 @@ import styled from "styled-components";
 import useWindowSize from "../../components/Common/WindowSize";
 import NavBar from "../../components/NavBar";
 import FixedBottomContainer from "../../components/FixedBottomContainer";
+import BaseAxios from "../../../axioses/BaseAxios";
 
 // Lazy-loaded components
 const BoardTitle = React.lazy(
@@ -13,60 +14,30 @@ const SubjectList = React.lazy(
     () => import("../../components/Common/SubjectList")
 );
 
-// Immediately loaded components (not lazy)
-
-// Initial data
-const initialSubjectList = [
-    { subject: "디지털미디어원리" },
-    { subject: "영상편집론" },
-    { subject: "CTE for IT, Engineering&Natura" },
-    { subject: "UX/UI디자인" },
-    { subject: "디지털미디어원리" },
-    { subject: "영상편집론" },
-    { subject: "CTE for IT, Engineering&Natura" },
-    { subject: "UX/UI디자인" },
-];
-
-const initialBookMarkList = [
-    { bookmark: "글로벌미디어학부" },
-    { bookmark: "IT대학" },
-    { bookmark: "글로벌미디어학부" },
-    { bookmark: "IT대학" },
-];
-
-const initialSubjectList2 = [
-    { subject: "미디어제작및실습" },
-    { subject: "Art&Technology" },
-    { subject: "컴퓨터시스템개론" },
-];
-
-// Helper to fetch or initialize data from localStorage
-const useStoredData = (key, initialData) => {
-    const [data, setData] = useState(() => {
-        const storedData = localStorage.getItem(key);
-        return storedData ? JSON.parse(storedData) : initialData;
-    });
-
-    useEffect(() => {
-        localStorage.setItem(key, JSON.stringify(data));
-    }, [key, data]);
-
-    return [data, setData];
-};
-
 const BoardHome = () => {
-    const [subjectData, setSubjectData] = useStoredData(
-        "subjectData",
-        initialSubjectList
-    );
-    const [bookmarkData, setBookmarkData] = useStoredData(
-        "bookmarkData",
-        initialBookMarkList
-    );
-    const [subjectData2, setSubjectData2] = useStoredData(
-        "subjectData2",
-        initialSubjectList2
-    );
+    const [subjectData, setSubjectData] = useState([]); // 수강 중인 과목
+    const [bookmarkData, setBookmarkData] = useState([]); // 즐겨찾기
+    const [subjectData2, setSubjectData2] = useState([]); // 수강했던 과목
+
+    const fetchData = async () => {
+        try {
+            const response = await BaseAxios.get("/api/board");
+            console.log("response: ", response);
+            const fetchedData = response.data;
+            setSubjectData(fetchedData.enroll);
+            setBookmarkData(fetchedData.bookmark);
+            setSubjectData2(fetchedData.listened);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+    useEffect(() => {
+        fetchData();
+    }, []);
+    console.log("subjectData: ", subjectData);
+    console.log("bookmarkData: ", bookmarkData);
+    console.log("subjectData2: ", subjectData2);
+
     const { width: windowSize } = useWindowSize();
     const navigate = useNavigate();
 
@@ -119,12 +90,13 @@ const BoardHome = () => {
                     {renderBoardTitle("내가 수강 중인 과목", "subject")}
                     <SubjectWrapper>
                         <ScrollableSubjectList>
-                            {subjectData.map(({ subject }) => (
+                            {subjectData.map(({ id, name }) => (
                                 <SubjectList
-                                    key={subject}
-                                    subject={subject}
+                                    key={id}
+                                    subject={name}
+                                    id={id}
                                     marginLeft={"10px"}
-                                    onClick={() => handleSubjectClick(subject)}
+                                    onClick={() => handleSubjectClick(name)}
                                     actions={[]} // Optional actions
                                 />
                             ))}
@@ -134,12 +106,12 @@ const BoardHome = () => {
                     {renderBoardTitle("즐겨찾기", "bookmark")}
                     <SubjectWrapper>
                         <ScrollableSubjectList>
-                            {bookmarkData.map(({ bookmark }) => (
+                            {bookmarkData.map(({ id, name }) => (
                                 <SubjectList
-                                    key={bookmark}
-                                    subject={bookmark}
+                                    key={id}
+                                    subject={name}
                                     marginLeft={"10px"}
-                                    onClick={() => handleSubjectClick(bookmark)}
+                                    onClick={() => handleSubjectClick(name)}
                                     actions={[]} // Optional actions
                                 />
                             ))}
@@ -149,12 +121,12 @@ const BoardHome = () => {
                     {renderBoardTitle("수강했던 과목", "subject2")}
                     <SubjectWrapper>
                         <ScrollableSubjectList>
-                            {subjectData2.map(({ subject }) => (
+                            {subjectData2.map(({ id, name }) => (
                                 <SubjectList
-                                    key={subject}
-                                    subject={subject}
+                                    key={id}
+                                    subject={name}
                                     marginLeft={"10px"}
-                                    onClick={() => handleSubjectClick(subject)}
+                                    onClick={() => handleSubjectClick(name)}
                                     actions={[]} // Optional actions
                                 />
                             ))}
