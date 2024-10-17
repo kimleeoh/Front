@@ -17,7 +17,8 @@ const Bookmarks = () => {
     const [activeTab, setActiveTab] = useState("전체");
     const observerRef = useRef();
     const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
+    const [hasMore, setHasMore] = useState(false);
+    // hasMore가 true일 때 fetchMore() 할 수 있음. 지금은 false로 지정해놓고 백에서 데이터 보내는 형식 수정하면 그때 데이터가 더 있는지 없는지 판단하여 setHasMore(). 그래서 지금은 fetchMore()가 안 됨. A등급 제한 checker 눌렀을 때 생기는 오류를 방지하기 위함. fetchMore() 하고 싶으면 true로 설정해 주기만 하면 됨.
     const [isEmpty, setIsEmpty] = useState(false);
 
     const tabs = ["전체", "QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
@@ -118,7 +119,7 @@ const Bookmarks = () => {
     };
 
     const filteredQuestions = isAGradeOnly
-        ? questionData.filter((question) => question.limit === "true")
+        ? questionData.filter((question) => question.restricted_type === "true")
         : questionData;
 
     const handleFilterChange = (activeChips) => {

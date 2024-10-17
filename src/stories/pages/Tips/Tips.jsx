@@ -65,7 +65,7 @@ const Tips = ({
                                     overflow: "hidden",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
-                                    maxWidth: "80px",
+                                    maxWidth: "120px",
                                     display: "inline-block",
                                     verticalAlign: "middle",
                                     lineHeight: "1",
@@ -193,7 +193,7 @@ const MetaContainer = styled.div`
     align-items: center;
     margin-top: auto;
 
-    font-size: 12px;
+    font-size: 10px;
 `;
 
 const OutWrapper = styled.div`

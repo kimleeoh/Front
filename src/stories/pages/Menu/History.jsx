@@ -47,7 +47,7 @@ const History = () => {
     };
 
     const filteredQuestions = isAGradeOnly
-        ? questionData.filter((question) => question.limit === "true")
+        ? questionData.filter((question) => question.restricted_type === "true")
         : questionData;
 
     const handleFilterChange = (activeChips) => {
