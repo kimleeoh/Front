@@ -53,9 +53,14 @@ const EditBoardPage = () => {
             acc[item.subject] = item.id;
             return acc; // Add this line
         }, {});
+        let type;
 
         console.log("combinedArray: ", combinedArray);
+        if (title == "내가 수강 중인 과목") type = 1;
+        else if (title == "즐겨찾기") type = 2;
+        else type = 3;
         BaseAxios.post("/api/board/edit", {
+            type: type,
             subject: subjects,
         }).then((response) => {
             if (response.data == "OK") {
@@ -86,9 +91,14 @@ const EditBoardPage = () => {
             acc[item.subject] = item.id;
             return acc; // Add this line
         }, {});
+        let type;
 
         console.log("combinedArray: ", combinedArray);
+        if (title == "내가 수강 중인 과목") type = 1;
+        else if (title == "즐겨찾기") type = 2;
+        else type = 3;
         BaseAxios.post("/api/board/edit", {
+            type: type,
             subject: subjects,
         }).then((response) => {
             if (response.data == "OK") {
