@@ -20,7 +20,7 @@ import CarouselTemp from "./CarouselTemp";
 const PostCarousel = ({ posts }) => {
     return (
         <Wrapper>
-            <CarouselTemp>
+            <CarouselTemp width={'346px'} height={'109px'} showFraction={false}>
                 {posts.map((post, index) => (
                     <Post key={index} post={post} />
                 ))}
@@ -32,7 +32,7 @@ const PostCarousel = ({ posts }) => {
 export default PostCarousel;
 
 const Wrapper = styled.div`
-    width: 100%;
+    width: 346px;
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
@@ -55,6 +55,7 @@ const PostWrapper = styled.div`
     display: flex;
     width: 346px;
     height: 109px;
+    box-sizing: border-box;
     padding: 14px 18px;
     flex-direction: column;
     align-items: flex-start;

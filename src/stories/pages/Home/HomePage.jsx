@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Logo from "../OnBoarding/Logo";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
+import PostCarousel from "../../components/Common/PostCarousel";
 
 const NavBar = lazy(() => import("../../components/NavBar"));
 const FixedBottomContainer = lazy(
@@ -20,26 +21,30 @@ const HomePage = () => {
 
     const [originPoint, setOriginPoint] = useState(null);
     const [hasNewNotification, setHasNewNotification] = useState(false);
+    const [trendingPosts, setTrendingPosts] = useState([]);
 
     useEffect(() => {
-        const fetchPoint = async () => {
-            const fetchedPoint = await BaseAxios.get("/api/point");
-            setOriginPoint(fetchedPoint.data.point);
+        const fetchData = async () => {
+            try {
+                const [pointResponse, notificationResponse, trendingResponse] = await Promise.all([
+                    BaseAxios.get("/api/point"),
+                    BaseAxios.get("/api/notify/new", { send: false }),
+                    BaseAxios.get("/api/mypage/trending")
+                ]);
+
+                setOriginPoint(pointResponse.data.point);
+                setHasNewNotification(notificationResponse.data.newNotify);
+                setTrendingPosts(trendingResponse.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
         };
 
-        const checkNotification = async () => {
-            const response = await BaseAxios.get("/api/notify/new", {
-                send: false,
-            });
-            setHasNewNotification(response.data.newNotify); // true or false
-        };
-
-        fetchPoint();
-        checkNotification();
+        fetchData();
     }, []);
 
     if (originPoint === null) {
-        return <div>Loading...</div>; // Or any loading indicator
+        return <div>Loading...</div>;
     }
 
     return (
@@ -58,11 +63,10 @@ const HomePage = () => {
                         loading="lazy"
                     />
                     {hasNewNotification && <BlueDot />}
-                    {/* 알림이 있으면 파란 점 표시 */}
                 </NotificationButton>
             </Header>
-            <Content maxWidth={maxWidth}>{/* 메인 콘텐츠 */}
-
+            <Content maxWidth={maxWidth}>
+                <PostCarousel posts={trendingPosts} />
             </Content>
             <Suspense fallback={<div>Loading...</div>}>
                 <FixedBottomContainer>
@@ -74,6 +78,8 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+// ... (스타일 컴포넌트들은 이전과 동일하게 유지)
 
 const Wrapper = styled.div`
     display: flex;
