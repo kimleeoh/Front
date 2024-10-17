@@ -5,6 +5,7 @@ import useWindowSize from "./WindowSize";
 
 const SubjectList = ({
     subject,
+    id,
     actions,
     onClick,
     rate,
@@ -30,7 +31,7 @@ const SubjectList = ({
                         onClick={(e) => {
                             e.stopPropagation(); // 이벤트 버블링 방지
                             if (action.onClick) {
-                                action.onClick(subject); // 각 액션에 대한 onClick 함수 호출
+                                action.onClick(subject, id); // 각 액션에 대한 onClick 함수 호출
                             }
                         }}
                         style={{ marginLeft: action.marginLeft || "5px" }}

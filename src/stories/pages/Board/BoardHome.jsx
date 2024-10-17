@@ -42,9 +42,12 @@ const BoardHome = () => {
     const navigate = useNavigate();
 
     const handleSubjectClick = useCallback(
-        (subject) => {
+        (subject, id) => {
             console.log("Subject clicked:", subject);
-            navigate(`/board/${subject}`);
+            const encodedSubject = encodeURIComponent(subject);
+            navigate(`/board/${encodedSubject}`, {
+                state: { id: id },
+            });
         },
         [navigate]
     );
@@ -96,7 +99,7 @@ const BoardHome = () => {
                                     subject={name}
                                     id={id}
                                     marginLeft={"10px"}
-                                    onClick={() => handleSubjectClick(name)}
+                                    onClick={() => handleSubjectClick(name, id)}
                                     actions={[]} // Optional actions
                                 />
                             ))}

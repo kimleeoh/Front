@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BaseAxios from "../../../axioses/BaseAxios";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import NavBar from "../../components/NavBar";
@@ -11,229 +11,53 @@ import FixedIcon from "../../components/Common/FixedIcon";
 import TabNavigation from "../../components/Common/TabNavigation";
 import ChipFilter from "../../components/Common/ChipFilter";
 import Tips from "../Tips/Tips";
-
-const initialQuestionData = [
-    {
-        _id: "463846736919eqk876e4q91b9",
-        restricted_type: 1,
-        user_main: "글로벌미디어학부 이예진",
-        user_img: "",
-        user_badge_img: "",
-        Rnotifyusers_list: ["66add0ecd802d72c8a54be40"],
-        Ruser: "66add0ecd802d72c8a54be3d",
-        answer_list: [
-            {
-                Ranswer: "66add0ecd802d72c8a54be3e",
-                Ruser: "66add0ecd802d72c8a54be3f",
-                user_grade: "A+",
-                _id: "66add0ecd802d72c8a54be41",
-            },
-        ],
-        title: "나이키스트 원리 저 진짜 하나도 모르겠어서 혼란스러운데 어떻게 안 될까요?",
-        content: "나이키스트 관련 식 이렇게 이해하면 되나요?",
-        img: [
-            "/Icons/1607-2.jpg",
-            "/Icons/22376525_6628724.jpg",
-            "/Icons/1607-2.jpg",
-            "/Icons/22376525_6628724.jpg",
-            "/Icons/1607-2.jpg",
-            "/Icons/22376525_6628724.jpg",
-            "/Icons/1607-2.jpg",
-            "/Icons/22376525_6628724.jpg",
-            "/Icons/1607-2.jpg",
-            "/Icons/22376525_6628724.jpg",
-        ],
-        now_category_list: [
-            "전공선택별",
-            "IT대",
-            "글로벌미디어학부",
-            "디지털미디어원리",
-        ],
-        picked_index: 0,
-        scrap: 0,
-        time: "2024-08-12T10:21:34.123Z",
-        views: 30,
-        like: 20,
-        warn: 0,
-    },
-    {
-        _id: "7962156648w19eqk878e268qb",
-        restricted_type: 2,
-        user_main: "글로벌미디어학부 오준우",
-        user_img: "",
-        user_badge_img: "",
-        Rnotifyusers_list: ["66add0ecd802d72c8a54be40"],
-        Ruser: "66add0ecd802d72c8a54be3d",
-        answer_list: [
-            {
-                Ranswer: "66add0ecd802d72c8a54be3e",
-                Ruser: "66add0ecd802d72c8a54be3f",
-                user_grade: "A+",
-                _id: "66add0ecd802d72c8a54be41",
-            },
-        ],
-        title: "자료구조",
-        content:
-            "스택이랑 큐의 차이점을 자세히 설명해 주세요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ",
-        img: "/Icons/1607-2.jpg",
-        now_category_list: [
-            "전공선택별",
-            "IT대",
-            "글로벌미디어학부",
-            "컴퓨터시스템개론",
-        ],
-        picked_index: 0,
-        scrap: 0,
-        time: "2024-08-13T10:21:34.123Z",
-        views: 88,
-        like: 48,
-        warn: 0,
-    },
-    {
-        _id: "46848w9e98w19eqk878e2ea434",
-        restricted_type: 0,
-        user_main: "글로벌미디어학부 이동현",
-        user_img: "",
-        user_badge_img: "",
-        Rnotifyusers_list: ["66add0ecd802d72c8a54be40"],
-        Ruser: "66add0ecd802d72c8a54be3d",
-        answer_list: [
-            {
-                Ranswer: "66add0ecd802d72c8a54be3e",
-                Ruser: "66add0ecd802d72c8a54be3f",
-                user_grade: "A+",
-                _id: "66add0ecd802d72c8a54be41",
-            },
-        ],
-        title: "미디어제작및실습 포토샵",
-        content:
-            "포토샵 재학생 인증 어떻게 하나요?? 알려주시면 좋은 행운이 찾아올 거예요~",
-        img: "",
-        now_category_list: [
-            "전공선택별",
-            "IT대",
-            "글로벌미디어학부",
-            "미디어제작및실습",
-        ],
-        picked_index: 0,
-        scrap: 0,
-        time: "2024-08-14T05:45:30.246Z",
-        views: 302,
-        like: 12,
-        warn: 0,
-    },
-    {
-        _id: "66add0ecd802d72c8a54be3c",
-        restricted_type: 0,
-        user_main: "글로벌미디어학부 김난슬",
-        user_img: "",
-        user_badge_img: "",
-        Rnotifyusers_list: ["66add0ecd802d72c8a54be40"],
-        Ruser: "66add0ecd802d72c8a54be3d",
-        answer_list: [
-            {
-                Ranswer: "66add0ecd802d72c8a54be3e",
-                Ruser: "66add0ecd802d72c8a54be3f",
-                user_grade: "A+",
-                _id: "66add0ecd802d72c8a54be41",
-            },
-        ],
-        content: "내용",
-        img: ["/Icons/22376525_6628724.jpg", "/Icons/1607-2.jpg"],
-        like: 0,
-        now_category_list: [
-            "전공선택별",
-            "IT대",
-            "글로벌미디어학부",
-            "디지털미디어원리",
-        ],
-        picked_index: 0,
-        scrap: 0,
-        time: "2024-08-03T06:40:44.828Z",
-        title: "몰라",
-        views: 0,
-        warn: 0,
-    },
-];
-
-const initialTipsData = [
-    {
-        _id: "48578979aeb59a6b4e9668",
-        name: "김난슬",
-        major: "글로벌미디어학부",
-        subject: "디지털미디어원리",
-        title: "디미원 전공책 150 페이지 필기본 올립니다",
-        content: "학생분들에게 도움이 되길 바랍니다",
-        time: "2024-08-12T10:21:34.123Z",
-        views: 30,
-        img: ["/Icons/1607-2.jpg", "/Icons/22376525_6628724.jpg"],
-        filter: "필기공유",
-    },
-    {
-        _id: "789516539dib587bb4e9w88",
-        name: "오준우",
-        major: "글로벌미디어학부",
-        subject: "컴퓨터시스템개론",
-        title: "OOO교수님 수업",
-        content: "+ 항상 채워주십니다. 진짜 최고예요 ㅠㅠ",
-        time: "2024-08-13T10:21:34.123Z",
-        views: 88,
-        img: "/Icons/1607-2.jpg",
-        filter: "수업꿀팁",
-    },
-    {
-        _id: "1297268189apq577bb4e609e",
-        name: "이예진",
-        major: "글로벌미디어학부",
-        subject: "화장실론",
-        title: "숭실대 화장실 등급",
-        content:
-            "숭실대 건물들 화장실의 등급을 나눠봤습니다. 이용하실 때 참고 바랍니다.",
-        time: "2024-08-14T05:45:30.246Z",
-        views: 30,
-        img: "/Icons/1607-2.jpg",
-        filter: "수업꿀팁",
-    },
-];
+import useWindowSize from "../../components/Common/WindowSize";
 
 const UnifiedBoard = () => {
     const { subject } = useParams();
+    const { state } = useLocation();
     const [questionData, setQuestionData] = useState([]);
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
     const [tipsData, setTipsData] = useState([]);
     const [filteredTips, setFilteredTips] = useState([]);
     const [activeTab, setActiveTab] = useState("QnA");
 
+    const { width: windowSize } = useWindowSize();
+
+    const fetchApi = async (filtersArray) => {
+        try {
+            console.log("Sending filters:", filtersArray);
+            console.log("id: ", state.id);
+            const response = await BaseAxios.post("/api/board/detail", {
+                subjectId: state.id,
+                filters: filtersArray,
+            });
+            console.log("response: ", response);
+            return response.data;
+        } catch (error) {
+            console.error("Error in fetchApi:", error);
+            throw error;
+        }
+    };
+
+    const fetchData = async (filtersArray = null) => {
+        try {
+            let questionResponse, tipsResponse;
+            if (filtersArray) {
+                tipsResponse = await fetchApi(filtersArray);
+            } else if (activeTab === "QnA") {
+                questionResponse = await fetchApi(["qna"]);
+            } else {
+                tipsResponse = await fetchApi(["test", "pilgy", "honey"]);
+            }
+        } catch (error) {
+            console.error("Error fetching question data:", error);
+        }
+    };
+
     useEffect(() => {
-        // 데이터 로딩 로직
-        const loadData = () => {
-            localStorage.removeItem("questionData");
-            const questionData = localStorage.getItem("questionData");
-            setQuestionData(
-                questionData ? JSON.parse(questionData) : initialQuestionData
-            );
-
-            localStorage.removeItem("TipsData");
-            const tipsData = localStorage.getItem("TipsData");
-            setTipsData(tipsData ? JSON.parse(tipsData) : initialTipsData);
-            setFilteredTips(tipsData ? JSON.parse(tipsData) : initialTipsData);
-        };
-        loadData();
+        fetchData();
     }, []);
-
-    // const fetchData = async () => {
-    //     try {
-    //         const result = await BaseAxios.get('/api/dummy/qna');
-    //         setQuestionData([result.data]);
-    //         console.log(result.data)
-    //     } catch (error) {
-    //         console.error('Error fetching question data:', error);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     fetchData()
-    // }, []);
 
     const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
@@ -275,12 +99,12 @@ const UnifiedBoard = () => {
             />
             {activeTab === "QnA" && (
                 <>
-                    <div style={{ width: "380px" }}>
+                    <CheckerWrapper maxWidth={windowSize}>
                         <Checker
                             text={"A등급 제한"}
                             onChange={handleCheckerChange}
                         />
-                    </div>
+                    </CheckerWrapper>
                     {filteredQuestions
                         .filter(
                             (question) =>
@@ -318,7 +142,9 @@ const UnifiedBoard = () => {
             )}
             {activeTab === "Tips" && (
                 <>
-                    <ChipFilter onFilterChange={handleFilterChange} />
+                    <ChipFilterWrapper maxWidth={windowSize}>
+                        <ChipFilter onFilterChange={handleFilterChange} />
+                    </ChipFilterWrapper>
                     {filteredTips
                         .filter((tip) => tip.subject === subject)
                         .map((tip) => (
@@ -359,4 +185,19 @@ const Wrapper = styled.div`
     align-items: center;
     margin-top: 120px;
     margin-bottom: 100px;
+`;
+
+const CheckerWrapper = styled.div`
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    padding-left: 10px;
+    box-sizing: border-box;
+`;
+
+const ChipFilterWrapper = styled.div`
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+    padding-left: 10px;
+    padding-top: 10px;
+    box-sizing: border-box;
 `;
