@@ -9,6 +9,7 @@ import Checker from "../../components/Common/Checker";
 import ImageUploadButton from "../Confirmation/ImageUploadButton";
 import useWindowSize from "../../components/Common/WindowSize";
 import TextField from "../../components/TextField";
+import SelectBoard from "../../components/Common/SelectBoard";
 
 const GradeRegister = () => {
     const Grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "F"];
@@ -156,6 +157,8 @@ const GradeRegister = () => {
         }
     };
 
+    // 데이터 구조 정해지면 selectBoard용 함수 필요
+
     const { width: windowSize } = useWindowSize();
 
     return (
@@ -194,18 +197,12 @@ const GradeRegister = () => {
                         </SubjectItem>
                         {subjects.map((subject, index) => (
                             <SubjectItem key={index}>
-                                <TextField
-                                    value={subject.name}
-                                    onChange={(e) =>
-                                        handleSubjectNameChange(
-                                            index,
-                                            e.target.value
-                                        )
-                                    }
-                                    label="과목명"
-                                    width={"200px"}
-                                    height={"30px"}
-                                />
+                                <SelectBoardWrapper>
+                                    <SelectBoard 
+                                        placeholder={'과목 선택'}
+                                        onChange={() => {}}
+                                    />
+                                </SelectBoardWrapper>
 
                                 <Picker
                                     items={Grades}
@@ -363,3 +360,8 @@ const NoSelectionMessage = styled.div`
     font-size: 16px;
     font-weight: bold;
 `;
+
+const SelectBoardWrapper = styled.div`
+    display: flex;
+    width: 200px;
+`

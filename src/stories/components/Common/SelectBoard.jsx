@@ -157,6 +157,7 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
         const savedData = submitHistoryId.map((id, index) => ({
             [id]: categoryHistoryName[index],
         }));
+        console.log("savedData: ", savedData);
         setIsOpen(false);
         setIsBottomSheetVisible(false);
         onChange(savedData);
@@ -294,6 +295,9 @@ const DropdownHeader = styled.div`
     align-items: center;
     cursor: pointer;
     color: #434b60;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
 `;
 
 const ArrowIcon = styled.span`
