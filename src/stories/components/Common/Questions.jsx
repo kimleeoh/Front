@@ -167,7 +167,17 @@ const Questions = ({
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span style={{ color: "#434b60" }}>
+                        <span
+                            style={{
+                                color: "#434b60",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "5px", // Adds spacing between elements
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                            }}
+                        >
                             {getTimeElapsed(time)} |{" "}
                             <span
                                 style={{
@@ -176,8 +186,6 @@ const Questions = ({
                                     whiteSpace: "nowrap",
                                     maxWidth: "50px",
                                     display: "inline-block",
-                                    verticalAlign: "middle",
-                                    lineHeight: "1",
                                 }}
                             >
                                 {subject}

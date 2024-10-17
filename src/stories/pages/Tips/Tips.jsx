@@ -57,7 +57,17 @@ const Tips = ({
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span style={{ color: "#434b60" }}>
+                        <span
+                            style={{
+                                color: "#434b60",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "5px", // Adds spacing between elements
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                            }}
+                        >
                             {" "}
                             {getTimeElapsed(time)} |{" "}
                             <span
@@ -67,14 +77,11 @@ const Tips = ({
                                     whiteSpace: "nowrap",
                                     maxWidth: "120px",
                                     display: "inline-block",
-                                    verticalAlign: "middle",
-                                    lineHeight: "1",
                                 }}
                             >
-                                {" "}
-                                {category_name}{" "}
+                                {category_name}
                             </span>{" "}
-                            | {conversion(category_type)} | 조회수 {views}{" "}
+                            | {conversion(category_type)} | 조회수 {views}
                         </span>
                         <span
                             style={{
