@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Popup from "../Popup";
 
@@ -8,6 +8,7 @@ const MeatballMenu = ({ _id, categories }) => {
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
     const menuRef = useRef(null);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleTogglePopup = () => {
         if (!isPopupOpen) {
@@ -28,6 +29,20 @@ const MeatballMenu = ({ _id, categories }) => {
     const handleReportClick = () => {
         navigate(`/${categories}/${_id}/report`);
         setIsPopupOpen(false);
+    };
+
+    const handleCopyLink = () => {
+        const currentUrl = window.location.origin + location.pathname;
+        navigator.clipboard.writeText(currentUrl)
+        setIsPopupOpen(false);
+            // .then(() => {
+            //     alert("링크가 클립보드에 복사되었습니다.");
+            //     setIsPopupOpen(false);
+            // })
+            // .catch(err => {
+            //     console.error('링크 복사 실패:', err);
+            //     alert("링크 복사에 실패했습니다. 다시 시도해주세요.");
+            // });
     };
 
     useEffect(() => {
@@ -55,8 +70,7 @@ const MeatballMenu = ({ _id, categories }) => {
                     onClose={() => setIsPopupOpen(false)}
                 >
                     <MenuItem onClick={handleReportClick}>신고하기</MenuItem>
-                    <MenuItem>링크 복사하기</MenuItem>
-                    <MenuItem>Option 3</MenuItem>
+                    <MenuItem onClick={handleCopyLink}>링크 복사하기</MenuItem>
                 </Popup>
             )}
         </div>
@@ -97,9 +111,9 @@ const MenuItem = styled.div`
     cursor: pointer;
     transition: all 0.3s ease;
     &:hover {
-        background-color: #e2e5e9;
+        background-color: rgba(0, 0, 0, 0.1);
     }
     &:active {
-        transform: scale(0.98);
+        transform: scale(0.95);
     }
 `;
