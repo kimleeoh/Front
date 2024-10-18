@@ -26,11 +26,12 @@ const HomePage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [pointResponse, notificationResponse, trendingResponse] = await Promise.all([
-                    BaseAxios.get("/api/point"),
-                    BaseAxios.get("/api/notify/new", { send: false }),
-                    BaseAxios.get("/api/mypage/trending")
-                ]);
+                const [pointResponse, notificationResponse, trendingResponse] =
+                    await Promise.all([
+                        BaseAxios.get("/api/point"),
+                        BaseAxios.get("/api/notify/new", { send: false }),
+                        BaseAxios.get("/api/mypage/trending"),
+                    ]);
 
                 setOriginPoint(pointResponse.data.point);
                 setHasNewNotification(notificationResponse.data.newNotify);

@@ -12,9 +12,11 @@ const MeatballMenu = ({ _id, categories }) => {
     const handleTogglePopup = () => {
         if (!isPopupOpen) {
             const rect = menuRef.current.getBoundingClientRect();
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-            
+            const scrollTop =
+                window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft =
+                window.pageXOffset || document.documentElement.scrollLeft;
+
             setPopupPosition({
                 top: rect.bottom + scrollTop,
                 left: rect.right - 195 + scrollLeft,

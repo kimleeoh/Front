@@ -18,47 +18,63 @@ const Bookmarks = () => {
     const [activeTab, setActiveTab] = useState("전체");
     const observerRef = useRef();
     const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(false);
-    // hasMore가 true일 때 fetchMore() 할 수 있음. 지금은 false로 지정해놓고 백에서 데이터 보내는 형식 수정하면 그때 데이터가 더 있는지 없는지 판단하여 setHasMore(). 그래서 지금은 fetchMore()가 안 됨. A등급 제한 checker 눌렀을 때 생기는 오류를 방지하기 위함. fetchMore() 하고 싶으면 true로 설정해 주기만 하면 됨.
+    const [nowChips, setNowChips] = useState([]);
     const [isEmpty, setIsEmpty] = useState(false);
 
     const tabs = ["전체", "QnA", "Tips"];
 
     const { width: windowSize } = useWindowSize();
 
-    const fetchApi = async (filtersArray) => {
+    const fetchApi = async ({ filtersArray, lastDocTime }) => {
         try {
             console.log("Sending filters:", filtersArray);
-            const response = await BaseAxios.post("/api/menu/scraplist", {
-                filters: filtersArray,
-            });
-            if (response.data.message) {
-                setIsEmpty(true);
-                return;
+            console.log("lastDocTime: ", lastDocTime);
+            if (lastDocTime) {
+                const response = await BaseAxios.post("/api/menu/scraplist", {
+                    filters: filtersArray,
+                    lastDocTime: lastDocTime,
+                });
+
+                if (response.data.message) {
+                    setIsEmpty(true);
+                    return;
+                }
+                console.log("response:", response);
+                return response.data; // Return response data
             }
-            console.log("response:", response);
-            return response.data; // Return response data
         } catch (error) {
             console.error("Error in fetchApi:", error);
             throw error;
         }
     };
 
-    const fetchData = async (filtersArray = null) => {
+    const fetchData = async (filtersArray = null, lastDocTime = []) => {
         try {
             setLoading(true);
             let questionResponse, tipsResponse;
-            if (filtersArray) {
-                tipsResponse = await fetchApi(filtersArray);
-            } else if (activeTab === "전체") {
+            if (filtersArray?.length > 0) {
+                tipsResponse = await fetchApi({
+                    filtersArray: filtersArray,
+                    lastDocTime,
+                });
+            } else if (!filtersArray && activeTab === "전체") {
                 [questionResponse, tipsResponse] = await Promise.all([
-                    fetchApi(["qna"]),
-                    fetchApi(["test", "pilgy", "honey"]),
+                    fetchApi({ filtersArray: ["qna"], lastDocTime }),
+                    fetchApi({
+                        filtersArray: ["test", "pilgy", "honey"],
+                        lastDocTime,
+                    }),
                 ]);
-            } else if (activeTab === "QnA") {
-                questionResponse = await fetchApi(["qna"]);
+            } else if (!filtersArray && activeTab === "QnA") {
+                questionResponse = await fetchApi({
+                    filtersArray: ["qna"],
+                    lastDocTime,
+                });
             } else {
-                tipsResponse = await fetchApi(["test", "pilgy", "honey"]);
+                tipsResponse = await fetchApi({
+                    filtersArray: ["test", "pilgy", "honey"],
+                    lastDocTime,
+                });
             }
 
             if (!isEmpty && questionResponse?.documents.length) {
@@ -80,8 +96,12 @@ const Bookmarks = () => {
     };
 
     const fetchMore = () => {
-        if (!loading && hasMore) {
-            fetchData();
+        if (!loading && activeTab == "Tips") {
+            const lastTip = tipsData[tipsData.length - 1];
+            const lastDocTime = lastTip?.time || null;
+
+            console.log("Fetching more with lastDocTime:", lastDocTime);
+            fetchData(nowChips, lastDocTime); // Pass the last document's time
         }
     };
 
@@ -92,7 +112,7 @@ const Bookmarks = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting && hasMore && !loading) {
+                if (entries[0].isIntersecting && !loading) {
                     console.log("fetchMore !");
                     fetchMore(); // Fetch more data when reaching the bottom
                 }
@@ -105,7 +125,7 @@ const Bookmarks = () => {
         return () => {
             if (observerRef.current) observer.unobserve(observerRef.current);
         };
-    }, [hasMore, loading]);
+    }, [loading]);
 
     const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
@@ -114,6 +134,7 @@ const Bookmarks = () => {
     const handleTabChange = (tab) => {
         setActiveTab(tab);
         // 늦게 반영되므로 데이터 뭐가 들었는지 보고 싶으면 아래 두 개 주석 처리
+        setNowChips([]);
         setQuestionData([]);
         setTipsData([]);
         setIsEmpty(false);
@@ -125,7 +146,9 @@ const Bookmarks = () => {
 
     const handleFilterChange = (activeChips) => {
         setTipsData([]);
-        setHasMore(true);
+        setNowChips(
+            activeChips.length === 0 ? ["test", "pilgy", "honey"] : activeChips
+        );
         fetchData(
             activeChips.length === 0 ? ["test", "pilgy", "honey"] : activeChips
         );
@@ -191,7 +214,8 @@ const Bookmarks = () => {
                                 ][
                                     Object.keys(
                                         question.now_category_list[
-                                            question.now_category_list.length - 1
+                                            question.now_category_list.length -
+                                                1
                                         ]
                                     )[0]
                                 ]
@@ -244,7 +268,8 @@ const Bookmarks = () => {
                                 ][
                                     Object.keys(
                                         question.now_category_list[
-                                            question.now_category_list.length - 1
+                                            question.now_category_list.length -
+                                                1
                                         ]
                                     )[0]
                                 ]

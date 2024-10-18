@@ -8,7 +8,7 @@ import CarouselTemp from "./CarouselTemp";
 
 // const App = () => {
 //   const posts = [ /* 여기에 res 예시 데이터 배열 */ ];
-  
+
 //   return (
 //     <div>
 //       <PostCarousel posts={posts} />
@@ -16,11 +16,10 @@ import CarouselTemp from "./CarouselTemp";
 //   );
 // };
 
-
 const PostCarousel = ({ posts }) => {
     return (
         <Wrapper>
-            <CarouselTemp width={'346px'} height={'109px'} showFraction={false}>
+            <CarouselTemp width={"346px"} height={"109px"} showFraction={false}>
                 {posts.map((post, index) => (
                     <Post key={index} post={post} />
                 ))}
@@ -62,7 +61,7 @@ const PostWrapper = styled.div`
     gap: 2px;
     flex-shrink: 0;
     border-radius: 18px;
-    background: #FFF;
+    background: #fff;
 `;
 
 const Title = styled.div`
@@ -72,7 +71,7 @@ const Title = styled.div`
     flex-direction: column;
     justify-content: center;
     flex-shrink: 0;
-    color: var(--Palate2_sub1, #434B60);
+    color: var(--Palate2_sub1, #434b60);
     font-family: Inter;
     font-size: 12px;
     font-style: normal;
@@ -87,7 +86,7 @@ const Content = styled.div`
     flex-direction: column;
     justify-content: center;
     flex-shrink: 0;
-    color: var(--Palate2_sub2, #ACB2BB);
+    color: var(--Palate2_sub2, #acb2bb);
     font-family: Inter;
     font-size: 10px;
     font-style: normal;
@@ -106,7 +105,7 @@ const TimeAndViews = styled.div`
 `;
 
 const Time = styled.div`
-    color: var(--Palate2_sub2, #ACB2BB);
+    color: var(--Palate2_sub2, #acb2bb);
     font-family: Inter;
     font-size: 10px;
     font-style: normal;
@@ -115,7 +114,7 @@ const Time = styled.div`
 `;
 
 const Views = styled.div`
-    color: var(--Palate2_sub2, #ACB2BB);
+    color: var(--Palate2_sub2, #acb2bb);
     font-family: Inter;
     font-size: 10px;
     font-style: normal;

@@ -249,7 +249,9 @@ const QnAPage = () => {
                     title={post.title}
                     content={post.content}
                     subject={
-                        post.now_category_list[post.now_category_list.length - 1]
+                        post.now_category_list[
+                            post.now_category_list.length - 1
+                        ]
                     }
                     time={post.time}
                     views={post.views}

@@ -37,7 +37,7 @@ const Searching = () => {
         // 컴포넌트 마운트 시 실행
         tempAlert();
     }, []);
-    
+
     return (
         <Wrapper>
             <Header text="" searchButton={false}>
