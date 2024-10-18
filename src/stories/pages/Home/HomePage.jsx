@@ -22,30 +22,50 @@ const HomePage = () => {
     const [originPoint, setOriginPoint] = useState(null);
     const [hasNewNotification, setHasNewNotification] = useState(false);
     const [trendingPosts, setTrendingPosts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [pointResponse, notificationResponse, trendingResponse] =
-                    await Promise.all([
-                        BaseAxios.get("/api/point"),
-                        BaseAxios.get("/api/notify/new", { send: false }),
-                        BaseAxios.get("/api/mypage/trending"),
-                    ]);
+                setIsLoading(true);
+                setError(null);
+
+                const [pointResponse, notificationResponse, trendingResponse] = await Promise.all([
+                    BaseAxios.get("/api/point"),
+                    BaseAxios.get("/api/notify/new", { send: false }),
+                    BaseAxios.get("/api/home/trending-tips")
+                ]);
 
                 setOriginPoint(pointResponse.data.point);
                 setHasNewNotification(notificationResponse.data.newNotify);
-                setTrendingPosts(trendingResponse.data);
+                
+                // Ensure trendingResponse.data is an array
+                if (Array.isArray(trendingResponse.data)) {
+                    setTrendingPosts(trendingResponse.data);
+                } else if (trendingResponse.data && Array.isArray(trendingResponse.data.posts)) {
+                    setTrendingPosts(trendingResponse.data.posts);
+                } else {
+                    console.error("Unexpected data structure:", trendingResponse.data);
+                    setTrendingPosts([]);
+                }
             } catch (error) {
                 console.error("Error fetching data:", error);
+                setError("데이터를 불러오는 중 오류가 발생했습니다.");
+            } finally {
+                setIsLoading(false);
             }
         };
 
         fetchData();
     }, []);
 
-    if (originPoint === null) {
+    if (isLoading) {
         return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
     }
 
     return (
@@ -67,7 +87,11 @@ const HomePage = () => {
                 </NotificationButton>
             </Header>
             <Content maxWidth={maxWidth}>
-                <PostCarousel posts={trendingPosts} />
+                {trendingPosts.length > 0 ? (
+                    <PostCarousel posts={trendingPosts} />
+                ) : (
+                    <PostCarousel />
+                )}
             </Content>
             <Suspense fallback={<div>Loading...</div>}>
                 <FixedBottomContainer>
@@ -79,8 +103,6 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-// ... (스타일 컴포넌트들은 이전과 동일하게 유지)
 
 const Wrapper = styled.div`
     display: flex;

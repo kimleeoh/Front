@@ -6,7 +6,7 @@ const CarouselTemp = ({
     children,
     width,
     height,
-    gap = "0px",
+    gap = "0px", // 지금 gap 제대로 적용 안되는 문제 있음
     autoPlay = true,
     autoPlayInterval = 5000,
     showBullets = true,
