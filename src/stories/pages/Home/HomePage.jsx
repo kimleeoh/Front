@@ -21,6 +21,7 @@ const HomePage = () => {
 
     const [originPoint, setOriginPoint] = useState(null);
     const [hasNewNotification, setHasNewNotification] = useState(false);
+    const [answerablePosts, setAnswerablePosts] = useState([]);
     const [trendingTips, settrendingTips] = useState([]);
     const [trendingQna, settrendingQna] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -32,15 +33,23 @@ const HomePage = () => {
                 setIsLoading(true);
                 setError(null);
 
-                const [pointResponse, notificationResponse, trendingTipsResponse, trendingQnaResponse] = await Promise.all([
+                const [pointResponse, notificationResponse, trendingTipsResponse, trendingQnaResponse, answerablePostsResponse] = await Promise.all([
                     BaseAxios.get("/api/point"),
                     BaseAxios.get("/api/notify/new", { send: false }),
                     BaseAxios.post("/api/home/trending-tips"),
-                    BaseAxios.post("/api/home/trending-qna")
+                    BaseAxios.post("/api/home/trending-qna"),
+                    BaseAxios.post("/api/home/answer-possible"),
                 ]);
 
                 setOriginPoint(pointResponse.data.point);
                 setHasNewNotification(notificationResponse.data.newNotify);
+
+                if (Array.isArray(answerablePostsResponse.data)) {
+                    setAnswerablePosts(answerablePostsResponse.data);
+                } else {
+                    console.error("Unexpected data structure:", answerablePostsResponse.data);
+                    setAnswerablePosts([]);
+                }
                 
                 // Ensure trendingTipsResponse.data is an array
                 if (Array.isArray(trendingTipsResponse.data)) {
@@ -100,6 +109,13 @@ const HomePage = () => {
                 </NotificationButton>
             </Header>
             <Content maxWidth={maxWidth}>
+                <Title>내가 답할 수 있는 게시물</Title>
+                {answerablePosts.length > 0 ? (
+                    <PostCarousel posts={answerablePosts} />
+                ) : (
+                    <PostCarousel />
+                )}
+
                 <Title>내 게시판에서 현재 인기있는 게시물</Title>
                 {trendingTips.length > 0 ? (
                     <PostCarousel posts={trendingTips} />

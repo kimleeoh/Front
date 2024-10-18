@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Questions from "../../components/Common/Questions";
+import MyQuestions from "./My/MyQuestions";
 import Checker from "../../components/Common/Checker";
 import TabNavigation from "../../components/Common/TabNavigation";
 import ChipFilter from "../../components/Common/ChipFilter";
@@ -159,7 +160,7 @@ const MyBoard = () => {
                         const value =
                             lastCategory[Object.keys(lastCategory)[0]];
                         return (
-                            <Questions
+                            <MyQuestions
                                 _id={question._id}
                                 title={question.title}
                                 content={question.content}
