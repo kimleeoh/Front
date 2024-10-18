@@ -21,7 +21,8 @@ const HomePage = () => {
 
     const [originPoint, setOriginPoint] = useState(null);
     const [hasNewNotification, setHasNewNotification] = useState(false);
-    const [trendingPosts, setTrendingPosts] = useState([]);
+    const [trendingTips, settrendingTips] = useState([]);
+    const [trendingQna, settrendingQna] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -31,24 +32,36 @@ const HomePage = () => {
                 setIsLoading(true);
                 setError(null);
 
-                const [pointResponse, notificationResponse, trendingResponse] = await Promise.all([
+                const [pointResponse, notificationResponse, trendingTipsResponse, trendingQnaResponse] = await Promise.all([
                     BaseAxios.get("/api/point"),
                     BaseAxios.get("/api/notify/new", { send: false }),
-                    BaseAxios.get("/api/home/trending-tips")
+                    BaseAxios.get("/api/home/trending-tips"),
+                    BaseAxios.get("/api/home/trending-qna")
                 ]);
 
                 setOriginPoint(pointResponse.data.point);
                 setHasNewNotification(notificationResponse.data.newNotify);
                 
-                // Ensure trendingResponse.data is an array
-                if (Array.isArray(trendingResponse.data)) {
-                    setTrendingPosts(trendingResponse.data);
-                } else if (trendingResponse.data && Array.isArray(trendingResponse.data.posts)) {
-                    setTrendingPosts(trendingResponse.data.posts);
+                // Ensure trendingTipsResponse.data is an array
+                if (Array.isArray(trendingTipsResponse.data)) {
+                    settrendingTips(trendingTipsResponse.data);
+                } else if (trendingTipsResponse.data && Array.isArray(trendingTipsResponse.data.posts)) {
+                    settrendingTips(trendingTipsResponse.data.posts);
                 } else {
-                    console.error("Unexpected data structure:", trendingResponse.data);
-                    setTrendingPosts([]);
+                    console.error("Unexpected data structure:", trendingTipsResponse.data);
+                    settrendingTips([]);
                 }
+
+                // Ensure trendingQnaResponse.data is an array
+                if (Array.isArray(trendingQnaResponse.data)) {
+                    settrendingQna(trendingQnaResponse.data);
+                } else if (trendingQnaResponse.data && Array.isArray(trendingQnaResponse.data.posts)) {
+                    settrendingQna(trendingQnaResponse.data.posts);
+                } else {
+                    console.error("Unexpected data structure:", trendingQnaResponse.data);
+                    settrendingQna([]);
+                }
+                
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setError("데이터를 불러오는 중 오류가 발생했습니다.");
@@ -87,8 +100,16 @@ const HomePage = () => {
                 </NotificationButton>
             </Header>
             <Content maxWidth={maxWidth}>
-                {trendingPosts.length > 0 ? (
-                    <PostCarousel posts={trendingPosts} />
+                <Title>내 게시판에서 현재 인기있는 게시물</Title>
+                {trendingTips.length > 0 ? (
+                    <PostCarousel posts={trendingTips} />
+                ) : (
+                    <PostCarousel />
+                )}
+
+                <Title>인기있는 Q&A</Title>
+                {trendingQna.length > 0 ? (
+                    <PostCarousel posts={trendingQna} />
                 ) : (
                     <PostCarousel />
                 )}
@@ -194,6 +215,22 @@ const Content = styled.div`
     box-sizing: border-box;
     width: 100%;
     max-width: ${(props) => props.maxWidth};
-    padding: 20px;
     text-align: center;
+`;
+
+const Title = styled.div`
+    display: flex;
+    width: 300px;
+    height: 38px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #434b60;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: left;
+    margin-left: 30px;
+    white-space: nowrap;
 `;
