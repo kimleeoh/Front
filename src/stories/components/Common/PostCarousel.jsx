@@ -19,6 +19,7 @@ const PostCarousel = ({ posts = DEFAULT_POSTS }) => {
             <CarouselTemp 
                 width={"346px"} 
                 height={"109px"} 
+                gap="30px"
                 showFraction={false}
                 showBullets={showControls}
                 showArrows={showControls}
@@ -57,7 +58,7 @@ const Post = ({ post }) => {
             <Title>{post.title}</Title>
             <Content>{post.content}</Content>
             <TimeAndViews>
-                <Time>{post.time ? new Date(post.time).toLocaleString() : ''}</Time>
+                <Time>{post.time ? timeDifference(post.time) : ''}</Time>
                 <Views>{post.views !== null ? `Views: ${post.views}` : ''}</Views>
             </TimeAndViews>
         </PostWrapper>
@@ -149,3 +150,20 @@ const Views = styled.div`
     font-weight: 700;
     line-height: normal;
 `;
+
+const timeDifference = (timestamp) => {
+    const now = new Date();
+    const pastDate = new Date(timestamp);
+    const timeDiff = Math.floor((now - pastDate) / 1000);
+
+    if (timeDiff < 60) return `${timeDiff}초 전`;
+    if (timeDiff < 3600) return `${Math.floor(timeDiff / 60)}분 전`;
+    if (timeDiff < 86400) return `${Math.floor(timeDiff / 3600)}시간 전`;
+    if (timeDiff < 86400 * 60) return `${Math.floor(timeDiff / 86400)}일 전`;
+
+    // 60일 이상 경과한 경우 년도와 월일을 출력
+    const year = pastDate.getFullYear();
+    const month = String(pastDate.getMonth() + 1).padStart(2, "0");
+    const day = String(pastDate.getDate()).padStart(2, "0");
+    return `${year}년 ${month}월 ${day}일`;
+};

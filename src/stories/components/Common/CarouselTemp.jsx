@@ -6,7 +6,7 @@ const CarouselTemp = ({
     children,
     width,
     height,
-    gap = "0px", // 지금 gap 제대로 적용 안되는 문제 있음
+    gap = "0px", // 슬라이드 간격
     autoPlay = true,
     autoPlayInterval = 5000,
     showBullets = true,
@@ -124,7 +124,7 @@ const CarouselTemp = ({
                 >
                     <SlideContainer
                         style={{
-                            transform: `translateX(calc(-${currentSlide * 100}% + ${translateX}px))`,
+                            transform: `translateX(calc(-${currentSlide * 100}% - ${currentSlide * parseFloat(gap)}px + ${translateX}px))`,
                             transition: isDragging
                                 ? "none"
                                 : "transform 0.3s ease-in-out",
