@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Popup from "../Popup";
 
-const MeatballMenu = ({ _id, categories }) => {
+const MeatballMenu = ({ _id, categories, mine=false}) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
     const menuRef = useRef(null);
@@ -33,16 +33,23 @@ const MeatballMenu = ({ _id, categories }) => {
 
     const handleCopyLink = () => {
         const currentUrl = window.location.origin + location.pathname;
-        navigator.clipboard.writeText(currentUrl)
+        navigator.clipboard.writeText(currentUrl);
         setIsPopupOpen(false);
-            // .then(() => {
-            //     alert("링크가 클립보드에 복사되었습니다.");
-            //     setIsPopupOpen(false);
-            // })
-            // .catch(err => {
-            //     console.error('링크 복사 실패:', err);
-            //     alert("링크 복사에 실패했습니다. 다시 시도해주세요.");
-            // });
+    };
+
+    const handleEdit = () => {
+        // 수정 로직 구현
+        navigate(`/${categories}/${_id}/edit`);
+        setIsPopupOpen(false);
+    };
+
+    const handleDelete = () => {
+        // 삭제 로직 구현
+        if (window.confirm("정말로 삭제하시겠습니까?")) {
+            // 여기에 실제 삭제 API 호출 로직 추가
+            console.log("Delete item with ID:", _id);
+            setIsPopupOpen(false);
+        }
     };
 
     useEffect(() => {
@@ -69,8 +76,17 @@ const MeatballMenu = ({ _id, categories }) => {
                     position={popupPosition}
                     onClose={() => setIsPopupOpen(false)}
                 >
-                    <MenuItem onClick={handleReportClick}>신고하기</MenuItem>
-                    <MenuItem onClick={handleCopyLink}>링크 복사하기</MenuItem>
+                    {mine ? (
+                        <>
+                            <MenuItem onClick={handleEdit}>수정</MenuItem>
+                            <MenuItem onClick={handleDelete}>삭제</MenuItem>
+                        </>
+                    ) : (
+                        <>
+                            <MenuItem onClick={handleReportClick}>신고하기</MenuItem>
+                            <MenuItem onClick={handleCopyLink}>링크 복사하기</MenuItem>
+                        </>
+                    )}
                 </Popup>
             )}
         </div>
