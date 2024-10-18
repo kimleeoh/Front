@@ -116,14 +116,14 @@ const HomePage = () => {
                     <PostCarousel />
                 )}
 
-                <Title>내 게시판에서 현재 인기있는 게시물</Title>
+                <Title>내 게시판에서 현재 인기있는 Tips</Title>
                 {trendingTips.length > 0 ? (
                     <PostCarousel posts={trendingTips} />
                 ) : (
                     <PostCarousel />
                 )}
 
-                <Title>인기있는 Q&A</Title>
+                <Title>내 게시판에서 현재 인기있는 Q&A</Title>
                 {trendingQna.length > 0 ? (
                     <PostCarousel posts={trendingQna} />
                 ) : (
