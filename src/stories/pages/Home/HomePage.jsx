@@ -35,8 +35,8 @@ const HomePage = () => {
                 const [pointResponse, notificationResponse, trendingTipsResponse, trendingQnaResponse] = await Promise.all([
                     BaseAxios.get("/api/point"),
                     BaseAxios.get("/api/notify/new", { send: false }),
-                    BaseAxios.get("/api/home/trending-tips"),
-                    BaseAxios.get("/api/home/trending-qna")
+                    BaseAxios.post("/api/home/trending-tips"),
+                    BaseAxios.post("/api/home/trending-qna")
                 ]);
 
                 setOriginPoint(pointResponse.data.point);
