@@ -5,6 +5,7 @@ import axios from "axios";
 import Header from "../../components/Header";
 import FixedBottomContainer from "../../components/FixedBottomContainer";
 import TipsDetail from "./TipsDetail";
+import BaseAxios from "../../../axioses/BaseAxios";
 
 const TipsDetailPage = () => {
     const { category_type, docid } = useParams();
@@ -16,7 +17,7 @@ const TipsDetailPage = () => {
         const fetchTipData = async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.get(`/tips/${category_type}/${docid}`);
+                const response = await BaseAxios.get(`/api/tips/${category_type}/${docid}`);
                 setTipData(response.data);
                 setIsLoading(false);
             } catch (err) {
