@@ -13,7 +13,7 @@ import PointInput from "../PostQuestion/PointInput";
 import TargetInput from "../PostQuestion/TargetInput";
 import { useNavigate } from "react-router-dom";
 
-const PostQuestionPage = () => {
+const EditTipPage = () => {
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         title: "",
@@ -61,7 +61,7 @@ const PostQuestionPage = () => {
             await BaseAxios.post("/api/tips/create/post", updatedFormValues);
             console.log(updatedFormValues);
             alert("작성이 완료되었습니다.");
-            // navigate("/tips");
+            navigate("/tips");
         } else {
             setShowValidationMessages(true);
         }
@@ -170,7 +170,7 @@ const PostQuestionPage = () => {
     );
 };
 
-export default PostQuestionPage;
+export default EditTipPage;
 
 const Wrapper = styled.div`
     display: flex;

@@ -1,25 +1,28 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Button from "../../components/Button";
 
 const ImageUploadButton = ({ onFileSelect, label, width = "23%" }) => {
     const fileInputRef = useRef(null);
+    const [fileName, setFileName] = useState(label); // 상태 추가
 
     const handleButtonClick = () => {
-        // Trigger the hidden file input when the button is clicked
         fileInputRef.current.click();
     };
 
     const handleFileChange = (event) => {
-        // Call the onFileSelect prop with the selected file(s)
+        const files = event.target.files;
+        if (files.length > 0) {
+            setFileName(files[0].name); // 선택한 파일 이름으로 상태 업데이트
+        }
         if (onFileSelect) {
-            onFileSelect(event.target.files);
+            onFileSelect(files);
         }
     };
 
     return (
         <>
             <Button
-                label={label}
+                label={fileName}
                 onClick={handleButtonClick}
                 color={"#ACB2BB"}
                 backgroundColor={"#F1F2F4"}

@@ -8,26 +8,29 @@ import Checker from "../../components/Common/Checker";
 import ImageUploadButton from "../Confirmation/ImageUploadButton";
 import useWindowSize from "../../components/Common/WindowSize";
 import SelectBoard from "../../components/Common/SelectBoard";
+import BaseAxios from "../../../axioses/BaseAxios";
+import Convert from "./Convert";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const GradeRegister = () => {
     const Grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "F"];
     const modalRef = useRef();
-
-    const handleVerifyClick = () => {
-        if (modalRef.current) {
-            modalRef.current.open();
-        }
-    };
+    const navigate = useNavigate();
 
     const [selectedYear, setSelectedYear] = useState("");
     const [selectedTerm, setSelectedTerm] = useState("");
     const [subjects, setSubjects] = useState([]);
     const [confirmed, setConfirmed] = useState(false);
-    const [newSubject, setNewSubject] = useState({
-        name: "",
-        grade: "",
-        isMajor: false,
-    });
+    const [SubjectList, setSubjectList] = useState([]);
+    const [RcategoryList, setRcategoryList] = useState([]);
+    const [GradeList, setGradeList] = useState([]);
+    const [isMajorList, setIsMajorList] = useState([]);
+    const [UploadedFiles, setUploadedFiles] = useState([]);
+    const [nowIndex, setNowIndex] = useState(-1); // 과목 추가하기 누를 때마다 1씩 오를 겁니다. 나중에 취소 만들면 취소 누를 때마다 1씩 내려가야 합니다.
+    console.log("SubjectList: ", SubjectList);
+    console.log("RcategoryList: ", RcategoryList);
+    console.log("GradeList: ", GradeList);
+    console.log("isMajorList: ", isMajorList);
 
     const currentYear = new Date().getFullYear();
     const availableYears = Array.from({ length: currentYear - 2017 }, (_, i) =>
@@ -64,75 +67,78 @@ const GradeRegister = () => {
         fetchSubjectData();
     }, [selectedYear, selectedTerm]);
 
-    const handleGradeChange = async (index, grade) => {
-        const updatedSubjects = [...subjects];
-        updatedSubjects[index].grade = grade;
-        setSubjects(updatedSubjects);
-
+    const handleVerifyClick = async () => {
         try {
-            await fetch(`/api/grades/update`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
+            await BaseAxios.post("/api/score", {
+                score: {
+                    Rcategory_list: RcategoryList,
+                    subject_list: SubjectList,
+                    grade_list: GradeList,
+                    ismajor_list: isMajorList,
                 },
-                body: JSON.stringify({
-                    year: selectedYear,
-                    term: selectedTerm,
-                    subject: subjects[index].name,
-                    grade: Grades.indexOf(grade),
-                }),
+                semester: Convert(selectedYear, selectedTerm),
+                img: UploadedFiles,
             });
-        } catch (error) {
-            console.error("성적 업데이트 중 오류 발생", error);
+        } catch (err) {
+            console.error(err);
         }
+        navigate(-1);
+    };
+    const handleFileSelect = (files) => {
+        const fileArray = Array.from(files);
+        setUploadedFiles(fileArray);
+        console.log("업로드된 파일:", fileArray);
     };
 
-    const handleMajorChange = async (index, isMajor) => {
+    const handleGradeChange = (grade, index) => {
         const updatedSubjects = [...subjects];
-        updatedSubjects[index].isMajor = isMajor;
+        updatedSubjects[updatedSubjects.length - 1].grade = grade;
         setSubjects(updatedSubjects);
 
-        try {
-            await fetch(`/api/grades/update-major`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    year: selectedYear,
-                    term: selectedTerm,
-                    subject: subjects[index].name,
-                    isMajor,
-                }),
-            });
-        } catch (error) {
-            console.error("전공 여부 업데이트 중 오류 발생", error);
-        }
+        console.log("index:", index);
+        setGradeList((prevIndex) => {
+            const updatedList = [...prevIndex];
+            updatedList[nowIndex] = index;
+            return updatedList;
+        });
+    };
+
+    const handleMajorChange = (index, isMajor) => {
+        console.log("isMajor: ", isMajor);
+        setIsMajorList((prevIsMajor) => {
+            const updatedList = [...prevIsMajor];
+            updatedList[nowIndex] = isMajor;
+            return updatedList;
+        });
+    };
+
+    const handleSubjectChange = (data) => {
+        console.log(data);
+        const lastIndex = data.length - 1;
+        const lastEntry = data[lastIndex];
+        const key = Object.keys(lastEntry)[0]; // 첫 번째 key
+        const value = lastEntry[key];
+        console.log(key);
+        console.log(value);
+        setRcategoryList((prevId) => {
+            const updatedList = [...prevId];
+            updatedList[nowIndex] = key;
+            return updatedList;
+        });
+        setSubjectList((prevSubject) => {
+            console.log("SubjectList: ", SubjectList);
+            const updatedList = [...prevSubject];
+            updatedList[nowIndex] = value;
+            return updatedList;
+        });
     };
 
     const handleAddSubject = async () => {
         const blankSubject = { name: "", grade: "", isMajor: false };
         const updatedSubjects = [...subjects, blankSubject];
         setSubjects(updatedSubjects);
-
-        try {
-            await fetch(`/api/grades/add-subject`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    year: selectedYear,
-                    term: selectedTerm,
-                    ...blankSubject,
-                }),
-            });
-        } catch (error) {
-            console.error("과목 추가 중 오류 발생", error);
-        }
+        setNowIndex(nowIndex + 1);
     };
-
-    // 데이터 구조 정해지면 selectBoard용 함수 필요
 
     const { width: windowSize } = useWindowSize();
 
@@ -175,15 +181,15 @@ const GradeRegister = () => {
                                 <SelectBoardWrapper>
                                     <SelectBoard
                                         placeholder={"과목 선택"}
-                                        onChange={() => {}}
+                                        onChange={handleSubjectChange}
                                     />
                                 </SelectBoardWrapper>
 
                                 <Picker
                                     items={Grades}
                                     selectedItem={subject.grade}
-                                    onChange={(grade) =>
-                                        handleGradeChange(index, grade)
+                                    onChange={(grade, index) =>
+                                        handleGradeChange(grade, index)
                                     }
                                     placeholder="성적"
                                 />
@@ -222,7 +228,7 @@ const GradeRegister = () => {
             )}
             <Button
                 label="인증"
-                onClick={handleVerifyClick}
+                onClick={() => modalRef.current.open()}
                 color="#fff"
                 backgroundColor="#007bff"
                 hoverBackgroundColor="#0056b3"
@@ -233,7 +239,11 @@ const GradeRegister = () => {
                 <span style={{ fontSize: "16px" }}>
                     성적을 인증하시겠습니까?
                 </span>
-                <ImageUploadButton label={"성적표 업로드"} width={"140px"} />
+                <ImageUploadButton
+                    label={"성적표 업로드"}
+                    width={"140px"}
+                    onFileSelect={handleFileSelect}
+                />
                 <ButtonWrapper>
                     <Button
                         onClick={() => modalRef.current.close()}

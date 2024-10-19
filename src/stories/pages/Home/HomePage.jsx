@@ -5,6 +5,8 @@ import Logo from "../OnBoarding/Logo";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import PostCarousel from "../../components/Common/PostCarousel";
+import { Spinner } from "../../components/Common/Spinner";
+import Loading from "../Loading";
 
 const NavBar = lazy(() => import("../../components/NavBar"));
 const FixedBottomContainer = lazy(
@@ -21,31 +23,97 @@ const HomePage = () => {
 
     const [originPoint, setOriginPoint] = useState(null);
     const [hasNewNotification, setHasNewNotification] = useState(false);
-    const [trendingPosts, setTrendingPosts] = useState([]);
+    const [answerablePosts, setAnswerablePosts] = useState([]);
+    const [trendingTips, settrendingTips] = useState([]);
+    const [trendingQna, settrendingQna] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [pointResponse, notificationResponse, trendingResponse] =
-                    await Promise.all([
-                        BaseAxios.get("/api/point"),
-                        BaseAxios.get("/api/notify/new", { send: false }),
-                        BaseAxios.get("/api/mypage/trending"),
-                    ]);
+                setIsLoading(true);
+                setError(null);
+
+                const [
+                    pointResponse,
+                    notificationResponse,
+                    trendingTipsResponse,
+                    trendingQnaResponse,
+                    answerablePostsResponse,
+                ] = await Promise.all([
+                    BaseAxios.get("/api/point"),
+                    BaseAxios.get("/api/notify/new", { send: false }),
+                    BaseAxios.post("/api/home/trending-tips"),
+                    BaseAxios.post("/api/home/trending-qna"),
+                    BaseAxios.post("/api/home/answer-possible"),
+                ]);
 
                 setOriginPoint(pointResponse.data.point);
                 setHasNewNotification(notificationResponse.data.newNotify);
-                setTrendingPosts(trendingResponse.data);
+
+                if (Array.isArray(answerablePostsResponse.data)) {
+                    setAnswerablePosts(answerablePostsResponse.data);
+                } else {
+                    console.error(
+                        "Unexpected data structure:",
+                        answerablePostsResponse.data
+                    );
+                    setAnswerablePosts([]);
+                }
+
+                // Ensure trendingTipsResponse.data is an array
+                if (Array.isArray(trendingTipsResponse.data)) {
+                    settrendingTips(trendingTipsResponse.data);
+                } else if (
+                    trendingTipsResponse.data &&
+                    Array.isArray(trendingTipsResponse.data.posts)
+                ) {
+                    settrendingTips(trendingTipsResponse.data.posts);
+                } else {
+                    console.error(
+                        "Unexpected data structure:",
+                        trendingTipsResponse.data
+                    );
+                    settrendingTips([]);
+                }
+
+                // Ensure trendingQnaResponse.data is an array
+                if (Array.isArray(trendingQnaResponse.data)) {
+                    settrendingQna(trendingQnaResponse.data);
+                } else if (
+                    trendingQnaResponse.data &&
+                    Array.isArray(trendingQnaResponse.data.posts)
+                ) {
+                    settrendingQna(trendingQnaResponse.data.posts);
+                } else {
+                    console.error(
+                        "Unexpected data structure:",
+                        trendingQnaResponse.data
+                    );
+                    settrendingQna([]);
+                }
             } catch (error) {
                 console.error("Error fetching data:", error);
+                setError("데이터를 불러오는 중 오류가 발생했습니다.");
+            } finally {
+                setIsLoading(false);
             }
         };
 
         fetchData();
     }, []);
 
-    if (originPoint === null) {
-        return <div>Loading...</div>;
+    if (isLoading) {
+        return (
+            <div>
+                <Loading />
+            </div>
+        );
+    }
+
+    if (error) {
+        return <div>{error}</div>;
     }
 
     return (
@@ -67,7 +135,26 @@ const HomePage = () => {
                 </NotificationButton>
             </Header>
             <Content maxWidth={maxWidth}>
-                <PostCarousel posts={trendingPosts} />
+                <Title>내가 답할 수 있는 게시물</Title>
+                {answerablePosts.length > 0 ? (
+                    <PostCarousel posts={answerablePosts} />
+                ) : (
+                    <PostCarousel />
+                )}
+
+                <Title>내 게시판에서 현재 인기있는 Tips</Title>
+                {trendingTips.length > 0 ? (
+                    <PostCarousel posts={trendingTips} />
+                ) : (
+                    <PostCarousel />
+                )}
+
+                <Title>내 게시판에서 현재 인기있는 Q&A</Title>
+                {trendingQna.length > 0 ? (
+                    <PostCarousel posts={trendingQna} />
+                ) : (
+                    <PostCarousel />
+                )}
             </Content>
             <Suspense fallback={<div>Loading...</div>}>
                 <FixedBottomContainer>
@@ -79,8 +166,6 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-// ... (스타일 컴포넌트들은 이전과 동일하게 유지)
 
 const Wrapper = styled.div`
     display: flex;
@@ -172,6 +257,22 @@ const Content = styled.div`
     box-sizing: border-box;
     width: 100%;
     max-width: ${(props) => props.maxWidth};
-    padding: 20px;
     text-align: center;
+`;
+
+const Title = styled.div`
+    display: flex;
+    width: 300px;
+    height: 38px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #434b60;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: left;
+    margin-left: 30px;
+    white-space: nowrap;
 `;

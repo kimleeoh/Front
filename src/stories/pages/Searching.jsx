@@ -6,10 +6,12 @@ import BaseAxios from "../../axioses/BaseAxios";
 import Questions from "../components/Common/Questions"; // 필요에 따라 import 조정
 import { Spinner } from "../components/Common/Spinner"; // Spinner 임포트 경로 조정
 import useWindowSize from "../components/Common/WindowSize";
+import { useNavigate } from "react-router-dom";
 
 const Searching = () => {
     const [posts, setPosts] = useState([]); // 포스트 데이터를 저장할 상태
     const [loading, setLoading] = useState(false); // 로딩 상태
+    const navigate = useNavigate();
 
     const handleSearch = async (query) => {
         setLoading(true); // 로딩 시작
@@ -36,6 +38,7 @@ const Searching = () => {
     useEffect(() => {
         // 컴포넌트 마운트 시 실행
         tempAlert();
+        navigate(-1);
     }, []);
 
     return (

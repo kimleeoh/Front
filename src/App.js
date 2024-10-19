@@ -131,7 +131,7 @@ const App = () => {
                             />
                             <Route path="/tips" element={<TipsPage />} />
                             <Route
-                                path="/tips/:_id"
+                                path="/tips/:category_type/:docid"
                                 element={<TipsDetailPage />}
                             />
                             <Route

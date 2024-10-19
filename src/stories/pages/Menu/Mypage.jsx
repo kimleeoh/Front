@@ -9,6 +9,8 @@ import useWindowSize from "../../components/Common/WindowSize";
 import Header from "../../components/Header";
 import { UserContext } from "../../context/UserContext"; // Update this import path as needed
 import Loading from "../Loading";
+import PostCarousel from "../../components/Common/PostCarousel";
+import BaseAxios from "../../../axioses/BaseAxios";
 
 const MyPage = () => {
     const [activeTab, setActiveTab] = useState("프로필");
@@ -18,10 +20,33 @@ const MyPage = () => {
     const { userData, fetchUserData, isLoading, error } =
         useContext(UserContext);
 
+    const [popularPosts, setPopularPosts] = useState([]);
+
     useEffect(() => {
         if (!userData && !isLoading && !error) {
             fetchUserData();
         }
+        const fetchData = async () => {
+            try {
+                const [popularPosts] = await Promise.all([
+                    BaseAxios.post("/api/mypage/trending"),
+                ]);
+
+                if (Array.isArray(popularPosts.data)) {
+                    setPopularPosts(popularPosts.data);
+                } else {
+                    console.error(
+                        "Unexpected data structure:",
+                        popularPosts.data
+                    );
+                    setPopularPosts([]);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
     }, [userData, isLoading, error, fetchUserData]);
 
     const handleTabChange = (tab) => {
@@ -106,7 +131,11 @@ const MyPage = () => {
                         </ScrollableSubjectList>
                     </SubjectWrapper>
                     <Title>인기게시글</Title>
-                    <div>인기게시글 내용</div>
+                    {popularPosts.length > 0 ? (
+                        <PostCarousel posts={popularPosts} />
+                    ) : (
+                        <PostCarousel />
+                    )}
                 </Content>
             )}
             {activeTab === "활동" && (
@@ -365,6 +394,8 @@ const Content = styled.div`
     height: 800px;
     text-align: left;
     gap: 20px;
+    align-items: center;
+    justify-content: center;
 `;
 
 const Title = styled.div`
@@ -474,6 +505,8 @@ const ScrollableSubjectList = styled.div`
     width: 100%;
     max-height: 280px;
     overflow-y: auto;
+    padding: 0 10px 0 10px;
+    box-sizing: border-box;
 `;
 
 const Edit = styled.button`

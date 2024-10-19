@@ -2,24 +2,28 @@ import React from "react";
 import styled from "styled-components";
 import CarouselTemp from "./CarouselTemp";
 
-// 포스트캐러셀 사용법: 데이터 배열을 props로 넘겨주면 됩니다.
+const DEFAULT_POSTS = [
+    {
+        title: null,
+        time: null,
+        content: "현재 불러올 게시물이 없습니다",
+        views: null,
+    },
+];
 
-// import PostCarousel from './PostCarousel';
+const PostCarousel = ({ posts = DEFAULT_POSTS }) => {
+    const showControls = posts.length >= 2;
 
-// const App = () => {
-//   const posts = [ /* 여기에 res 예시 데이터 배열 */ ];
-
-//   return (
-//     <div>
-//       <PostCarousel posts={posts} />
-//     </div>
-//   );
-// };
-
-const PostCarousel = ({ posts }) => {
     return (
         <Wrapper>
-            <CarouselTemp width={"346px"} height={"109px"} showFraction={false}>
+            <CarouselTemp
+                width={"346px"}
+                height={"109px"}
+                gap="30px"
+                showFraction={false}
+                showBullets={showControls}
+                showArrows={showControls}
+            >
                 {posts.map((post, index) => (
                     <Post key={index} post={post} />
                 ))}
@@ -28,23 +32,36 @@ const PostCarousel = ({ posts }) => {
     );
 };
 
+PostCarousel.defaultProps = {
+    posts: DEFAULT_POSTS,
+};
+
 export default PostCarousel;
 
 const Wrapper = styled.div`
     width: 346px;
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
 `;
 
 const Post = ({ post }) => {
+    if (post.title === null && post.time === null && post.views === null) {
+        return (
+            <EmptyPostWrapper>
+                <EmptyContent>{post.content}</EmptyContent>
+            </EmptyPostWrapper>
+        );
+    }
+
     return (
         <PostWrapper>
             <Title>{post.title}</Title>
             <Content>{post.content}</Content>
             <TimeAndViews>
-                <Time>{new Date(post.time).toLocaleString()}</Time>
-                <Views>Views: {post.views}</Views>
+                <Time>{post.time ? timeDifference(post.time) : ""}</Time>
+                <Views>
+                    {post.views !== null ? `Views: ${post.views}` : ""}
+                </Views>
             </TimeAndViews>
         </PostWrapper>
     );
@@ -64,6 +81,20 @@ const PostWrapper = styled.div`
     background: #fff;
 `;
 
+const EmptyPostWrapper = styled(PostWrapper)`
+    justify-content: center;
+    align-items: center;
+`;
+
+const EmptyContent = styled.div`
+    color: var(--Palate2_sub2, #acb2bb);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    text-align: center;
+`;
+
 const Title = styled.div`
     display: flex;
     width: 292px;
@@ -77,6 +108,7 @@ const Title = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    text-align: left;
 `;
 
 const Content = styled.div`
@@ -92,6 +124,7 @@ const Content = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    text-align: left;
 `;
 
 const TimeAndViews = styled.div`
@@ -121,3 +154,20 @@ const Views = styled.div`
     font-weight: 700;
     line-height: normal;
 `;
+
+const timeDifference = (timestamp) => {
+    const now = new Date();
+    const pastDate = new Date(timestamp);
+    const timeDiff = Math.floor((now - pastDate) / 1000);
+
+    if (timeDiff < 60) return `${timeDiff}초 전`;
+    if (timeDiff < 3600) return `${Math.floor(timeDiff / 60)}분 전`;
+    if (timeDiff < 86400) return `${Math.floor(timeDiff / 3600)}시간 전`;
+    if (timeDiff < 86400 * 60) return `${Math.floor(timeDiff / 86400)}일 전`;
+
+    // 60일 이상 경과한 경우 년도와 월일을 출력
+    const year = pastDate.getFullYear();
+    const month = String(pastDate.getMonth() + 1).padStart(2, "0");
+    const day = String(pastDate.getDate()).padStart(2, "0");
+    return `${year}년 ${month}월 ${day}일`;
+};
