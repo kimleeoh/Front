@@ -213,18 +213,12 @@ const QnADetailPage = () => {
     const [currentReportId, setCurrentReportId] = useState(null);
 
     useEffect(() => {
-        // 실제 환경에서는 API 호출로 대체
-        //await BaseAxios.get("/api/questions");
-        const storedData = localStorage.getItem("questionData");
-        if (storedData) {
-            setQuestionData(JSON.parse(storedData));
-        } else {
-            localStorage.setItem(
-                "questionData",
-                JSON.stringify(initialQuestionData)
-            );
-            setQuestionData(initialQuestionData);
-        }
+        const fetchQuestions = async () => {
+        const result = await BaseAxios.get(`/api/qna/${_id}`);
+        setQuestionData(result.data.returnData);
+        };
+
+        fetchQuestions();
     }, []);
 
     const currentQuestion = questionData.find(

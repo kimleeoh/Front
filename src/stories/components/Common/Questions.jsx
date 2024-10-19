@@ -138,6 +138,11 @@ const Questions = ({
         else return "A등급 제한";
         return ""; // 그 외의 값에 대한 처리 (필요에 따라 추가)
     };
+
+    const handleLinkClick = (id) => {
+        console.log("Link clicked with id: ", id);
+    };
+    
     return (
         <OutWrapper maxWidth={windowSize}>
             <StyledLink to={`/qna/${_id}`}>

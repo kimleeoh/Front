@@ -47,9 +47,10 @@ const PostQuestionPage = () => {
         e.preventDefault();
         const now = new Date().toISOString();
 
+        console.log("formValues: ", formValues.board);
         const updatedFormValues = new FormData();
         updatedFormValues.append("title", formValues.title);
-        updatedFormValues.append("board", formValues.board);
+        updatedFormValues.append("board", JSON.stringify(formValues.board));
         updatedFormValues.append("content", formValues.content);
         updatedFormValues.append("point", formValues.point);
         updatedFormValues.append("time", now);
