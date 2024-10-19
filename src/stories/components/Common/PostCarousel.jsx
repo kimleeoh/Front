@@ -106,6 +106,7 @@ const Title = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    text-align: left;
 `;
 
 const Content = styled.div`
@@ -121,6 +122,7 @@ const Content = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    text-align: left;
 `;
 
 const TimeAndViews = styled.div`

@@ -21,7 +21,7 @@ const MyPage = () => {
         useContext(UserContext);
 
     
-        const [popularPosts, setPopularPosts] = useState([]);
+    const [popularPosts, setPopularPosts] = useState([]);
 
     useEffect(() => {
         if (!userData && !isLoading && !error) {
@@ -40,8 +40,6 @@ const MyPage = () => {
                     console.error("Unexpected data structure:", popularPosts.data);
                     setPopularPosts([]);
                 }
-                
-                
                 
             } catch (error) {
                 console.error("Error fetching data:", error);
