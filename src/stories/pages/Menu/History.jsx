@@ -99,9 +99,7 @@ const History = () => {
             {isEmpty ? (
                 <EmptyBox>
                     <Icon src="/Icons/Alert_gray.svg" />
-                    <Content>
-                        아직 본 글이 없어요!
-                    </Content>
+                    <Content>아직 본 글이 없어요!</Content>
                 </EmptyBox>
             ) : (
                 <div ref={observerRef} />
