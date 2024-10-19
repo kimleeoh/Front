@@ -17,6 +17,7 @@ const QnAPage = () => {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [error, setError] = useState(null);
+    const [depth, setDepth] = useState(1);
     const observer = useRef();
     const { width: windowSize } = useWindowSize();
 
@@ -38,8 +39,11 @@ const QnAPage = () => {
         async (isInitial = false) => {
             setLoading(true);
             try {
-                const response = await BaseAxios.get("/api/bulletin/qna", {
-                    params: { isAGradeOnly },
+                const response = await BaseAxios.get("/api/bulletin/qnas", {
+                    params: { isAGradeOnly,
+                        type: "many",
+                        depth: depth
+                     },
                 });
                 const newQuestions = response.data;
                 setQuestionData((prevQuestions) =>
@@ -47,6 +51,7 @@ const QnAPage = () => {
                         ? newQuestions
                         : [...prevQuestions, ...newQuestions]
                 );
+                setDepth(depth + 1);
                 setHasMore(newQuestions.length > 0);
                 setError(null);
             } catch (error) {
@@ -67,6 +72,7 @@ const QnAPage = () => {
 
     useEffect(() => {
         fetchQuestions(true);
+        
     }, [isAGradeOnly]);
 
     const handleCheckerChange = (isChecked) => {
@@ -89,20 +95,19 @@ const QnAPage = () => {
                             ? lastQuestionElementRef
                             : null
                     }
-                    key={post._id}
                 >
                     <Questions
                         _id={post._id}
                         title={post.title}
-                        content={post.content}
+                        content={post.preview_content}
                         subject={
-                            post.now_category_list[
+                            Object.values(post.now_category_list[
                                 post.now_category_list.length - 1
-                            ]
+                            ])[0]
                         }
                         time={post.time}
                         views={post.views}
-                        like={post.like}
+                        like={post.likes}
                         img={Array.isArray(post.img) ? post.img[0] : post.img}
                         limit={post.restricted_type}
                         user_main={post.user_main}
@@ -113,7 +118,6 @@ const QnAPage = () => {
             if ((index + 1) % 5 === 0 && index !== questionData.length - 1) {
                 postsWithAds.push(
                     <AdBox
-                        key={`ad-${index}`}
                         _id={index}
                         title="광고 제목"
                         content="광고 내용"
