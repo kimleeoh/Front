@@ -12,9 +12,11 @@ import TabNavigation from "../../components/Common/TabNavigation";
 import ProgressBar from "../../components/Common/ProgressBar";
 import BoardTitle from "../../components/Common/BoardTitle";
 import SubjectList from "../../components/Common/SubjectList";
+import PostCarousel from "../../components/Common/PostCarousel";
 
 const MyPageEdit = () => {
     const [activeTab, setActiveTab] = useState("프로필");
+    const [popularPosts, setPopularPosts] = useState([]);
     const handleTabChange = (tab) => {
         setActiveTab(tab);
     };
@@ -34,6 +36,26 @@ const MyPageEdit = () => {
             setIntro(userData.intro || "");
             setProfileImg(userData.profile_img || "");
         }
+        const fetchData = async () => {
+            try {
+
+                const [popularPosts] = await Promise.all([
+                    BaseAxios.post("/api/mypage/trending"),
+                ]);
+
+                if (Array.isArray(popularPosts.data)) {
+                    setPopularPosts(popularPosts.data);
+                } else {
+                    console.error("Unexpected data structure:", popularPosts.data);
+                    setPopularPosts([]);
+                }
+                
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } 
+        };
+
+        fetchData();
     }, [userData]);
 
     const handleImageUpload = (event) => {
@@ -170,7 +192,11 @@ const MyPageEdit = () => {
                         </ScrollableSubjectList>
                     </SubjectWrapper>
                     <Title>인기게시글</Title>
-                    <div>인기게시글 내용</div>
+                    {popularPosts.length > 0 ? (
+                        <PostCarousel posts={popularPosts} />
+                    ) : (
+                        <PostCarousel />
+                    )}
                 </Content>
             )}
             {activeTab === "활동" && (

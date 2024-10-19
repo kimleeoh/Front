@@ -5,6 +5,8 @@ import Logo from "../OnBoarding/Logo";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import PostCarousel from "../../components/Common/PostCarousel";
+import { Spinner } from "../../components/Common/Spinner";
+import Loading from "../Loading";
 
 const NavBar = lazy(() => import("../../components/NavBar"));
 const FixedBottomContainer = lazy(
@@ -103,7 +105,7 @@ const HomePage = () => {
     }, []);
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div><Loading/></div>;
     }
 
     if (error) {

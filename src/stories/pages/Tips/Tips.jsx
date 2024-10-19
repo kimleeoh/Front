@@ -1,9 +1,11 @@
-import react from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import getTimeElapsed from "../../components/Common/getTimeElapsed";
 import useWindowSize from "../../components/Common/WindowSize";
+import BaseAxios from "../../../axioses/BaseAxios";
+import { Spinner } from "../../components/Common/Spinner";
 
 const Tips = ({
     _id,
@@ -19,6 +21,9 @@ const Tips = ({
     time,
 }) => {
     const { width: windowSize } = useWindowSize();
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+
     const conversion = (category_type) => {
         if (category_type == "test") {
             return "시험정보";
@@ -28,22 +33,47 @@ const Tips = ({
             return "수업꿀팁";
         }
     };
+
+    const handleClick = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        try {
+            const response = await BaseAxios.post("/api/tips/manage", {
+                docid: _id,
+                Ruser: Ruser,
+                category_type: category_type
+            });
+
+            const message = response.data.message;
+
+            if (message === "Not Mine, Not Purchased") {
+                if (window.confirm("구매하지 않은 글입니다. 구매하시겠습니까?")) {
+                    // 여기에 구매 로직을 추가할 수 있습니다.
+                    console.log("구매 로직 실행");
+                }
+            } else {
+                // "Mine" 또는 "Not Mine, Purchased" 인 경우 바로 링크로 이동
+                navigate(`/tips/${category_type}/${_id}`);
+            }
+        } catch (error) {
+            console.error("Error checking tip status:", error);
+            alert("글 상태 확인 중 오류가 발생했습니다.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <OutWrapper maxWidth={windowSize}>
-            <StyledLink to={`/tips/${_id}`}>
+            <StyledLink onClick={handleClick}>
                 <Wrapper>
                     <ContentWrapper>
                         <TextWrapper hasImage={Boolean(preview_img)}>
                             <Title>{title}</Title>
                             <MetaContainer>
-                                <span
-                                    style={{
-                                        color: "#ACB2BB",
-                                        fontSize: "10px",
-                                    }}
-                                >
-                                    {" "}
-                                    {Ruser.hakbu} {Ruser.name}{" "}
+                                <span style={{ color: "#ACB2BB", fontSize: "10px" }}>
+                                    {Ruser.hakbu} {Ruser.name}
                                 </span>
                             </MetaContainer>
                             <Content>{target}에게 도움이 돼요.</Content>
@@ -57,61 +87,53 @@ const Tips = ({
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span
-                            style={{
-                                color: "#434b60",
-                                display: "inline-flex",
-                                alignItems: "center",
-                                gap: "5px", // Adds spacing between elements
-                                whiteSpace: "nowrap",
+                        <span style={{
+                            color: "#434b60",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "5px",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                        }}>
+                            {getTimeElapsed(time)} |{" "}
+                            <span style={{
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
-                            }}
-                        >
-                            {" "}
-                            {getTimeElapsed(time)} |{" "}
-                            <span
-                                style={{
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                    whiteSpace: "nowrap",
-                                    maxWidth: "120px",
-                                    display: "inline-block",
-                                }}
-                            >
+                                whiteSpace: "nowrap",
+                                maxWidth: "120px",
+                                display: "inline-block",
+                            }}>
                                 {category_name}
                             </span>{" "}
                             | {conversion(category_type)} | 조회수 {views}
                         </span>
-                        <span
-                            style={{
-                                marginLeft: "10px",
-                                color: "#3182F7",
-                                fontWeight: "bold",
-                                fontSize: "10px",
-                                transform: "translateY(1px)",
-                                display: "flex",
-                                gap: "2px",
-                            }}
-                        >
+                        <span style={{
+                            marginLeft: "10px",
+                            color: "#3182F7",
+                            fontWeight: "bold",
+                            fontSize: "10px",
+                            transform: "translateY(1px)",
+                            display: "flex",
+                            gap: "2px",
+                        }}>
                             <div style={{ transform: "translateY(1px)" }}>
                                 <img src="/Icons/Thumb_c.svg" />
                             </div>{" "}
                             {likes}
                         </span>
                         <Point>
-                            <img src="/point_white.svg" width={"14px"} /> -{" "}
-                            {purchase_price}
+                            <img src="/point_white.svg" width={"14px"} /> - {purchase_price}
                         </Point>
                     </MetaContainer>
                 </Wrapper>
             </StyledLink>
+            {isLoading && <LoadingOverlay><Spinner/></LoadingOverlay>}
         </OutWrapper>
     );
 };
 
 export default Tips;
-
 Tips.propTypes = {
     name: PropTypes.string.isRequired,
     major: PropTypes.string.isRequired,
@@ -240,4 +262,19 @@ const Point = styled.div`
     margin-left: auto;
     white-space: nowrap;
     gap: 3px;
+`;
+
+const LoadingOverlay = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #434b60;
+    z-index: 1;
 `;
