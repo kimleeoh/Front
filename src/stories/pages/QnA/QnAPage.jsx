@@ -34,25 +34,30 @@ const QnAPage = () => {
         [loading, hasMore]
     );
 
-    const fetchQuestions = useCallback(async (isInitial = false) => {
-        setLoading(true);
-        try {
-            const response = await BaseAxios.get('/api/bulletin/qna', {
-                params: { isAGradeOnly }
-            });
-            const newQuestions = response.data;
-            setQuestionData((prevQuestions) =>
-                isInitial ? newQuestions : [...prevQuestions, ...newQuestions]
-            );
-            setHasMore(newQuestions.length > 0);
-            setError(null);
-        } catch (error) {
-            console.error('Error fetching question data:', error);
-            setError('질문을 불러오는 중 오류가 발생했습니다.');
-        } finally {
-            setLoading(false);
-        }
-    }, [isAGradeOnly]);
+    const fetchQuestions = useCallback(
+        async (isInitial = false) => {
+            setLoading(true);
+            try {
+                const response = await BaseAxios.get("/api/bulletin/qna", {
+                    params: { isAGradeOnly },
+                });
+                const newQuestions = response.data;
+                setQuestionData((prevQuestions) =>
+                    isInitial
+                        ? newQuestions
+                        : [...prevQuestions, ...newQuestions]
+                );
+                setHasMore(newQuestions.length > 0);
+                setError(null);
+            } catch (error) {
+                console.error("Error fetching question data:", error);
+                setError("질문을 불러오는 중 오류가 발생했습니다.");
+            } finally {
+                setLoading(false);
+            }
+        },
+        [isAGradeOnly]
+    );
 
     const fetchMoreQuestions = () => {
         if (!loading && hasMore) {
@@ -79,14 +84,22 @@ const QnAPage = () => {
         questionData.forEach((post, index) => {
             postsWithAds.push(
                 <div
-                    ref={index === questionData.length - 1 ? lastQuestionElementRef : null}
+                    ref={
+                        index === questionData.length - 1
+                            ? lastQuestionElementRef
+                            : null
+                    }
                     key={post._id}
                 >
                     <Questions
                         _id={post._id}
                         title={post.title}
                         content={post.content}
-                        subject={post.now_category_list[post.now_category_list.length - 1]}
+                        subject={
+                            post.now_category_list[
+                                post.now_category_list.length - 1
+                            ]
+                        }
                         time={post.time}
                         views={post.views}
                         like={post.like}

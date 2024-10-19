@@ -20,8 +20,7 @@ const MyPage = () => {
     const { userData, fetchUserData, isLoading, error } =
         useContext(UserContext);
 
-    
-        const [popularPosts, setPopularPosts] = useState([]);
+    const [popularPosts, setPopularPosts] = useState([]);
 
     useEffect(() => {
         if (!userData && !isLoading && !error) {
@@ -42,9 +41,6 @@ const MyPage = () => {
                     );
                     setPopularPosts([]);
                 }
-                
-                
-                
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
