@@ -61,7 +61,7 @@ const MyPage = () => {
     if (error) return <div>Error: {error.message}</div>;
     if (!userData) return <div>No user data available</div>;
 
-    const { name, level, tipsCount, replyCount, hakbu, intro, profile_img } =
+    const { name, level, tipsCount, replyCount, hakbu, intro, profile_img, exp } =
         userData;
 
     return (
@@ -142,16 +142,20 @@ const MyPage = () => {
                 <Content maxWidth={windowSize}>
                     <Title>명성</Title>
                     <Reputation>
-                        {level} {/* 유저 레벨 */}
+                        {/* exp를 100으로 나눈 몫이 level */}
+                        {Math.floor(exp / 100)+1}
+                        
                         <ProgressBarContainer>
-                            다음 단계까지 700점 남음
+                            {/* 100으로 나눈 나머지를 progress로 사용 */}
+                            다음 단계까지 {100 - (exp % 100)}점 남음
                             <ProgressBar
-                                totalSteps={1000}
-                                currentStep={300}
+                                totalSteps={100} // 전체 단계는 100 (100% 기준)
+                                currentStep={exp % 100} // exp를 100으로 나눈 나머지
                                 width={"250px"}
                             />
                         </ProgressBarContainer>
                     </Reputation>
+
                     <div style={{ padding: "0px 20px 20px" }}>
                         <InfoBox>
                             <div
@@ -475,6 +479,7 @@ const Reputation = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    gap: 20px;
 `;
 
 const ProgressBarContainer = styled.div`
