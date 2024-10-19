@@ -1,53 +1,76 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { Votes, Scrap, Notification } from "../../components/Common/Tool";
+import {
+    Votes,
+    Scrap,
+    Notification,
+} from "../../components/Common/Tool";
 import getTimeElapsed from "../../components/Common/getTimeElapsed";
 import ImageDownloadList from "./ImageDownloadList";
 import useWindowSize from "../../components/Common/WindowSize";
 
 const TipsDetail = ({
-    id,
+    _id,
+    Ruser,
     title,
+    category_name,
+    category_type,
+    img,
     content,
+    target,
     likes,
+    preview_img,
+    purchase_price,
     views,
     time,
-    warn,
-    warn_why_list,
-    purchase_price,
-    user,
-    file_links,
 }) => {
+    const images = Array.isArray(img) ? img : img ? [img] : [];
     const { width: windowSize } = useWindowSize();
     const [isPurchased, setIsPurchased] = useState(false);
 
     return (
         <OutWrapper maxWidth={windowSize}>
             <Wrapper>
+                <span style={{ marginBottom: "15px", fontSize: "15px" }}>
+                    {category_name} | {category_type}
+                </span>
                 <Title>{title}</Title>
                 <MetaContainer>
                     <span>
-                        {getTimeElapsed(time)} | {user.hakbu} {user.name} |
-                        조회수 {views}
+                        {" "}
+                        {getTimeElapsed(time)} | {Ruser.hakbu} {Ruser.name} |
+                        조회수 {views}{" "}
+                        {/* {" "}
+                        {getTimeElapsed(time)} | 학부 이름 |
+                        조회수 {views}{" "} */}
                     </span>
                 </MetaContainer>
-                {isPurchased ? (
+                {isPurchased == true ? (
                     <>
                         <Content>{content}</Content>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                            {file_links.length > 0 && (
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "10px",
+                            }}
+                        >
+                            {images.length > 0 && (
                                 <ImageContainer>
-                                    <Image src={file_links[0]} />
+                                    {/*이미지 하나만 보이게 하기*/}
+                                    <Image src={images[0]} />
                                 </ImageContainer>
                             )}
 
-                            <ImageDownloadList images={file_links} />
+                            {/* Download section for multiple images */}
+                            <ImageDownloadList images={images} />
 
                             <ToolContainer>
                                 <Votes like={likes} />
                                 <div>
-                                    <Notification /> <Scrap />
+                                    {" "}
+                                    <Notification /> <Scrap />{" "}
                                 </div>
                             </ToolContainer>
                         </div>
@@ -55,33 +78,31 @@ const TipsDetail = ({
                 ) : (
                     <>
                         <Content>
-                            이 정보를 열람하기 위해 {purchase_price}p가 차감됩니다. 
-                            한 번 열람한 후에는 영구적으로 볼 수 있습니다.
+                            {target}에게 도움이 돼요. 이 정보를 열람하기 위해{" "}
+                            {purchase_price}p가 차감됩니다. 한 번 열람한 후에는
+                            영구적으로 볼 수 있습니다.
                         </Content>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                            {file_links.length > 0 && (
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "10px",
+                            }}
+                        >
+                            {images.length > 0 && (
                                 <ImageContainer>
-                                    <Image src={file_links[0]} />
+                                    <Image src={preview_img} />
                                 </ImageContainer>
                             )}
                             <ToolContainer>
                                 <Votes like={likes} />
                                 <div>
-                                    <Notification /> <Scrap />
+                                    {" "}
+                                    <Notification /> <Scrap />{" "}
                                 </div>
                             </ToolContainer>
                         </div>
                     </>
-                )}
-                {warn > 0 && (
-                    <WarnContainer>
-                        <WarnTitle>경고 사유:</WarnTitle>
-                        <WarnList>
-                            {warn_why_list.map((reason, index) => (
-                                <WarnItem key={index}>{reason}</WarnItem>
-                            ))}
-                        </WarnList>
-                    </WarnContainer>
                 )}
             </Wrapper>
         </OutWrapper>
@@ -91,44 +112,43 @@ const TipsDetail = ({
 export default TipsDetail;
 
 TipsDetail.propTypes = {
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
-    likes: PropTypes.number.isRequired,
-    views: PropTypes.number.isRequired,
-    time: PropTypes.string.isRequired,
-    warn: PropTypes.number.isRequired,
-    warn_why_list: PropTypes.arrayOf(PropTypes.string).isRequired,
-    purchase_price: PropTypes.number.isRequired,
-    user: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        hakbu: PropTypes.string.isRequired,
-    }).isRequired,
-    file_links: PropTypes.arrayOf(PropTypes.string).isRequired,
+    _id: PropTypes.string,
+    Ruser: PropTypes.string,
+    title: PropTypes.string,
+    category_name: PropTypes.string,
+    category_type: PropTypes.string,
+    img: PropTypes.arrayOf(PropTypes.string),
+    content: PropTypes.string,
+    target: PropTypes.string,
+    likes: PropTypes.number,
+    preview_img: PropTypes.string,
+    purchase_price: PropTypes.number,
+    views: PropTypes.number,
+    time: PropTypes.string,
 };
 
 TipsDetail.defaultProps = {
-    id: "",
+    _id: "id",
+    Ruser: "유저정보",
     title: "제목",
+    category_name: "과목",
+    category_type: "게시판 종류",
+    img: "/Icons/1607-2.jpg",
     content: "내용",
+    target: "타겟",
     likes: 0,
-    views: 0,
-    time: "2024-10-11T17:46:54.664Z",
-    warn: 0,
-    warn_why_list: [],
+    preview_img: "/Icons/1607-2.jpg",
     purchase_price: 0,
-    user: {
-        name: "이름",
-        hakbu: "학부",
-    },
-    file_links: [],
+    views: 0,
+    time: "2024-10-11T17:47:00.638Z",
 };
 
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 20px;
+
+    padding: 20px 20px;
     border-bottom: 1px solid #f1f2f4;
 `;
 
@@ -164,8 +184,8 @@ const ImageContainer = styled.div`
 `;
 
 const Image = styled.img`
-    width: 100%;
-    height: auto;
+    width: 100%; /* Make image take up full container width */
+    height: auto; /* Adjust height automatically */
     object-fit: cover;
     object-position: center;
     border-radius: 8px;
@@ -176,26 +196,4 @@ const ToolContainer = styled.div`
     justify-content: space-between;
     gap: 10px;
     margin-top: 10px;
-`;
-
-const WarnContainer = styled.div`
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-    border-radius: 4px;
-`;
-
-const WarnTitle = styled.h4`
-    margin: 0 0 10px 0;
-    color: #856404;
-`;
-
-const WarnList = styled.ul`
-    margin: 0;
-    padding-left: 20px;
-`;
-
-const WarnItem = styled.li`
-    color: #856404;
 `;

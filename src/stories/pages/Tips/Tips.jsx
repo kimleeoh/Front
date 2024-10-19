@@ -30,7 +30,7 @@ const Tips = ({
     };
     return (
         <OutWrapper maxWidth={windowSize}>
-            <StyledLink to={`/tips/${_id}`}>
+            <StyledLink to={`/tips/${category_type}/${_id}`}>
                 <Wrapper>
                     <ContentWrapper>
                         <TextWrapper hasImage={Boolean(preview_img)}>
