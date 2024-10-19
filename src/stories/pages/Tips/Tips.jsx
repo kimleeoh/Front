@@ -41,7 +41,7 @@ const Tips = ({
         try {
             const response = await BaseAxios.post("/api/tips/manage", {
                 docid: _id,
-                Ruser: Ruser,
+                Ruser: Ruser._id,
                 category_type: category_type
             });
 

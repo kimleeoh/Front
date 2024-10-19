@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import Header from "../../components/Header";
 import FixedBottomContainer from "../../components/FixedBottomContainer";
 import TipsDetail from "./TipsDetail";
@@ -28,6 +27,31 @@ const TipsDetailPage = () => {
 
         fetchTipData();
     }, [category_type, docid]);
+
+    useEffect(() => {
+        const checkMine = async () => {
+            try {
+                const response = await BaseAxios.post("/api/tips/manage", {
+                    docid: docid,
+                    category_type: category_type,
+                    Ruser: tipData?.user, // Optional chaining to avoid errors if tipData is not yet loaded
+                });
+                
+                if (response.data.message === "Mine") {
+                    setTipData((prevTipData) => ({
+                        ...prevTipData,
+                        mine: true,
+                    }));
+                }
+            } catch (error) {
+                console.error("Error checking tip status:", error);
+            }
+        };
+
+        if (tipData) {
+            checkMine();
+        }
+    }, [category_type, docid, tipData]);
 
     if (isLoading) {
         return <LoadingMessage>로딩 중...</LoadingMessage>;
@@ -58,6 +82,9 @@ const TipsDetailPage = () => {
                     purchase_price={tipData.purchase_price}
                     user={tipData.user}
                     file_links={tipData.file_links}
+                    category_name={tipData.category_name}
+                    category_type={tipData.category_type}
+                    mine={tipData.mine} // Pass mine prop
                 />
             )}
             <FixedBottomContainer></FixedBottomContainer>

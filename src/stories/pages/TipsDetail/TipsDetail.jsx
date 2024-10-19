@@ -1,155 +1,190 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import {
-    Votes,
-    Scrap,
-    Notification,
-} from "../../components/Common/Tool";
+import { Votes, Scrap, Notification } from "../../components/Common/Tool";
+import MeatballMenu from "../../components/Common/MeatballMenu";
+import CarouselTemp from "../../components/Common/CarouselTemp";
 import getTimeElapsed from "../../components/Common/getTimeElapsed";
-import ImageDownloadList from "./ImageDownloadList";
+import CategoryPath from "../../components/Common/CategoryPath";
 import useWindowSize from "../../components/Common/WindowSize";
+import ImageDownloadList from "./ImageDownloadList";
 
 const TipsDetail = ({
     _id,
-    Ruser,
+    user,
     title,
     category_name,
     category_type,
     img,
     content,
-    target,
     likes,
-    preview_img,
-    purchase_price,
     views,
     time,
+    onReportClick,
+    likePost,
+    mine,
 }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
     const { width: windowSize } = useWindowSize();
-    const [isPurchased, setIsPurchased] = useState(false);
+
+    const [isLiked, setIsLiked] = useState(false);
+    const [likePostIds, setLikePostIds] = useState(likePost || []);
+    const [isSaved, setIsSaved] = useState(false);
+    const [isNotified, setIsNotified] = useState(false);
+
+    useEffect(() => {
+        if (likePostIds && likePostIds.includes(_id)) {
+            setIsLiked(true);
+        }
+    }, [_id, likePostIds]);
+
+    const handleLike = () => {
+        setLikePostIds(prevIds => [...(prevIds || []), _id]);
+        setIsLiked(true);
+    };
+
+    const handleUnlike = () => {
+        setLikePostIds(prevIds => (prevIds || []).filter(postId => postId !== _id));
+        setIsLiked(false);
+    };
+
+    const handleSaveToggle = () => {
+        setIsSaved(!isSaved);
+    };
+
+    const handleNotificationToggle = () => {
+        setIsNotified(!isNotified);
+    };
+
+    const getCategoryTypeName = (type) => {
+        switch (type) {
+            case 'pilgy':
+                return '필기공유';
+            case 'honey':
+                return '수업꿀팁';
+            case 'test':
+                return '시험정보';
+            default:
+                return type;
+        }
+    };
 
     return (
         <OutWrapper maxWidth={windowSize}>
             <Wrapper>
-                <span style={{ marginBottom: "15px", fontSize: "15px" }}>
-                    {category_name} | {category_type}
-                </span>
-                <Title>{title}</Title>
+                <TopBar>
+                    {category_name} | {getCategoryTypeName(category_type)}
+                    <MeatballMenu
+                        _id={_id}
+                        onReportClick={() => onReportClick(_id)}
+                        category="tips"
+                        mine={mine}
+                    />
+                </TopBar>
+                <Title>
+                    {title}
+                </Title>
+
                 <MetaContainer>
-                    <span>
-                        {" "}
-                        {getTimeElapsed(time)} | {Ruser.hakbu} {Ruser.name} |
-                        조회수 {views}{" "}
-                        {/* {" "}
-                        {getTimeElapsed(time)} | 학부 이름 |
-                        조회수 {views}{" "} */}
-                    </span>
+                        {getTimeElapsed(time)} | {user.hakbu} {user.name} | 조회수 {views}
                 </MetaContainer>
-                {isPurchased == true ? (
-                    <>
-                        <Content>{content}</Content>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "10px",
-                            }}
-                        >
-                            {images.length > 0 && (
-                                <ImageContainer>
-                                    {/*이미지 하나만 보이게 하기*/}
-                                    <Image src={images[0]} />
-                                </ImageContainer>
-                            )}
+                <Content>{content} </Content>
 
-                            {/* Download section for multiple images */}
-                            <ImageDownloadList images={images} />
-
-                            <ToolContainer>
-                                <Votes like={likes} />
-                                <div>
-                                    {" "}
-                                    <Notification /> <Scrap />{" "}
-                                </div>
-                            </ToolContainer>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <Content>
-                            {target}에게 도움이 돼요. 이 정보를 열람하기 위해{" "}
-                            {purchase_price}p가 차감됩니다. 한 번 열람한 후에는
-                            영구적으로 볼 수 있습니다.
-                        </Content>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "10px",
-                            }}
+                {images.length > 0 && (
+                    <CarouselWrapper>
+                        <CarouselTemp
+                            width="380px"
+                            height="380px"
+                            autoPlay={false}
+                            showBullets={true}
+                            showFraction={true}
                         >
-                            {images.length > 0 && (
-                                <ImageContainer>
-                                    <Image src={preview_img} />
-                                </ImageContainer>
-                            )}
-                            <ToolContainer>
-                                <Votes like={likes} />
-                                <div>
-                                    {" "}
-                                    <Notification /> <Scrap />{" "}
-                                </div>
-                            </ToolContainer>
-                        </div>
-                    </>
+                            {images.map((image, index) => (
+                                <Image
+                                    key={index}
+                                    src={image}
+                                    draggable="false"
+                                    maxWidth={windowSize}
+                                />
+                            ))}
+                        </CarouselTemp>
+                    </CarouselWrapper>
                 )}
+                { images.length > 0 && <ImageDownloadList images={images} /> }
+                <BottomBar>
+                    <Votes
+                        like={likes}
+                        isLiked={isLiked}
+                        handleLike={handleLike}
+                        handleUnlike={handleUnlike}
+                    />
+                    <div>
+                        <Notification
+                            isNotificationEnabled={isNotified}
+                            handleNotificationToggle={handleNotificationToggle}
+                        />
+                        <Scrap
+                            isSaveEnabled={isSaved}
+                            handleSaveToggle={handleSaveToggle}
+                        />
+                    </div>
+                </BottomBar>
             </Wrapper>
         </OutWrapper>
     );
 };
 
-export default TipsDetail;
 
 TipsDetail.propTypes = {
-    _id: PropTypes.string,
-    Ruser: PropTypes.string,
-    title: PropTypes.string,
-    category_name: PropTypes.string,
-    category_type: PropTypes.string,
-    img: PropTypes.arrayOf(PropTypes.string),
-    content: PropTypes.string,
-    target: PropTypes.string,
-    likes: PropTypes.number,
+    _id: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+        hakbu: PropTypes.string,
+        name: PropTypes.string,
+    }).isRequired,
+    title: PropTypes.string.isRequired,
+    category_name: PropTypes.string.isRequired,
+    category_type: PropTypes.string.isRequired,
+    img: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+    content: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
+    views: PropTypes.number.isRequired,
+    time: PropTypes.string.isRequired,
     preview_img: PropTypes.string,
-    purchase_price: PropTypes.number,
-    views: PropTypes.number,
-    time: PropTypes.string,
+    onReportClick: PropTypes.func.isRequired,
+    likePost: PropTypes.arrayOf(PropTypes.string),
 };
 
 TipsDetail.defaultProps = {
-    _id: "id",
-    Ruser: "유저정보",
-    title: "제목",
-    category_name: "과목",
-    category_type: "게시판 종류",
-    img: "/Icons/1607-2.jpg",
-    content: "내용",
-    target: "타겟",
-    likes: 0,
-    preview_img: "/Icons/1607-2.jpg",
-    purchase_price: 0,
-    views: 0,
-    time: "2024-10-11T17:47:00.638Z",
+    img: null,
+    preview_img: null,
+    likePost: [],
 };
+
+const OutWrapper = styled.div`
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+`;
 
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    padding: 20px 20px;
+    padding: 20px 0;
     border-bottom: 1px solid #f1f2f4;
+`;
+
+const TopBar = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const BottomBar = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
 `;
 
 const Title = styled.div`
@@ -157,7 +192,19 @@ const Title = styled.div`
     font-weight: bold;
     margin-bottom: 10px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+
+    img {
+        flex-shrink: 0;
+        margin-right: 10px;
+    }
+
+    span {
+        display: inline-block;
+        max-width: calc(100% - 30px);
+        line-height: 1.2;
+        word-break: break-word;
+    }
 `;
 
 const Content = styled.div`
@@ -168,32 +215,22 @@ const Content = styled.div`
 const MetaContainer = styled.div`
     display: flex;
     margin-top: auto;
+    margin-left: 10px;
     font-size: 10px;
 `;
 
-const OutWrapper = styled.div`
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-`;
-
-const ImageContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    gap: 10px;
-`;
-
 const Image = styled.img`
-    width: 100%; /* Make image take up full container width */
-    height: auto; /* Adjust height automatically */
+    width: 100%;
+    height: 300px;
     object-fit: cover;
     object-position: center;
     border-radius: 8px;
+    flex-shrink: 0;
 `;
 
-const ToolContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 10px;
+const CarouselWrapper = styled.div`
+    margin-top: 20px;
+    width: 100%;
 `;
+
+export default TipsDetail;
