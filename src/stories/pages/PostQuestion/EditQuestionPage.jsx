@@ -12,7 +12,7 @@ import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import { useNavigate } from "react-router-dom";
 
-const EditQuestionPage = ( _id ) => {
+const EditQuestionPage = (_id) => {
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         title: "",

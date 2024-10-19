@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Popup from "../Popup";
 
-const MeatballMenu = ({ _id, categories, mine=false}) => {
+const MeatballMenu = ({ _id, categories, mine = false }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
     const menuRef = useRef(null);
@@ -83,8 +83,12 @@ const MeatballMenu = ({ _id, categories, mine=false}) => {
                         </>
                     ) : (
                         <>
-                            <MenuItem onClick={handleReportClick}>신고하기</MenuItem>
-                            <MenuItem onClick={handleCopyLink}>링크 복사하기</MenuItem>
+                            <MenuItem onClick={handleReportClick}>
+                                신고하기
+                            </MenuItem>
+                            <MenuItem onClick={handleCopyLink}>
+                                링크 복사하기
+                            </MenuItem>
                         </>
                     )}
                 </Popup>

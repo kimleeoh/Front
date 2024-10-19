@@ -33,7 +33,13 @@ const HomePage = () => {
                 setIsLoading(true);
                 setError(null);
 
-                const [pointResponse, notificationResponse, trendingTipsResponse, trendingQnaResponse, answerablePostsResponse] = await Promise.all([
+                const [
+                    pointResponse,
+                    notificationResponse,
+                    trendingTipsResponse,
+                    trendingQnaResponse,
+                    answerablePostsResponse,
+                ] = await Promise.all([
                     BaseAxios.get("/api/point"),
                     BaseAxios.get("/api/notify/new", { send: false }),
                     BaseAxios.post("/api/home/trending-tips"),
@@ -47,30 +53,44 @@ const HomePage = () => {
                 if (Array.isArray(answerablePostsResponse.data)) {
                     setAnswerablePosts(answerablePostsResponse.data);
                 } else {
-                    console.error("Unexpected data structure:", answerablePostsResponse.data);
+                    console.error(
+                        "Unexpected data structure:",
+                        answerablePostsResponse.data
+                    );
                     setAnswerablePosts([]);
                 }
-                
+
                 // Ensure trendingTipsResponse.data is an array
                 if (Array.isArray(trendingTipsResponse.data)) {
                     settrendingTips(trendingTipsResponse.data);
-                } else if (trendingTipsResponse.data && Array.isArray(trendingTipsResponse.data.posts)) {
+                } else if (
+                    trendingTipsResponse.data &&
+                    Array.isArray(trendingTipsResponse.data.posts)
+                ) {
                     settrendingTips(trendingTipsResponse.data.posts);
                 } else {
-                    console.error("Unexpected data structure:", trendingTipsResponse.data);
+                    console.error(
+                        "Unexpected data structure:",
+                        trendingTipsResponse.data
+                    );
                     settrendingTips([]);
                 }
 
                 // Ensure trendingQnaResponse.data is an array
                 if (Array.isArray(trendingQnaResponse.data)) {
                     settrendingQna(trendingQnaResponse.data);
-                } else if (trendingQnaResponse.data && Array.isArray(trendingQnaResponse.data.posts)) {
+                } else if (
+                    trendingQnaResponse.data &&
+                    Array.isArray(trendingQnaResponse.data.posts)
+                ) {
                     settrendingQna(trendingQnaResponse.data.posts);
                 } else {
-                    console.error("Unexpected data structure:", trendingQnaResponse.data);
+                    console.error(
+                        "Unexpected data structure:",
+                        trendingQnaResponse.data
+                    );
                     settrendingQna([]);
                 }
-                
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setError("데이터를 불러오는 중 오류가 발생했습니다.");

@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import {
-    Votes,
-    Scrap,
-    Notification,
-} from "../../components/Common/Tool";
+import { Votes, Scrap, Notification } from "../../components/Common/Tool";
 import getTimeElapsed from "../../components/Common/getTimeElapsed";
 import ImageDownloadList from "./ImageDownloadList";
 import useWindowSize from "../../components/Common/WindowSize";

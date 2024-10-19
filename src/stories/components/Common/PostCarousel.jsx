@@ -3,12 +3,12 @@ import styled from "styled-components";
 import CarouselTemp from "./CarouselTemp";
 
 const DEFAULT_POSTS = [
-    { 
-        "title": null, 
-        "time": null, 
-        "content": "현재 불러올 게시물이 없습니다", 
-        "views": null 
-    }
+    {
+        title: null,
+        time: null,
+        content: "현재 불러올 게시물이 없습니다",
+        views: null,
+    },
 ];
 
 const PostCarousel = ({ posts = DEFAULT_POSTS }) => {
@@ -16,9 +16,9 @@ const PostCarousel = ({ posts = DEFAULT_POSTS }) => {
 
     return (
         <Wrapper>
-            <CarouselTemp 
-                width={"346px"} 
-                height={"109px"} 
+            <CarouselTemp
+                width={"346px"}
+                height={"109px"}
                 gap="30px"
                 showFraction={false}
                 showBullets={showControls}
@@ -33,7 +33,7 @@ const PostCarousel = ({ posts = DEFAULT_POSTS }) => {
 };
 
 PostCarousel.defaultProps = {
-    posts: DEFAULT_POSTS
+    posts: DEFAULT_POSTS,
 };
 
 export default PostCarousel;
@@ -58,8 +58,10 @@ const Post = ({ post }) => {
             <Title>{post.title}</Title>
             <Content>{post.content}</Content>
             <TimeAndViews>
-                <Time>{post.time ? timeDifference(post.time) : ''}</Time>
-                <Views>{post.views !== null ? `Views: ${post.views}` : ''}</Views>
+                <Time>{post.time ? timeDifference(post.time) : ""}</Time>
+                <Views>
+                    {post.views !== null ? `Views: ${post.views}` : ""}
+                </Views>
             </TimeAndViews>
         </PostWrapper>
     );

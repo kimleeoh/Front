@@ -20,8 +20,7 @@ const MyPage = () => {
     const { userData, fetchUserData, isLoading, error } =
         useContext(UserContext);
 
-    
-        const [popularPosts, setPopularPosts] = useState([]);
+    const [popularPosts, setPopularPosts] = useState([]);
 
     useEffect(() => {
         if (!userData && !isLoading && !error) {
@@ -29,7 +28,6 @@ const MyPage = () => {
         }
         const fetchData = async () => {
             try {
-
                 const [popularPosts] = await Promise.all([
                     BaseAxios.post("/api/mypage/trending"),
                 ]);
@@ -37,15 +35,15 @@ const MyPage = () => {
                 if (Array.isArray(popularPosts.data)) {
                     setPopularPosts(popularPosts.data);
                 } else {
-                    console.error("Unexpected data structure:", popularPosts.data);
+                    console.error(
+                        "Unexpected data structure:",
+                        popularPosts.data
+                    );
                     setPopularPosts([]);
                 }
-                
-                
-                
             } catch (error) {
                 console.error("Error fetching data:", error);
-            } 
+            }
         };
 
         fetchData();
@@ -65,8 +63,6 @@ const MyPage = () => {
 
     const { name, level, tipsCount, replyCount, hakbu, intro, profile_img } =
         userData;
-
-
 
     return (
         <Wrapper>
