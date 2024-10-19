@@ -48,7 +48,9 @@ const Tips = ({
             const message = response.data.message;
 
             if (message === "Not Mine, Not Purchased") {
-                if (window.confirm("구매하지 않은 글입니다. 구매하시겠습니까?")) {
+                if (
+                    window.confirm("구매하지 않은 글입니다. 구매하시겠습니까?")
+                ) {
                     // 여기에 구매 로직을 추가할 수 있습니다.
                     console.log("구매 로직 실행");
                 }
@@ -72,7 +74,12 @@ const Tips = ({
                         <TextWrapper hasImage={Boolean(preview_img)}>
                             <Title>{title}</Title>
                             <MetaContainer>
-                                <span style={{ color: "#ACB2BB", fontSize: "10px" }}>
+                                <span
+                                    style={{
+                                        color: "#ACB2BB",
+                                        fontSize: "10px",
+                                    }}
+                                >
                                     {Ruser.hakbu} {Ruser.name}
                                 </span>
                             </MetaContainer>
@@ -87,48 +94,59 @@ const Tips = ({
                     </ContentWrapper>
 
                     <MetaContainer>
-                        <span style={{
-                            color: "#434b60",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "5px",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                        }}>
-                            {getTimeElapsed(time)} |{" "}
-                            <span style={{
+                        <span
+                            style={{
+                                color: "#434b60",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "5px",
+                                whiteSpace: "nowrap",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                maxWidth: "120px",
-                                display: "inline-block",
-                            }}>
+                            }}
+                        >
+                            {getTimeElapsed(time)} |{" "}
+                            <span
+                                style={{
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                    maxWidth: "120px",
+                                    display: "inline-block",
+                                }}
+                            >
                                 {category_name}
                             </span>{" "}
                             | {conversion(category_type)} | 조회수 {views}
                         </span>
-                        <span style={{
-                            marginLeft: "10px",
-                            color: "#3182F7",
-                            fontWeight: "bold",
-                            fontSize: "10px",
-                            transform: "translateY(1px)",
-                            display: "flex",
-                            gap: "2px",
-                        }}>
+                        <span
+                            style={{
+                                marginLeft: "10px",
+                                color: "#3182F7",
+                                fontWeight: "bold",
+                                fontSize: "10px",
+                                transform: "translateY(1px)",
+                                display: "flex",
+                                gap: "2px",
+                            }}
+                        >
                             <div style={{ transform: "translateY(1px)" }}>
                                 <img src="/Icons/Thumb_c.svg" />
                             </div>{" "}
                             {likes}
                         </span>
                         <Point>
-                            <img src="/point_white.svg" width={"14px"} /> - {purchase_price}
+                            <img src="/point_white.svg" width={"14px"} /> -{" "}
+                            {purchase_price}
                         </Point>
                     </MetaContainer>
                 </Wrapper>
             </StyledLink>
-            {isLoading && <LoadingOverlay><Spinner/></LoadingOverlay>}
+            {isLoading && (
+                <LoadingOverlay>
+                    <Spinner />
+                </LoadingOverlay>
+            )}
         </OutWrapper>
     );
 };

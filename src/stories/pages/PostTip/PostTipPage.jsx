@@ -61,7 +61,7 @@ const PostQuestionPage = () => {
             await BaseAxios.post("/api/tips/create/post", updatedFormValues);
             console.log(updatedFormValues);
             alert("작성이 완료되었습니다.");
-            navigate("/tips");
+            // navigate("/tips");
         } else {
             setShowValidationMessages(true);
         }

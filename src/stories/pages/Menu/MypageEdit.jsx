@@ -38,7 +38,6 @@ const MyPageEdit = () => {
         }
         const fetchData = async () => {
             try {
-
                 const [popularPosts] = await Promise.all([
                     BaseAxios.post("/api/mypage/trending"),
                 ]);
@@ -46,13 +45,15 @@ const MyPageEdit = () => {
                 if (Array.isArray(popularPosts.data)) {
                     setPopularPosts(popularPosts.data);
                 } else {
-                    console.error("Unexpected data structure:", popularPosts.data);
+                    console.error(
+                        "Unexpected data structure:",
+                        popularPosts.data
+                    );
                     setPopularPosts([]);
                 }
-                
             } catch (error) {
                 console.error("Error fetching data:", error);
-            } 
+            }
         };
 
         fetchData();

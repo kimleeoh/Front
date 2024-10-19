@@ -16,7 +16,9 @@ const TipsDetailPage = () => {
         const fetchTipData = async () => {
             try {
                 setIsLoading(true);
-                const response = await BaseAxios.get(`/api/tips/${category_type}/${docid}`);
+                const response = await BaseAxios.get(
+                    `/api/tips/${category_type}/${docid}`
+                );
                 setTipData(response.data);
                 setIsLoading(false);
             } catch (err) {

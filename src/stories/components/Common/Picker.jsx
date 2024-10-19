@@ -10,8 +10,8 @@ const Picker = ({ items, selectedItem, onChange, placeholder, width }) => {
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
-    const handleSelect = (item) => {
-        onChange(item);
+    const handleSelect = (item, index) => {
+        onChange(item, index);
         setIsOpen(false); // 선택 후 드롭다운 닫기
     };
 
@@ -47,7 +47,7 @@ const Picker = ({ items, selectedItem, onChange, placeholder, width }) => {
                         {items.map((item, index) => (
                             <DropdownItem
                                 key={index}
-                                onClick={() => handleSelect(item)}
+                                onClick={() => handleSelect(item, index)}
                                 isSelected={item === selectedItem}
                             >
                                 {item}
