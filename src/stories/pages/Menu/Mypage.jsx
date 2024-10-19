@@ -492,14 +492,13 @@ const ProgressBarContainer = styled.div`
 `;
 
 const SubjectWrapper = styled.div`
-    width: 380px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: white;
     border-radius: 24px;
     margin-top: 10px;
-    margin-left: 10px;
 `;
 
 const ScrollableSubjectList = styled.div`
