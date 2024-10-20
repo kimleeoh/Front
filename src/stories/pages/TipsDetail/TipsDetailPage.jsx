@@ -21,6 +21,20 @@ const TipsDetailPage = () => {
                 );
                 setTipData(response.data);
                 setIsLoading(false);
+
+                // Move checkMine logic here
+                const checkMineResponse = await BaseAxios.post("/api/tips/manage", {
+                    docid: docid,
+                    category_type: category_type,
+                    Ruser: response.data.user,
+                });
+
+                if (checkMineResponse.data.message === "Mine") {
+                    setTipData(prevData => ({
+                        ...prevData,
+                        mine: true,
+                    }));
+                }
             } catch (err) {
                 setError("데이터를 불러오는 중 오류가 발생했습니다.");
                 setIsLoading(false);
@@ -29,31 +43,6 @@ const TipsDetailPage = () => {
 
         fetchTipData();
     }, [category_type, docid]);
-
-    useEffect(() => {
-        const checkMine = async () => {
-            try {
-                const response = await BaseAxios.post("/api/tips/manage", {
-                    docid: docid,
-                    category_type: category_type,
-                    Ruser: tipData?.user, // Optional chaining to avoid errors if tipData is not yet loaded
-                });
-                
-                if (response.data.message === "Mine") {
-                    setTipData((prevTipData) => ({
-                        ...prevTipData,
-                        mine: true,
-                    }));
-                }
-            } catch (error) {
-                console.error("Error checking tip status:", error);
-            }
-        };
-
-        if (tipData) {
-            checkMine();
-        }
-    }, [category_type, docid, tipData]);
 
     if (isLoading) {
         return <LoadingMessage>로딩 중...</LoadingMessage>;
@@ -86,7 +75,7 @@ const TipsDetailPage = () => {
                     file_links={tipData.file_links}
                     category_name={tipData.category_name}
                     category_type={tipData.category_type}
-                    mine={tipData.mine} // Pass mine prop
+                    mine={tipData.mine}
                 />
             )}
             <FixedBottomContainer></FixedBottomContainer>
