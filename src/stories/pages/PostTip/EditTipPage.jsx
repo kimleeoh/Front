@@ -84,7 +84,7 @@ const EditTipPage = () => {
 
         if (isFormValid) {
             try {
-                await BaseAxios.post(`/api/tips/update/${categories}/${_id}`, {
+                await BaseAxios.post(`/api/tips/update`, {
                     ...formValues,
                     type: type[0], // 서버에 단일 문자열로 전송
                 });
