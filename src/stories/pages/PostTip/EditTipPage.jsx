@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import TextInput from "../../components/Common/TextInput";
 import TextArea from "../../components/Common/TextArea";
@@ -11,24 +12,47 @@ import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import PointInput from "../PostQuestion/PointInput";
 import TargetInput from "../PostQuestion/TargetInput";
-import { useNavigate } from "react-router-dom";
 
 const EditTipPage = () => {
+    const { _id, categories } = useParams();
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         title: "",
         board: [],
         content: "",
         images: [],
-        type: "",
+        type: [],
         purchase_price: "",
         time: "",
         target: "",
     });
-    console.log(formValues);
-
-    const [isFormValid, setIsFormValid] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [showValidationMessages, setShowValidationMessages] = useState(false);
+
+    useEffect(() => {
+        const fetchTipData = async () => {
+            try {
+                const response = await BaseAxios.get(`/api/tips/${categories}/${_id}`);
+                const tipData = response.data;
+                setFormValues({
+                    title: tipData.title,
+                    board: tipData.category_name,
+                    content: tipData.content,
+                    images: tipData.img || [],
+                    type: tipData.category_type ? [tipData.category_type] : [],
+                    purchase_price: tipData.purchase_price.toString(),
+                    time: tipData.time,
+                    target: tipData.target,
+                });
+                setIsLoading(false);
+            } catch (error) {
+                console.error("Error fetching tip data:", error);
+                setIsLoading(false);
+            }
+        };
+
+        fetchTipData();
+    }, [_id, categories]);
 
     const handleInputChange = useCallback((name, value) => {
         setFormValues((prevValues) => ({
@@ -37,93 +61,59 @@ const EditTipPage = () => {
         }));
     }, []);
 
+    const handleChipFilterChange = useCallback((activeFilters, updatedChips) => {
+        setFormValues((prevValues) => ({
+            ...prevValues,
+            type: updatedChips,
+        }));
+    }, []);
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
-        const now = new Date().toISOString();
-
-        const updatedFormValues = {
-            ...formValues,
-            time: now,
-        };
-        const { title, board, type, content, purchase_price, target } =
-            formValues;
+        const { title, board, type, content, purchase_price, target } = formValues;
         const isFormValid =
             title.trim() !== "" &&
             board.length > 0 &&
-            type.trim() !== "" &&
+            type.length > 0 &&
             content.trim() !== "" &&
             purchase_price.trim() !== "" &&
             Number(purchase_price) > 0 &&
             Number(purchase_price) <= 200 &&
             target.trim() !== "";
+
         if (isFormValid) {
-            await BaseAxios.post("/api/tips/create/post", updatedFormValues);
-            console.log(updatedFormValues);
-            alert("작성이 완료되었습니다.");
-            navigate("/tips");
+            try {
+                await BaseAxios.post(`/api/tips/update/${categories}/${_id}`, {
+                    ...formValues,
+                    type: type[0], // 서버에 단일 문자열로 전송
+                });
+                alert("수정이 완료되었습니다.");
+                navigate(`/tips/${_id}`);
+            } catch (error) {
+                console.error("Error updating tip:", error);
+                alert("수정 중 오류가 발생했습니다.");
+            }
         } else {
             setShowValidationMessages(true);
         }
     };
 
     const renderValidationMessages = () => {
-        const { title, board, type, content, purchase_price, target } =
-            formValues;
-
-        if (title.trim() === "") {
-            return (
-                <ValidationMessage> 제목을 입력해 주세요.</ValidationMessage>
-            );
-        }
-        if (board.length === 0) {
-            return (
-                <ValidationMessage> 게시판을 선택해 주세요.</ValidationMessage>
-            );
-        }
-        if (type.length === 0) {
-            return (
-                <ValidationMessage>카테고리를 선택해 주세요.</ValidationMessage>
-            );
-        }
-        if (content.trim() === "") {
-            return <ValidationMessage>내용을 입력해 주세요.</ValidationMessage>;
-        }
-        if (purchase_price.trim() == "") {
-            return <ValidationMessage>가격을 입력해 주세요.</ValidationMessage>;
-        }
-        if (Number(purchase_price) <= 0 || Number(purchase_price) > 200) {
-            return (
-                <ValidationMessage>
-                    0~200p 사이를 입력해 주세요.
-                </ValidationMessage>
-            );
-        }
-        if (target.trim() == "") {
-            return (
-                <ValidationMessage>
-                    도움이 될 사람을 입력해 주세요.
-                </ValidationMessage>
-            );
-        }
-
-        return null;
+        // ... (이전 코드와 동일)
     };
 
     const { width: windowSize } = useWindowSize();
 
-    const [selectedCategory, setSelectedCategory] = useState([]);
-
-    const handleCategorySelect = (options) => {
-        setSelectedCategory(options);
-        console.log("게시판 선택: ", selectedCategory);
-    };
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <Wrapper>
             <Header
                 showIcon={false}
-                text="글 작성하기"
+                text="글 수정하기"
                 backButton={true}
                 searchButton={false}
             />
@@ -131,14 +121,16 @@ const EditTipPage = () => {
                 height={"30px"}
                 fontSize={"15px"}
                 placeholder={"제목 입력"}
+                value={formValues.title}
                 onChange={(value) => handleInputChange("title", value)}
             />
             <SelectBoard
+                value={formValues.board}
                 onChange={(value) => handleInputChange("board", value)}
-                onCategorySelect={handleCategorySelect}
             />
             <ChipFilter
-                onFilterChange={(value) => handleInputChange("type", value)}
+                value={formValues.type}
+                onFilterChange={handleChipFilterChange}
                 postOnly={true}
             />
             <TextArea
@@ -148,20 +140,24 @@ const EditTipPage = () => {
                     "답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."
                 }
                 isPostPage={true}
+                value={formValues.content}
                 onChange={(value) => handleInputChange("content", value)}
             />
             <ImageUploader
+                initialImages={formValues.images}
                 onChange={(value) => handleInputChange("images", value)}
             />
             <PointInput
+                value={formValues.purchase_price}
                 onChange={(value) => handleInputChange("purchase_price", value)}
                 placeholder={"판매할 가격을 입력해 주세요. (0~200p)"}
             />
             <TargetInput
+                value={formValues.target}
                 onChange={(value) => handleInputChange("target", value)}
             />
             <Button
-                label={"등록하기"}
+                label={"수정하기"}
                 style={{ marginTop: "15px" }}
                 onClick={handleFormSubmit}
             />
@@ -171,6 +167,8 @@ const EditTipPage = () => {
 };
 
 export default EditTipPage;
+
+// ... (Wrapper와 ValidationMessage 스타일 컴포넌트는 이전과 동일)
 
 const Wrapper = styled.div`
     display: flex;
@@ -188,11 +186,4 @@ const ValidationMessage = styled.div`
     color: #d00303;
     font-size: 12px;
     margin-top: 5px;
-`;
-
-const TargetWrapper = styled.div`
-    display: flex;
-    width: 100%;
-    align-items: center;
-    margin-bottom: 10px;
 `;

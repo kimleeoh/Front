@@ -25,6 +25,7 @@ const TipsDetailPage = lazy(
 const PostsDetail = lazy(() => import("./stories/pages/Posts/PostsDetail"));
 const Report = lazy(() => import("./stories/pages/Report"));
 const PostTipPage = lazy(() => import("./stories/pages/PostTip/PostTipPage"));
+const EditTipPage = lazy(() => import("./stories/pages/PostTip/EditTipPage"));
 const PostQuestionPage = lazy(
     () => import("./stories/pages/PostQuestion/PostQuestionPage")
 );
@@ -137,6 +138,10 @@ const App = () => {
                             <Route
                                 path="/tips/post"
                                 element={<PostTipPage />}
+                            />
+                            <Route
+                                path="/tips/:categories/:_id/edit"
+                                element={<EditTipPage />}
                             />
                             <Route
                                 path="/:category/:_id"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import useWindowSize from "../../components/Common/WindowSize";
@@ -11,10 +11,15 @@ const PointInput = ({
     backgroundColor,
     fontSize,
     onChange,
+    value: externalValue,
     disabled,
 }) => {
     const [content, setContent] = useState("");
     const [isfocused, setisfocused] = useState(false);
+
+    useEffect(() => {
+        setContent(externalValue || "");
+    }, [externalValue]);
 
     const handleChange = (e) => {
         setContent(e.target.value);
@@ -79,6 +84,7 @@ PointInput.propTypes = {
     onChange: PropTypes.func,
     point: PropTypes.number,
     disabled: PropTypes.bool,
+    value: PropTypes.string,
 };
 
 PointInput.defaultProps = {
@@ -89,6 +95,7 @@ PointInput.defaultProps = {
     fontSize: "16px",
     point: null,
     disabled: false,
+    value: "",
 };
 
 const Wrapper = styled.div`

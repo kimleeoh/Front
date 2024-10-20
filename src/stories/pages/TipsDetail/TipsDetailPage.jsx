@@ -62,7 +62,7 @@ const TipsDetailPage = () => {
             />
             {tipData && (
                 <TipsDetail
-                    id={tipData.id}
+                    _id={docid}
                     title={tipData.title}
                     content={tipData.content}
                     likes={tipData.likes}
