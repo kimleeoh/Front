@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Popup from "../Popup";
+import BaseAxios from "../../../axioses/BaseAxios";
 
-const MeatballMenu = ({ _id, categories, mine = false }) => {
+const MeatballMenu = ({ _id, categories, category_type, mine = false }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
     const menuRef = useRef(null);
@@ -39,7 +40,7 @@ const MeatballMenu = ({ _id, categories, mine = false }) => {
 
     const handleEdit = () => {
         // 수정 로직 구현
-        navigate(`/${categories}/${_id}/edit`);
+        navigate(`/${categories}/${category_type}/${_id}/edit`);
         setIsPopupOpen(false);
     };
 
@@ -47,6 +48,7 @@ const MeatballMenu = ({ _id, categories, mine = false }) => {
         // 삭제 로직 구현
         if (window.confirm("정말로 삭제하시겠습니까?")) {
             // 여기에 실제 삭제 API 호출 로직 추가
+            BaseAxios.delete(`/api/${category_type}/${_id}`);
             console.log("Delete item with ID:", _id);
             setIsPopupOpen(false);
         }

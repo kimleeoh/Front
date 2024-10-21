@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import useWindowSize from "../../components/Common/WindowSize";
@@ -12,14 +12,20 @@ const TextInput = ({
     fontSize,
     marginTop,
     onChange,
+    value: externalValue,
 }) => {
-    const [content, setContent] = useState("");
+    const [content, setContent] = useState(externalValue || "");
     const [isfocused, setisfocused] = useState(false);
 
+    useEffect(() => {
+        setContent(externalValue || "");
+    }, [externalValue]);
+
     const handleChange = (e) => {
-        setContent(e.target.value);
+        const newValue = e.target.value;
+        setContent(newValue);
         if (onChange) {
-            onChange(e.target.value);
+            onChange(newValue);
         }
     };
 
@@ -88,6 +94,7 @@ TextInput.propTypes = {
     fontSize: PropTypes.string,
     marginTop: PropTypes.string,
     onChange: PropTypes.func,
+    value: PropTypes.string,
 };
 
 TextInput.defaultProps = {
@@ -98,4 +105,5 @@ TextInput.defaultProps = {
     backgroundColor: "white",
     fontSize: "18px",
     marginTop: "0px",
+    value: "",
 };

@@ -148,7 +148,7 @@ const MyPageEdit = () => {
                             <Measurement>{userData.replyCount}</Measurement>
                         </DetailInfo>
                         <DetailInfo>
-                            레벨<Measurement>{userData.level}</Measurement>
+                            레벨<Measurement>{Math.floor(userData.exp / 100)+1}</Measurement>
                         </DetailInfo>
                     </InfoBox>
                 </ProfileInfo>

@@ -90,7 +90,7 @@ const MyPage = () => {
                         </DetailInfo>{" "}
                         {/* 답변 수 */}
                         <DetailInfo>
-                            레벨<Measurement>{level}</Measurement>
+                            레벨<Measurement>{Math.floor(exp / 100)+1}</Measurement>
                         </DetailInfo>{" "}
                         {/* 유저 레벨 */}
                     </InfoBox>

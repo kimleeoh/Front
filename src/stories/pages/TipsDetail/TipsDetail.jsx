@@ -77,12 +77,13 @@ const TipsDetail = ({
                     <MeatballMenu
                         _id={_id}
                         onReportClick={() => onReportClick(_id)}
-                        category="tips"
+                        categories="tips"
+                        category_type={category_type}
                         mine={mine}
                     />
                 </TopBar>
                 <Title>
-                    {title}
+                    {title} {category_type}
                 </Title>
 
                 <MetaContainer>
