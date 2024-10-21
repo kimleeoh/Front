@@ -227,7 +227,7 @@ const Questions = ({
 export default Questions;
 
 Questions.propTypes = {
-    _id: PropTypes.number.isRequired, // id prop을 추가합니다.
+    _id: PropTypes.string.isRequired, // id prop을 추가합니다.
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     subject: PropTypes.string.isRequired,

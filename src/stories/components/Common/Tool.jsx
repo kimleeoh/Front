@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import Popup from "../Popup";
 import useWindowSize from "./WindowSize";
 
-export const Votes = ({ like, handleLike, handleUnlike }) => {
+export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
     const [likesCount, setLikesCount] = useState(like);
-    const [voteStatus, setVoteStatus] = useState(null); // null: no vote, 'up': upvoted, 'down': downvoted
+    const [voteStatus, setVoteStatus] = useState(voted); // null: no vote, 'up': upvoted, 'down': downvoted
 
     const handleUpClick = () => {
         if (voteStatus === "up") {

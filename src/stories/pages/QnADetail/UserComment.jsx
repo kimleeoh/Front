@@ -6,25 +6,21 @@ import { useState, useEffect } from "react";
 import ImageUploader from "./ImageUploader";
 import TextArea from "../../components/Common/TextArea";
 import useWindowSize from "../../components/Common/WindowSize";
+import BaseAxios from "../../../axioses/BaseAxios";
 
-const User = ({ post_id, name, level, major, profileImg, limit }) => {
-    const [isAnswered, setIsAnswered] = useState(false);
+const User = ({ post_id, isScore, whatScore, answered, profileImg, level, major, name, limit }) => {
+    const [isAnswered, setIsAnswered] = useState(answered);
+    const [answerable, setAnswerable] = useState(isScore);
     const [formValues, setFormValues] = useState({
-        name: "",
-        level: "",
-        major: "",
-        profileImg: "",
         content: "",
         time: "",
     });
 
-    const handleAnswerSubmit = () => {
-        setIsAnswered(true);
-    };
-
     const [isFormValid, setIsFormValid] = useState(false);
 
     useEffect(() => {
+
+        BaseAxios.get()
         const { content } = formValues;
         const isValid = content.trim() !== "";
         setIsFormValid(isValid);
@@ -43,10 +39,6 @@ const User = ({ post_id, name, level, major, profileImg, limit }) => {
         setFormValues((prevFormValues) => {
             const updatedFormValues = {
                 ...prevFormValues,
-                name: name,
-                level: level,
-                major: major,
-                profileImg: profileImg,
                 time: now,
                 post_id: post_id,
             };

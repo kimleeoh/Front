@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from 'prop-types';
 
 const CategoryPath = ({ categories }) => {
     return (
@@ -19,6 +20,10 @@ const CategoryPath = ({ categories }) => {
 };
 
 export default CategoryPath;
+
+CategoryPath.propTypes = {
+    categories: PropTypes.arrayOf(PropTypes.string),
+};
 
 const CategoryPathContainer = styled.div`
     font-size: 12px;

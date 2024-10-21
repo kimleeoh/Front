@@ -45,15 +45,25 @@ const QnAPage = () => {
                         depth: depth
                      },
                 });
-                const newQuestions = response.data;
+                const newQuestions = response.data.docList;
+                if(newQuestions.length === 0) {
+                    setHasMore(false);
+                }
+                else{
                 setQuestionData((prevQuestions) =>
                     isInitial
                         ? newQuestions
                         : [...prevQuestions, ...newQuestions]
                 );
-                setDepth(depth + 1);
+                
+                setDepth(prevDepth => {
+                    const newDepth = prevDepth + 1;
+                    console.log("Updated depth:", newDepth);
+                    return newDepth;
+                });
+                console.log("depth: ", depth);
                 setHasMore(newQuestions.length > 0);
-                setError(null);
+                setError(null);}
             } catch (error) {
                 console.error("Error fetching question data:", error);
                 setError("질문을 불러오는 중 오류가 발생했습니다.");
@@ -61,7 +71,7 @@ const QnAPage = () => {
                 setLoading(false);
             }
         },
-        [isAGradeOnly]
+        [isAGradeOnly,depth, loading]
     );
 
     const fetchMoreQuestions = () => {
@@ -73,7 +83,7 @@ const QnAPage = () => {
     useEffect(() => {
         fetchQuestions(true);
         
-    }, [isAGradeOnly]);
+    }, []);
 
     const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
@@ -89,7 +99,7 @@ const QnAPage = () => {
         const postsWithAds = [];
         questionData.forEach((post, index) => {
             postsWithAds.push(
-                <div
+                <div key={post._id}
                     ref={
                         index === questionData.length - 1
                             ? lastQuestionElementRef

@@ -209,21 +209,39 @@ const initialUserData = [
 const QnADetailPage = () => {
     const { _id } = useParams();
     const [questionData, setQuestionData] = useState([]);
+    const [already, setAlready] = useState({});
+    const [answered, setAnswered] = useState(false);
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
     const [currentReportId, setCurrentReportId] = useState(null);
 
     useEffect(() => {
         const fetchQuestions = async () => {
-        const result = await BaseAxios.get(`/api/qna/${_id}`);
-        setQuestionData(result.data.returnData);
+        console.log(_id);
+        const result = await BaseAxios.get('/api/qna', {params: {id: _id}});
+
+        setQuestionData(JSON.parse(result.data.returnData));
+        const currentDocs = result.data.currentDocs;
+
+        setAnswered(questionData.answer_list.some((answer) => answer.Ruser === questionData.Ruser));
+        
+        const {isLiked, isScrapped, isAlarm, score, category_id, category, ...other} = currentDocs;
+        const trivial = {isLiked, isScrapped, isAlarm, score, category_id, category};
+        setAlready({isLiked, isScrapped, isAlarm});
+        sessionStorage.setItem("like", currentDocs.like);
+        sessionStorage.setItem("scrap", currentDocs.scrap);
+        sessionStorage.setItem("alarm", currentDocs.alarm);
+        sessionStorage.setItem("answer_like_list", currentDocs.answer_like_list);
+        sessionStorage.setItem("trivial", JSON.stringify(trivial));
         };
 
+        console.log(_id);
+        
         fetchQuestions();
     }, []);
 
-    const currentQuestion = questionData.find(
-        (question) => question._id === String(_id)
-    );
+    // const questionData = questionData.find(
+    //     (question) => question._id === String(_id)
+    // );
     const currentUser = initialUserData[0];
 
     const { width: windowSize } = useWindowSize();
@@ -246,26 +264,26 @@ const QnADetailPage = () => {
                 backButton={true}
                 searchButton={false}
             />
-            {currentQuestion && (
+            {questionData && (
                 <QuestionsDetail
-                    _id={currentQuestion._id}
-                    user_main={currentQuestion.user_main}
-                    title={currentQuestion.title}
-                    content={currentQuestion.content}
-                    subject={currentQuestion.now_category_list}
-                    time={currentQuestion.time}
-                    views={currentQuestion.views}
-                    like={currentQuestion.like}
-                    img={currentQuestion.img}
-                    limit={currentQuestion.restricted_type}
-                    likePost={currentUser.likePost}
+                    _id={questionData._id}
+                    user_main={questionData.user_main}
+                    title={questionData.title}
+                    content={questionData.content}
+                    subject={questionData.now_category_list}
+                    time={questionData.time}
+                    views={questionData.views}
+                    like={questionData.like}
+                    img={questionData.img}
+                    limit={questionData.restricted_type}
+                    alread={already}
                     onReportClick={handleReportClick}
                 />
             )}
 
-            {currentQuestion &&
-                currentQuestion.answer_list &&
-                currentQuestion.answer_list.map((answer) => (
+            {questionData &&
+                questionData.answer_list &&
+                questionData.answer_list.map((answer) => (
                     <AnswersDetail
                         _id={answer.Ranswer}
                         major={answer.hakbu}
@@ -278,18 +296,19 @@ const QnADetailPage = () => {
                     />
                 ))}
 
-            {currentQuestion &&
-                initialUserData.map((user) => (
+            {questionData && (
                     <UserComment
-                        post_id={currentQuestion._id}
-                        name={user.name}
-                        level={user.level}
-                        grade={user.grade}
-                        major={user.major}
-                        profileImg={user.profileImg}
-                        limit={currentQuestion.restricted_type}
+                        post_id={questionData._id}
+                        isScore = {questionData.isScore}
+                        whatScore = {questionData.whatScore}
+                        answered={answered}
+                        profileImg={questionData.profile_img}
+                        level={questionData.level}
+                        major={questionData.major}
+                        name={questionData.name}
+                        limit={questionData.restricted_type}
                     />
-                ))}
+                )}
 
             <FixedBottomContainer />
         </Wrapper>

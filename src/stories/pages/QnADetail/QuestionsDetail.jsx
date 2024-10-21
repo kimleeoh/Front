@@ -19,32 +19,37 @@ const QuestionsDetail = ({
     like,
     img,
     limit,
-    likePost,
+    alread,
     onReportClick,
 }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
 
-    const [isLiked, setIsLiked] = useState(false);
-    const [likePostId, setLikePost] = useState(likePost);
+    const [isLiked, setIsLiked] = useState(null);
+    const [already, setAlready] = useState(alread);
     const [isSaved, setIsSaved] = useState(false); // Scrap 상태 관리
     const [isNotified, setIsNotified] = useState(false); // Notification 상태 관리
 
     useEffect(() => {
-        if (likePost.includes(_id)) {
-            setIsLiked(true);
-            console.log("확인");
-        }
-    }, [_id, likePost]);
+        if (already.isLiked!=0) already.isLiked==1 ? setIsLiked("up") : setIsLiked("down");
+        if(already.isScrapped) setIsSaved(true);
+        if(already.isAlarm) setIsNotified(true);
+        
+    }, [_id, already]);
 
     const handleLike = () => {
-        setLikePost([...likePost, _id]);
+        let chage = 1;
+        if(already.isLiked==-1) chage++;
+        sessionStorage.set("like", chage);
         console.log("Post liked:", _id);
         // Additional logic to update likes on the backend or state could go here
     };
 
     const handleUnlike = () => {
-        setLikePost(likePost.filter((postId) => postId !== _id));
+        let chage = -1;
+        if(already.isLiked==1) chage--;
+        sessionStorage.set("like", chage);
         console.log("Post unliked:", _id);
+        
     };
     // Scrap 토글 핸들러
     const handleSaveToggle = () => {
@@ -64,7 +69,7 @@ const QuestionsDetail = ({
         <OutWrapper maxWidth={windowSize}>
             <Wrapper>
                 <TopBar>
-                    <CategoryPath categories={subject} />
+                    {subject}
                     <MeatballMenu
                         _id={_id}
                         onReportClick={() => onReportClick(_id)}
@@ -109,6 +114,7 @@ const QuestionsDetail = ({
                         like={like}
                         handleLike={handleLike}
                         handleUnlike={handleUnlike}
+                        voted = {isLiked}
                     />
                     <div>
                         <Notification
@@ -142,7 +148,7 @@ QuestionsDetail.propTypes = {
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string),
     ]),
-    limit: PropTypes.number.isRequired,
+    limit: PropTypes.bool.isRequired,
     likePost: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string),
