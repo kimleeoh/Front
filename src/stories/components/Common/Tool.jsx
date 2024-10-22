@@ -18,7 +18,6 @@ export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
         if (voteStatus === "up") {
             setLikesCount(likesCount - 1); // undo upvote
             setVoteStatus(null);
-            handleUnlike();
         } else {
             if(voteStatus=="down"){
                 setLikesCount(likesCount + 2); // if downvoted before, add 2
@@ -27,15 +26,14 @@ export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
                 setLikesCount(likesCount + 1);
                 setVoteStatus("up");
             }
-            handleLike();
         }
+        handleLike();
     };
 
     const handleDownClick = () => {
         if (voteStatus === "down") {
             setLikesCount(likesCount + 1); // undo downvote
             setVoteStatus(null);
-            handleLike();
         } else {
             if(voteStatus=="up"){
                 setLikesCount(likesCount - 2); // if upvoted before, subtract 2
@@ -44,8 +42,9 @@ export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
                 setLikesCount(likesCount - 1);
                 setVoteStatus("down");
             }
-            handleUnlike();
         }
+
+        handleUnlike();
     };
 
     const { width: windowSize } = useWindowSize();

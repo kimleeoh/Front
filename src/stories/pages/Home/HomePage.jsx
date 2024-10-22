@@ -38,16 +38,16 @@ const HomePage = () => {
                 const [
                     pointResponse,
                     notificationResponse,
-                    trendingTipsResponse,
-                    trendingQnaResponse,
+                    trendingResponse,
                     answerablePostsResponse,
                 ] = await Promise.all([
                     BaseAxios.get("/api/point"),
                     BaseAxios.get("/api/notify/new", { send: false }),
-                    BaseAxios.post("/api/home/trending-tips"),
-                    BaseAxios.post("/api/home/trending-qna"),
+                    BaseAxios.post("/api/home/trending"),
                     BaseAxios.post("/api/home/answer-possible"),
                 ]);
+
+                const { trendingTipsResponse, trendingQnaResponse } = trendingResponse.data;
 
                 setOriginPoint(pointResponse.data.point);
                 setHasNewNotification(notificationResponse.data.newNotify);
@@ -63,33 +63,33 @@ const HomePage = () => {
                 }
 
                 // Ensure trendingTipsResponse.data is an array
-                if (Array.isArray(trendingTipsResponse.data)) {
-                    settrendingTips(trendingTipsResponse.data);
+                if (Array.isArray(trendingTipsResponse)) {
+                    settrendingTips(trendingTipsResponse);
                 } else if (
-                    trendingTipsResponse.data &&
-                    Array.isArray(trendingTipsResponse.data.posts)
+                    trendingTipsResponse &&
+                    Array.isArray(trendingTipsResponse.posts)
                 ) {
-                    settrendingTips(trendingTipsResponse.data.posts);
+                    settrendingTips(trendingTipsResponse.posts);
                 } else {
                     console.error(
                         "Unexpected data structure:",
-                        trendingTipsResponse.data
+                        trendingTipsResponse
                     );
                     settrendingTips([]);
                 }
 
                 // Ensure trendingQnaResponse.data is an array
-                if (Array.isArray(trendingQnaResponse.data)) {
-                    settrendingQna(trendingQnaResponse.data);
+                if (Array.isArray(trendingQnaResponse)) {
+                    settrendingQna(trendingQnaResponse);
                 } else if (
-                    trendingQnaResponse.data &&
-                    Array.isArray(trendingQnaResponse.data.posts)
+                    trendingQnaResponse &&
+                    Array.isArray(trendingQnaResponse.posts)
                 ) {
-                    settrendingQna(trendingQnaResponse.data.posts);
+                    settrendingQna(trendingQnaResponse.posts);
                 } else {
                     console.error(
                         "Unexpected data structure:",
-                        trendingQnaResponse.data
+                        trendingQnaResponse
                     );
                     settrendingQna([]);
                 }

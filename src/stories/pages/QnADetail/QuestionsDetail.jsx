@@ -48,9 +48,20 @@ const QuestionsDetail = ({
 
     const handleLike = () => {
         const l = Number(sessionStorage.getItem("like"));
-        if(l==1) sessionStorage.setItem("like", 0);
-        else if(l==-1) sessionStorage.setItem("like", l+2);
-        else sessionStorage.setItem("like", l+1);
+        let newLikeValue;
+
+        if (already.isLiked === -1) {
+            newLikeValue = l != 1? 2 : 1;
+        } else if (already.isLiked === 1) {
+            newLikeValue = l != 0 ? 0 : -1;
+        } else if (already.isLiked === 0) {
+            newLikeValue = l != 0 ? 0 : 1;
+        }
+
+        sessionStorage.setItem("like", newLikeValue);
+
+        // const m = Number(sessionStorage.getItem("like"));
+        // setIsLiked(m + like); // Ensure `like` is defined or default to 0
 
         console.log("Post liked:", _id);}
         // Additional logic to update likes on the backend or state could go here
@@ -58,9 +69,20 @@ const QuestionsDetail = ({
 
     const handleUnlike = () => {
         const l = Number(sessionStorage.getItem("like"));
-        if(l==-1) sessionStorage.setItem("like", 0);
-        else if(l==1) sessionStorage.setItem("like", l-2);
-        else sessionStorage.setItem("like", l-1);
+        let newLikeValue;
+
+        if (already.isLiked === -1) {
+            newLikeValue = l != 0 ? 0 : 1;
+        } else if (already.isLiked === 1) {
+            newLikeValue = l != -2 ? -2 : -1;
+        } else if (already.isLiked === 0) {
+            newLikeValue = l != 0 ? 0 : -1;
+        }
+
+        sessionStorage.setItem("like", newLikeValue);
+
+        // const m = Number(sessionStorage.getItem("like"));
+        // setIsLiked(m + like); // Ensure `like` is defined or default to 0
 
         console.log("Post unliked:", _id);
     };

@@ -213,10 +213,10 @@ const Questions = ({
                             </div>{" "}
                             {like}
                         </span>
-                        <Point>
+                        {point&&(<Point>
                             <img src="/point_white.svg" width={"16px"} /> +{" "}
                             {point}
-                        </Point>
+                        </Point>)}
                     </MetaContainer>
                 </Wrapper>
             </StyledLink>

@@ -50,6 +50,7 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
                                 Professor: response.data.professor,
                                 TimeIcredit: response.data.timeIcredit,
                                 Sub_student: response.data.sub_student,
+                                _id: response.data._id,
                             }))
                         )
                     ).then((newBoardOptions2) => {
@@ -77,14 +78,29 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
         }
     };
 
-    const handleFinalCategorySelect = (categoryLabel) => {
+    const handleFinalCategorySelect = (categoryLabel, id) => {
         if (canSelect) {
+            setCategoryHistoryId([...selectedCategoryId]);
             setCategoryHistoryName([...categoryHistoryName, categoryLabel]);
+            setCategoryHistoryId([...categoryHistoryId, id]);
+            setSubmitHistoryId([...submitHistoryId, id]);
             setCanSelect(false);
         } else {
             setCategoryHistoryName((prevHistory) => {
                 const newHistory = [...prevHistory];
                 newHistory[newHistory.length - 1] = categoryLabel;
+                return newHistory;
+            });
+            setCategoryHistoryId((prevHistory) => {
+                const newHistory = [...prevHistory];
+                newHistory.push(id);
+                newHistory[newHistory.length - 1] = id;
+                return newHistory;
+            });
+            setSubmitHistoryId((prevHistory) => {
+                const newHistory = [...prevHistory];
+                newHistory.push(id);
+                newHistory[newHistory.length - 1] = id;
                 return newHistory;
             });
         }
@@ -136,8 +152,9 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
                           professor={option.Professor}
                           timeIcredit={option.TimeIcredit}
                           sub_student={option.Sub_student}
+                          id={option._id}
                           onClick={() =>
-                              handleFinalCategorySelect(option.CategoryName)
+                              handleFinalCategorySelect(option.CategoryName, option._id)
                           }
                       />
                   ))}

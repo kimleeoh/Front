@@ -5,6 +5,7 @@ import useWindowSize from "../../components/Common/WindowSize";
 import NavBar from "../../components/NavBar";
 import FixedBottomContainer from "../../components/FixedBottomContainer";
 import BaseAxios from "../../../axioses/BaseAxios";
+import { useLocation } from "react-router-dom";
 
 // Lazy-loaded components
 const BoardTitle = React.lazy(
@@ -15,17 +16,22 @@ const SubjectList = React.lazy(
 );
 
 const BoardHome = () => {
+    const location = useLocation();
+    const { listData, title } = location.state || { listData: [], title: "" }; // Get the list data passed from BoardHome
     const [subjectData, setSubjectData] = useState([]); // 수강 중인 과목
     const [bookmarkData, setBookmarkData] = useState([]); // 즐겨찾기
     const [subjectData2, setSubjectData2] = useState([]); // 수강했던 과목
+
     const [m1, setM1] = useState(false);
     const [m2, setM2] = useState(false);
     const [m3, setM3] = useState(false);
 
+    const navigate = useNavigate();
+
     const fetchData = async () => {
         try {
             const response = await BaseAxios.get("/api/board");
-            console.log("response: ", response);
+            console.log("response: ", response.data);
             const fetchedData = response.data;
             if (fetchedData.enroll && fetchedData.enroll.length > 0) {
                 setSubjectData(fetchedData.enroll);
@@ -49,12 +55,13 @@ const BoardHome = () => {
     useEffect(() => {
         fetchData();
     }, []);
+
+
     console.log("subjectData: ", subjectData);
     console.log("bookmarkData: ", bookmarkData);
     console.log("subjectData2: ", subjectData2);
 
     const { width: windowSize } = useWindowSize();
-    const navigate = useNavigate();
 
     const handleSubjectClick = useCallback(
         (subject, id) => {

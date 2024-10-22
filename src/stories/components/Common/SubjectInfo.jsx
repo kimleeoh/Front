@@ -8,6 +8,7 @@ const SubjectInfo = ({
     timeIcredit,
     sub_student,
     onClick,
+    id,
 }) => {
     const { width: windowSize } = useWindowSize();
 

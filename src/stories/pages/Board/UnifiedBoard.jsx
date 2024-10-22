@@ -26,6 +26,7 @@ const UnifiedBoard = () => {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(false);
     const [isEmpty, setIsEmpty] = useState(false);
+    const [isInitial, setIsInitial] = useState(true);
 
     const { width: windowSize } = useWindowSize();
 
@@ -36,6 +37,7 @@ const UnifiedBoard = () => {
             const response = await BaseAxios.post("/api/board/detail", {
                 subjectId: state.id,
                 filters: filtersArray,
+                isAGradeOnly: isAGradeOnly,
             });
             if (response.data.message) {
                 setIsEmpty(true);
@@ -62,14 +64,24 @@ const UnifiedBoard = () => {
             }
             console.log("isEmpty: ", isEmpty);
             if (!isEmpty && questionResponse?.documents.length) {
-                setQuestionData((prev) => [
+                if(isInitial) {
+                    setQuestionData(questionResponse.documents);
+                    setIsInitial(false);
+                }
+                else {
+                    setQuestionData((prev) => [
                     ...prev,
                     ...questionResponse.documents,
-                ]);
+                ]);}
                 console.log("questionData: ", questionData);
             }
             if (!isEmpty && tipsResponse?.documents.length) {
-                setTipsData((prev) => [...prev, ...tipsResponse.documents]);
+                if(isInitial) {
+                    setTipsData(tipsResponse.documents);
+                    setIsInitial(false);
+                }else{
+                    setTipsData((prev) => [...prev, ...tipsResponse.documents]);
+                }
                 console.log("tipsData: ", tipsData);
             }
         } catch (error) {
@@ -87,7 +99,7 @@ const UnifiedBoard = () => {
 
     useEffect(() => {
         fetchData();
-    }, [activeTab]);
+    }, [activeTab, isAGradeOnly]);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -108,6 +120,9 @@ const UnifiedBoard = () => {
     }, [hasMore, loading]);
 
     const handleCheckerChange = (isChecked) => {
+        setQuestionData([]);
+        setTipsData([]);
+        setIsInitial(true);
         setIsAGradeOnly(isChecked);
     };
 
@@ -115,16 +130,14 @@ const UnifiedBoard = () => {
         setActiveTab(tab);
         setQuestionData([]);
         setTipsData([]);
+        setIsInitial(true);
         setIsEmpty(false);
     };
 
-    const filteredQuestions = isAGradeOnly
-        ? questionData.filter((question) => question.restricted_type === "true")
-        : questionData;
-
     const handleFilterChange = (activeChips) => {
         setTipsData([]);
-        setHasMore(true);
+        setIsInitial(true);
+        //setHasMore(true);
         fetchData(
             activeChips.length === 0 ? ["test", "pilgy", "honey"] : activeChips
         );
@@ -187,7 +200,7 @@ const UnifiedBoard = () => {
                             onChange={handleCheckerChange}
                         />
                     </CheckerWrapper>
-                    {renderPostsWithAds(filteredQuestions, (question) => {
+                    {renderPostsWithAds(questionData, (question) => {
                         const lastCategory =
                             question.now_category_list[
                                 question.now_category_list.length - 1
@@ -206,6 +219,7 @@ const UnifiedBoard = () => {
                                 img={question.img_list}
                                 limit={question.restricted_type}
                                 user_main={question.user_main}
+                                point={question.point}
                             />
                         );
                     })}

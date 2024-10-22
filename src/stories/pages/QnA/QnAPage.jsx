@@ -32,7 +32,7 @@ const QnAPage = () => {
             });
             if (node) observer.current.observe(node);
         },
-        [loading, hasMore]
+        [hasMore, loading]
     );
 
     const fetchQuestions = useCallback(
@@ -71,7 +71,7 @@ const QnAPage = () => {
                 setLoading(false);
             }
         },
-        [isAGradeOnly,depth, loading]
+        [isAGradeOnly,depth]
     );
 
     const fetchMoreQuestions = () => {
@@ -83,12 +83,14 @@ const QnAPage = () => {
     useEffect(() => {
         fetchQuestions(true);
         
-    }, []);
+    }, [isAGradeOnly]);
 
     const handleCheckerChange = (isChecked) => {
+        console.log("isChecked: ", isChecked);
         setIsAGradeOnly(isChecked);
         setQuestionData([]);
-        setHasMore(true);
+        setDepth(1);
+        //setHasMore(true);
     };
 
     const renderPostsWithAds = () => {
@@ -121,6 +123,7 @@ const QnAPage = () => {
                         img={Array.isArray(post.img) ? post.img[0] : post.img}
                         limit={post.restricted_type}
                         user_main={post.user_main}
+                        point={post.point}
                     />
                 </div>
             );
