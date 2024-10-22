@@ -14,13 +14,39 @@ const Answers = ({
     user_grade,
     major,
     content,
+    picked,
+    index,
+    alread,
     img,
     like,
 }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
-    const [isAdopted, setIsAdopted] = useState(true); // Adoption state management
+    const [isAdopted, setIsAdopted] = useState(picked); // Adoption state management
 
     const { width: windowSize } = useWindowSize();
+
+    const handleLike = () => {
+        if(sessionStorage.getItem("answer_like_list")==-1) sessionStorage.setItem("answer_like_list", 0);
+        else{
+        let chage = 1;
+        if(alread==-1) chage++;
+        let item = sessionStorage.getItem("answer_like_list");
+        item[index] = chage;
+        sessionStorage.set("answer_like_list", item);
+        console.log("Post liked:", _id);}
+        
+    };
+
+    const handleUnlike = () => {
+        if(sessionStorage.getItem("answer_like_list")==1) sessionStorage.setItem("answer_like_list", 0);
+        else{
+        let chage = -1;
+        if(alread==1) chage--;
+        let item = sessionStorage.getItem("answer_like_list");
+        item[index] = chage;
+        sessionStorage.set("answer_like_list", item);
+        console.log("Post unliked:", _id);}
+    };
 
     return (
         <OutWrapper maxWidth={windowSize}>
@@ -76,7 +102,12 @@ const Answers = ({
                     </CarouselWrapper>
                 )}
 
-                <Votes like={like} />
+                <Votes 
+                like={like}
+                handleLike={handleLike}
+                handleUnlike={handleUnlike}
+                voted={alread==0? null : alread.isLiked==1 ? "up" : "down"}
+                />
             </Wrapper>
         </OutWrapper>
     );
@@ -88,6 +119,9 @@ Answers.propTypes = {
     _id: PropTypes.string.isRequired,
     Rqna: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    alread:PropTypes.number.isRequired,
+    picked: PropTypes.bool.isRequired,
+    index: PropTypes.number.isRequired,
     level: PropTypes.number.isRequired,
     user_grade: PropTypes.string.isRequired,
     major: PropTypes.string.isRequired,
@@ -105,6 +139,9 @@ Answers.defaultProps = {
     post_id: 0,
     name: "이름",
     level: 1,
+    index: 0,
+    alread:0,
+    picked:false,
     user_grade: "성적",
     major: "전공",
     profileImg: "/Icons/profile.svg",

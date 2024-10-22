@@ -8,16 +8,25 @@ export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
     const [likesCount, setLikesCount] = useState(like);
     const [voteStatus, setVoteStatus] = useState(voted); // null: no vote, 'up': upvoted, 'down': downvoted
 
+    useEffect(() => {
+        
+        setVoteStatus(voted);
+        setLikesCount(like);
+    }, [like, voted]);
+
     const handleUpClick = () => {
         if (voteStatus === "up") {
             setLikesCount(likesCount - 1); // undo upvote
             setVoteStatus(null);
             handleUnlike();
         } else {
-            setLikesCount(
-                voteStatus === "down" ? likesCount + 2 : likesCount + 1
-            ); // if downvoted before, add 2
-            setVoteStatus("up");
+            if(voteStatus=="down"){
+                setLikesCount(likesCount + 2); // if downvoted before, add 2
+                setVoteStatus("up");
+            }else{
+                setLikesCount(likesCount + 1);
+                setVoteStatus("up");
+            }
             handleLike();
         }
     };
@@ -26,12 +35,15 @@ export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
         if (voteStatus === "down") {
             setLikesCount(likesCount + 1); // undo downvote
             setVoteStatus(null);
-            handleUnlike();
+            handleLike();
         } else {
-            setLikesCount(
-                voteStatus === "up" ? likesCount - 2 : likesCount - 1
-            ); // if upvoted before, subtract 2
-            setVoteStatus("down");
+            if(voteStatus=="up"){
+                setLikesCount(likesCount - 2); // if upvoted before, subtract 2
+                setVoteStatus("down");
+            }else{
+                setLikesCount(likesCount - 1);
+                setVoteStatus("down");
+            }
             handleUnlike();
         }
     };
@@ -66,34 +78,30 @@ export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
     );
 };
 
-export const Scrap = () => {
-    const [isSaved, setIsSaved] = useState(false);
+export const Scrap = ({isSaveEnabled , handleSaveToggle}) => {
+    const [isSaved, setIsSaved] = useState(isSaveEnabled);
 
-    const handleSaveToggle = () => {
-        setIsSaved(!isSaved);
-        console.log("Scrap toggled:", isSaved ? "Unsaved" : "Saved");
-    };
+    useEffect(() => {
+        setIsSaved(isSaveEnabled);
+    }, [isSaveEnabled]);
+
 
     return (
         <ToolButton onClick={handleSaveToggle}>
             <img
-                src={isSaved ? "/Icons/Save_e.svg" : "/Icons/Save_d.svg"}
+                src={isSaveEnabled ? "/Icons/Save_e.svg" : "/Icons/Save_d.svg"}
                 alt="Scrap"
             />
         </ToolButton>
     );
 };
 
-export const Notification = () => {
-    const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
+export const Notification = ({isNotificationEnabled, handleNotificationToggle}) => {
+    const [isNotificationEnable, setIsNotificationEnabled] = useState(isNotificationEnabled);
 
-    const handleNotificationToggle = () => {
-        setIsNotificationEnabled(!isNotificationEnabled);
-        console.log(
-            "Notification toggled:",
-            isNotificationEnabled ? "Disabled" : "Enabled"
-        );
-    };
+    useEffect(() => {
+        setIsNotificationEnabled(isNotificationEnabled);
+    }, [isNotificationEnabled]);
 
     return (
         <ToolButton onClick={handleNotificationToggle}>
@@ -172,13 +180,13 @@ Votes.propTypes = {
 };
 
 Scrap.propTypes = {
-    isSaveEnabled: PropTypes.bool,
-    handleSaveToggle: PropTypes.func,
+    isSaveEnabled: PropTypes.bool.isRequired,
+    handleSaveToggle: PropTypes.func.isRequired,
 };
 
 Notification.propTypes = {
-    isNotificationEnabled: PropTypes.bool,
-    handleNotificationToggle: PropTypes.func,
+    isNotificationEnabled: PropTypes.bool.isRequired,
+    handleNotificationToggle: PropTypes.func.isRequired,
 };
 
 MeatballMenu.propTypes = {

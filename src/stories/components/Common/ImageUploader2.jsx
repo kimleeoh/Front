@@ -3,23 +3,33 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import useWindowSize from "./WindowSize";
 
-const ImageUploader = ({ onChange }) => {
-    const [files, setFiles] = useState([]);
+const ImageUploader = ({ onChange, forQ = false, defaultFiles=[] }) => {
+    const [files, setFiles] = useState(defaultFiles);
 
     const handleFileChange = (event) => {
         const selectedFiles = Array.from(event.target.files);
-        setFiles(selectedFiles);
+        setFiles(files, ...selectedFiles);
         if (onChange) {
-            onChange(selectedFiles);
+            onChange(selectedFiles, false);
         }
     };
+
+    const handleDeleteFile = (event) => {
+        const fileName = event.target.innerText;
+        const newFiles = files.filter((file) => file.name !== fileName);
+        setFiles(newFiles);
+        if (onChange) {
+            onChange(fileName, true);
+        }
+    }
 
     const { width: windowSize } = useWindowSize();
 
     return (
         <UploaderWrapper maxWidth={windowSize}>
             {files.length > 0 ? (
-                <FileName>{files.map((file) => file.name).join(", ")}</FileName>
+                files.map((file) =>
+                <FileName onClick={forQ? handleDeleteFile : null}>{file.name} X</FileName>)
             ) : (
                 <PlaceholderText>파일첨부</PlaceholderText>
             )}

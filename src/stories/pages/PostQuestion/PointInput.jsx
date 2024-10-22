@@ -23,6 +23,10 @@ const PointInput = ({
     }, [externalValue]);
 
     const handleChange = (e) => {
+        if (disabled) {
+            return; // Prevent changes if input is disabled
+        }
+
         const newValue = e.target.value;
         if (/^\d*$/.test(newValue)) {
             setContent(newValue);
@@ -137,5 +141,10 @@ const StyledPointInput = styled.input`
     &::placeholder {
         color: #434b60;
         font-size: ${(props) => props.fontSize};
+    }
+
+    &:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
     }
 `;

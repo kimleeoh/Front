@@ -10,22 +10,26 @@ import Checker from "../../components/Common/Checker";
 import Button from "../../components/Button";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 
-const EditQuestionPage = (_id) => {
+const EditQuestionPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { picked, title, content, category, imgList, point, limit } = location.state || {};
+    const { _id } = useParams();
     const [formValues, setFormValues] = useState({
-        title: "",
-        board: [],
-        content: "",
+        title: title,
+        board: category,
+        content: content,
         images: [],
-        point: "",
-        limit: false,
+        removeImg: [],
+        point: 0,
+        limit: limit,
     });
-    console.log(formValues);
+    const [isFocused, setIsFocused] = useState([false, false,false]);
 
     const [showValidationMessages, setShowValidationMessages] = useState(false);
-    const [isPointInputDisabled, setIsPointInputDisabled] = useState(false);
+    const [isPointInputDisabled, setIsPointInputDisabled] = useState(picked!==-1);
 
     const [originPoint, setOriginPoint] = useState(null);
 
@@ -37,10 +41,31 @@ const EditQuestionPage = (_id) => {
         };
 
         fetchPoint();
+        handleCheckerChange(limit);
     }, []);
 
-    const handleInputChange = (name, value) => {
-        setFormValues({ ...formValues, [name]: value });
+    const handleInputChange = (name, value, isRemove=false) => {
+        if (isRemove) setFormValues(prevValues => {
+            const newValues = { ...prevValues };
+            newValues['images'].filter((image) => image.name !== value);
+            if((newValues['images'].length==prevValues['images'].length)&&imgList.includes(value)){
+            newValues['removeImg'].push(value);}
+            
+            return newValues;
+        });
+        else if (name === "images") {
+            setFormValues(prevValues => {
+                const newValues = { ...prevValues };
+                newValues['images'].push(value);
+                return newValues;
+            });}
+        else setFormValues({ ...formValues, [name]: value });
+    };
+
+    const handleFocus = (index, value) => {
+        let newIsFocused = [...isFocused];
+        newIsFocused[index] = value;
+        setIsFocused(newIsFocused);
     };
 
     const handleFormSubmit = async (e) => {
@@ -52,7 +77,6 @@ const EditQuestionPage = (_id) => {
         updatedFormValues.append("board", formValues.board);
         updatedFormValues.append("content", formValues.content);
         updatedFormValues.append("point", formValues.point);
-        updatedFormValues.append("time", now);
         updatedFormValues.append("limit", formValues.limit);
         formValues.images.forEach((image, index) => {
             updatedFormValues.append("images", image);
@@ -71,7 +95,7 @@ const EditQuestionPage = (_id) => {
 
         if (isFormValid) {
             console.log(updatedFormValues.images);
-            await BaseAxios.post("/api/qna/create/post", updatedFormValues, {
+            await BaseAxios.post("/api/qna/manage/post", updatedFormValues, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -150,9 +174,10 @@ const EditQuestionPage = (_id) => {
                 searchButton={false}
             />
             <TextInput
+                onFocus={handleFocus(0, true)}
                 height={"30px"}
                 fontSize={"15px"}
-                placeholder={"제목 입력"}
+                placeholder={isFocused[0]?"제목 입력" : title}
                 marginTop={"0"}
                 onChange={(value) => handleInputChange("title", value)}
             />
@@ -160,27 +185,31 @@ const EditQuestionPage = (_id) => {
                 onChange={(value) => handleInputChange("board", value)}
             />
             <TextArea
+                onFocus={handleFocus(1, true)}
                 height={"300px"}
                 fontSize={"15px"}
-                placeholder={
-                    "답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요.*"
+                placeholder={isFocused[1]?
+                    "답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요.*":content
                 }
                 isPostPage={true}
                 onChange={(value) => handleInputChange("content", value)}
             />
             <ImageUploader
-                onChange={(value) => handleInputChange("images", value)}
+                onChange={(value, isRemove) => handleInputChange("images", value, isRemove)}
+                forQ = {true}
+                defaultFiles={imgList}
             />
             <PointInput
                 point={originPoint}
-                onChange={(value) => handleInputChange("point", value)}
+                onFocus={isPointInputDisabled? null : handleFocus(2, true)}
+                onChange={isPointInputDisabled ? null : (value) => handleInputChange("point", value)}
                 disabled={isPointInputDisabled}
-                placeholder={"포인트를 입력해 주세요"}
+                placeholder={isFocused[2]? "포인트를 입력해 주세요" : point}
             />
             <CheckerWrapper maxWidth={windowSize}>
                 <Checker
                     text={"A 이상의 답변만 받고 싶어요."}
-                    onChange={handleCheckerChange}
+                    onChange={isPointInputDisabled? null : handleCheckerChange}
                     disabled={formValues.point < 100}
                 />
             </CheckerWrapper>

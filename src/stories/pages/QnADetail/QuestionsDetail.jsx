@@ -28,39 +28,57 @@ const QuestionsDetail = ({
     const [already, setAlready] = useState(alread);
     const [isSaved, setIsSaved] = useState(false); // Scrap 상태 관리
     const [isNotified, setIsNotified] = useState(false); // Notification 상태 관리
+    
 
     useEffect(() => {
-        if (already.isLiked!=0) already.isLiked==1 ? setIsLiked("up") : setIsLiked("down");
+        setAlready(alread);
+        console.log("already",alread);
+        console.log("isLiked", already.isLiked);
+        console.log("??", already.isLiked==1);
+        if (already.isLiked!=0) already.isLiked==1 ? setIsLiked("up") : already.isLiked==-1 ? setIsLiked("down") : setIsLiked(null);
         if(already.isScrapped) setIsSaved(true);
         if(already.isAlarm) setIsNotified(true);
+        console.log("isLiked", isLiked);
         
-    }, [_id, already]);
+    }, [_id, already, isLiked, isSaved, isNotified]);
+
+    const LIKE = Number(like);
+
+    console.log("isLiked", LIKE);
 
     const handleLike = () => {
-        let chage = 1;
-        if(already.isLiked==-1) chage++;
-        sessionStorage.set("like", chage);
-        console.log("Post liked:", _id);
+        const l = Number(sessionStorage.getItem("like"));
+        if(l==1) sessionStorage.setItem("like", 0);
+        else if(l==-1) sessionStorage.setItem("like", l+2);
+        else sessionStorage.setItem("like", l+1);
+
+        console.log("Post liked:", _id);}
         // Additional logic to update likes on the backend or state could go here
-    };
+
 
     const handleUnlike = () => {
-        let chage = -1;
-        if(already.isLiked==1) chage--;
-        sessionStorage.set("like", chage);
+        const l = Number(sessionStorage.getItem("like"));
+        if(l==-1) sessionStorage.setItem("like", 0);
+        else if(l==1) sessionStorage.setItem("like", l-2);
+        else sessionStorage.setItem("like", l-1);
+
         console.log("Post unliked:", _id);
-        
     };
+
     // Scrap 토글 핸들러
     const handleSaveToggle = () => {
-        setIsSaved(!isSaved);
-        console.log("Scrap toggled:", isSaved);
+        const newIsSaved = !isSaved;
+        setIsSaved(newIsSaved);
+        sessionStorage.setItem("scrap", newIsSaved);
+        console.log("Scrap toggled:", newIsSaved);
     };
 
     // Notification 토글 핸들러
     const handleNotificationToggle = () => {
-        setIsNotified(!isNotified);
-        console.log("Notification toggled:", isNotified);
+        const newIsNotified = !isNotified;
+        setIsNotified(newIsNotified);
+        sessionStorage.setItem("alarm", newIsNotified);
+        console.log("Notification toggled:", newIsNotified);
     };
 
     const { width: windowSize } = useWindowSize();
@@ -111,7 +129,7 @@ const QuestionsDetail = ({
 
                 <BottomBar>
                     <Votes
-                        like={like}
+                        like={LIKE}
                         handleLike={handleLike}
                         handleUnlike={handleUnlike}
                         voted = {isLiked}
@@ -157,11 +175,11 @@ QuestionsDetail.propTypes = {
 
 QuestionsDetail.defaultProps = {
     id: 0,
-    user_main: "이름",
-    major: "전공",
-    title: "제목",
-    content: "내용",
-    subject: "과목",
+    user_main: "",
+    major: "",
+    title: "",
+    content: "",
+    subject: "",
     time: 0,
     views: 0,
     like: 0,

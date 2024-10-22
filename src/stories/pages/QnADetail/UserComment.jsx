@@ -7,54 +7,66 @@ import ImageUploader from "./ImageUploader";
 import TextArea from "../../components/Common/TextArea";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
+import { Link } from 'react-router-dom';
 
-const User = ({ post_id, isScore, whatScore, answered, profileImg, level, major, name, limit }) => {
-    const [isAnswered, setIsAnswered] = useState(answered);
+const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, limit }) => {
+    const [isAnswered, setIsAnswered] = useState(false);
     const [answerable, setAnswerable] = useState(isScore);
     const [formValues, setFormValues] = useState({
-        content: "",
-        time: "",
+        images: [],
+        answer: "",
+        id: post_id
     });
 
     const [isFormValid, setIsFormValid] = useState(false);
 
-    useEffect(() => {
+    const handleAnswerSubmit = () => {
+        setIsAnswered(true);
+    };
 
-        BaseAxios.get()
-        const { content } = formValues;
-        const isValid = content.trim() !== "";
+    useEffect(() => {
+        //BaseAxios.get()
+        const { answer } = formValues;
+        const isValid = answer.trim() !== "";
         setIsFormValid(isValid);
     }, [formValues]);
 
     const handleInputChange = (name, value) => {
         setFormValues({ ...formValues, [name]: value });
+        if(name == "answer"){     
+            const isValid = value.trim() !== "";
+            setIsFormValid(isValid);
+        }
     };
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-
-        const now = new Date().toISOString();
-
         // Update 'time' first then proceed with form submission
-        setFormValues((prevFormValues) => {
-            const updatedFormValues = {
-                ...prevFormValues,
-                time: now,
-                post_id: post_id,
-            };
-
-            if (isFormValid) {
-                // Add your API call here to send updatedFormValues to the backend.
-                console.log(updatedFormValues);
+        const submitHandler = async () => {
+            const formData = new FormData();
+            for (const key in formValues) {
+                formData.append(key, formValues[key]);
+            }
+            if (formValues.images) {
+                formValues.images.forEach((image, index) => {
+                    formData.append("images", image);
+                });
+        
             }
 
-            return updatedFormValues;
-        });
-    };
+            await BaseAxios.post("/api/qna/create/answer", formValues, 
+                {headers: {
+                    'Content-Type': 'multipart/form-data',
+                    }
+                }
+            );}
+
+        if(isFormValid)submitHandler();
+    }
 
     const { width: windowSize } = useWindowSize();
 
-    if (isAnswered) {
+    if(isAnswered){
         return (
             <OutWrapper maxWidth={windowSize}>
                 <Wrapper>
@@ -95,16 +107,15 @@ const User = ({ post_id, isScore, whatScore, answered, profileImg, level, major,
                 </Wrapper>
             </OutWrapper>
         );
-    }
-
-    if (limit === 0) {
+    }else{
+    if (isScore && limit === false) {
         return (
             <OutWrapper maxWidth={windowSize}>
                 <Wrapper>
                     <SubWrapper>
                         <ProfileImg src={profileImg} />
                         <ProfileContainer>
-                            <LevelGrade>Lv. {level} | A 등급</LevelGrade>
+                            <LevelGrade>Lv. {level} | {whatScore} 등급</LevelGrade>
                             <MajorName>
                                 {major} {name}
                                 <span style={{ color: "#3182F7" }}>
@@ -124,12 +135,12 @@ const User = ({ post_id, isScore, whatScore, answered, profileImg, level, major,
                 </Wrapper>
             </OutWrapper>
         );
-    }
+    }else {
 
-    return (
+        return (
         <OutWrapper maxWidth={windowSize}>
             <Wrapper>
-                {limit === null ? (
+                {whatScore === null ? (
                     <SubWrapper>
                         <ProfileImg src={profileImg} />
                         <ProfileContainer>
@@ -138,14 +149,20 @@ const User = ({ post_id, isScore, whatScore, answered, profileImg, level, major,
                                 <span style={{ color: "#ACB2BB" }}>
                                     성적 입력 후 답변이 가능합니다.
                                 </span>
+                                
+                                {/* <Link onClick = "" to="/menu" style={{ marginTop:"1px",color: "#000000", textDecoration:"none"}}>
+                                성적 입력하러 가기 ▶
+                                </Link> */}
                             </MajorName>
                         </ProfileContainer>
                     </SubWrapper>
-                ) : limit >= 2 ? (
+                ) : 
+                // limit >= 2 ? 
+                (
                     <SubWrapper>
                         <ProfileImg src={profileImg} />
                         <ProfileContainer>
-                            <LevelGrade>Lv. {level} | A 등급</LevelGrade>
+                            <LevelGrade>Lv. {level} | {whatScore} 등급</LevelGrade>
                             <MajorName>
                                 {major} {name}
                                 <span style={{ color: "#3182F7" }}>
@@ -154,21 +171,23 @@ const User = ({ post_id, isScore, whatScore, answered, profileImg, level, major,
                             </MajorName>
                         </ProfileContainer>
                     </SubWrapper>
-                ) : (
-                    <SubWrapper>
-                        <ProfileImg src={profileImg} />
-                        <ProfileContainer>
-                            <LevelGrade>Lv. {level} | A 등급</LevelGrade>
-                            <MajorName>
-                                {major} {name}
-                                <span style={{ color: "#ACB2BB" }}>
-                                    님은 답변 등록이 불가능합니다.
-                                </span>
-                            </MajorName>
-                        </ProfileContainer>
-                    </SubWrapper>
-                )}
-                {limit === null ? (
+                ) 
+                // :(
+                //     <SubWrapper>
+                //         <ProfileImg src={profileImg} />
+                //         <ProfileContainer>
+                //             <LevelGrade>Lv. {level} | A 등급</LevelGrade>
+                //             <MajorName>
+                //                 {major} {name}
+                //                 <span style={{ color: "#ACB2BB" }}>
+                //                     님은 답변 등록이 불가능합니다.
+                //                 </span>
+                //             </MajorName>
+                //         </ProfileContainer>
+                //     </SubWrapper>
+                // )
+                }
+                {whatScore === null ? (
                     <Button
                         fontSize={"10px"}
                         width={"80px"}
@@ -177,7 +196,9 @@ const User = ({ post_id, isScore, whatScore, answered, profileImg, level, major,
                         disabled={true}
                         style={{ marginLeft: "auto", marginTop: "5px" }}
                     ></Button>
-                ) : limit >= 2 ? (
+                ) : 
+                //limit >= 2 ? 
+                (
                     <Button
                         fontSize={"10px"}
                         width={"80px"}
@@ -186,22 +207,26 @@ const User = ({ post_id, isScore, whatScore, answered, profileImg, level, major,
                         style={{ marginLeft: "auto", marginTop: "5px" }}
                         onClick={handleAnswerSubmit}
                     ></Button>
-                ) : (
-                    <Button
-                        fontSize={"10px"}
-                        width={"80px"}
-                        height={"30px"}
-                        label={"답변등록"}
-                        disabled={true}
-                        style={{ marginLeft: "auto", marginTop: "5px" }}
-                    ></Button>
-                )}
+                ) 
+                // : (
+                //     <Button
+                //         fontSize={"10px"}
+                //         width={"80px"}
+                //         height={"30px"}
+                //         label={"답변등록"}
+                //         disabled={true}
+                //         style={{ marginLeft: "auto", marginTop: "5px" }}
+                //     ></Button>
+                // )
+                }
             </Wrapper>
         </OutWrapper>
-    );
+    );}}
+
 };
 
 export default User;
+
 
 User.propTypes = {
     post_id: PropTypes.string.isRequired,
@@ -252,13 +277,17 @@ const ProfileImg = styled.img`
 const LevelGrade = styled.div`
     display: flex;
     align-items: center;
+    
     font-size: 8px;
 `;
 const MajorName = styled.div`
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     font-size: 12px;
+    padding-top: 2px;
     font-weight: bold;
+    flex-direction: column;
+    
     flex-wrap: wrap;
 `;
 

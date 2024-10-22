@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Loading from "./stories/pages/Loading"; // 로딩 컴포넌트
 import UserProvider, { UserContext } from "./stories/context/UserContext"; // UserProvider 컴포넌트
 import { User } from "lucide-react";
+import EditQuestionPage from "./stories/pages/PostQuestion/EditQuestionPage";
 
 // React.lazy를 이용한 동적 import
 const StartPage = lazy(() => import("./stories/pages/OnBoarding/StartPage"));
@@ -125,6 +126,10 @@ const App = () => {
                             <Route
                                 path="/qna/:_id"
                                 element={<QnADetailPage />}
+                            />
+                            <Route
+                                path="/qna/:_id/edit"
+                                element={<EditQuestionPage />}
                             />
                             <Route
                                 path="/qna/post"
