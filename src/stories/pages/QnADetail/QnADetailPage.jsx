@@ -15,7 +15,7 @@ const QnADetailPage = () => {
     const { _id } = useParams();
     const [questionData, setQuestionData] = useState([]);
     const [already, setAlready] = useState({});
-    const [answered, setAnswered] = useState(false);
+    const [answered, setAnswered] = useState([]);
     const [mine, setMine] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
@@ -26,14 +26,15 @@ const QnADetailPage = () => {
         console.log(_id);
         const result = await BaseAxios.get('/api/qna', {params: {id: _id}});
 
-        setQuestionData(JSON.parse(result.data.returnData));
+        const newQdata = JSON.parse(result.data.returnData);
+        setQuestionData(newQdata);
         const currentDocs = result.data.currentDocs;
 
-        setAnswered(questionData.answered);
-        setMine(questionData.isMine);
+        setAnswered(newQdata.answered);
+        setMine(newQdata.isMine);
         
-        const {isLiked, isScrapped, isAlarm, score, category_id, category, ...other} = currentDocs;
-        const trivial = {isLiked, isScrapped, isAlarm, score, category_id, category};
+        const {like,scrap,alarm, answer_like_list, isLiked, isScrapped, isAlarm, ...other} = currentDocs;
+        const trivial = {...other, isLiked, isScrapped, isAlarm};
         setAlready({isLiked, isScrapped, isAlarm});
         console.log(trivial);
         sessionStorage.setItem("like", currentDocs.like);
@@ -42,7 +43,6 @@ const QnADetailPage = () => {
         sessionStorage.setItem("answer_like_list", currentDocs.answer_like_list);
         sessionStorage.setItem("trivial", JSON.stringify(trivial));
         };
-
         
         setIsLoading(true);
         fetchQuestions();
@@ -96,6 +96,8 @@ const QnADetailPage = () => {
             sessionStorage.removeItem(p);
         }console.log(currentDocs);
 
+        console.log("a",answered);
+
         const formData = {id:_id.toString(), currentDocs}
         await BaseAxios.put("/api/qna/update/post", formData);
 
@@ -129,6 +131,7 @@ const QnADetailPage = () => {
                     img={questionData.img}
                     limit={questionData.restricted_type}
                     alread={already}
+                    mine={mine}
                     onReportClick={handleReportClick}
                 />
             )}
@@ -146,11 +149,13 @@ const QnADetailPage = () => {
                         user_grade={answer.user_grade}
                         content={answer.content}
                         img={answer.img_list}
-                        like={answer.like}
+                        like={answer.likes}
+                        alread={answer.alread}
+                        mine={answered!=null && answered.includes(index)}
                     />
                 )}
 
-            {answered==-1||!mine? null : questionData && (
+            {mine? null : questionData && (
                     <UserComment
                         post_id={questionData._id}
                         isScore = {questionData.isScore}

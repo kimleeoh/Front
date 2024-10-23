@@ -11,11 +11,13 @@ import { Link } from 'react-router-dom';
 
 const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, limit }) => {
     const [isAnswered, setIsAnswered] = useState(false);
-    const [answerable, setAnswerable] = useState(isScore);
+    const [loading, setloaded] = useState(true);
+    const [answerable, setAnswerable] = useState(false);
     const [formValues, setFormValues] = useState({
         images: [],
         answer: "",
-        id: post_id
+        id: post_id,
+        score: whatScore,
     });
 
     const [isFormValid, setIsFormValid] = useState(false);
@@ -25,18 +27,24 @@ const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, lim
     };
 
     useEffect(() => {
+        setFormValues({ ...formValues, id: post_id, score: whatScore });
+
+        setAnswerable(isScore && (limit === false));
+
+        setloaded(false);
+    }, [isScore, limit]);
+
+
+    useEffect(() => {
         //BaseAxios.get()
         const { answer } = formValues;
-        const isValid = answer.trim() !== "";
+        const isValid = answer!=undefined&&String(answer).trim() !== "";
         setIsFormValid(isValid);
     }, [formValues]);
 
-    const handleInputChange = (name, value) => {
+    const handleInputChange = (name, value="") => {
         setFormValues({ ...formValues, [name]: value });
-        if(name == "answer"){     
-            const isValid = value.trim() !== "";
-            setIsFormValid(isValid);
-        }
+        
     };
 
     const handleFormSubmit = (e) => {
@@ -65,6 +73,8 @@ const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, lim
     }
 
     const { width: windowSize } = useWindowSize();
+
+    if(loading) return <p></p>;
 
     if(isAnswered){
         return (
@@ -97,7 +107,7 @@ const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, lim
                                 "답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."
                             }
                             onChange={(value) =>
-                                handleInputChange("content", value)
+                                handleInputChange("answer", value)
                             }
                         />
                     </TextAreaWrapper>
@@ -108,7 +118,7 @@ const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, lim
             </OutWrapper>
         );
     }else{
-    if (isScore && limit === false) {
+    if (answerable) {
         return (
             <OutWrapper maxWidth={windowSize}>
                 <Wrapper>
@@ -150,9 +160,9 @@ const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, lim
                                     성적 입력 후 답변이 가능합니다.
                                 </span>
                                 
-                                {/* <Link onClick = "" to="/menu" style={{ marginTop:"1px",color: "#000000", textDecoration:"none"}}>
+                                <Link onClick = "" to="/menu" style={{ marginTop:"1px",color: "#000000", textDecoration:"none"}}>
                                 성적 입력하러 가기 ▶
-                                </Link> */}
+                                </Link>
                             </MajorName>
                         </ProfileContainer>
                     </SubWrapper>
@@ -234,7 +244,9 @@ User.propTypes = {
     level: PropTypes.number.isRequired,
     major: PropTypes.string.isRequired,
     profileImg: PropTypes.string.isRequired,
-    limit: PropTypes.number.isRequired,
+    limit: PropTypes.bool.isRequired,
+    isScore: PropTypes.bool.isRequired,
+    whatScore: PropTypes.string,
 };
 
 User.defaultProps = {
@@ -243,6 +255,9 @@ User.defaultProps = {
     level: 1,
     major: "전공",
     profileImg: "/Icons/profile.svg",
+    limit: false,
+    isScore: false,
+    whatScore: null,
 };
 
 const Wrapper = styled.div`

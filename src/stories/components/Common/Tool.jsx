@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Popup from "../Popup";
 import useWindowSize from "./WindowSize";
 
-export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
+export const Votes = ({ like, handleLike, handleUnlike, mine=false, voted = null }) => {
     const [likesCount, setLikesCount] = useState(like);
     const [voteStatus, setVoteStatus] = useState(voted); // null: no vote, 'up': upvoted, 'down': downvoted
 
@@ -15,6 +15,7 @@ export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
     }, [like, voted]);
 
     const handleUpClick = () => {
+        if(!mine){
         if (voteStatus === "up") {
             setLikesCount(likesCount - 1); // undo upvote
             setVoteStatus(null);
@@ -27,10 +28,11 @@ export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
                 setVoteStatus("up");
             }
         }
-        handleLike();
+        handleLike();}
     };
 
     const handleDownClick = () => {
+        if(!mine){
         if (voteStatus === "down") {
             setLikesCount(likesCount + 1); // undo downvote
             setVoteStatus(null);
@@ -44,7 +46,7 @@ export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
             }
         }
 
-        handleUnlike();
+        handleUnlike();}
     };
 
     const { width: windowSize } = useWindowSize();
@@ -77,7 +79,7 @@ export const Votes = ({ like, handleLike, handleUnlike, voted = null }) => {
     );
 };
 
-export const Scrap = ({isSaveEnabled , handleSaveToggle}) => {
+export const Scrap = ({mine, isSaveEnabled , handleSaveToggle}) => {
     const [isSaved, setIsSaved] = useState(isSaveEnabled);
 
     useEffect(() => {
@@ -86,7 +88,7 @@ export const Scrap = ({isSaveEnabled , handleSaveToggle}) => {
 
 
     return (
-        <ToolButton onClick={handleSaveToggle}>
+        <ToolButton onClick={mine? ()=>{} : handleSaveToggle}>
             <img
                 src={isSaveEnabled ? "/Icons/Save_e.svg" : "/Icons/Save_d.svg"}
                 alt="Scrap"
@@ -95,7 +97,7 @@ export const Scrap = ({isSaveEnabled , handleSaveToggle}) => {
     );
 };
 
-export const Notification = ({isNotificationEnabled, handleNotificationToggle}) => {
+export const Notification = ({mine, isNotificationEnabled, handleNotificationToggle}) => {
     const [isNotificationEnable, setIsNotificationEnabled] = useState(isNotificationEnabled);
 
     useEffect(() => {
@@ -103,7 +105,7 @@ export const Notification = ({isNotificationEnabled, handleNotificationToggle}) 
     }, [isNotificationEnabled]);
 
     return (
-        <ToolButton onClick={handleNotificationToggle}>
+        <ToolButton onClick={mine? ()=>{} : handleNotificationToggle}>
             <img
                 src={
                     isNotificationEnabled

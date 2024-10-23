@@ -19,6 +19,7 @@ const Answers = ({
     alread,
     img,
     like,
+    mine
 }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
     const [isAdopted, setIsAdopted] = useState(picked); // Adoption state management
@@ -26,25 +27,27 @@ const Answers = ({
     const { width: windowSize } = useWindowSize();
 
     const handleLike = () => {
-        if(sessionStorage.getItem("answer_like_list")==-1) sessionStorage.setItem("answer_like_list", 0);
+        const a = sessionStorage.getItem("answer_like_list");
+        let aList = a.split(',');
+        if(aList[index]==-1){ aList[index] = 0; sessionStorage.setItem("answer_like_list", aList);}
         else{
         let chage = 1;
         if(alread==-1) chage++;
-        let item = sessionStorage.getItem("answer_like_list");
-        item[index] = chage;
-        sessionStorage.set("answer_like_list", item);
+        aList[index] = chage;
+        sessionStorage.setItem("answer_like_list", aList);
         console.log("Post liked:", _id);}
         
     };
 
     const handleUnlike = () => {
-        if(sessionStorage.getItem("answer_like_list")==1) sessionStorage.setItem("answer_like_list", 0);
+        const a = sessionStorage.getItem("answer_like_list");
+        let aList = a.split(',');
+        if(aList[index]==1){ aList[index] = 0; sessionStorage.setItem("answer_like_list", aList);}
         else{
         let chage = -1;
         if(alread==1) chage--;
-        let item = sessionStorage.getItem("answer_like_list");
-        item[index] = chage;
-        sessionStorage.set("answer_like_list", item);
+        aList[index] = chage;
+        sessionStorage.setItem("answer_like_list", aList);
         console.log("Post unliked:", _id);}
     };
 
@@ -61,7 +64,7 @@ const Answers = ({
                         <img src="/Icons/Profile.svg" />
                         <ProfileContainer>
                             <LevelGrade>
-                                Lv. {level} | {user_grade} 등급
+                                Lv. {level} | {user_grade==null? "미등록" : `${user_grade} 등급`}
                             </LevelGrade>
                             <MajorName>
                                 {major} {name}
@@ -106,7 +109,8 @@ const Answers = ({
                 like={like}
                 handleLike={handleLike}
                 handleUnlike={handleUnlike}
-                voted={alread==0? null : alread.isLiked==1 ? "up" : "down"}
+                voted={alread==0? null : alread==1 ? "up" : "down"}
+                mine={mine}
                 />
             </Wrapper>
         </OutWrapper>

@@ -19,6 +19,7 @@ const QuestionsDetail = ({
     like,
     img,
     limit,
+    mine,
     alread,
     onReportClick,
 }) => {
@@ -155,15 +156,18 @@ const QuestionsDetail = ({
                         handleLike={handleLike}
                         handleUnlike={handleUnlike}
                         voted = {isLiked}
+                        mine={mine}
                     />
                     <div>
                         <Notification
                             isNotificationEnabled={isNotified}
                             handleNotificationToggle={handleNotificationToggle}
+                            mine={mine}
                         />
                         <Scrap
                             isSaveEnabled={isSaved}
                             handleSaveToggle={handleSaveToggle}
+                            mine={mine}
                         />
                     </div>
                 </BottomBar>
