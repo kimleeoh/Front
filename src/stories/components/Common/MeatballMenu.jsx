@@ -13,6 +13,7 @@ const MeatballMenu = ({ _id, categories, category_type, mine = false }) => {
 
     const handleTogglePopup = () => {
         if (!isPopupOpen) {
+            console.log(mine);
             const rect = menuRef.current.getBoundingClientRect();
             const scrollTop =
                 window.pageYOffset || document.documentElement.scrollTop;
@@ -28,7 +29,7 @@ const MeatballMenu = ({ _id, categories, category_type, mine = false }) => {
     };
 
     const handleReportClick = () => {
-        navigate(`/${categories}/${_id}/report`);
+        navigate(`/${category_type}/${_id}/report`);
         setIsPopupOpen(false);
     };
 
@@ -40,7 +41,8 @@ const MeatballMenu = ({ _id, categories, category_type, mine = false }) => {
 
     const handleEdit = () => {
         // 수정 로직 구현
-        navigate(`/${categories}/${category_type}/${_id}/edit`);
+        if(categories=="qna")navigate(`/${categories}/${_id}/edit`);
+        else navigate(`/${categories}/${category_type}/${_id}/edit`);
         setIsPopupOpen(false);
     };
 
@@ -48,7 +50,8 @@ const MeatballMenu = ({ _id, categories, category_type, mine = false }) => {
         // 삭제 로직 구현
         if (window.confirm("정말로 삭제하시겠습니까?")) {
             // 여기에 실제 삭제 API 호출 로직 추가
-            BaseAxios.delete(`/api/${category_type}/${_id}`);
+            if(categories=="qna")BaseAxios.delete(`/api/${category_type}/${_id}`);
+            else BaseAxios.delete(`/api/${categories}/${category_type}/${_id}`);
             console.log("Delete item with ID:", _id);
             setIsPopupOpen(false);
         }

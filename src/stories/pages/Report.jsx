@@ -24,7 +24,7 @@ const Report = () => {
         new Array(8).fill(false)
     );
     const [isLoading, setIsLoading] = useState(false);
-    const { _id } = useParams();
+    const { category, _id } = useParams();
     const navigate = useNavigate();
     const modalRef = useRef();
 
@@ -33,7 +33,7 @@ const Report = () => {
             setIsLoading(true);
             try {
                 const response = await BaseAxios.post("/api/warn", {
-                    filters: "qna", // 또는 적절한 필터 값
+                    filters: category, // 또는 적절한 필터 값
                     warn_why: selectedReasons,
                     id: _id,
                 });

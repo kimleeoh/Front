@@ -101,7 +101,7 @@ const QnADetailPage = () => {
         const formData = {id:_id.toString(), currentDocs}
         await BaseAxios.put("/api/qna/update/post", formData);
 
-        navigate(-1);
+        navigate("/qna");
     }
 
     if (isLoading) {
@@ -128,7 +128,7 @@ const QnADetailPage = () => {
                     time={questionData.time}
                     views={questionData.view}
                     like={questionData.likes}
-                    img={questionData.img}
+                    img={questionData.img_list}
                     limit={questionData.restricted_type}
                     alread={already}
                     mine={mine}
