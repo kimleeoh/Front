@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import BaseAxios from "../../../axioses/BaseAxios";
 import QuestionsDetail from "./QuestionsDetail";
@@ -13,6 +13,8 @@ import { Spinner } from "../../components/Common/Spinner";
 
 const QnADetailPage = () => {
     const { _id } = useParams();
+    const location = useLocation();
+    const { isNoti } = location.state || { isNoti: false };
     const [questionData, setQuestionData] = useState([]);
     const [already, setAlready] = useState({});
     const [answered, setAnswered] = useState([]);
@@ -101,7 +103,8 @@ const QnADetailPage = () => {
         const formData = {id:_id.toString(), currentDocs}
         await BaseAxios.put("/api/qna/update/post", formData);
 
-        navigate("/qna");
+        if(isNoti) navigate(-1);
+        else navigate("/qna");
     }
 
     if (isLoading) {

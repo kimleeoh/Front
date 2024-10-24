@@ -62,11 +62,13 @@ const EditQuestionPage = () => {
         else setFormValues({ ...formValues, [name]: value });
     };
 
-    const handleFocus = (index, value) => {
-        let newIsFocused = [...isFocused];
-        newIsFocused[index] = value;
-        setIsFocused(newIsFocused);
-    };
+    const handleFocus = useCallback((index, focusState) => {
+        setIsFocused(prevState => {
+            const newFocusState = [...prevState];
+            newFocusState[index] = focusState;
+            return newFocusState;
+        });
+    }, []);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -174,7 +176,7 @@ const EditQuestionPage = () => {
                 searchButton={false}
             />
             <TextInput
-                onFocus={handleFocus(0, true)}
+                onFocus={()=>handleFocus(0, true)}
                 height={"30px"}
                 fontSize={"15px"}
                 placeholder={isFocused[0]?"제목 입력" : title}
@@ -185,7 +187,7 @@ const EditQuestionPage = () => {
                 onChange={(value) => handleInputChange("board", value)}
             />
             <TextArea
-                onFocus={handleFocus(1, true)}
+                onFocus={()=>handleFocus(1, true)}
                 height={"300px"}
                 fontSize={"15px"}
                 placeholder={isFocused[1]?
@@ -201,8 +203,8 @@ const EditQuestionPage = () => {
             />
             <PointInput
                 point={originPoint}
-                onFocus={isPointInputDisabled? null : handleFocus(2, true)}
-                onChange={isPointInputDisabled ? null : (value) => handleInputChange("point", value)}
+                onFocus={isPointInputDisabled? ()=>{} : ()=>handleFocus(2, true)}
+                onChange={isPointInputDisabled ? ()=>{} : (value) => handleInputChange("point", value)}
                 disabled={isPointInputDisabled}
                 placeholder={isFocused[2]? "포인트를 입력해 주세요" : point}
             />

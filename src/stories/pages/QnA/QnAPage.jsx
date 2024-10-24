@@ -120,7 +120,7 @@ const QnAPage = () => {
                         time={post.time}
                         views={post.views}
                         like={post.likes}
-                        img={Array.isArray(post.img) ? post.img[0] : post.img}
+                        img={post.preview_img}
                         limit={post.restricted_type}
                         user_main={post.user_main}
                         point={post.point}

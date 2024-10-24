@@ -82,7 +82,7 @@ const NotificationPage = () => {
                                                 //badgeName: notification.badge_name,
                                                 totalLikes: notification.count,
                                             }}
-                                            url={notification.Rdoc}
+                                            url={`${notification.category_types}/${notification.Rdoc}`}
                                             checked={notification.checked}
                                         />
                                         <Contour />

@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import BaseAxios from "../../../axioses/BaseAxios";
+import { navigate } from "@storybook/addon-links";
+import { useNavigate } from "react-router-dom";
+
 
 const timeDifference = (timestamp) => {
     const now = new Date();
@@ -30,15 +33,21 @@ const getNotificationContent = (type, data) => {
         case 4:
             return `게시글 '${data.title}'이 스크랩되었습니다.`;
         case 5:
-            return `게시글 '${data.title}' 파일을 구매하여 포인트가 소비되었습니다.`;
+            return `게시글 '${data.title}' 파일을 구매하여 ${data.point}포인트가 소비되었습니다.`;
         case 6:
-            return `누적 좋아요 ${data.totalLikes}개를 받아 포인트를 획득했습니다.`;
+            return `누적 좋아요 ${data.totalLikes}개를 받아 ${data.point}포인트를 획득했습니다.`;
         case 7:
-            return `누적 좋아요 ${data.totalLikes}개를 눌러 포인트를 획득했습니다.`;
+            return `누적 좋아요 ${data.totalLikes}개를 눌러 ${data.point}포인트를 획득했습니다.`;
         case 8:
             return `배지 '${data.badgeName}'을(를) 획득했습니다.`;
         case 9:
             return `게시글 '${data.title}'이 신고 처리되었습니다.`;
+        case 10:
+            return `알림 설정된 '${data.title}' 게시글에 답변이 달렸습니다.`;
+        case 11:
+            return `알림 설정된 '${data.title}' 게시글이 채택되었습니다.`;
+        case 12:
+            return `게시글 '${data.title}'에서 내 답변이 채택되었습니다. + ${data.point}포인트`;
         default:
             return "알 수 없는 알림입니다.";
     }
@@ -64,8 +73,10 @@ const NotificationBox = ({ _id, type, timestamp, data, url, checked }) => {
     const notificationTime = timeDifference(timestamp);
     const notificationContent = getNotificationContent(type, data);
     const notificationType = getNotificationTypeName(type);
+    const navigate = useNavigate();
 
     const handleClick = async () => {
+        console.log(url);
         if (url) {
             if (!checked) {
                 try {
@@ -83,7 +94,8 @@ const NotificationBox = ({ _id, type, timestamp, data, url, checked }) => {
                     // alert("알림 상태 업데이트에 실패했습니다.");
                 }
             }
-            window.location.href = url; // checked 상태와 관계없이 URL로 이동
+            navigate(url, { state: { isNoti: true } });
+            
         }
     };
 

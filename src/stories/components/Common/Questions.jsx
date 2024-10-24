@@ -148,7 +148,7 @@ const Questions = ({
             <StyledLink to={`/qna/${_id}`}>
                 <Wrapper>
                     <ContentWrapper>
-                        <TextWrapper hasImage={Boolean(img)}>
+                        <TextWrapper hasImage={img!=null}>
                             <Title>{title}</Title>
                             <MetaContainer>
                                 <span
