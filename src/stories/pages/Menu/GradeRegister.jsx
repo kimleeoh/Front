@@ -45,20 +45,21 @@ const GradeRegister = () => {
                     const index =
                         (parseInt(selectedYear) - 2018) * 2 +
                         (parseInt(selectedTerm) - 1);
-                    const response = await fetch(`/api/grades/${index}`);
-                    const data = await response.json();
+                    const response = await BaseAxios.get(`/api/score`);
+                    const data = response.data;
                     setSubjects(
-                        data.semester_list.subject_list.map(
-                            (subject, index) => ({
+                        data.semester_list[index].subject_list.map(
+                            (subject, i) => ({
                                 name: subject,
                                 grade: Grades[
-                                    data.semester_list.grade_list[index]
+                                    data.semester_list[index].grade_list[i]
                                 ],
-                                isMajor: data.semester_list.ismajor_list[index],
+                                isMajor: data.semester_list[index].ismajor_list[i],
                             })
                         )
                     );
-                    setConfirmed(data.semester_list.confirmed);
+                    console.log("subjects: ", subjects);
+                    setConfirmed(data.semester_list[index].confirmed);
                 } catch (error) {
                     console.error("과목 데이터를 불러오는 중 오류 발생", error);
                 }
@@ -69,15 +70,26 @@ const GradeRegister = () => {
 
     const handleVerifyClick = async () => {
         try {
-            await BaseAxios.post("/api/score", {
-                score: {
-                    Rcategory_list: RcategoryList,
-                    subject_list: SubjectList,
-                    grade_list: GradeList,
-                    ismajor_list: isMajorList,
+            console.log("Rcat", RcategoryList, "sub", SubjectList, "g", GradeList, "m", isMajorList);
+            console.log("sem", Convert(selectedYear, selectedTerm));
+            console.log("img", UploadedFiles);
+            console.log(selectedYear, selectedTerm);
+            let score = {
+                Rcategory_list: RcategoryList,
+                subject_list: SubjectList,
+                grade_list: GradeList,
+                ismajor_list: isMajorList,
+            };
+            score = JSON.stringify(score);
+            const formData = new FormData();
+            formData.append("score", score);
+            formData.append("semester", Convert(selectedYear, selectedTerm));
+            formData.append("img", UploadedFiles);
+            
+            await BaseAxios.post("/api/score", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
                 },
-                semester: Convert(selectedYear, selectedTerm),
-                img: UploadedFiles,
             });
         } catch (err) {
             console.error(err);
@@ -85,9 +97,9 @@ const GradeRegister = () => {
         navigate(-1);
     };
     const handleFileSelect = (files) => {
-        const fileArray = Array.from(files);
-        setUploadedFiles(fileArray);
-        console.log("업로드된 파일:", fileArray);
+        //const fileArray = Array.from(files);
+        setUploadedFiles(files[0]);
+        console.log("업로드된 파일:", files[0]);
     };
 
     const handleGradeChange = (grade, index) => {

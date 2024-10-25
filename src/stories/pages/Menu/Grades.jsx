@@ -8,14 +8,17 @@ import SubjectList from "../../components/Common/SubjectList";
 import useWindowSize from "../../components/Common/WindowSize";
 import Modal from "../../components/Common/Modal";
 import Picker from "../../components/Common/Picker";
+import BaseAxios from "../../../axioses/BaseAxios";
 
 const Grades = () => {
+    const Grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "F"];
     const navigate = useNavigate();
     const [semesters, setSemesters] = useState([]);
     const { width: windowSize } = useWindowSize();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedYear, setSelectedYear] = useState(null);
     const [selectedSemester, setSelectedSemester] = useState(null);
+    const [semesterIndex, setSemesterIndex] = useState(null);
     const modalRef = useRef(null);
 
     const currentYear = new Date().getFullYear();
@@ -29,10 +32,10 @@ const Grades = () => {
         // 백엔드 API 호출하여 데이터 가져오기
         const fetchGrades = async () => {
             try {
-                const response = await fetch("/api/grades");
-                const data = await response.json();
+                const response = await BaseAxios.get("/api/score");
+                console.log(response.data);
                 // filled가 true인 학기만 필터링
-                const filteredSemesters = data.semester_list.filter(
+                const filteredSemesters = response.data.semester_list.filter(
                     (semester) => semester.filled
                 );
                 setSemesters(filteredSemesters);
@@ -45,7 +48,7 @@ const Grades = () => {
         };
 
         fetchGrades();
-    }, []);
+    }, [semesterIndex]);
 
     const handleVerifyClick = () => {
         navigate("/grades/register");
@@ -64,27 +67,24 @@ const Grades = () => {
                 (selectedSemester === "2학기" ? 1 : 0);
 
             try {
-                const response = await fetch("/api/grades/add-semester", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ semesterIndex: newSemesterIndex }),
-                });
-                if (response.ok) {
+                // const response = await fetch("/api/grades/add-semester", {
+                //     method: "POST",
+                //     headers: {
+                //         "Content-Type": "application/json",
+                //     },
+                //     body: JSON.stringify({ semesterIndex: newSemesterIndex }),
+                // });
+                // if (response.ok) {
                     console.log(
                         `새 학기 추가: ${selectedYear}년 ${selectedSemester}`
                     );
                     // 성공적으로 추가 후 학기 목록 다시 불러오기
-                    const updatedData = await response.json();
-                    const filteredSemesters = updatedData.semester_list.filter(
-                        (semester) => semester.filled
-                    );
-                    setSemesters(filteredSemesters);
-                } else {
-                    console.error("학기 추가 실패");
-                }
-            } catch (error) {
+                    setSemesterIndex(newSemesterIndex);
+                } 
+                //else {
+                //     console.error("학기 추가 실패");
+                // }
+             catch (error) {
                 console.error("학기 추가 중 오류 발생", error);
             }
 
@@ -114,7 +114,7 @@ const Grades = () => {
                                         key={idx}
                                         subject={subject}
                                         disableLink={true}
-                                        rate={semester.grade_list[idx]}
+                                        rate={Grades[semester.grade_list[idx]]}
                                     />
                                 ))}
                             </ScrollableSubjectList>
