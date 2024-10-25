@@ -7,6 +7,7 @@ import Checker from "../../components/Common/Checker";
 import ChipFilter from "../../components/Common/ChipFilter";
 import Tips from "../Tips/Tips";
 import useWindowSize from "../../components/Common/WindowSize";
+import BaseAxios from "../../../axioses/BaseAxios";
 
 const initialQuestionData = [];
 
@@ -19,20 +20,17 @@ const History = () => {
     const [tipsData, setTipsData] = useState([]);
     const [filteredTips, setFilteredTips] = useState([]);
     const [activeTab, setActiveTab] = useState("전체");
+    const [depth, setDepth] = useState(1);
 
     const { width: windowSize } = useWindowSize();
 
     useEffect(() => {
         // 데이터 로딩 로직
-        const loadData = () => {
-            const questionData = localStorage.getItem("questionData");
-            setQuestionData(
-                questionData ? JSON.parse(questionData) : initialQuestionData
-            );
-
-            const tipsData = localStorage.getItem("TipsData");
-            setTipsData(tipsData ? JSON.parse(tipsData) : initialTipsData);
-            setFilteredTips(tipsData ? JSON.parse(tipsData) : initialTipsData);
+        const loadData = async() => {
+            const tipsData = await BaseAxios.get('/api/menu/purchased');
+            console.log(tipsData.data.pList);
+            setTipsData(tipsData.data.pList);
+            setFilteredTips(tipsData.data.pList);
         };
         loadData();
     }, []);

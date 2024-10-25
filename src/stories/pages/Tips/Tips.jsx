@@ -52,7 +52,9 @@ const Tips = ({
                     window.confirm("구매하지 않은 글입니다. 구매하시겠습니까?")
                 ) {
                     // 여기에 구매 로직을 추가할 수 있습니다.
-                    console.log("구매 로직 실행");
+                    const response = await BaseAxios.post('/api/tips/purchase', {docid:_id, category_type:category_type});
+                    if(response.status==200) navigate(`/tips/${category_type}/${_id}`);
+                    
                 }
             } else {
                 // "Mine" 또는 "Not Mine, Purchased" 인 경우 바로 링크로 이동
@@ -71,7 +73,7 @@ const Tips = ({
             <StyledLink onClick={handleClick}>
                 <Wrapper>
                     <ContentWrapper>
-                        <TextWrapper hasImage={Boolean(preview_img)}>
+                        <TextWrapper hasImage={preview_img!=""}>
                             <Title>{title}</Title>
                             <MetaContainer>
                                 <span

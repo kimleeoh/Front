@@ -18,6 +18,7 @@ const TipsPage = () => {
     const [chips, setChips] = useState([]);
     const [isEmpty, setIsEmpty] = useState(false);
     const [message, setMessage] = useState();
+    const [depth, setDepth] = useState(1);
     const observer = useRef();
     const { width: windowSize } = useWindowSize();
 
@@ -32,7 +33,7 @@ const TipsPage = () => {
             });
             if (node) observer.current.observe(node);
         },
-        [loading, hasMore]
+        [hasMore, loading]
     );
 
     const fetchTips = useCallback(
@@ -43,7 +44,9 @@ const TipsPage = () => {
                     chips.length > 0 ? chips : ["test", "pilgy", "honey"];
                 const response = await BaseAxios.post("/api/bulletin/tips", {
                     filters: filtersArray,
+                    depth:depth
                 });
+                
                 console.log("response: ", response);
                 console.log("filters: ", chips);
                 const newTips = response.data;
@@ -61,14 +64,20 @@ const TipsPage = () => {
                 setTipsData((prevTips) =>
                     isInitial ? newTips : [...prevTips, ...newTips]
                 );
+                setDepth(prevDepth => {
+                    const newDepth = prevDepth + 1;
+                    console.log("Updated depth:", newDepth);
+                    return newDepth;
+                });
                 setHasMore(newTips.length > 0);
+                console.log("hasmore", hasMore, "tipsL",tipsData, "loading", loading);
             } catch (error) {
                 console.error("Error fetching tips data:", error);
             } finally {
                 setLoading(false);
             }
         },
-        [chips, tipsData]
+        [chips, depth]
     );
 
     const fetchMoreTips = () => {
@@ -84,6 +93,7 @@ const TipsPage = () => {
     const handleFilterChange = (activeChips) => {
         setTipsData([]);
         setHasMore(true);
+        setDepth(1);
         setChips(
             activeChips.length === 0 ? ["test", "pilgy", "honey"] : activeChips
         );

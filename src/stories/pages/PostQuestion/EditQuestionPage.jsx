@@ -26,7 +26,7 @@ const EditQuestionPage = () => {
         point: 0,
         limit: limit,
     });
-    const [isFocused, setIsFocused] = useState([false, false,false]);
+    const [isFocused, setIsFocused] = useState(false);
 
     const [showValidationMessages, setShowValidationMessages] = useState(false);
     const [isPointInputDisabled, setIsPointInputDisabled] = useState(picked!==-1);
@@ -61,14 +61,6 @@ const EditQuestionPage = () => {
             });}
         else setFormValues({ ...formValues, [name]: value });
     };
-
-    const handleFocus = useCallback((index, focusState) => {
-        setIsFocused(prevState => {
-            const newFocusState = [...prevState];
-            newFocusState[index] = focusState;
-            return newFocusState;
-        });
-    }, []);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -176,10 +168,10 @@ const EditQuestionPage = () => {
                 searchButton={false}
             />
             <TextInput
-                onFocus={()=>handleFocus(0, true)}
+                
                 height={"30px"}
                 fontSize={"15px"}
-                placeholder={isFocused[0]?"제목 입력" : title}
+                placeholder={title}
                 marginTop={"0"}
                 onChange={(value) => handleInputChange("title", value)}
             />
@@ -187,12 +179,9 @@ const EditQuestionPage = () => {
                 onChange={(value) => handleInputChange("board", value)}
             />
             <TextArea
-                onFocus={()=>handleFocus(1, true)}
                 height={"300px"}
                 fontSize={"15px"}
-                placeholder={isFocused[1]?
-                    "답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요.*":content
-                }
+                placeholder={content}
                 isPostPage={true}
                 onChange={(value) => handleInputChange("content", value)}
             />
@@ -203,10 +192,9 @@ const EditQuestionPage = () => {
             />
             <PointInput
                 point={originPoint}
-                onFocus={isPointInputDisabled? ()=>{} : ()=>handleFocus(2, true)}
                 onChange={isPointInputDisabled ? ()=>{} : (value) => handleInputChange("point", value)}
                 disabled={isPointInputDisabled}
-                placeholder={isFocused[2]? "포인트를 입력해 주세요" : point}
+                placeholder={point}
             />
             <CheckerWrapper maxWidth={windowSize}>
                 <Checker
