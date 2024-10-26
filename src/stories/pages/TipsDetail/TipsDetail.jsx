@@ -83,7 +83,7 @@ const TipsDetail = ({
                     />
                 </TopBar>
                 <Title>
-                    {title} {category_type}
+                    {title}
                 </Title>
 
                 <MetaContainer>
