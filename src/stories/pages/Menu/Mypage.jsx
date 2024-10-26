@@ -108,16 +108,17 @@ const MyPage = () => {
             />
             {activeTab === "프로필" && (
                 <Content maxWidth={windowSize}>
-                    <Title>배지</Title>
-                    <BadgeContainer>
+                    {/* 배지 연결안함  */}
+                    {/* <BadgeContainer>
                         <BadgeBox onClick={() => navigate("/badge")} />
                         <BadgeBox onClick={() => navigate("/badge")} />
                         <BadgeBox onClick={() => navigate("/badge")} />
                         <BadgeBox onClick={() => navigate("/badge")} />
-                    </BadgeContainer>
+                    </BadgeContainer> */}
+                    {/* 성적연결안함 */}
                     <BoardTitle text="성적" />
                     <SubjectWrapper>
-                        <ScrollableSubjectList>
+                        {/* <ScrollableSubjectList>
                             <SubjectList
                                 subject={"디지털미디어원리"}
                                 disableLink={true}
@@ -128,7 +129,7 @@ const MyPage = () => {
                                 disableLink={true}
                                 rate={"A-"}
                             />
-                        </ScrollableSubjectList>
+                        </ScrollableSubjectList> */}
                     </SubjectWrapper>
                     <Title>인기게시글</Title>
                     {popularPosts.length > 0 ? (
@@ -156,7 +157,8 @@ const MyPage = () => {
                         </ProgressBarContainer>
                     </Reputation>
 
-                    <div style={{ padding: "0px 20px 20px" }}>
+                    <Title>배지</Title>
+                    {/* <div style={{ padding: "0px 20px 20px" }}>
                         <InfoBox>
                             <div
                                 style={{
@@ -290,7 +292,7 @@ const MyPage = () => {
                                 </div>
                             </div>
                         </InfoBox>
-                    </div>
+                    </div> */}
                 </Content>
             )}
         </Wrapper>
