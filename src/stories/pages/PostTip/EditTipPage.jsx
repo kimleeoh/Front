@@ -71,7 +71,8 @@ const EditTipPage = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
-        const { title, board, type, content, purchase_price, target } = formValues;
+        const { title, board, type, content, purchase_price, target } =
+            formValues;
         const isFormValid =
             title.trim() !== "" &&
             board.length > 0 &&
@@ -84,10 +85,16 @@ const EditTipPage = () => {
 
         if (isFormValid) {
             try {
+                // 현재 시간을 추가
+                const currentTime = new Date().toISOString(); // ISO 형식으로 현재 시간 설정
+
                 await BaseAxios.post(`/api/tips/update`, {
                     ...formValues,
                     type: type[0], // 서버에 단일 문자열로 전송
+                    time: currentTime, // 시간 정보 포함
+                    docid: _id, // docid 추가
                 });
+
                 alert("수정이 완료되었습니다.");
                 navigate(`/tips/${_id}`);
             } catch (error) {

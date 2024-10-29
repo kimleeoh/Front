@@ -46,8 +46,8 @@ const GradeRegister = () => {
                         (parseInt(selectedYear) - 2018) * 2 +
                         (parseInt(selectedTerm) - 1);
                     const response = await BaseAxios.get(`/api/score`);
-                    const data = await response.data;
-                    setSubjects(
+                    const data = response.data;
+			setSubjects(
                         data.semester_list[index].subject_list.map(
                             (subject, i) => ({
                                 name: subject,
@@ -58,6 +58,8 @@ const GradeRegister = () => {
                             })
                         )
                     );
+
+                    console.log("subjects: ", subjects);
                     setConfirmed(data.semester_list[index].confirmed);
                 } catch (error) {
                     console.error("과목 데이터를 불러오는 중 오류 발생", error);
@@ -69,7 +71,8 @@ const GradeRegister = () => {
 
     const handleVerifyClick = async () => {
         try {
-	    let score = {
+            console.log(selectedYear, selectedTerm);
+            let score = {
                 Rcategory_list: RcategoryList,
                 subject_list: SubjectList,
                 grade_list: GradeList,

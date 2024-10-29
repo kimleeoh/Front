@@ -1,4 +1,4 @@
-const Convert = ({ selectedYear, selectedTerm }) => {
+const Convert = (selectedYear, selectedTerm) => {
     const yearMapping = {
         "2018": 0,
         "2019": 2,
