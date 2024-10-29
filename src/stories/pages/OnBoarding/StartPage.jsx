@@ -25,7 +25,7 @@ const StartPage = () => {
                 <Logo />
             </LogoWrapper>
             <SloganWrapper>
-                <Slogan>당신의 멋진 슬로건을 여기에 입력하세요</Slogan>
+                <Slogan>대학생활, 모르는 것은 많지만<br></br>물어볼 사람이 없다면?</Slogan>
             </SloganWrapper>
             <ButtonWrapper maxWidth={windowSize}>
                 <Button label="시작하기" onClick={() => navigate("/signup")} />
