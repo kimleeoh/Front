@@ -20,7 +20,7 @@ import { UserContext } from "../../context/UserContext";
 const MenuPage = () => {
     const modalRef = useRef();
     const navigate = useNavigate();
-    const { userData, fetchUserData, isLoading, error } =
+    const { userData, fetchUserData, setUserData ,isLoading, error } =
         useContext(UserContext);
 
     useEffect(() => {
@@ -45,9 +45,11 @@ const MenuPage = () => {
         try {
             await BaseAxios.delete("/api/logout");
             modalRef.current.close();
+            setUserData(null);
             navigate("/");
         } catch (e) {
             console.log(e);
+            setUserData(null);
             navigate("/");
         }
     }, [navigate]);

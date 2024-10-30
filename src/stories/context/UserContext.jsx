@@ -34,6 +34,7 @@ export const UserProvider = ({ children }) => {
 
     const value = {
         userData,
+        setUserData, // 외부에서 userData를 업데이트할 수 있도록 추가
         isLoading,
         error,
         fetchUserData,
