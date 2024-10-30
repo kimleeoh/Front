@@ -23,7 +23,7 @@ const SubjectList = ({
         <Line onClick={handleClick}>
             <Wrapper maxWidth={windowSize}>
                 <SubjectTitle>
-                    <span style={{ marginLeft }}>{subject}</span>
+                    <span style={{ marginLeft: "8px" }}>{subject}</span>
                 </SubjectTitle>
                 {actions?.map((action, index) => (
                     <ActionButton

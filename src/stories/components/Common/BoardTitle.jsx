@@ -42,6 +42,7 @@ export default BoardTitle;
 
 const Wrapper = styled.div`
     max-width: ${(props) => props.maxWidth}px;
+    width: 100%;
     height: 20px;
     display: flex;
     align-items: center;

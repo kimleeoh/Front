@@ -176,11 +176,11 @@ const GradeRegister = () => {
             {selectedYear && selectedTerm ? (
                 <>
                     <CheckerWrapper maxWidth={windowSize}>
-                        <Checker
+                        {/* <Checker
                             text={confirmed ? "인증됨" : "인증되지 않음"}
                             readOnly={true}
                             type={"check"}
-                        />
+                        /> */}
                     </CheckerWrapper>
                     <SubjectWrapper maxWidth={windowSize}>
                         <SubjectItem>

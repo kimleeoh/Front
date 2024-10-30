@@ -107,6 +107,7 @@ const QnAPage = () => {
                             ? lastQuestionElementRef
                             : null
                     }
+                    style={{ width: "100%" }}
                 >
                     <Questions
                         _id={post._id}

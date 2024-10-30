@@ -105,7 +105,7 @@ const Grades = () => {
             </Header>
             <ContentWrapper maxWidth={windowSize}>
                 {semesters.map((semester, index) => (
-                    <div key={index}>
+                    <div key={index} style={{width: "85%"}}>
                         <BoardTitle text={`2024학년도 ${index + 1}학기`} />
                         <SubjectWrapper maxWidth={windowSize}>
                             <ScrollableSubjectList>
