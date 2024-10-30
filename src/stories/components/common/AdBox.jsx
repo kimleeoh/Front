@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import useWindowSize from "./WindowSize";
@@ -8,6 +8,13 @@ const OutWrapper = styled.div`
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     margin: 0 auto;
     border-bottom: 1px solid #acb2bb;
+`;
+
+// Google Ads 광고 코드 스타일링
+const GoogleAd = styled.ins`
+    display: block;
+    width: 100%;
+    height: auto;
 `;
 
 const StyledAnchor = styled.a`
@@ -94,6 +101,20 @@ const Image = styled.img`
 const AdBox = ({ _id, title, content, img, link }) => {
     const { width: windowSize } = useWindowSize();
 
+    useEffect(() => {
+        // Google Ads 스크립트를 동적으로 추가
+        const script = document.createElement("script");
+        script.src =
+            "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+        script.async = true;
+        script.setAttribute("data-ad-client", "ca-pub-8432259902229548");
+        script.crossOrigin = "anonymous";
+        document.body.appendChild(script);
+
+        // 광고 초기화
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+    }, []);
+
     return (
         <OutWrapper maxWidth={windowSize}>
             <StyledAnchor href={link} target="_blank" rel="noopener noreferrer">
@@ -112,6 +133,14 @@ const AdBox = ({ _id, title, content, img, link }) => {
                     </ContentWrapper>
 
                     <MetaContainer>광고</MetaContainer>
+
+                    {/* Google AdSense 광고 영역 */}
+                    <GoogleAd
+                        className="adsbygoogle"
+                        data-ad-client="ca-pub-8432259902229548"
+                        data-ad-slot="XXXXXX" // 광고 슬롯 ID
+                        data-ad-format="auto"
+                    />
                 </Wrapper>
             </StyledAnchor>
         </OutWrapper>
