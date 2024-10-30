@@ -223,7 +223,7 @@ const UnifiedBoard = () => {
                             />
                         );
                     })}
-                    <FixedIcon src="/Icons/Question.svg" url={"/qna/post"} />
+                    <FixedIcon src={`${process.env.PUBLIC_URL}/Icons/Question.svg`} url={"/qna/post"} />
                 </>
             )}
             {activeTab === "Tips" && (
@@ -246,13 +246,13 @@ const UnifiedBoard = () => {
                             time={tip.time}
                         />
                     ))}
-                    <FixedIcon src="/Icons/Pen.svg" url={"/tips/post"} />
+                    <FixedIcon src={`${process.env.PUBLIC_URL}/Icons/Pen.svg`} url={"/tips/post"} />
                 </>
             )}
             {loading && <Spinner color="#434B60" size={32} />}
             {isEmpty ? (
                 <EmptyBox>
-                    <Icon src="/Icons/Alert_gray.svg" />
+                    <Icon src={`${process.env.PUBLIC_URL}/Icons/Alert_gray.svg`} />
                     <Content>
                         아직 스크랩한 글이 없어요! 또 보고 싶은 글은 스크랩
                         해보세요!

@@ -79,11 +79,11 @@ const TextField = ({
                         >
                             {isPasswordVisible ? (
                                 <img
-                                    src="/Icons/Invisible.svg"
+                                    src={`${process.env.PUBLIC_URL}/Icons/Invisible.svg`}
                                     width={"20px"}
                                 />
                             ) : (
-                                <img src="/Icons/Visible.svg" width={"20px"} />
+                                <img src={`${process.env.PUBLIC_URL}/Icons/Visible.svg`} width={"20px"} />
                             )}
                         </ToggleButton>
                     ) : (

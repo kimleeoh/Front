@@ -156,7 +156,7 @@ export const MeatballMenu = () => {
     return (
         <div>
             <MenuButton ref={buttonRef} onClick={handleTogglePopup}>
-                <img src="/Icons/meatballs.svg" alt="Meatball Menu" />
+                <img src={`${process.env.PUBLIC_URL}/Icons/meatballs.svg`} alt="Meatball Menu" />
             </MenuButton>
             {isPopupOpen && (
                 <Popup

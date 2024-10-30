@@ -37,7 +37,7 @@ const SearchField = ({ placeholder, onSearch, width }) => {
     return (
         <SearchContainer width={width}>
             <SearchButton onClick={handleSearch}>
-                <img src="/Icons/Search.svg" alt="Search" />
+                <img src={`${process.env.PUBLIC_URL}/Icons/Search.svg`} alt="Search" />
             </SearchButton>
             <SearchInput
                 ref={inputRef} // ref를 input에 할당
