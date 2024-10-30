@@ -81,7 +81,8 @@ const GradeRegister = () => {
             score = JSON.stringify(score);
             const formData = new FormData();
             formData.append("score", score);
-            formData.append("semester", Convert(selectedYear, selectedTerm));
+	    const aa = Convert(selectedYear, selectedTerm);
+            formData.append("semester", aa);
             formData.append("img", UploadedFiles);
             
             await BaseAxios.post("/api/score", formData, {
