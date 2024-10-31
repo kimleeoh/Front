@@ -36,6 +36,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}  # 올바른 SSH 키 사용
           script: |
+            cd Front
             forever stopall
             sudo systemctl stop nginx
             git pull production server
