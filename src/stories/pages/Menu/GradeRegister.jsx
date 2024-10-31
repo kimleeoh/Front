@@ -47,7 +47,7 @@ const GradeRegister = () => {
                         (parseInt(selectedTerm) - 1);
                     const response = await BaseAxios.get(`/api/score`);
                     const data = response.data;
-                    setSubjects(
+			setSubjects(
                         data.semester_list[index].subject_list.map(
                             (subject, i) => ({
                                 name: subject,
@@ -58,6 +58,7 @@ const GradeRegister = () => {
                             })
                         )
                     );
+
                     console.log("subjects: ", subjects);
                     setConfirmed(data.semester_list[index].confirmed);
                 } catch (error) {
@@ -70,9 +71,6 @@ const GradeRegister = () => {
 
     const handleVerifyClick = async () => {
         try {
-            console.log("Rcat", RcategoryList, "sub", SubjectList, "g", GradeList, "m", isMajorList);
-            console.log("sem", Convert(selectedYear, selectedTerm));
-            console.log("img", UploadedFiles);
             console.log(selectedYear, selectedTerm);
             let score = {
                 Rcategory_list: RcategoryList,

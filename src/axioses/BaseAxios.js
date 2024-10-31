@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const BaseAxios = axios.create({
-    baseURL: "http://localhost:4501",
+	baseURL: "https://wiJDE32qiri1y0e.afkiller.com",
     withCredentials: true,
 });
 

@@ -33,6 +33,7 @@ const Grades = () => {
         const fetchGrades = async () => {
             try {
                 const response = await BaseAxios.get("/api/score");
+                const data = response.data;
                 console.log(response.data);
                 // filled가 true인 학기만 필터링
                 const filteredSemesters = response.data.semester_list.filter(
@@ -67,6 +68,14 @@ const Grades = () => {
                 (selectedSemester === "2학기" ? 1 : 0);
 
             try {
+		    //const response = await fetch("/api/grades/add-semester", {
+                    //method: "POST",
+                    //headers: {
+                      //  "Content-Type": "application/json",
+                    //},
+                    //body: JSON.stringify({ semesterIndex: newSemesterIndex }),
+               // });
+                //if (response.ok) {
                 // const response = await fetch("/api/grades/add-semester", {
                 //     method: "POST",
                 //     headers: {
@@ -79,11 +88,20 @@ const Grades = () => {
                         `새 학기 추가: ${selectedYear}년 ${selectedSemester}`
                     );
                     // 성공적으로 추가 후 학기 목록 다시 불러오기
+                  //  const updatedData = await response.json();
+                   // const filteredSemesters = updatedData.semester_list.filter(
+                   //     (semester) => semester.filled
+                   // );
                     setSemesterIndex(newSemesterIndex);
-                } 
+                //} else {
+                //    console.error("학기 추가 실패");
+                //}
+            // catch (error) {
+                  //  setSemesterIndex(newSemesterIndex);
+                //} 
                 //else {
                 //     console.error("학기 추가 실패");
-                // }
+                 }
              catch (error) {
                 console.error("학기 추가 중 오류 발생", error);
             }
