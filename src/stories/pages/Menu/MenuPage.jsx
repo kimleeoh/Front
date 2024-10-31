@@ -20,21 +20,19 @@ import { UserContext } from "../../context/UserContext";
 const MenuPage = () => {
     const modalRef = useRef();
     const navigate = useNavigate();
-    const { userData, fetchUserData, isLoading, error } =
+    const { userData, fetchUserData, setUserData ,isLoading, error } =
         useContext(UserContext);
 
-    // 최초 마운트 시에만 데이터를 가져옵니다.
     useEffect(() => {
         if (!userData && !isLoading && !error) {
             fetchUserData();
         }
     }, [userData, isLoading, error, fetchUserData]);
 
-    // userData에서 파생되는 값들을 memoize
     const { name, profile_Img } = useMemo(
         () => ({
             name: userData?.name || "Guest",
-            profile_Img: userData?.profile_Img || "/Profile.svg",
+            profile_Img: userData?.profile_Img || `${process.env.PUBLIC_URL}/Profile.svg`,
         }),
         [userData]
     );
@@ -47,14 +45,21 @@ const MenuPage = () => {
         try {
             await BaseAxios.delete("/api/logout");
             modalRef.current.close();
+            setUserData(null);
             navigate("/");
         } catch (e) {
             console.log(e);
+            setUserData(null);
             navigate("/");
         }
     }, [navigate]);
 
     const { width: windowSize } = useWindowSize();
+
+    // 문의하기 버튼 클릭 시 알림창 표시
+    const handleContactClick = () => {
+        alert("nanseulgim1027@gmail.com으로 문의해주세요!");
+    };
 
     return (
         <Wrapper>
@@ -95,43 +100,38 @@ const MenuPage = () => {
             </Link>
 
             <Section maxWidth={windowSize}>
-                <MenuList to="/grades" src={"/icons/A+.svg"}>
-                    {" "}
-                    내 성적{" "}
+                <MenuList to="/grades" src={`${process.env.PUBLIC_URL}/icons/A+.svg`}>
+                    내 성적
                 </MenuList>
-                <MenuList to="/points" src={"/icons/point.svg"}>
-                    {" "}
-                    내 포인트{" "}
+                <MenuList to="/points" src={`${process.env.PUBLIC_URL}/icons/point.svg`}>
+                    내 포인트
                 </MenuList>
-                <MenuList to="/purchased" src={"/icons/purchased.svg"}>
-                    {" "}
-                    내 구입목록{" "}
+                <MenuList to="/purchased" src={`${process.env.PUBLIC_URL}/icons/purchased.svg`}>
+                    내 구입목록
                 </MenuList>
                 <Title> 게시물 </Title>
-                <MenuList to="/myboard" src={"/icons/pencil.svg"}>
-                    {" "}
-                    내가 쓴 글{" "}
+                <MenuList to="/myboard" src={`${process.env.PUBLIC_URL}/icons/pencil.svg`}>
+                    내가 쓴 글
                 </MenuList>
-                <MenuList to="/bookmarks" src={"/icons/scrap.svg"}>
-                    {" "}
-                    북마크한 글{" "}
+                <MenuList to="/bookmarks" src={`${process.env.PUBLIC_URL}/icons/scrap.svg`}>
+                    북마크한 글
                 </MenuList>
-                <MenuList to="/likes" src={"/icons/thumb.svg"}>
-                    {" "}
-                    좋아요한 글{" "}
+                <MenuList to="/likes" src={`${process.env.PUBLIC_URL}/icons/thumb.svg`}>
+                    좋아요한 글
                 </MenuList>
-                <MenuList to="/history" src={"/icons/recent.svg"}>
-                    {" "}
-                    최근 본 글{" "}
+                <MenuList to="/history" src={`${process.env.PUBLIC_URL}/icons/recent.svg`}>
+                    최근 본 글
                 </MenuList>
                 <Title> 도움말 </Title>
-                <MenuList to="/notices" src={"/icons/notice.svg"}>
-                    {" "}
-                    공지사항{" "}
+                <MenuList to="/notices" src={`${process.env.PUBLIC_URL}/icons/notice.svg`}>
+                    공지사항
                 </MenuList>
-                <MenuList to="/mycontact" src={"/icons/speak.svg"}>
-                    {" "}
-                    문의하기{" "}
+                {/* 문의하기 버튼에 onClick 이벤트 추가 */}
+                <MenuList
+                    onClick={handleContactClick}
+                    src={`${process.env.PUBLIC_URL}/icons/speak.svg`}
+                >
+                    문의하기
                 </MenuList>
                 <Title> 기타 </Title>
                 <MenuList to="/terms"> 이용약관 </MenuList>

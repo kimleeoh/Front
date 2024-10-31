@@ -120,7 +120,7 @@ const QuestionsDetail = ({
                     />
                 </TopBar>
                 <Title>
-                    <img src="/Icons/Q.svg" alt="Q icon" />
+                    <img src={`${process.env.PUBLIC_URL}/Icons/Q.svg`} alt="Q icon" />
                     <span>{title}</span>
                 </Title>
 

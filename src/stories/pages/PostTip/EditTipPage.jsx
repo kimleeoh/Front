@@ -96,7 +96,7 @@ const EditTipPage = () => {
                 });
 
                 alert("수정이 완료되었습니다.");
-                navigate(`/tips/${_id}`);
+                navigate(`/tips/${categories}/${_id}`);
             } catch (error) {
                 console.error("Error updating tip:", error);
                 alert("수정 중 오류가 발생했습니다.");

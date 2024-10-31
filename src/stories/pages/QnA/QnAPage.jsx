@@ -107,6 +107,7 @@ const QnAPage = () => {
                             ? lastQuestionElementRef
                             : null
                     }
+                    style={{ width: "100%" }}
                 >
                     <Questions
                         _id={post._id}
@@ -160,7 +161,7 @@ const QnAPage = () => {
             {!loading && questionData.length === 0 && (
                 <EmptyMessage>질문이 없습니다.</EmptyMessage>
             )}
-            <FixedIcon src="/Icons/Question.svg" url={"/qna/post"} />
+            <FixedIcon src={`${process.env.PUBLIC_URL}/Icons/Question.svg`} url={"/qna/post"} />
             <FixedBottomContainer>
                 <NavBar state="QnA" />
             </FixedBottomContainer>
