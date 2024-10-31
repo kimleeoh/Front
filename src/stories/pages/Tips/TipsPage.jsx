@@ -77,7 +77,7 @@ const TipsPage = () => {
                 setLoading(false);
             }
         },
-        [chips, depth]
+        [depth]
     );
 
     const fetchMoreTips = () => {
