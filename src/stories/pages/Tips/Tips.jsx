@@ -54,6 +54,7 @@ const Tips = ({
                     // 여기에 구매 로직을 추가할 수 있습니다.
                     const response = await BaseAxios.post('/api/tips/purchase', {docid:_id, category_type:category_type});
                     if(response.status==200) navigate(`/tips/${category_type}/${_id}`);
+                    else if(response.status==201) alert("포인트가 부족합니다.");
                     
                 }
             } else {
