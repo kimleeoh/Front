@@ -37,10 +37,10 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}  # 올바른 SSH 키 사용
           script: |
             cd Front
+            rm -r .github
             forever stopall
             sudo systemctl stop nginx
             git pull origin server
-            rm -r build
             npm install
             npm run build
             forever start -c "node server.js" .
