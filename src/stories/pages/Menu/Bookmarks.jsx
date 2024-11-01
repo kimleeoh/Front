@@ -312,7 +312,7 @@ const Bookmarks = () => {
             {loading && <Spinner color="#434B60" size={32} />}
             {isEmpty && (
                 <EmptyBox>
-                    <Icon src={`${process.env.PUBLIC_URL}/Icons/Alert_gray.svg`} />
+                    <Icon src={`${process.env.PUBLICURL}/Icons/Alert_gray.svg`} />
                     <Content>
                         아직 스크랩한 글이 없어요! 또 보고 싶은 글은 스크랩
                         해보세요!
