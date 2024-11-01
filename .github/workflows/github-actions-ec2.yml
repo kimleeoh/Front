@@ -39,7 +39,8 @@ jobs:
             cd Front
             forever stopall
             sudo systemctl stop nginx
-            git pull production server
+            git pull origin server
+            rm -r build
             npm install
             npm run build
             forever start -c "node server.js" .
