@@ -191,7 +191,7 @@ const GradeRegister = () => {
                             <SubjectItem key={index}>
                                 <SelectBoardWrapper>
                                     <SelectBoard
-                                        placeholder={subject}
+                                        placeholder={subject.name}
                                         onChange={handleSubjectChange}
                                     />
                                 </SelectBoardWrapper>
