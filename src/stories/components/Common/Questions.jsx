@@ -209,7 +209,7 @@ const Questions = ({
                             }}
                         >
                             <div style={{ transform: "translateY(1px)" }}>
-                                <img src={`${process.env.PUBLIC_URL}/Icons/Thumb_c.svg`} />
+                                <img src={`${process.env.PUBLICURL}/Icons/Thumb_c.svg`} />
                             </div>{" "}
                             {like}
                         </span>

@@ -288,7 +288,7 @@ const Likes = () => {
             {loading && <Spinner color="#434B60" size={32} />}
             {isEmpty && (
                 <EmptyBox>
-                    <Icon src={`${process.env.PUBLIC_URL}/Icons/Alert_gray.svg`} />
+                    <Icon src={`${process.env.PUBLICURL}/Icons/Alert_gray.svg`} />
                     <Content>
                         아직 좋아요를 누른 글이 없어요! 마음에 든 글에 좋아요를
                         달아보세요!
