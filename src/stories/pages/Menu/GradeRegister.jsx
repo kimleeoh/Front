@@ -50,7 +50,7 @@ const GradeRegister = () => {
 			setSubjects(
                         data.semester_list[index].subject_list.map(
                             (subject, i) => ({
-                                name: subject,
+                                name: subject==undefined? "과목 선택" : subject,
                                 grade: Grades[
                                     data.semester_list[index].grade_list[i]
                                 ],
@@ -191,7 +191,7 @@ const GradeRegister = () => {
                             <SubjectItem key={index}>
                                 <SelectBoardWrapper>
                                     <SelectBoard
-                                        placeholder={subject==undefined? "과목 선택" : subject}
+                                        placeholder={subject}
                                         onChange={handleSubjectChange}
                                     />
                                 </SelectBoardWrapper>
