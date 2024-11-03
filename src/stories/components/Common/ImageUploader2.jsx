@@ -34,7 +34,7 @@ const ImageUploader = ({ onChange, forQ = false, defaultFiles=[] }) => {
                 <PlaceholderText>파일첨부</PlaceholderText>
             )}
             <UploadButton>
-                <img src={`${process.env.PUBLICURL}/Icons/Plus.svg`} alt="Add" />
+                <img src={`${process.env.REACT_APP_PUBLICURL}/Icons/Plus.svg`} alt="Add" />
                 <input
                     type="file"
                     accept="image/*,application/pdf,application/zip"
