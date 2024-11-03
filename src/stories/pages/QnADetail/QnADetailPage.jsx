@@ -25,31 +25,44 @@ const QnADetailPage = () => {
 
     useEffect(() => {
         const fetchQuestions = async () => {
-        console.log(_id);
-        const result = await BaseAxios.get('/api/qna', {params: {id: _id}});
+            console.log(_id);
+            const result = await BaseAxios.get("/api/qna", {
+                params: { id: _id },
+            });
 
-        const newQdata = JSON.parse(result.data.returnData);
-        setQuestionData(newQdata);
-        const currentDocs = result.data.currentDocs;
+            const newQdata = JSON.parse(result.data.returnData);
+            setQuestionData(newQdata);
+            const currentDocs = result.data.currentDocs;
 
-        setAnswered(newQdata.answered);
-        setMine(newQdata.isMine);
-        
-        const {like,scrap,alarm, answer_like_list, isLiked, isScrapped, isAlarm, ...other} = currentDocs;
-        const trivial = {...other, isLiked, isScrapped, isAlarm};
-        setAlready({isLiked, isScrapped, isAlarm});
-        console.log(trivial);
-        sessionStorage.setItem("like", currentDocs.like);
-        sessionStorage.setItem("scrap", currentDocs.scrap);
-        sessionStorage.setItem("alarm", currentDocs.alarm);
-        sessionStorage.setItem("answer_like_list", currentDocs.answer_like_list);
-        sessionStorage.setItem("trivial", JSON.stringify(trivial));
+            setAnswered(newQdata.answered);
+            setMine(newQdata.isMine);
+
+            const {
+                like,
+                scrap,
+                alarm,
+                answer_like_list,
+                isLiked,
+                isScrapped,
+                isAlarm,
+                ...other
+            } = currentDocs;
+            const trivial = { ...other, isLiked, isScrapped, isAlarm };
+            setAlready({ isLiked, isScrapped, isAlarm });
+            console.log(trivial);
+            sessionStorage.setItem("like", currentDocs.like);
+            sessionStorage.setItem("scrap", currentDocs.scrap);
+            sessionStorage.setItem("alarm", currentDocs.alarm);
+            sessionStorage.setItem(
+                "answer_like_list",
+                currentDocs.answer_like_list
+            );
+            sessionStorage.setItem("trivial", JSON.stringify(trivial));
         };
-        
+
         setIsLoading(true);
         fetchQuestions();
         setIsLoading(false);
-        
     }, []);
 
     // const questionData = questionData.find(
@@ -59,8 +72,19 @@ const QnADetailPage = () => {
     const navigate = useNavigate();
     const { width: windowSize } = useWindowSize();
 
-    const handleEditNavigation = (_id, picked, title, content, category, imgList, point, limit) => {
-        navigate(`/qna/${_id}/edit`, { state: { picked, title, content, category, imgList, point, limit } });
+    const handleEditNavigation = (
+        _id,
+        picked,
+        title,
+        content,
+        category,
+        imgList,
+        point,
+        limit
+    ) => {
+        navigate(`/qna/${_id}/edit`, {
+            state: { picked, title, content, category, imgList, point, limit },
+        });
     };
 
     const handleReportClick = (questionId) => {
@@ -88,24 +112,25 @@ const QnADetailPage = () => {
 
         const param = ["like", "scrap", "alarm", "answer_like_list", "trivial"];
         let currentDocs = {};
-        for(const p of param){
+        for (const p of param) {
             let value = sessionStorage.getItem(p);
-            if(p=="trivial") {value = JSON.parse(value);
-                currentDocs = {...currentDocs, ...value};
-            }
-            else currentDocs[p] = value;
+            if (p == "trivial") {
+                value = JSON.parse(value);
+                currentDocs = { ...currentDocs, ...value };
+            } else currentDocs[p] = value;
 
             sessionStorage.removeItem(p);
-        }console.log(currentDocs);
+        }
+        console.log(currentDocs);
 
-        console.log("a",answered);
+        console.log("a", answered);
 
-        const formData = {id:_id.toString(), currentDocs}
+        const formData = { id: _id.toString(), currentDocs };
         await BaseAxios.put("/api/qna/update/post", formData);
 
-        if(isNoti) navigate(-1);
+        if (isNoti) navigate(-1);
         else navigate("/qna");
-    }
+    };
 
     if (isLoading) {
         return <p></p>;
@@ -141,35 +166,37 @@ const QnADetailPage = () => {
 
             {questionData &&
                 questionData.answer_list &&
-                questionData.answer_list.map((answer, index) =>
+                questionData.answer_list.map((answer, index) => (
                     <AnswersDetail
                         _id={answer.Ranswer}
                         major={answer.hakbu}
                         name={answer.name}
                         index={index}
-                        picked = {questionData.picked_index === index}
+                        picked={questionData.picked_index === index}
                         level={answer.level}
                         user_grade={answer.user_grade}
                         content={answer.content}
                         img={answer.img_list}
                         like={answer.likes}
                         alread={answer.alread}
-                        mine={answered!=null && answered.includes(index)}
+                        mine={answered != null && answered.includes(index)}
                     />
-                )}
+                ))}
 
-            {mine? null : questionData && (
-                    <UserComment
-                        post_id={questionData._id}
-                        isScore = {questionData.isScore}
-                        whatScore = {questionData.whatScore}
-                        profileImg={questionData.profile_img}
-                        level={questionData.level}
-                        major={questionData.major}
-                        name={questionData.name}
-                        limit={questionData.restricted_type}
-                    />
-            )}
+            {mine
+                ? null
+                : questionData && (
+                      <UserComment
+                          post_id={questionData._id}
+                          isScore={questionData.isScore}
+                          whatScore={questionData.whatScore}
+                          profileImg={questionData.profile_img}
+                          level={questionData.level}
+                          major={questionData.major}
+                          name={questionData.name}
+                          limit={questionData.restricted_type}
+                      />
+                  )}
 
             <FixedBottomContainer />
         </Wrapper>

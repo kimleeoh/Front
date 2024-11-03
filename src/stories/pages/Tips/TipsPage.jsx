@@ -44,9 +44,9 @@ const TipsPage = () => {
                     chips.length > 0 ? chips : ["test", "pilgy", "honey"];
                 const response = await BaseAxios.post("/api/bulletin/tips", {
                     filters: filtersArray,
-                    depth:depth
+                    depth: depth,
                 });
-                
+
                 console.log("response: ", response);
                 console.log("filters: ", chips);
                 const newTips = response.data;
@@ -64,13 +64,20 @@ const TipsPage = () => {
                 setTipsData((prevTips) =>
                     isInitial ? newTips : [...prevTips, ...newTips]
                 );
-                setDepth(prevDepth => {
+                setDepth((prevDepth) => {
                     const newDepth = prevDepth + 1;
                     console.log("Updated depth:", newDepth);
                     return newDepth;
                 });
                 setHasMore(newTips.length > 0);
-                console.log("hasmore", hasMore, "tipsL",tipsData, "loading", loading);
+                console.log(
+                    "hasmore",
+                    hasMore,
+                    "tipsL",
+                    tipsData,
+                    "loading",
+                    loading
+                );
             } catch (error) {
                 console.error("Error fetching tips data:", error);
             } finally {
@@ -161,7 +168,9 @@ const TipsPage = () => {
             {loading && <Spinner color="#434B60" size={32} />}
             {isEmpty && (
                 <EmptyBox>
-                    <Icon src={`${process.env.PUBLICURL}/Icons/Alert_gray.svg`} />
+                    <Icon
+                        src={`${process.env.PUBLICURL}/Icons/Alert_gray.svg`}
+                    />
                     <Content>
                         {message == "uniqueSubjectIds is null or empty"
                             ? "board에서 관심있는 과목을 담고 그에 대한 글들을 받아보세요!"
@@ -169,7 +178,10 @@ const TipsPage = () => {
                     </Content>
                 </EmptyBox>
             )}
-            <FixedIcon src={`${process.env.PUBLICURL}/Icons/Pen.svg`} url={"/tips/post"} />
+            <FixedIcon
+                src={`${process.env.PUBLICURL}/Icons/Pen.svg`}
+                url={"/tips/post"}
+            />
             <FixedBottomContainer>
                 <NavBar state="Tips" />
             </FixedBottomContainer>

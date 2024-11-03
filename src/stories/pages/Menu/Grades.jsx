@@ -68,13 +68,13 @@ const Grades = () => {
                 (selectedSemester === "2학기" ? 1 : 0);
 
             try {
-		    //const response = await fetch("/api/grades/add-semester", {
-                    //method: "POST",
-                    //headers: {
-                      //  "Content-Type": "application/json",
-                    //},
-                    //body: JSON.stringify({ semesterIndex: newSemesterIndex }),
-               // });
+                //const response = await fetch("/api/grades/add-semester", {
+                //method: "POST",
+                //headers: {
+                //  "Content-Type": "application/json",
+                //},
+                //body: JSON.stringify({ semesterIndex: newSemesterIndex }),
+                // });
                 //if (response.ok) {
                 // const response = await fetch("/api/grades/add-semester", {
                 //     method: "POST",
@@ -84,25 +84,24 @@ const Grades = () => {
                 //     body: JSON.stringify({ semesterIndex: newSemesterIndex }),
                 // });
                 // if (response.ok) {
-                    console.log(
-                        `새 학기 추가: ${selectedYear}년 ${selectedSemester}`
-                    );
-                    // 성공적으로 추가 후 학기 목록 다시 불러오기
-                  //  const updatedData = await response.json();
-                   // const filteredSemesters = updatedData.semester_list.filter(
-                   //     (semester) => semester.filled
-                   // );
-                    setSemesterIndex(newSemesterIndex);
+                console.log(
+                    `새 학기 추가: ${selectedYear}년 ${selectedSemester}`
+                );
+                // 성공적으로 추가 후 학기 목록 다시 불러오기
+                //  const updatedData = await response.json();
+                // const filteredSemesters = updatedData.semester_list.filter(
+                //     (semester) => semester.filled
+                // );
+                setSemesterIndex(newSemesterIndex);
                 //} else {
                 //    console.error("학기 추가 실패");
                 //}
-            // catch (error) {
-                  //  setSemesterIndex(newSemesterIndex);
-                //} 
+                // catch (error) {
+                //  setSemesterIndex(newSemesterIndex);
+                //}
                 //else {
                 //     console.error("학기 추가 실패");
-                 }
-             catch (error) {
+            } catch (error) {
                 console.error("학기 추가 중 오류 발생", error);
             }
 
@@ -123,7 +122,7 @@ const Grades = () => {
             </Header>
             <ContentWrapper maxWidth={windowSize}>
                 {semesters.map((semester, index) => (
-                    <div key={index} style={{width: "85%"}}>
+                    <div key={index} style={{ width: "85%" }}>
                         <BoardTitle text={`2024학년도 ${index + 1}학기`} />
                         <SubjectWrapper maxWidth={windowSize}>
                             <ScrollableSubjectList>

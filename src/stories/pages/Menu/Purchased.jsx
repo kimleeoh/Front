@@ -26,8 +26,8 @@ const History = () => {
 
     useEffect(() => {
         // 데이터 로딩 로직
-        const loadData = async() => {
-            const tipsData = await BaseAxios.get('/api/menu/purchased');
+        const loadData = async () => {
+            const tipsData = await BaseAxios.get("/api/menu/purchased");
             console.log(tipsData.data.pList);
             setTipsData(tipsData.data.pList);
             setFilteredTips(tipsData.data.pList);

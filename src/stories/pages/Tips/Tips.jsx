@@ -42,7 +42,7 @@ const Tips = ({
             const response = await BaseAxios.post("/api/tips/manage", {
                 docid: _id,
                 Ruser: Ruser._id,
-                category_type: category_type
+                category_type: category_type,
             });
 
             const message = response.data.message;
@@ -52,10 +52,14 @@ const Tips = ({
                     window.confirm("구매하지 않은 글입니다. 구매하시겠습니까?")
                 ) {
                     // 여기에 구매 로직을 추가할 수 있습니다.
-                    const response = await BaseAxios.post('/api/tips/purchase', {docid:_id, category_type:category_type});
-                    if(response.status==200) navigate(`/tips/${category_type}/${_id}`);
-                    else if(response.status==201) alert("포인트가 부족합니다.");
-                    
+                    const response = await BaseAxios.post(
+                        "/api/tips/purchase",
+                        { docid: _id, category_type: category_type }
+                    );
+                    if (response.status == 200)
+                        navigate(`/tips/${category_type}/${_id}`);
+                    else if (response.status == 201)
+                        alert("포인트가 부족합니다.");
                 }
             } else {
                 // "Mine" 또는 "Not Mine, Purchased" 인 경우 바로 링크로 이동
@@ -74,7 +78,7 @@ const Tips = ({
             <StyledLink onClick={handleClick}>
                 <Wrapper>
                     <ContentWrapper>
-                        <TextWrapper hasImage={preview_img!=""}>
+                        <TextWrapper hasImage={preview_img != ""}>
                             <Title>{title}</Title>
                             <MetaContainer>
                                 <span
@@ -134,7 +138,9 @@ const Tips = ({
                             }}
                         >
                             <div style={{ transform: "translateY(1px)" }}>
-                                <img src={`${process.env.PUBLICURL}/Icons/Thumb_c.svg`} />
+                                <img
+                                    src={`${process.env.PUBLICURL}/Icons/Thumb_c.svg`}
+                                />
                             </div>{" "}
                             {likes}
                         </span>

@@ -32,7 +32,9 @@ const EditTipPage = () => {
     useEffect(() => {
         const fetchTipData = async () => {
             try {
-                const response = await BaseAxios.get(`/api/tips/${categories}/${_id}`);
+                const response = await BaseAxios.get(
+                    `/api/tips/${categories}/${_id}`
+                );
                 const tipData = response.data;
                 setFormValues({
                     title: tipData.title,
@@ -61,12 +63,15 @@ const EditTipPage = () => {
         }));
     }, []);
 
-    const handleChipFilterChange = useCallback((activeFilters, updatedChips) => {
-        setFormValues((prevValues) => ({
-            ...prevValues,
-            type: updatedChips,
-        }));
-    }, []);
+    const handleChipFilterChange = useCallback(
+        (activeFilters, updatedChips) => {
+            setFormValues((prevValues) => ({
+                ...prevValues,
+                type: updatedChips,
+            }));
+        },
+        []
+    );
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();

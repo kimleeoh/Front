@@ -142,13 +142,13 @@ const Questions = ({
     const handleLinkClick = (id) => {
         console.log("Link clicked with id: ", id);
     };
-    
+
     return (
         <OutWrapper maxWidth={windowSize}>
             <StyledLink to={`/qna/${_id}`}>
                 <Wrapper>
                     <ContentWrapper>
-                        <TextWrapper hasImage={img!=null}>
+                        <TextWrapper hasImage={img != null}>
                             <Title>{title}</Title>
                             <MetaContainer>
                                 <span
@@ -209,14 +209,18 @@ const Questions = ({
                             }}
                         >
                             <div style={{ transform: "translateY(1px)" }}>
-                                <img src={`${process.env.PUBLICURL}/Icons/Thumb_c.svg`} />
+                                <img
+                                    src={`${process.env.PUBLICURL}/Icons/Thumb_c.svg`}
+                                />
                             </div>{" "}
                             {like}
                         </span>
-                        {point&&(<Point>
-                            <img src="/point_white.svg" width={"16px"} /> +{" "}
-                            {point}
-                        </Point>)}
+                        {point && (
+                            <Point>
+                                <img src="/point_white.svg" width={"16px"} /> +{" "}
+                                {point}
+                            </Point>
+                        )}
                     </MetaContainer>
                 </Wrapper>
             </StyledLink>

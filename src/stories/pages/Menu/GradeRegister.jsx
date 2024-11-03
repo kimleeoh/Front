@@ -47,14 +47,18 @@ const GradeRegister = () => {
                         (parseInt(selectedTerm) - 1);
                     const response = await BaseAxios.get(`/api/score`);
                     const data = response.data;
-			setSubjects(
+                    setSubjects(
                         data.semester_list[index].subject_list.map(
                             (subject, i) => ({
-                                name: subject==undefined? "과목 선택" : subject,
+                                name:
+                                    subject == undefined
+                                        ? "과목 선택"
+                                        : subject,
                                 grade: Grades[
                                     data.semester_list[index].grade_list[i]
                                 ],
-                                isMajor: data.semester_list[index].ismajor_list[i],
+                                isMajor:
+                                    data.semester_list[index].ismajor_list[i],
                             })
                         )
                     );
@@ -84,7 +88,7 @@ const GradeRegister = () => {
             const aa = Convert(selectedYear, selectedTerm);
             formData.append("semester", aa);
             formData.append("img", UploadedFiles);
-            
+
             await BaseAxios.post("/api/score", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -175,11 +179,13 @@ const GradeRegister = () => {
             {selectedYear && selectedTerm ? (
                 <>
                     <CheckerWrapper maxWidth={windowSize}>
-                        { <Checker
-                            text={confirmed ? "인증됨" : "인증되지 않음"}
-                            readOnly={true}
-                            type={"check"}
-                        /> }
+                        {
+                            <Checker
+                                text={confirmed ? "인증됨" : "인증되지 않음"}
+                                readOnly={true}
+                                type={"check"}
+                            />
+                        }
                     </CheckerWrapper>
                     <SubjectWrapper maxWidth={windowSize}>
                         <SubjectItem>

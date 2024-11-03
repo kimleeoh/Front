@@ -7,9 +7,18 @@ import ImageUploader from "./ImageUploader";
 import TextArea from "../../components/Common/TextArea";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, limit }) => {
+const User = ({
+    post_id,
+    isScore,
+    whatScore,
+    profileImg,
+    level,
+    major,
+    name,
+    limit,
+}) => {
     const [isAnswered, setIsAnswered] = useState(false);
     const [loading, setloaded] = useState(true);
     const [answerable, setAnswerable] = useState(false);
@@ -29,22 +38,20 @@ const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, lim
     useEffect(() => {
         setFormValues({ ...formValues, id: post_id, score: whatScore });
 
-        setAnswerable(isScore && (limit === false));
+        setAnswerable(isScore && limit === false);
 
         setloaded(false);
     }, [isScore, limit]);
 
-
     useEffect(() => {
         //BaseAxios.get()
         const { answer } = formValues;
-        const isValid = answer!=undefined&&String(answer).trim() !== "";
+        const isValid = answer != undefined && String(answer).trim() !== "";
         setIsFormValid(isValid);
     }, [formValues]);
 
-    const handleInputChange = (name, value="") => {
+    const handleInputChange = (name, value = "") => {
         setFormValues({ ...formValues, [name]: value });
-        
     };
 
     const handleFormSubmit = (e) => {
@@ -59,24 +66,23 @@ const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, lim
                 formValues.images.forEach((image, index) => {
                     formData.append("images", image);
                 });
-        
             }
 
-            await BaseAxios.post("/api/qna/create/answer", formValues, 
-                {headers: {
-                    'Content-Type': 'multipart/form-data',
-                    }
-                }
-            );}
+            await BaseAxios.post("/api/qna/create/answer", formValues, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+        };
 
-        if(isFormValid)submitHandler();
-    }
+        if (isFormValid) submitHandler();
+    };
 
     const { width: windowSize } = useWindowSize();
 
-    if(loading) return <p></p>;
+    if (loading) return <p></p>;
 
-    if(isAnswered){
+    if (isAnswered) {
         return (
             <OutWrapper maxWidth={windowSize}>
                 <Wrapper>
@@ -117,126 +123,145 @@ const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, lim
                 </Wrapper>
             </OutWrapper>
         );
-    }else{
-    if (answerable) {
-        return (
-            <OutWrapper maxWidth={windowSize}>
-                <Wrapper>
-                    <SubWrapper>
-                        <ProfileImg src={profileImg} />
-                        <ProfileContainer>
-                            <LevelGrade>Lv. {level} | {whatScore} 등급</LevelGrade>
-                            <MajorName>
-                                {major} {name}
-                                <span style={{ color: "#3182F7" }}>
-                                    님은 답변 등록이 가능합니다.
-                                </span>
-                            </MajorName>
-                        </ProfileContainer>
-                    </SubWrapper>
-                    <Button
-                        fontSize={"10px"}
-                        width={"80px"}
-                        height={"30px"}
-                        label={"답변등록"}
-                        style={{ marginLeft: "auto", marginTop: "5px" }}
-                        onClick={handleAnswerSubmit}
-                    />
-                </Wrapper>
-            </OutWrapper>
-        );
-    }else {
+    } else {
+        if (answerable) {
+            return (
+                <OutWrapper maxWidth={windowSize}>
+                    <Wrapper>
+                        <SubWrapper>
+                            <ProfileImg src={profileImg} />
+                            <ProfileContainer>
+                                <LevelGrade>
+                                    Lv. {level} | {whatScore} 등급
+                                </LevelGrade>
+                                <MajorName>
+                                    {major} {name}
+                                    <span style={{ color: "#3182F7" }}>
+                                        님은 답변 등록이 가능합니다.
+                                    </span>
+                                </MajorName>
+                            </ProfileContainer>
+                        </SubWrapper>
+                        <Button
+                            fontSize={"10px"}
+                            width={"80px"}
+                            height={"30px"}
+                            label={"답변등록"}
+                            style={{ marginLeft: "auto", marginTop: "5px" }}
+                            onClick={handleAnswerSubmit}
+                        />
+                    </Wrapper>
+                </OutWrapper>
+            );
+        } else {
+            return (
+                <OutWrapper maxWidth={windowSize}>
+                    <Wrapper>
+                        {
+                            whatScore === null ? (
+                                <SubWrapper>
+                                    <ProfileImg src={profileImg} />
+                                    <ProfileContainer>
+                                        <LevelGrade>
+                                            Lv. {level} | 미정
+                                        </LevelGrade>
+                                        <MajorName>
+                                            <span style={{ color: "#ACB2BB" }}>
+                                                성적 입력 후 답변이 가능합니다.
+                                            </span>
 
-        return (
-        <OutWrapper maxWidth={windowSize}>
-            <Wrapper>
-                {whatScore === null ? (
-                    <SubWrapper>
-                        <ProfileImg src={profileImg} />
-                        <ProfileContainer>
-                            <LevelGrade>Lv. {level} | 미정</LevelGrade>
-                            <MajorName>
-                                <span style={{ color: "#ACB2BB" }}>
-                                    성적 입력 후 답변이 가능합니다.
-                                </span>
-                                
-                                <Link onClick = "" to="/grades" style={{ marginTop:"1px",color: "#000000", textDecoration:"none"}}>
-                                성적 입력하러 가기 ▶
-                                </Link>
-                            </MajorName>
-                        </ProfileContainer>
-                    </SubWrapper>
-                ) : 
-                // limit >= 2 ? 
-                (
-                    <SubWrapper>
-                        <ProfileImg src={profileImg} />
-                        <ProfileContainer>
-                            <LevelGrade>Lv. {level} | {whatScore} 등급</LevelGrade>
-                            <MajorName>
-                                {major} {name}
-                                <span style={{ color: "#3182F7" }}>
-                                    님은 답변 등록이 가능합니다.
-                                </span>
-                            </MajorName>
-                        </ProfileContainer>
-                    </SubWrapper>
-                ) 
-                // :(
-                //     <SubWrapper>
-                //         <ProfileImg src={profileImg} />
-                //         <ProfileContainer>
-                //             <LevelGrade>Lv. {level} | A 등급</LevelGrade>
-                //             <MajorName>
-                //                 {major} {name}
-                //                 <span style={{ color: "#ACB2BB" }}>
-                //                     님은 답변 등록이 불가능합니다.
-                //                 </span>
-                //             </MajorName>
-                //         </ProfileContainer>
-                //     </SubWrapper>
-                // )
-                }
-                {whatScore === null ? (
-                    <Button
-                        fontSize={"10px"}
-                        width={"80px"}
-                        height={"30px"}
-                        label={"답변등록"}
-                        disabled={true}
-                        style={{ marginLeft: "auto", marginTop: "5px" }}
-                    ></Button>
-                ) : 
-                //limit >= 2 ? 
-                (
-                    <Button
-                        fontSize={"10px"}
-                        width={"80px"}
-                        height={"30px"}
-                        label={"답변등록"}
-                        style={{ marginLeft: "auto", marginTop: "5px" }}
-                        onClick={handleAnswerSubmit}
-                    ></Button>
-                ) 
-                // : (
-                //     <Button
-                //         fontSize={"10px"}
-                //         width={"80px"}
-                //         height={"30px"}
-                //         label={"답변등록"}
-                //         disabled={true}
-                //         style={{ marginLeft: "auto", marginTop: "5px" }}
-                //     ></Button>
-                // )
-                }
-            </Wrapper>
-        </OutWrapper>
-    );}}
-
+                                            <Link
+                                                onClick=""
+                                                to="/grades"
+                                                style={{
+                                                    marginTop: "1px",
+                                                    color: "#000000",
+                                                    textDecoration: "none",
+                                                }}
+                                            >
+                                                성적 입력하러 가기 ▶
+                                            </Link>
+                                        </MajorName>
+                                    </ProfileContainer>
+                                </SubWrapper>
+                            ) : (
+                                // limit >= 2 ?
+                                <SubWrapper>
+                                    <ProfileImg src={profileImg} />
+                                    <ProfileContainer>
+                                        <LevelGrade>
+                                            Lv. {level} | {whatScore} 등급
+                                        </LevelGrade>
+                                        <MajorName>
+                                            {major} {name}
+                                            <span style={{ color: "#3182F7" }}>
+                                                님은 답변 등록이 가능합니다.
+                                            </span>
+                                        </MajorName>
+                                    </ProfileContainer>
+                                </SubWrapper>
+                            )
+                            // :(
+                            //     <SubWrapper>
+                            //         <ProfileImg src={profileImg} />
+                            //         <ProfileContainer>
+                            //             <LevelGrade>Lv. {level} | A 등급</LevelGrade>
+                            //             <MajorName>
+                            //                 {major} {name}
+                            //                 <span style={{ color: "#ACB2BB" }}>
+                            //                     님은 답변 등록이 불가능합니다.
+                            //                 </span>
+                            //             </MajorName>
+                            //         </ProfileContainer>
+                            //     </SubWrapper>
+                            // )
+                        }
+                        {
+                            whatScore === null ? (
+                                <Button
+                                    fontSize={"10px"}
+                                    width={"80px"}
+                                    height={"30px"}
+                                    label={"답변등록"}
+                                    disabled={true}
+                                    style={{
+                                        marginLeft: "auto",
+                                        marginTop: "5px",
+                                    }}
+                                ></Button>
+                            ) : (
+                                //limit >= 2 ?
+                                <Button
+                                    fontSize={"10px"}
+                                    width={"80px"}
+                                    height={"30px"}
+                                    label={"답변등록"}
+                                    style={{
+                                        marginLeft: "auto",
+                                        marginTop: "5px",
+                                    }}
+                                    onClick={handleAnswerSubmit}
+                                ></Button>
+                            )
+                            // : (
+                            //     <Button
+                            //         fontSize={"10px"}
+                            //         width={"80px"}
+                            //         height={"30px"}
+                            //         label={"답변등록"}
+                            //         disabled={true}
+                            //         style={{ marginLeft: "auto", marginTop: "5px" }}
+                            //     ></Button>
+                            // )
+                        }
+                    </Wrapper>
+                </OutWrapper>
+            );
+        }
+    }
 };
 
 export default User;
-
 
 User.propTypes = {
     post_id: PropTypes.string.isRequired,
@@ -292,7 +317,7 @@ const ProfileImg = styled.img`
 const LevelGrade = styled.div`
     display: flex;
     align-items: center;
-    
+
     font-size: 8px;
 `;
 const MajorName = styled.div`
@@ -302,7 +327,7 @@ const MajorName = styled.div`
     padding-top: 2px;
     font-weight: bold;
     flex-direction: column;
-    
+
     flex-wrap: wrap;
 `;
 

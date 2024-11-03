@@ -16,7 +16,7 @@ const dropdownAnimation = keyframes`
     }
 `;
 
-const SelectBoard = ({ startId, placeholder, onChange }) => {
+const SelectBoard = ({ startId, placeholder, onChange, disabled }) => {
     const { width: windowSize } = useWindowSize();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -33,6 +33,7 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
     const [tempType, setTempType] = useState(0); // type을 임의로 2로 설정하기 위함
 
     const toggleDropdown = () => {
+        if (disabled) return;
         setIsOpen(!isOpen);
         if (isFinalCategory) {
             setIsBottomSheetVisible(true);
@@ -189,7 +190,10 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
                               .map((option) => option)
                               .join(" > ")}
                     <ArrowIcon isOpen={isOpen}>
-                        <img src={`${process.env.PUBLICURL}/Icons/Arrow.svg`} alt="arrow" />
+                        <img
+                            src={`${process.env.PUBLICURL}/Icons/Arrow.svg`}
+                            alt="arrow"
+                        />
                     </ArrowIcon>
                 </DropdownHeader>
                 {isOpen && (

@@ -47,7 +47,8 @@ const HomePage = () => {
                     BaseAxios.post("/api/home/answer-possible"),
                 ]);
 
-                const { trendingTipsResponse, trendingQnaResponse } = trendingResponse.data;
+                const { trendingTipsResponse, trendingQnaResponse } =
+                    trendingResponse.data;
 
                 setOriginPoint(pointResponse.data.point);
                 setHasNewNotification(notificationResponse.data.newNotify);

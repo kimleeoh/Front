@@ -4,49 +4,56 @@ import PropTypes from "prop-types";
 import Popup from "../Popup";
 import useWindowSize from "./WindowSize";
 
-export const Votes = ({ like, handleLike, handleUnlike, mine=false, voted = null }) => {
+export const Votes = ({
+    like,
+    handleLike,
+    handleUnlike,
+    mine = false,
+    voted = null,
+}) => {
     const [likesCount, setLikesCount] = useState(like);
     const [voteStatus, setVoteStatus] = useState(voted); // null: no vote, 'up': upvoted, 'down': downvoted
 
     useEffect(() => {
-        
         setVoteStatus(voted);
         setLikesCount(like);
     }, [like, voted]);
 
     const handleUpClick = () => {
-        if(!mine){
-        if (voteStatus === "up") {
-            setLikesCount(likesCount - 1); // undo upvote
-            setVoteStatus(null);
-        } else {
-            if(voteStatus=="down"){
-                setLikesCount(likesCount + 2); // if downvoted before, add 2
-                setVoteStatus("up");
-            }else{
-                setLikesCount(likesCount + 1);
-                setVoteStatus("up");
+        if (!mine) {
+            if (voteStatus === "up") {
+                setLikesCount(likesCount - 1); // undo upvote
+                setVoteStatus(null);
+            } else {
+                if (voteStatus == "down") {
+                    setLikesCount(likesCount + 2); // if downvoted before, add 2
+                    setVoteStatus("up");
+                } else {
+                    setLikesCount(likesCount + 1);
+                    setVoteStatus("up");
+                }
             }
+            handleLike();
         }
-        handleLike();}
     };
 
     const handleDownClick = () => {
-        if(!mine){
-        if (voteStatus === "down") {
-            setLikesCount(likesCount + 1); // undo downvote
-            setVoteStatus(null);
-        } else {
-            if(voteStatus=="up"){
-                setLikesCount(likesCount - 2); // if upvoted before, subtract 2
-                setVoteStatus("down");
-            }else{
-                setLikesCount(likesCount - 1);
-                setVoteStatus("down");
+        if (!mine) {
+            if (voteStatus === "down") {
+                setLikesCount(likesCount + 1); // undo downvote
+                setVoteStatus(null);
+            } else {
+                if (voteStatus == "up") {
+                    setLikesCount(likesCount - 2); // if upvoted before, subtract 2
+                    setVoteStatus("down");
+                } else {
+                    setLikesCount(likesCount - 1);
+                    setVoteStatus("down");
+                }
             }
-        }
 
-        handleUnlike();}
+            handleUnlike();
+        }
     };
 
     const { width: windowSize } = useWindowSize();
@@ -79,16 +86,15 @@ export const Votes = ({ like, handleLike, handleUnlike, mine=false, voted = null
     );
 };
 
-export const Scrap = ({mine, isSaveEnabled , handleSaveToggle}) => {
+export const Scrap = ({ mine, isSaveEnabled, handleSaveToggle }) => {
     const [isSaved, setIsSaved] = useState(isSaveEnabled);
 
     useEffect(() => {
         setIsSaved(isSaveEnabled);
     }, [isSaveEnabled]);
 
-
     return (
-        <ToolButton onClick={mine? ()=>{} : handleSaveToggle}>
+        <ToolButton onClick={mine ? () => {} : handleSaveToggle}>
             <img
                 src={isSaveEnabled ? "/Icons/Save_e.svg" : "/Icons/Save_d.svg"}
                 alt="Scrap"
@@ -97,15 +103,21 @@ export const Scrap = ({mine, isSaveEnabled , handleSaveToggle}) => {
     );
 };
 
-export const Notification = ({mine, isNotificationEnabled, handleNotificationToggle}) => {
-    const [isNotificationEnable, setIsNotificationEnabled] = useState(isNotificationEnabled);
+export const Notification = ({
+    mine,
+    isNotificationEnabled,
+    handleNotificationToggle,
+}) => {
+    const [isNotificationEnable, setIsNotificationEnabled] = useState(
+        isNotificationEnabled
+    );
 
     useEffect(() => {
         setIsNotificationEnabled(isNotificationEnabled);
     }, [isNotificationEnabled]);
 
     return (
-        <ToolButton onClick={mine? ()=>{} : handleNotificationToggle}>
+        <ToolButton onClick={mine ? () => {} : handleNotificationToggle}>
             <img
                 src={
                     isNotificationEnabled
@@ -156,7 +168,10 @@ export const MeatballMenu = () => {
     return (
         <div>
             <MenuButton ref={buttonRef} onClick={handleTogglePopup}>
-                <img src={`${process.env.PUBLICURL}/Icons/meatballs.svg`} alt="Meatball Menu" />
+                <img
+                    src={`${process.env.PUBLICURL}/Icons/meatballs.svg`}
+                    alt="Meatball Menu"
+                />
             </MenuButton>
             {isPopupOpen && (
                 <Popup

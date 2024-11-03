@@ -92,8 +92,7 @@ const MyPageEdit = () => {
     if (error) return <div>Error: {error.message}</div>;
     if (!userData) return <div>No user data available</div>;
 
-    const { exp } =
-        userData;
+    const { exp } = userData;
 
     return (
         <Wrapper>
@@ -148,7 +147,10 @@ const MyPageEdit = () => {
                             <Measurement>{userData.replyCount}</Measurement>
                         </DetailInfo>
                         <DetailInfo>
-                            레벨<Measurement>{Math.floor(userData.exp / 100)+1}</Measurement>
+                            레벨
+                            <Measurement>
+                                {Math.floor(userData.exp / 100) + 1}
+                            </Measurement>
                         </DetailInfo>
                     </InfoBox>
                 </ProfileInfo>
@@ -208,8 +210,8 @@ const MyPageEdit = () => {
                     <Title>명성</Title>
                     <Reputation>
                         {/* exp를 100으로 나눈 몫이 level */}
-                        {Math.floor(exp / 100)+1}
-                        
+                        {Math.floor(exp / 100) + 1}
+
                         <ProgressBarContainer>
                             {/* 100으로 나눈 나머지를 progress로 사용 */}
                             다음 단계까지 {100 - (exp % 100)}점 남음

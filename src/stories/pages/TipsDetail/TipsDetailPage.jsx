@@ -23,14 +23,17 @@ const TipsDetailPage = () => {
                 setIsLoading(false);
 
                 // Move checkMine logic here
-                const checkMineResponse = await BaseAxios.post("/api/tips/manage", {
-                    docid: docid,
-                    category_type: category_type,
-                    Ruser: response.data.user,
-                });
+                const checkMineResponse = await BaseAxios.post(
+                    "/api/tips/manage",
+                    {
+                        docid: docid,
+                        category_type: category_type,
+                        Ruser: response.data.user,
+                    }
+                );
 
                 if (checkMineResponse.data.message === "Mine") {
-                    setTipData(prevData => ({
+                    setTipData((prevData) => ({
                         ...prevData,
                         mine: true,
                     }));

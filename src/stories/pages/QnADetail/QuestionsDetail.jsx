@@ -29,18 +29,21 @@ const QuestionsDetail = ({
     const [already, setAlready] = useState(alread);
     const [isSaved, setIsSaved] = useState(false); // Scrap 상태 관리
     const [isNotified, setIsNotified] = useState(false); // Notification 상태 관리
-    
 
     useEffect(() => {
         setAlready(alread);
-        console.log("already",alread);
+        console.log("already", alread);
         console.log("isLiked", already.isLiked);
-        console.log("??", already.isLiked==1);
-        if (already.isLiked!=0) already.isLiked==1 ? setIsLiked("up") : already.isLiked==-1 ? setIsLiked("down") : setIsLiked(null);
-        if(already.isScrapped) setIsSaved(true);
-        if(already.isAlarm) setIsNotified(true);
+        console.log("??", already.isLiked == 1);
+        if (already.isLiked != 0)
+            already.isLiked == 1
+                ? setIsLiked("up")
+                : already.isLiked == -1
+                  ? setIsLiked("down")
+                  : setIsLiked(null);
+        if (already.isScrapped) setIsSaved(true);
+        if (already.isAlarm) setIsNotified(true);
         console.log("isLiked", isLiked);
-        
     }, [_id, already, isLiked, isSaved, isNotified]);
 
     const LIKE = Number(like);
@@ -52,7 +55,7 @@ const QuestionsDetail = ({
         let newLikeValue;
 
         if (already.isLiked === -1) {
-            newLikeValue = l != 1? 2 : 1;
+            newLikeValue = l != 1 ? 2 : 1;
         } else if (already.isLiked === 1) {
             newLikeValue = l != 0 ? 0 : -1;
         } else if (already.isLiked === 0) {
@@ -64,9 +67,9 @@ const QuestionsDetail = ({
         // const m = Number(sessionStorage.getItem("like"));
         // setIsLiked(m + like); // Ensure `like` is defined or default to 0
 
-        console.log("Post liked:", _id);}
-        // Additional logic to update likes on the backend or state could go here
-
+        console.log("Post liked:", _id);
+    };
+    // Additional logic to update likes on the backend or state could go here
 
     const handleUnlike = () => {
         const l = Number(sessionStorage.getItem("like"));
@@ -117,10 +120,20 @@ const QuestionsDetail = ({
                         category_type={"qna"}
                         categories={"qna"}
                         mine={mine}
+                        {...(mine && {
+                            title,
+                            content,
+                            subject,
+                            img,
+                            limit,
+                        })}
                     />
                 </TopBar>
                 <Title>
-                    <img src={`${process.env.PUBLICURL}/Icons/Q.svg`} alt="Q icon" />
+                    <img
+                        src={`${process.env.PUBLICURL}/Icons/Q.svg`}
+                        alt="Q icon"
+                    />
                     <span>{title}</span>
                 </Title>
 
@@ -157,7 +170,7 @@ const QuestionsDetail = ({
                         like={LIKE}
                         handleLike={handleLike}
                         handleUnlike={handleUnlike}
-                        voted = {isLiked}
+                        voted={isLiked}
                         mine={mine}
                     />
                     <div>

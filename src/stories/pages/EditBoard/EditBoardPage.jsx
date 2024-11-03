@@ -89,10 +89,12 @@ const EditBoardPage = () => {
     };
 
     const confirmSave = () => {
-        const combinedArray = subjects.reduce((acc, item) => {
-            acc[item.subject] = item.id;
-            return acc; // Add this line
-        }, {}).toObject();  
+        const combinedArray = subjects
+            .reduce((acc, item) => {
+                acc[item.subject] = item.id;
+                return acc; // Add this line
+            }, {})
+            .toObject();
         let type;
 
         console.log("combinedArray: ", combinedArray);
@@ -105,7 +107,7 @@ const EditBoardPage = () => {
         }).then((response) => {
             if (response.data == "OK") {
                 alert("저장되었습니다.");
-                navigate(-1,{ state: { listData: subjects, title: title } });
+                navigate(-1, { state: { listData: subjects, title: title } });
             } else {
                 alert("Failed to save changes. Please try again.");
             }

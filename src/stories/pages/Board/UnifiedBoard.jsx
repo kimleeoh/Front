@@ -64,22 +64,22 @@ const UnifiedBoard = () => {
             }
             console.log("isEmpty: ", isEmpty);
             if (!isEmpty && questionResponse?.documents.length) {
-                if(isInitial) {
+                if (isInitial) {
                     setQuestionData(questionResponse.documents);
                     setIsInitial(false);
-                }
-                else {
+                } else {
                     setQuestionData((prev) => [
-                    ...prev,
-                    ...questionResponse.documents,
-                ]);}
+                        ...prev,
+                        ...questionResponse.documents,
+                    ]);
+                }
                 console.log("questionData: ", questionData);
             }
             if (!isEmpty && tipsResponse?.documents.length) {
-                if(isInitial) {
+                if (isInitial) {
                     setTipsData(tipsResponse.documents);
                     setIsInitial(false);
-                }else{
+                } else {
                     setTipsData((prev) => [...prev, ...tipsResponse.documents]);
                 }
                 console.log("tipsData: ", tipsData);
@@ -223,7 +223,10 @@ const UnifiedBoard = () => {
                             />
                         );
                     })}
-                    <FixedIcon src={`${process.env.PUBLICURL}/Icons/Question.svg`} url={"/qna/post"} />
+                    <FixedIcon
+                        src={`${process.env.PUBLICURL}/Icons/Question.svg`}
+                        url={"/qna/post"}
+                    />
                 </>
             )}
             {activeTab === "Tips" && (
@@ -246,13 +249,18 @@ const UnifiedBoard = () => {
                             time={tip.time}
                         />
                     ))}
-                    <FixedIcon src={`${process.env.PUBLICURL}/Icons/Pen.svg`} url={"/tips/post"} />
+                    <FixedIcon
+                        src={`${process.env.PUBLICURL}/Icons/Pen.svg`}
+                        url={"/tips/post"}
+                    />
                 </>
             )}
             {loading && <Spinner color="#434B60" size={32} />}
             {isEmpty ? (
                 <EmptyBox>
-                    <Icon src={`${process.env.PUBLICURL}/Icons/Alert_gray.svg`} />
+                    <Icon
+                        src={`${process.env.PUBLICURL}/Icons/Alert_gray.svg`}
+                    />
                     <Content>
                         아직 스크랩한 글이 없어요! 또 보고 싶은 글은 스크랩
                         해보세요!

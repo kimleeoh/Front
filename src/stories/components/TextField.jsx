@@ -83,7 +83,10 @@ const TextField = ({
                                     width={"20px"}
                                 />
                             ) : (
-                                <img src={`${process.env.PUBLICURL}/Icons/Visible.svg`} width={"20px"} />
+                                <img
+                                    src={`${process.env.PUBLICURL}/Icons/Visible.svg`}
+                                    width={"20px"}
+                                />
                             )}
                         </ToggleButton>
                     ) : (

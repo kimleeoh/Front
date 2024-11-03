@@ -4,7 +4,17 @@ import styled from "styled-components";
 import Popup from "../Popup";
 import BaseAxios from "../../../axioses/BaseAxios";
 
-const MeatballMenu = ({ _id, categories, category_type, mine = false }) => {
+const MeatballMenu = ({
+    _id,
+    categories,
+    category_type,
+    mine = false,
+    title,
+    content,
+    subject,
+    img,
+    limit,
+}) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
     const menuRef = useRef(null);
@@ -41,8 +51,20 @@ const MeatballMenu = ({ _id, categories, category_type, mine = false }) => {
 
     const handleEdit = () => {
         // 수정 로직 구현
-        if(categories=="qna")navigate(`/${categories}/${_id}/edit`);
-        else navigate(`/${categories}/${category_type}/${_id}/edit`);
+        const editPath =
+            categories === "qna"
+                ? `/${categories}/${_id}/edit`
+                : `/${categories}/${category_type}/${_id}/edit`;
+
+        navigate(editPath, {
+            state: {
+                title,
+                content,
+                subject,
+                img,
+                limit,
+            },
+        });
         setIsPopupOpen(false);
     };
 
@@ -50,7 +72,8 @@ const MeatballMenu = ({ _id, categories, category_type, mine = false }) => {
         // 삭제 로직 구현
         if (window.confirm("정말로 삭제하시겠습니까?")) {
             // 여기에 실제 삭제 API 호출 로직 추가
-            if(categories=="qna")BaseAxios.delete(`/api/${category_type}/${_id}`);
+            if (categories == "qna")
+                BaseAxios.delete(`/api/${category_type}/${_id}`);
             else BaseAxios.delete(`/api/${categories}/${category_type}/${_id}`);
             console.log("Delete item with ID:", _id);
             setIsPopupOpen(false);
@@ -73,7 +96,10 @@ const MeatballMenu = ({ _id, categories, category_type, mine = false }) => {
     return (
         <div ref={menuRef}>
             <MenuButton onClick={handleTogglePopup}>
-                <img src={`${process.env.PUBLICURL}/Icons/meatballs.svg`} alt="Meatball Menu" />
+                <img
+                    src={`${process.env.PUBLICURL}/Icons/meatballs.svg`}
+                    alt="Meatball Menu"
+                />
             </MenuButton>
             {isPopupOpen && (
                 <Popup

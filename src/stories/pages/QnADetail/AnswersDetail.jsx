@@ -19,7 +19,7 @@ const Answers = ({
     alread,
     img,
     like,
-    mine
+    mine,
 }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
     const [isAdopted, setIsAdopted] = useState(picked); // Adoption state management
@@ -28,27 +28,32 @@ const Answers = ({
 
     const handleLike = () => {
         const a = sessionStorage.getItem("answer_like_list");
-        let aList = a.split(',');
-        if(aList[index]==-1){ aList[index] = 0; sessionStorage.setItem("answer_like_list", aList);}
-        else{
-        let chage = 1;
-        if(alread==-1) chage++;
-        aList[index] = chage;
-        sessionStorage.setItem("answer_like_list", aList);
-        console.log("Post liked:", _id);}
-        
+        let aList = a.split(",");
+        if (aList[index] == -1) {
+            aList[index] = 0;
+            sessionStorage.setItem("answer_like_list", aList);
+        } else {
+            let chage = 1;
+            if (alread == -1) chage++;
+            aList[index] = chage;
+            sessionStorage.setItem("answer_like_list", aList);
+            console.log("Post liked:", _id);
+        }
     };
 
     const handleUnlike = () => {
         const a = sessionStorage.getItem("answer_like_list");
-        let aList = a.split(',');
-        if(aList[index]==1){ aList[index] = 0; sessionStorage.setItem("answer_like_list", aList);}
-        else{
-        let chage = -1;
-        if(alread==1) chage--;
-        aList[index] = chage;
-        sessionStorage.setItem("answer_like_list", aList);
-        console.log("Post unliked:", _id);}
+        let aList = a.split(",");
+        if (aList[index] == 1) {
+            aList[index] = 0;
+            sessionStorage.setItem("answer_like_list", aList);
+        } else {
+            let chage = -1;
+            if (alread == 1) chage--;
+            aList[index] = chage;
+            sessionStorage.setItem("answer_like_list", aList);
+            console.log("Post unliked:", _id);
+        }
     };
 
     return (
@@ -61,10 +66,15 @@ const Answers = ({
                         <Title>
                             <img src={`${process.env.PUBLICURL}/Icons/A.svg`} />
                         </Title>
-                        <img src={`${process.env.PUBLICURL}/Icons/Profile.svg`} />
+                        <img
+                            src={`${process.env.PUBLICURL}/Icons/Profile.svg`}
+                        />
                         <ProfileContainer>
                             <LevelGrade>
-                                Lv. {level} | {user_grade==null? "미등록" : `${user_grade} 등급`}
+                                Lv. {level} |{" "}
+                                {user_grade == null
+                                    ? "미등록"
+                                    : `${user_grade} 등급`}
                             </LevelGrade>
                             <MajorName>
                                 {major} {name}
@@ -105,12 +115,12 @@ const Answers = ({
                     </CarouselWrapper>
                 )}
 
-                <Votes 
-                like={like}
-                handleLike={handleLike}
-                handleUnlike={handleUnlike}
-                voted={alread==0? null : alread==1 ? "up" : "down"}
-                mine={mine}
+                <Votes
+                    like={like}
+                    handleLike={handleLike}
+                    handleUnlike={handleUnlike}
+                    voted={alread == 0 ? null : alread == 1 ? "up" : "down"}
+                    mine={mine}
                 />
             </Wrapper>
         </OutWrapper>
@@ -123,7 +133,7 @@ Answers.propTypes = {
     _id: PropTypes.string.isRequired,
     Rqna: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    alread:PropTypes.number.isRequired,
+    alread: PropTypes.number.isRequired,
     picked: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired,
     level: PropTypes.number.isRequired,
@@ -144,8 +154,8 @@ Answers.defaultProps = {
     name: "이름",
     level: 1,
     index: 0,
-    alread:0,
-    picked:false,
+    alread: 0,
+    picked: false,
     user_grade: "성적",
     major: "전공",
     profileImg: "/Icons/profile.svg",

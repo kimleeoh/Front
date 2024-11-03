@@ -4,7 +4,6 @@ import BaseAxios from "../../../axioses/BaseAxios";
 import { navigate } from "@storybook/addon-links";
 import { useNavigate } from "react-router-dom";
 
-
 const timeDifference = (timestamp) => {
     const now = new Date();
     const pastDate = new Date(timestamp);
@@ -95,7 +94,6 @@ const NotificationBox = ({ _id, type, timestamp, data, url, checked }) => {
                 }
             }
             navigate(url, { state: { isNoti: true } });
-            
         }
     };
 

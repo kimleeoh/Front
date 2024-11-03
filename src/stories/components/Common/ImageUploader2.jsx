@@ -3,12 +3,18 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import useWindowSize from "./WindowSize";
 
-const ImageUploader = ({ onChange, forQ = false, defaultFiles=[] }) => {
+const ImageUploader = ({
+    onChange,
+    forQ = false,
+    defaultFiles = [],
+    edit = false,
+}) => {
     const [files, setFiles] = useState(defaultFiles);
 
     const handleFileChange = (event) => {
         const selectedFiles = Array.from(event.target.files);
-        setFiles(files, ...selectedFiles);
+        const newFiles = [...files, ...selectedFiles];
+        setFiles(newFiles);
         if (onChange) {
             onChange(selectedFiles, false);
         }
@@ -21,20 +27,35 @@ const ImageUploader = ({ onChange, forQ = false, defaultFiles=[] }) => {
         if (onChange) {
             onChange(fileName, true);
         }
-    }
+    };
 
     const { width: windowSize } = useWindowSize();
 
+    const getDisplayName = (file) => {
+        if (edit) {
+            return file.split("/").pop();
+        }
+        return file.name;
+    };
+
     return (
         <UploaderWrapper maxWidth={windowSize}>
-            {files.length > 0 ? (
-                files.map((file) =>
-                <FileName onClick={forQ? handleDeleteFile : null}>{file.name} X</FileName>)
-            ) : (
-                <PlaceholderText>파일첨부</PlaceholderText>
-            )}
+            <FileListWrapper>
+                {files.length > 0 ? (
+                    files.map((file) => (
+                        <FileName onClick={forQ ? handleDeleteFile : null}>
+                            {getDisplayName(file)},{" "}
+                        </FileName>
+                    ))
+                ) : (
+                    <PlaceholderText>파일첨부</PlaceholderText>
+                )}
+            </FileListWrapper>
             <UploadButton>
-                <img src={`${process.env.PUBLICURL}/Icons/Plus.svg`} alt="Add" />
+                <img
+                    src={`${process.env.PUBLICURL}/Icons/Plus.svg`}
+                    alt="Add"
+                />
                 <input
                     type="file"
                     accept="image/*,application/pdf,application/zip"
@@ -58,7 +79,6 @@ const UploaderWrapper = styled.div`
     align-items: center;
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    height: 40px;
     border: 1px solid #acb2bb;
     border-radius: 16px;
     padding: 0 20px;
@@ -91,9 +111,12 @@ const PlaceholderText = styled.div`
 const FileName = styled.p`
     color: #acb2bb;
     font-size: 14px;
-    margin: 0 10px 0 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 90%;
+`;
+
+const FileListWrapper = styled.div`
+    display: flex;
+    flex: 1;
+    overflow-x: auto;
+    margin-right: 10px;
+    align-items: center;
 `;

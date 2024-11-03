@@ -56,7 +56,6 @@ const BoardHome = () => {
         fetchData();
     }, []);
 
-
     console.log("subjectData: ", subjectData);
     console.log("bookmarkData: ", bookmarkData);
     console.log("subjectData2: ", subjectData2);
