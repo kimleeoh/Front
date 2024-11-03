@@ -15,16 +15,16 @@ const TipsDetail = ({
     title,
     category_name,
     category_type,
-    img,
     content,
     likes,
     views,
+    file_links,
     time,
     onReportClick,
     likePost,
     mine,
 }) => {
-    const images = Array.isArray(img) ? img : img ? [img] : [];
+    const images = Array.isArray(file_links) ? file_links : file_links ? [file_links] : [];
     const { width: windowSize } = useWindowSize();
 
     const [isLiked, setIsLiked] = useState(false);
