@@ -2,6 +2,7 @@
     "name": "f-killer",
     "version": "0.1.0",
     "main": "index.js",
+    "homepage": ".",
     "private": true,
     "dependencies": {
         "@next/bundle-analyzer": "^14.2.13",
