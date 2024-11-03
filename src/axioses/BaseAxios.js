@@ -1,8 +1,14 @@
 // BaseAxios.js
 import axios from "axios";
 
+// 환경에 따른 baseURL 설정
+const baseURL =
+    process.env.NODE_ENV === "production"
+        ? "https://wiJDE32qiri1y0e.afkiller.com" // 실배포용 URL
+        : "http://localhost:4501"; // 로컬 개발용 URL
+
 const BaseAxios = axios.create({
-	baseURL: "https://wiJDE32qiri1y0e.afkiller.com",
+    baseURL: baseURL,
     withCredentials: true,
 });
 

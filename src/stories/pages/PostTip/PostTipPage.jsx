@@ -13,7 +13,7 @@ import PointInput from "../PostQuestion/PointInput";
 import TargetInput from "../PostQuestion/TargetInput";
 import { useNavigate } from "react-router-dom";
 
-const PostQuestionPage = () => {
+const PostTipsPage = () => {
     const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         title: "",
@@ -27,7 +27,7 @@ const PostQuestionPage = () => {
     });
     console.log(formValues);
 
-    const [isFormValid, setIsFormValid] = useState(false);
+    // const [isFormValid, setIsFormValid] = useState(false);
     const [showValidationMessages, setShowValidationMessages] = useState(false);
 
     const handleInputChange = useCallback((name, value) => {
@@ -37,29 +37,45 @@ const PostQuestionPage = () => {
         }));
     }, []);
 
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-
         const now = new Date().toISOString();
 
-        const updatedFormValues = {
-            ...formValues,
-            time: now,
-        };
-        const { title, board, type, content, purchase_price, target } =
+        console.log("formValues: ", formValues.board);
+        const updatedFormValues = new FormData();
+        updatedFormValues.append("title", formValues.title);
+        updatedFormValues.append("board", JSON.stringify(formValues.board));
+        updatedFormValues.append("content", formValues.content);
+        updatedFormValues.append("purchase_price", formValues.purchase_price);
+        updatedFormValues.append("type", formValues.type);
+        updatedFormValues.append("time", now);
+        updatedFormValues.append("target", formValues.target);
+        if (formValues.images) {
+            formValues.images.forEach((image) => {
+                updatedFormValues.append("images", image);
+            });
+        }
+
+        console.log("updatedFormValues: ", updatedFormValues);
+
+        const { title, board, content, purchase_price, target, type } =
             formValues;
         const isFormValid =
             title.trim() !== "" &&
-            board.length > 0 &&
             type.trim() !== "" &&
+            board.length > 0 &&
             content.trim() !== "" &&
             purchase_price.trim() !== "" &&
-            Number(purchase_price) > 0 &&
-            Number(purchase_price) <= 200 &&
             target.trim() !== "";
+
         if (isFormValid) {
-            await BaseAxios.post("/api/tips/create/post", updatedFormValues);
-            console.log(updatedFormValues);
+            console.log(updatedFormValues.images);
+            await BaseAxios.post("/api/tips/create/post", updatedFormValues, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             alert("작성이 완료되었습니다.");
             // navigate("/tips");
         } else {
@@ -89,7 +105,7 @@ const PostQuestionPage = () => {
         if (content.trim() === "") {
             return <ValidationMessage>내용을 입력해 주세요.</ValidationMessage>;
         }
-        if (purchase_price.trim() == "") {
+        if (purchase_price.trim() === "") {
             return <ValidationMessage>가격을 입력해 주세요.</ValidationMessage>;
         }
         if (Number(purchase_price) <= 0 || Number(purchase_price) > 200) {
@@ -99,7 +115,7 @@ const PostQuestionPage = () => {
                 </ValidationMessage>
             );
         }
-        if (target.trim() == "") {
+        if (target.trim() === "") {
             return (
                 <ValidationMessage>
                     도움이 될 사람을 입력해 주세요.
@@ -170,7 +186,7 @@ const PostQuestionPage = () => {
     );
 };
 
-export default PostQuestionPage;
+export default PostTipsPage;
 
 const Wrapper = styled.div`
     display: flex;

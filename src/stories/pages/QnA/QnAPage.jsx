@@ -17,6 +17,8 @@ const QnAPage = () => {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [error, setError] = useState(null);
+    const [isEmpty, setIsEmpty] = useState(false);
+    const [message, setMessage] = useState();
     const [depth, setDepth] = useState(1);
     const observer = useRef();
     const { width: windowSize } = useWindowSize();
@@ -46,6 +48,14 @@ const QnAPage = () => {
                      },
                 });
                 const newQuestions = response.data.docList;
+                if (newQuestions.message === "uniquecategory is null" ) {
+                    setIsEmpty(true);
+                    setMessage("uniquecategory is null")
+                }
+                else if (newQuestions.message === "qnalist is null") {
+                    setIsEmpty(true);
+                    setMessage("uniquecategory is null")
+                }
                 if(newQuestions.length === 0) {
                     setHasMore(false);
                 }
@@ -158,8 +168,15 @@ const QnAPage = () => {
             {renderPostsWithAds()}
             {loading && <Spinner color="#434B60" size={32} />}
             {error && <ErrorMessage>{error}</ErrorMessage>}
-            {!loading && questionData.length === 0 && (
-                <EmptyMessage>질문이 없습니다.</EmptyMessage>
+            {!loading && isEmpty && (
+                <EmptyBox>
+                    <Icon src={`${process.env.PUBLIC_URL}/Icons/Alert_gray.svg`} />
+                    <Content>
+                        {message == "uniquecategory is null"
+                            ? "board에서 관심있는 과목을 담고 그에 대한 글들을 받아보세요!"
+                            : "아직 관련과목들에 대한 글이 없어요! 글을 작성해주세요!"}
+                    </Content>
+            </EmptyBox>
             )}
             <FixedIcon src={`${process.env.REACT_APP_PUBLICURL}/Icons/Question.svg`} url={"/qna/post"} />
             <FixedBottomContainer>
@@ -198,4 +215,29 @@ const EmptyMessage = styled.div`
     text-align: center;
     margin-top: 20px;
     color: #666;
+`;
+
+const EmptyBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const Icon = styled.img`
+    width: 70px;
+    height: 70px;
+    margin-top: 120px;
+`;
+
+const Content = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align-center;
+    box-sizing: border-box;
+    font-size: 15px;
+    font-weight: regular;
+    padding: 15px;
+    margin-top: 10px;
+    color: #acb2bb;
 `;

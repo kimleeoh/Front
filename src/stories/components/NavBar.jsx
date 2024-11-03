@@ -29,7 +29,7 @@ const ICONS = {
     QnA: { enabled: "/Icons/QnA_e.svg", disabled: "/Icons/QnA_d.svg" },
     Board: { enabled: "/Icons/Board_e.svg", disabled: "/Icons/Board_d.svg" },
     Tips: { enabled: "/Icons/Tips_e.svg", disabled: "/Icons/Tips_d.svg" },
-    Menu: { enabled: "/Icons/Mypage_e.svg", disabled: "/Icons/Mypage_d.svg" },
+    Menu: { enabled: "/Icons/MyPage_e.svg", disabled: "/Icons/Mypage_d.svg" },
 };
 
 // NavBar Component

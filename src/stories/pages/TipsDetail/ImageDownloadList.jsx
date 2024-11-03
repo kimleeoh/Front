@@ -1,30 +1,31 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import Modal from "../../components/Common/Modal";
-import Button from "../../components/Button";
 
 const ImageDownloadList = ({ images }) => {
-    const modalRef = useRef();
-
-    const handleDownloadClick = (e) => {
+    // 모든 이미지 다운로드 함수
+    const handleDownloadClick = async (e) => {
         e.preventDefault();
-        modalRef.current.open();
+
+        for (let index = 0; index < images.length; index++) {
+            await downloadImage(images[index], index);
+        }
     };
 
-    const handleConfirm = () => {
-        images.forEach((image, index) => {
+    // 개별 이미지 다운로드 함수 (Promise로 구현하여 순차적으로 실행되도록 설정)
+    const downloadImage = (image, index) => {
+        return new Promise((resolve) => {
             const link = document.createElement("a");
             link.href = image;
-            link.download = `image${index + 1}`;
+            link.download = `image${index + 1}`; // 이미지 이름 지정
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            setTimeout(resolve, 500); // 약간의 지연 후 resolve 호출
         });
-        alert("구매가 완료되었습니다.");
-        modalRef.current.close();
     };
 
+    // 파일 이름 목록을 반환하는 함수
     const getFileNames = () => {
         const names = images.map((_, index) => `Image ${index + 1}`);
         const joinedNames = names.join(", ");
@@ -34,37 +35,17 @@ const ImageDownloadList = ({ images }) => {
     };
 
     return (
-        <>
-            <DownloadContainer>
-                <FileContainer>
-                    <FileName>{getFileNames()}</FileName>
-                    <DownloadLink onClick={handleDownloadClick}>
-                        <img src={`${process.env.REACT_APP_PUBLICURL}/Icons/Download.svg`} alt="Download icon" />
-                    </DownloadLink>
-                </FileContainer>
-            </DownloadContainer>
-            <Modal ref={modalRef} width="300px">
-                <span style={{ fontSize: "16px" }}>
-                    정말로 구매하시겠습니까?
-                </span>
-                <ButtonWrapper>
-                    <Button
-                        onClick={handleConfirm}
-                        label={"예"}
-                        backgroundColor={"#FF3C3C"}
-                        hoverBackgroundColor={"red"}
-                        width={"130px"}
+        <DownloadContainer>
+            <FileContainer>
+                <FileName>{getFileNames()}</FileName>
+                <DownloadLink onClick={handleDownloadClick}>
+                    <img
+                        src={`${process.env.REACT_APP_PUBLICURL}/Icons/Download.svg`}
+                        alt="Download icon"
                     />
-                    <Button
-                        onClick={() => modalRef.current.close()}
-                        label={"아니요"}
-                        backgroundColor={"#434B60"}
-                        hoverBackgroundColor={"#ACB2BB"}
-                        width={"130px"}
-                    />
-                </ButtonWrapper>
-            </Modal>
-        </>
+                </DownloadLink>
+            </FileContainer>
+        </DownloadContainer>
     );
 };
 
@@ -94,7 +75,7 @@ const FileName = styled.span`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 80%; // Adjust this value as needed
+    max-width: 80%;
 `;
 
 const DownloadLink = styled.a`
@@ -104,11 +85,4 @@ const DownloadLink = styled.a`
     display: flex;
     align-items: center;
     cursor: pointer;
-`;
-
-const ButtonWrapper = styled.div`
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-    gap: 10px;
 `;
