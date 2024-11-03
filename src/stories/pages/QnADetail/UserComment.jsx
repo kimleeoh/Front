@@ -160,7 +160,7 @@ const User = ({ post_id, isScore, whatScore, profileImg, level, major, name, lim
                                     성적 입력 후 답변이 가능합니다.
                                 </span>
                                 
-                                <Link onClick = "" to="/menu" style={{ marginTop:"1px",color: "#000000", textDecoration:"none"}}>
+                                <Link onClick = "" to="/grades" style={{ marginTop:"1px",color: "#000000", textDecoration:"none"}}>
                                 성적 입력하러 가기 ▶
                                 </Link>
                             </MajorName>
