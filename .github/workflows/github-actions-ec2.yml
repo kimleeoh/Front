@@ -35,7 +35,7 @@ jobs:
           host: ${{ secrets.HOST_DNS }}  # 호스트 이름 또는 IP 주소
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }} # 올바른 SSH 키 사용
-          timeout: 600 
+          
           script: |
             cd Front
             forever stopall
