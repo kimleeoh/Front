@@ -231,7 +231,7 @@ const MyPageEdit = () => {
                                 }}
                             >
                                 <img
-                                    src={`${process.env.PUBLIC_URL}/Icons/Vote_c.svg`}
+                                    src={`${process.env.PUBLICURL}/Icons/Vote_c.svg`}
                                     alt="투표"
                                     width="35px"
                                     height="35px"
@@ -264,7 +264,7 @@ const MyPageEdit = () => {
                                 }}
                             >
                                 <img
-                                    src={`${process.env.PUBLIC_URL}/Icons/Bookmark_c.svg`}
+                                    src={`${process.env.PUBLICURL}/Icons/Bookmark_c.svg`}
                                     alt="스크랩"
                                     width="20px"
                                     height="28px"
@@ -297,7 +297,7 @@ const MyPageEdit = () => {
                                 }}
                             >
                                 <img
-                                    src={`${process.env.PUBLIC_URL}/Icons/Crown_c.svg`}
+                                    src={`${process.env.PUBLICURL}/Icons/Crown_c.svg`}
                                     alt="꿀팁"
                                     width="40px"
                                     height="40px"
@@ -330,7 +330,7 @@ const MyPageEdit = () => {
                                 }}
                             >
                                 <img
-                                    src={`${process.env.PUBLIC_URL}/Icons/Global_c.svg`}
+                                    src={`${process.env.PUBLICURL}/Icons/Global_c.svg`}
                                     alt="답변"
                                     width="28px"
                                     height="28px"
