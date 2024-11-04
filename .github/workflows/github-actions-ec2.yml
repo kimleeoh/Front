@@ -50,7 +50,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.HOST_DNS }}  # 호스트 이름 또는 IP 주소
           REMOTE_USER: ${{ secrets.USERNAME }}
         run: |
-          rsync -avz -e "ssh -i ~/.ssh/deploy_key_Amazon" --delete Front/ ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }}:${{ secrets.TARGET_DIR }}/
+          rsync -avz -e "ssh -i ~/.ssh/deploy_key_Amazon" --delete Front/build/ ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }}:${{ secrets.TARGET_DIR }}/
 
       # 6. Nginx 캐시 무효화 및 서버 재시작을 위한 SSH 명령 실행
       - name: Restart server and clear cache
@@ -61,14 +61,13 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }} # SSH 키 사용
           
           script: |
-            # 서버 디렉토리로 이동 및 Git 갱신
+            # 배포 디렉토리로 이동 및 서버 중단
             cd ${{ secrets.TARGET_DIR }}
             forever stopall || true  # 실행 중인 서버가 없을 경우에도 오류 무시
             sudo systemctl stop nginx
 
-            # 필요 시 npm 설치 및 빌드
+            # 필요 시 npm 설치 및 빌드 (이미 빌드된 상태이므로 주로 캐시 용도)
             npm install
-            npm run build
 
             # Nginx 캐시 비우기 및 서버 재시작
             sudo rm -rf /var/cache/nginx/*
