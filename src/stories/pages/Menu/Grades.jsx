@@ -136,23 +136,25 @@ const Grades = () => {
             </Header>
             <ContentWrapper maxWidth={windowSize}>
                 <HeadLabel>
+                <HeadBox>
+                    <img src="/Icons/check_border_e.svg" alt="check icon" /> 인증
+                    <img src="/Icons/check_border_d.svg" alt="check icon" /> 미인증
+                </HeadBox>
                 <HelpButton ref={menuRef} onClick={handleTogglePopup}>
                     <img src="/Icons/Help.svg" alt="help icon" style={{transform: "translateY(2px)"}} />
                 </HelpButton>
 
                 {isPopupOpen && (
-                <Popup
-                    title="Menu"
-                    position={popupPosition}
-                    onClose={() => setIsPopupOpen(false)}
-                >
-                    <Help>
-                    인증사진과 실제 입력하신 과목명, 성적, 전공여부가 맞는지 반드시 확인해주세요
-                    </Help>
-                </Popup>
-            )}
-                <img src="/Icons/check_border_e.svg" alt="check icon" /> 인증
-                <img src="/Icons/check_border_d.svg" alt="check icon" /> 미인증
+                    <Popup
+                        title="도움말"
+                        position={popupPosition}
+                        onClose={() => setIsPopupOpen(false)}
+                    >
+                        <Help>
+                        인증사진과 실제 입력하신 과목명, 성적, 전공여부가 맞는지 반드시 확인해주세요
+                        </Help>
+                    </Popup>
+                )}
                 </HeadLabel>
                 {semesters.map((semester) => {
                     const { year, semester: semesterNum } = getSemesterInfo(semester.originalIndex);
@@ -336,8 +338,15 @@ const HelpButton = styled.button`
 const HeadLabel = styled.div`
     display: flex;
     align-items: center;
+    width: 90%;
+    margin-bottom: 20px;
+    gap: 10px;
+`;
+
+const HeadBox = styled.div`
+    display: flex;
+    align-items: center;
     width: 100%;
-    margin-bottom: 10px;
     gap: 10px;
 `;
 
