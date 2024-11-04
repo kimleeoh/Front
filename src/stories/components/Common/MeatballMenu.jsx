@@ -70,15 +70,31 @@ const MeatballMenu = ({
         setIsPopupOpen(false);
     };
 
-    const handleDelete = () => {
-        // 삭제 로직 구현
+    const handleDelete = async () => {
         if (window.confirm("정말로 삭제하시겠습니까?")) {
-            // 여기에 실제 삭제 API 호출 로직 추가
-            if (categories == "qna")
-                BaseAxios.delete(`/api/${category_type}/${_id}`);
-            else BaseAxios.delete(`/api/${categories}/${category_type}/${_id}`);
-            console.log("Delete item with ID:", _id);
-            setIsPopupOpen(false);
+            try {
+                // MongoDB에서 데이터 삭제
+                if (categories === "qna") {
+                    await BaseAxios.delete(`/api/${categories}/${_id}`);
+                } else {
+                    await BaseAxios.delete(
+                        `/api/${categories}/${category_type}/${_id}`
+                    );
+                }
+
+                console.log("Delete item with ID:", _id);
+
+                // 삭제 후 콜백 함수 호출
+                onDelete(_id);
+
+                // 삭제 후 페이지 이동
+                navigate(`/${categories}`);
+            } catch (error) {
+                console.error("Failed to delete item:", error);
+                alert("삭제에 실패했습니다. 다시 시도해 주세요.");
+            } finally {
+                setIsPopupOpen(false);
+            }
         }
     };
 

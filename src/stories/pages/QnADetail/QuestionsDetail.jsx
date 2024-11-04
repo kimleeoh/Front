@@ -23,6 +23,7 @@ const QuestionsDetail = ({
     mine,
     alread,
     onReportClick,
+    onDelete,
 }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
 
@@ -109,6 +110,12 @@ const QuestionsDetail = ({
         console.log("Notification toggled:", newIsNotified);
     };
 
+    const handleDeleteQuestion = (deletedId) => {
+        if (onDelete) {
+            onDelete(deletedId); // 상위 컴포넌트에 삭제된 ID를 전달하여 상태를 업데이트하도록 함
+        }
+    };
+
     const { width: windowSize } = useWindowSize();
 
     return (
@@ -118,6 +125,7 @@ const QuestionsDetail = ({
                     {subject}
                     <MeatballMenu
                         _id={_id}
+                        onDelete={handleDeleteQuestion}
                         onReportClick={() => onReportClick(_id)}
                         category_type={"qna"}
                         categories={"qna"}

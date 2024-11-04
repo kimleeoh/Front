@@ -23,6 +23,14 @@ const QnAPage = () => {
     const observer = useRef();
     const { width: windowSize } = useWindowSize();
 
+    // 삭제 콜백 함수
+    const handleDeleteQuestion = (deletedId) => {
+        // 삭제된 항목을 제외한 새로운 배열로 questionData 업데이트
+        setQuestionData((prevQuestions) =>
+            prevQuestions.filter((question) => question._id !== deletedId)
+        );
+    };
+
     const lastQuestionElementRef = useCallback(
         (node) => {
             if (loading) return;
@@ -133,6 +141,7 @@ const QnAPage = () => {
                         limit={post.restricted_type}
                         user_main={post.user_main}
                         point={post.point}
+                        onDelete={handleDeleteQuestion}
                     />
                 </div>
             );
