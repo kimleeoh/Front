@@ -24,7 +24,11 @@ const TipsDetail = ({
     likePost,
     mine,
 }) => {
-    const images = Array.isArray(file_links) ? file_links : file_links ? [file_links] : [];
+    const images = Array.isArray(file_links)
+        ? file_links
+        : file_links
+          ? [file_links]
+          : [];
     const { width: windowSize } = useWindowSize();
 
     const [isLiked, setIsLiked] = useState(false);
@@ -112,9 +116,7 @@ const TipsDetail = ({
                         </CarouselTemp>
                     </CarouselWrapper>
                 )}
-                {images.length > 0 && (
-                    <ImageDownloadList images={images} />
-                )}
+                {images.length > 0 && <ImageDownloadList images={images} />}
                 <BottomBar>
                     <Votes
                         like={likes}

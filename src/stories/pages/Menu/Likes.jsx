@@ -21,7 +21,7 @@ const Likes = () => {
     const [hasMore, setHasMore] = useState(true);
     const [isEmpty, setIsEmpty] = useState(false);
 
-    const tabs = ["전체", "QnA", "Tips"];
+    const tabs = ["QnA", "Tips"];
 
     const { width: windowSize } = useWindowSize();
 
@@ -49,11 +49,6 @@ const Likes = () => {
             let questionResponse, tipsResponse;
             if (filtersArray) {
                 tipsResponse = await fetchApi(filtersArray);
-            } else if (activeTab === "전체") {
-                [questionResponse, tipsResponse] = await Promise.all([
-                    fetchApi(["qna"]),
-                    fetchApi(["test", "pilgy", "honey"]),
-                ]);
             } else if (activeTab === "QnA") {
                 questionResponse = await fetchApi(["qna"]);
             } else {
@@ -173,54 +168,6 @@ const Likes = () => {
                 activeTab={activeTab}
                 onTabChange={handleTabChange}
             />
-            {activeTab === "전체" && (
-                <>
-                    {renderPostsWithAds(filteredQuestions, (question) => (
-                        <Questions
-                            _id={question._id}
-                            title={question.title}
-                            content={question.content}
-                            subject={
-                                question.now_category_list[
-                                    question.now_category_list.length - 1
-                                ][
-                                    Object.keys(
-                                        question.now_category_list[
-                                            question.now_category_list.length -
-                                                1
-                                        ]
-                                    )[0]
-                                ]
-                            }
-                            time={question.time}
-                            views={question.views}
-                            like={question.like}
-                            img={
-                                Array.isArray(question.img_list)
-                                    ? question.img_list[0]
-                                    : question.img_list
-                            }
-                            limit={question.restricted_type}
-                            user_main={question.user_main}
-                        />
-                    ))}
-                    {renderPostsWithAds(tipsData, (tip) => (
-                        <Tips
-                            _id={tip._id}
-                            Ruser={tip.Ruser}
-                            category_name={tip.category_name}
-                            category_type={tip.category_type}
-                            title={tip.title}
-                            preview_img={tip.preview_img}
-                            likes={tip.likes}
-                            purchase_price={tip.purchase_price}
-                            target={tip.target}
-                            views={tip.views}
-                            time={tip.time}
-                        />
-                    ))}
-                </>
-            )}
             {activeTab === "QnA" && (
                 <>
                     <CheckerWrapper maxWidth={windowSize}>

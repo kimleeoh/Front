@@ -15,13 +15,13 @@ const Bookmarks = () => {
     const [questionData, setQuestionData] = useState([]);
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
     const [tipsData, setTipsData] = useState([]);
-    const [activeTab, setActiveTab] = useState("전체");
+    const [activeTab, setActiveTab] = useState("QnA");
     const observerRef = useRef();
     const [loading, setLoading] = useState(false);
     const [nowChips, setNowChips] = useState([]);
     const [isEmpty, setIsEmpty] = useState(false);
 
-    const tabs = ["전체", "QnA", "Tips"];
+    const tabs = ["QnA", "Tips"];
 
     const { width: windowSize } = useWindowSize();
 
@@ -57,14 +57,6 @@ const Bookmarks = () => {
                     filtersArray: filtersArray,
                     lastDocTime,
                 });
-            } else if (!filtersArray && activeTab === "전체") {
-                [questionResponse, tipsResponse] = await Promise.all([
-                    fetchApi({ filtersArray: ["qna"], lastDocTime }),
-                    fetchApi({
-                        filtersArray: ["test", "pilgy", "honey"],
-                        lastDocTime,
-                    }),
-                ]);
             } else if (!filtersArray && activeTab === "QnA") {
                 questionResponse = await fetchApi({
                     filtersArray: ["qna"],
@@ -201,54 +193,6 @@ const Bookmarks = () => {
                 activeTab={activeTab}
                 onTabChange={handleTabChange}
             />
-            {activeTab === "전체" && (
-                <>
-                    {renderPostsWithAds(questionData, (question) => (
-                        <Questions
-                            _id={question._id}
-                            title={question.title}
-                            content={question.content}
-                            subject={
-                                question.now_category_list[
-                                    question.now_category_list.length - 1
-                                ][
-                                    Object.keys(
-                                        question.now_category_list[
-                                            question.now_category_list.length -
-                                                1
-                                        ]
-                                    )[0]
-                                ]
-                            }
-                            time={question.time}
-                            views={question.views}
-                            like={question.like}
-                            img={
-                                Array.isArray(question.img_list)
-                                    ? question.img_list[0]
-                                    : question.img_list
-                            }
-                            limit={question.restricted_type}
-                            user_main={question.user_main}
-                        />
-                    ))}
-                    {renderPostsWithAds(tipsData, (tip) => (
-                        <Tips
-                            _id={tip._id}
-                            Ruser={tip.Ruser}
-                            category_name={tip.category_name}
-                            category_type={tip.category_type}
-                            title={tip.title}
-                            preview_img={tip.preview_img}
-                            likes={tip.likes}
-                            purchase_price={tip.purchase_price}
-                            target={tip.target}
-                            views={tip.views}
-                            time={tip.time}
-                        />
-                    ))}
-                </>
-            )}
             {activeTab === "QnA" && (
                 <>
                     <CheckerWrapper maxWidth={windowSize}>

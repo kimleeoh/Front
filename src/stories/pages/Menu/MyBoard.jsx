@@ -15,13 +15,13 @@ const MyBoard = () => {
     const [questionData, setQuestionData] = useState([]);
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
     const [tipsData, setTipsData] = useState([]);
-    const [activeTab, setActiveTab] = useState("전체");
+    const [activeTab, setActiveTab] = useState("QnA");
     const observerRef = useRef();
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [isEmpty, setIsEmpty] = useState(false);
 
-    const tabs = ["전체", "QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
+    const tabs = ["QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
 
     const { width: windowSize } = useWindowSize();
 
@@ -49,11 +49,6 @@ const MyBoard = () => {
             let questionResponse, tipsResponse;
             if (filtersArray) {
                 tipsResponse = await fetchApi(filtersArray);
-            } else if (activeTab === "전체") {
-                [questionResponse, tipsResponse] = await Promise.all([
-                    fetchApi(["qna"]),
-                    fetchApi(["test", "pilgy", "honey"]),
-                ]);
             } else if (activeTab === "QnA") {
                 questionResponse = await fetchApi(["qna"]);
             } else {
@@ -143,53 +138,6 @@ const MyBoard = () => {
                 activeTab={activeTab}
                 onTabChange={handleTabChange}
             />
-            {activeTab === "전체" && (
-                <>
-                    {questionData.map((question) => {
-                        const img = Array.isArray(question.img_list)
-                            ? question.img_list[0]
-                            : question.img_list;
-
-                        const lastCategory =
-                            question.now_category_list[
-                                question.now_category_list.length - 1
-                            ];
-
-                        // 동적으로 키를 가져와서 값 반환
-                        const value =
-                            lastCategory[Object.keys(lastCategory)[0]];
-                        return (
-                            <Questions
-                                _id={question._id}
-                                title={question.title}
-                                content={question.content}
-                                subject={value}
-                                time={question.time}
-                                views={question.views}
-                                like={question.like}
-                                img={img}
-                                limit={question.restricted_type}
-                                user_main={question.user_main}
-                            />
-                        );
-                    })}
-                    {tipsData.map((tip) => (
-                        <Tips
-                            _id={tip._id}
-                            Ruser={tip.Ruser}
-                            category_name={tip.category_name}
-                            category_type={tip.category_type}
-                            title={tip.title}
-                            preview_img={tip.preview_img}
-                            likes={tip.likes}
-                            purchase_price={tip.purchase_price}
-                            target={tip.target}
-                            views={tip.views}
-                            time={tip.time}
-                        />
-                    ))}
-                </>
-            )}
             {activeTab === "QnA" && (
                 <>
                     <CheckerWrapper maxWidth={windowSize}>

@@ -15,6 +15,7 @@ const MeatballMenu = ({
     img,
     limit,
     point,
+    onDelete,
 }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
@@ -99,6 +100,7 @@ const MeatballMenu = ({
     };
 
     useEffect(() => {
+        console.log("MeatballMenu point: ", point);
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
                 setIsPopupOpen(false);

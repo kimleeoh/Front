@@ -42,10 +42,7 @@ const EditQuestionPage = () => {
 
         fetchPoint();
         handleCheckerChange(limit);
-        console.log("title: ", title);
-        console.log("subject: ", subject);
-        console.log("img: ", img);
-        console.log("point: ", point);
+        console.log("formValues: ", formValues);
     }, []);
 
     const handleInputChange = (name, value) => {

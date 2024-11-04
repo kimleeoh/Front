@@ -9,7 +9,7 @@ import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import { Link } from "react-router-dom";
 
-const User = ({
+const UserComment = ({
     post_id,
     isScore,
     whatScore,
@@ -36,9 +36,21 @@ const User = ({
     };
 
     useEffect(() => {
+        console.log("limit: ", limit);
         setFormValues({ ...formValues, id: post_id, score: whatScore });
-
-        setAnswerable(isScore && limit === false);
+        if (limit === false) {
+            console.log("no...oh");
+            setAnswerable(true);
+        } else if (
+            (limit === true && whatScore === "A0") ||
+            whatScore === "A+" ||
+            whatScore === "A-"
+        ) {
+            console.log("there we go");
+            setAnswerable(true);
+        } else {
+            setAnswerable(false);
+        }
 
         setloaded(false);
     }, [isScore, limit]);
@@ -132,7 +144,8 @@ const User = ({
                             <ProfileImg src={profileImg} />
                             <ProfileContainer>
                                 <LevelGrade>
-                                    Lv. {level} | {whatScore} 등급
+                                    Lv. {level} |{" "}
+                                    {whatScore ? `${whatScore} 등급` : "미정"}
                                 </LevelGrade>
                                 <MajorName>
                                     {major} {name}
@@ -261,9 +274,9 @@ const User = ({
     }
 };
 
-export default User;
+export default UserComment;
 
-User.propTypes = {
+UserComment.propTypes = {
     post_id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     level: PropTypes.number.isRequired,
@@ -274,13 +287,12 @@ User.propTypes = {
     whatScore: PropTypes.string,
 };
 
-User.defaultProps = {
+UserComment.defaultProps = {
     post_id: 0,
     name: "이름",
     level: 1,
     major: "전공",
     profileImg: "/Icons/profile.svg",
-    limit: false,
     isScore: false,
     whatScore: null,
 };
