@@ -103,58 +103,58 @@ const MenuPage = () => {
             <Section maxWidth={windowSize}>
                 <MenuList
                     to="/grades"
-                    src={`${process.env.PUBLICURL}/icons/A+.svg`}
+                    src={`${process.env.PUBLICURL}/Icons/A+.svg`}
                 >
                     내 성적
                 </MenuList>
                 <MenuList
                     to="/points"
-                    src={`${process.env.PUBLICURL}/icons/point.svg`}
+                    src={`${process.env.PUBLICURL}/Icons/point.svg`}
                 >
                     내 포인트
                 </MenuList>
                 <MenuList
                     to="/purchased"
-                    src={`${process.env.PUBLICURL}/icons/purchased.svg`}
+                    src={`${process.env.PUBLICURL}/Icons/purchased.svg`}
                 >
                     내 구입목록
                 </MenuList>
                 <Title> 게시물 </Title>
                 <MenuList
                     to="/myboard"
-                    src={`${process.env.PUBLICURL}/icons/pencil.svg`}
+                    src={`${process.env.PUBLICURL}/Icons/pencil.svg`}
                 >
                     내가 쓴 글
                 </MenuList>
                 <MenuList
                     to="/bookmarks"
-                    src={`${process.env.PUBLICURL}/icons/scrap.svg`}
+                    src={`${process.env.PUBLICURL}/Icons/scrap.svg`}
                 >
                     북마크한 글
                 </MenuList>
                 <MenuList
                     to="/likes"
-                    src={`${process.env.PUBLICURL}/icons/thumb.svg`}
+                    src={`${process.env.PUBLICURL}/Icons/thumb.svg`}
                 >
                     좋아요한 글
                 </MenuList>
                 <MenuList
                     to="/history"
-                    src={`${process.env.PUBLICURL}/icons/recent.svg`}
+                    src={`${process.env.PUBLICURL}/Icons/recent.svg`}
                 >
                     최근 본 글
                 </MenuList>
                 <Title> 도움말 </Title>
                 <MenuList
                     to="/notices"
-                    src={`${process.env.PUBLICURL}/icons/notice.svg`}
+                    src={`${process.env.PUBLICURL}/Icons/notice.svg`}
                 >
                     공지사항
                 </MenuList>
                 {/* 문의하기 버튼에 onClick 이벤트 추가 */}
                 <MenuList
                     onClick={handleContactClick}
-                    src={`${process.env.PUBLICURL}/icons/speak.svg`}
+                    src={`${process.env.PUBLICURL}/Icons/speak.svg`}
                 >
                     문의하기
                 </MenuList>
