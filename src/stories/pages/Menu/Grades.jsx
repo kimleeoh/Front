@@ -101,6 +101,11 @@ const Grades = () => {
                 <Verify onClick={handleVerifyClick}>등록</Verify>
             </Header>
             <ContentWrapper maxWidth={windowSize}>
+                <HeadLabel>
+                <HelpButton> <img src="/Icons/Help.svg" alt="help icon" /> </HelpButton>
+                <img src="/Icons/check_border_e.svg" alt="check icon" /> 인증
+                <img src="/Icons/check_border_d.svg" alt="check icon" /> 미인증
+                </HeadLabel>
                 {semesters.map((semester) => {
                     const { year, semester: semesterNum } = getSemesterInfo(semester.originalIndex);
                     return (
@@ -180,7 +185,7 @@ const ContentWrapper = styled.div`
     align-items: center;
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    padding: 100px 10px 80px;
+    padding: 120px 10px 80px;
     box-sizing: border-box;
 `;
 
@@ -247,5 +252,35 @@ const ModalButtonWrapper = styled.div`
     justify-content: space-between;
     width: 100%;
     margin-top: 20px;
+    gap: 10px;
+`;
+
+const HelpButton = styled.button`
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        loading: lazy;
+    }
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.1);
+    }
+`;
+
+const HeadLabel = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
     gap: 10px;
 `;
