@@ -59,9 +59,9 @@ const Answers = ({
                 >
                     <SubWrapper>
                         <Title>
-                            <img src={`${process.env.PUBLICURL}/Icons/A.svg`} />
+                            <img src={`${process.env.REACT_APP_PUBLICURL}/Icons/A.svg`} />
                         </Title>
-                        <img src={`${process.env.PUBLICURL}/Icons/Profile.svg`} />
+                        <img src={`${process.env.REACT_APP_PUBLICURL}/Icons/Profile.svg`} />
                         <ProfileContainer>
                             <LevelGrade>
                                 Lv. {level} | {user_grade==null? "미등록" : `${user_grade} 등급`}

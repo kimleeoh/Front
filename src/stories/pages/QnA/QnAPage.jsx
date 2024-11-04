@@ -178,7 +178,7 @@ const QnAPage = () => {
                     </Content>
             </EmptyBox>
             )}
-            <FixedIcon src={`${process.env.PUBLICURL}/Icons/Question.svg`} url={"/qna/post"} />
+            <FixedIcon src={`${process.env.REACT_APP_PUBLICURL}/Icons/Question.svg`} url={"/qna/post"} />
             <FixedBottomContainer>
                 <NavBar state="QnA" />
             </FixedBottomContainer>

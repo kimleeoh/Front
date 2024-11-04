@@ -134,7 +134,7 @@ const Tips = ({
                             }}
                         >
                             <div style={{ transform: "translateY(1px)" }}>
-                                <img src={`${process.env.PUBLICURL}/Icons/Thumb_c.svg`} />
+                                <img src={`${process.env.REACT_APP_PUBLICURL}/Icons/Thumb_c.svg`} />
                             </div>{" "}
                             {likes}
                         </span>

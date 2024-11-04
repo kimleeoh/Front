@@ -10,7 +10,7 @@ const Alert = () => {
 
     return (
         <Wrapper maxWidth={windowSize}>
-            <Icon src={`${process.env.PUBLICURL}/Icons/Alert.svg`} />
+            <Icon src={`${process.env.REACT_APP_PUBLICURL}/Icons/Alert.svg`} />
             <Title>인증 처리가 진행 중입니다.</Title>
             <Content>
                 인증 처리에는 최대 72시간이 소요될 수 있습니다.

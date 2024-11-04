@@ -261,7 +261,7 @@ const MyContact = () => {
                 );
             })}
 
-            <FixedIcon src={`${process.env.PUBLICURL}/Icons/Question.svg`} url={"/contact"} />
+            <FixedIcon src={`${process.env.REACT_APP_PUBLICURL}/Icons/Question.svg`} url={"/contact"} />
         </Wrapper>
     );
 };

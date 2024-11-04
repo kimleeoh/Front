@@ -252,7 +252,7 @@ const MyBoard = () => {
             {loading && <Spinner color="#434B60" size={32} />}
             {isEmpty ? (
                 <EmptyBox>
-                    <Icon src={`${process.env.PUBLICURL}/Icons/Alert_gray.svg`} />
+                    <Icon src={`${process.env.REACT_APP_PUBLICURL}/Icons/Alert_gray.svg`} />
                     <Content>
                         아직 작성한 글이 없어요! 글을 작성해 볼까요?
                     </Content>
