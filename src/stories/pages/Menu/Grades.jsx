@@ -28,17 +28,26 @@ const Grades = () => {
 
     const semesterOptions = ["1학기", "2학기"];
 
+    // 인덱스로부터 년도와 학기를 계산하는 함수
+    const getSemesterInfo = (index) => {
+        const year = Math.floor(index / 2) + 2018;
+        const semester = (index % 2) + 1;
+        return { year, semester };
+    };
+
     useEffect(() => {
-        // 백엔드 API 호출하여 데이터 가져오기
         const fetchGrades = async () => {
             try {
                 const response = await BaseAxios.get("/api/score");
                 const data = response.data;
                 console.log(response.data);
-                // filled가 true인 학기만 필터링
-                const filteredSemesters = response.data.semester_list.filter(
-                    (semester) => semester.filled
-                );
+                // filled가 true인 학기만 필터링하고, 인덱스 정보도 함께 저장
+                const filteredSemesters = response.data.semester_list
+                    .map((semester, index) => ({
+                        ...semester,
+                        originalIndex: index
+                    }))
+                    .filter((semester) => semester.filled);
                 setSemesters(filteredSemesters);
             } catch (error) {
                 console.error(
@@ -57,7 +66,7 @@ const Grades = () => {
 
     const handleAddSemester = () => {
         if (modalRef.current) {
-            modalRef.current.open(); // 모달 열기
+            modalRef.current.open();
         }
     };
 
@@ -68,46 +77,16 @@ const Grades = () => {
                 (selectedSemester === "2학기" ? 1 : 0);
 
             try {
-		    //const response = await fetch("/api/grades/add-semester", {
-                    //method: "POST",
-                    //headers: {
-                      //  "Content-Type": "application/json",
-                    //},
-                    //body: JSON.stringify({ semesterIndex: newSemesterIndex }),
-               // });
-                //if (response.ok) {
-                // const response = await fetch("/api/grades/add-semester", {
-                //     method: "POST",
-                //     headers: {
-                //         "Content-Type": "application/json",
-                //     },
-                //     body: JSON.stringify({ semesterIndex: newSemesterIndex }),
-                // });
-                // if (response.ok) {
-                    console.log(
-                        `새 학기 추가: ${selectedYear}년 ${selectedSemester}`
-                    );
-                    // 성공적으로 추가 후 학기 목록 다시 불러오기
-                  //  const updatedData = await response.json();
-                   // const filteredSemesters = updatedData.semester_list.filter(
-                   //     (semester) => semester.filled
-                   // );
-                    setSemesterIndex(newSemesterIndex);
-                //} else {
-                //    console.error("학기 추가 실패");
-                //}
-            // catch (error) {
-                  //  setSemesterIndex(newSemesterIndex);
-                //} 
-                //else {
-                //     console.error("학기 추가 실패");
-                 }
-             catch (error) {
+                console.log(
+                    `새 학기 추가: ${selectedYear}년 ${selectedSemester}`
+                );
+                setSemesterIndex(newSemesterIndex);
+            } catch (error) {
                 console.error("학기 추가 중 오류 발생", error);
             }
 
             if (modalRef.current) {
-                modalRef.current.close(); // 모달 닫기
+                modalRef.current.close();
             }
             setSelectedYear(null);
             setSelectedSemester(null);
@@ -122,32 +101,26 @@ const Grades = () => {
                 <Verify onClick={handleVerifyClick}>등록</Verify>
             </Header>
             <ContentWrapper maxWidth={windowSize}>
-                {semesters.map((semester, index) => (
-                    <div key={index} style={{width: "85%"}}>
-                        <BoardTitle text={`2024학년도 ${index + 1}학기`} />
-                        <SubjectWrapper maxWidth={windowSize}>
-                            <ScrollableSubjectList>
-                                {semester.subject_list.map((subject, idx) => (
-                                    <SubjectList
-                                        key={idx}
-                                        subject={subject}
-                                        disableLink={true}
-                                        rate={Grades[semester.grade_list[idx]]}
-                                    />
-                                ))}
-                            </ScrollableSubjectList>
-                        </SubjectWrapper>
-                    </div>
-                ))}
-                {/* <Button
-                    label={"+ 학기 추가하기"}
-                    color={"#ACB2BB"}
-                    backgroundColor={"#F1F2F4"}
-                    hoverColor={"#ACB2BB"}
-                    hoverBackgroundColor={"#E5E9F2"}
-                    style={{ marginTop: "20px" }}
-                    onClick={handleAddSemester}
-                /> */}
+                {semesters.map((semester) => {
+                    const { year, semester: semesterNum } = getSemesterInfo(semester.originalIndex);
+                    return (
+                        <div key={semester.originalIndex} style={{width: "85%"}}>
+                            <BoardTitle text={`${year}학년도 ${semesterNum}학기`} />
+                            <SubjectWrapper maxWidth={windowSize}>
+                                <ScrollableSubjectList>
+                                    {semester.subject_list.map((subject, idx) => (
+                                        <SubjectList
+                                            key={idx}
+                                            subject={subject}
+                                            disableLink={true}
+                                            rate={Grades[semester.grade_list[idx]]}
+                                        />
+                                    ))}
+                                </ScrollableSubjectList>
+                            </SubjectWrapper>
+                        </div>
+                    );
+                })}
             </ContentWrapper>
 
             <Modal
