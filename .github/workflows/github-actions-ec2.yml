@@ -13,7 +13,7 @@ jobs:
     steps:
       # 1. 레포지토리 체크아웃 및 작업 디렉토리 설정
       - name: Checkout the files
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3   # v3 버전으로 업그레이드
         with:
           path: Front  # 작업 디렉토리 설정
 
