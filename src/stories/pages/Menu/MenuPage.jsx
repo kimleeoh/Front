@@ -103,33 +103,33 @@ const MenuPage = () => {
                 <MenuList to="/grades" src={`${process.env.REACT_APP_PUBLICURL}/Icons/A+.svg`}>
                     내 성적
                 </MenuList>
-                <MenuList to="/points" src={`${process.env.REACT_APP_PUBLICURL}/icons/point.svg`}>
+                <MenuList to="/points" src={`${process.env.REACT_APP_PUBLICURL}/Icons/point.svg`}>
                     내 포인트
                 </MenuList>
-                <MenuList to="/purchased" src={`${process.env.REACT_APP_PUBLICURL}/icons/purchased.svg`}>
+                <MenuList to="/purchased" src={`${process.env.REACT_APP_PUBLICURL}/Icons/purchased.svg`}>
                     내 구입목록
                 </MenuList>
                 <Title> 게시물 </Title>
-                <MenuList to="/myboard" src={`${process.env.REACT_APP_PUBLICURL}/icons/pencil.svg`}>
+                <MenuList to="/myboard" src={`${process.env.REACT_APP_PUBLICURL}/Icons/pencil.svg`}>
                     내가 쓴 글
                 </MenuList>
-                <MenuList to="/bookmarks" src={`${process.env.REACT_APP_PUBLICURL}/icons/scrap.svg`}>
+                <MenuList to="/bookmarks" src={`${process.env.REACT_APP_PUBLICURL}/Icons/scrap.svg`}>
                     북마크한 글
                 </MenuList>
-                <MenuList to="/likes" src={`${process.env.REACT_APP_PUBLICURL}/icons/thumb.svg`}>
+                <MenuList to="/likes" src={`${process.env.REACT_APP_PUBLICURL}/Icons/thumb.svg`}>
                     좋아요한 글
                 </MenuList>
-                <MenuList to="/history" src={`${process.env.REACT_APP_PUBLICURL}/icons/recent.svg`}>
+                <MenuList to="/history" src={`${process.env.REACT_APP_PUBLICURL}/Icons/recent.svg`}>
                     최근 본 글
                 </MenuList>
                 <Title> 도움말 </Title>
-                <MenuList to="/notices" src={`${process.env.REACT_APP_PUBLICURL}/icons/notice.svg`}>
+                <MenuList to="/notices" src={`${process.env.REACT_APP_PUBLICURL}/Icons/notice.svg`}>
                     공지사항
                 </MenuList>
                 {/* 문의하기 버튼에 onClick 이벤트 추가 */}
                 <MenuList
                     onClick={handleContactClick}
-                    src={`${process.env.REACT_APP_PUBLICURL}/icons/speak.svg`}
+                    src={`${process.env.REACT_APP_PUBLICURL}/Icons/speak.svg`}
                 >
                     문의하기
                 </MenuList>
