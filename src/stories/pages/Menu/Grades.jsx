@@ -9,6 +9,7 @@ import useWindowSize from "../../components/Common/WindowSize";
 import Modal from "../../components/Common/Modal";
 import Picker from "../../components/Common/Picker";
 import BaseAxios from "../../../axioses/BaseAxios";
+import Popup from "../../components/Popup";
 
 const Grades = () => {
     const Grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "F"];
@@ -20,6 +21,39 @@ const Grades = () => {
     const [selectedSemester, setSelectedSemester] = useState(null);
     const [semesterIndex, setSemesterIndex] = useState(null);
     const modalRef = useRef(null);
+
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
+    const menuRef = useRef(null);
+
+    const handleTogglePopup = () => {
+        if (!isPopupOpen) {
+            const rect = menuRef.current.getBoundingClientRect();
+            const scrollTop =
+                window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft =
+                window.pageXOffset || document.documentElement.scrollLeft;
+
+            setPopupPosition({
+                top: rect.bottom + scrollTop,
+                left: rect.right - 195 + scrollLeft,
+            });
+        }
+        setIsPopupOpen(!isPopupOpen);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsPopupOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: currentYear - 2017 }, (_, i) =>
@@ -102,7 +136,21 @@ const Grades = () => {
             </Header>
             <ContentWrapper maxWidth={windowSize}>
                 <HeadLabel>
-                <HelpButton> <img src="/Icons/Help.svg" alt="help icon" /> </HelpButton>
+                <HelpButton ref={menuRef} onClick={handleTogglePopup}>
+                    <img src="/Icons/Help.svg" alt="help icon" style={{transform: "translateY(2px)"}} />
+                </HelpButton>
+
+                {isPopupOpen && (
+                <Popup
+                    title="Menu"
+                    position={popupPosition}
+                    onClose={() => setIsPopupOpen(false)}
+                >
+                    <Help>
+                    인증사진과 실제 입력하신 과목명, 성적, 전공여부가 맞는지 반드시 확인해주세요
+                    </Help>
+                </Popup>
+            )}
                 <img src="/Icons/check_border_e.svg" alt="check icon" /> 인증
                 <img src="/Icons/check_border_d.svg" alt="check icon" /> 미인증
                 </HeadLabel>
@@ -110,7 +158,14 @@ const Grades = () => {
                     const { year, semester: semesterNum } = getSemesterInfo(semester.originalIndex);
                     return (
                         <div key={semester.originalIndex} style={{width: "85%"}}>
-                            <BoardTitle text={`${year}학년도 ${semesterNum}학기`} />
+                            <div style={{display: 'flex'}}>
+                                <BoardTitle text={`${year}학년도 ${semesterNum}학기`} />
+                                <img 
+                                    src={semester.confirmed === 2 ? "/Icons/check_border_e.svg" : "/Icons/check_border_d.svg"} 
+                                    alt="check icon" 
+                                    style={{ marginLeft: "8px" }} 
+                                />
+                            </div>
                             <SubjectWrapper maxWidth={windowSize}>
                                 <ScrollableSubjectList>
                                     {semester.subject_list.map((subject, idx) => (
@@ -272,7 +327,8 @@ const HelpButton = styled.button`
         loading: lazy;
     }
 
-    &:hover {
+    &:active {
+        transform: scale(0.95);
         background: rgba(0, 0, 0, 0.1);
     }
 `;
@@ -283,4 +339,13 @@ const HeadLabel = styled.div`
     width: 100%;
     margin-bottom: 10px;
     gap: 10px;
+`;
+
+const Help = styled.div`
+    font-size: 14px;
+    border: none;
+    color: #434b60;
+    padding: 10px;
+    border-radius: 12px;
+    background: transparent;
 `;

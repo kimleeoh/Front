@@ -85,7 +85,7 @@ const MeatballMenu = ({
                 console.log("Delete item with ID:", _id);
 
                 // 삭제 후 콜백 함수 호출
-                onDelete(_id);
+                // onDelete(_id);
 
                 // 삭제 후 페이지 이동
                 navigate(`/${categories}`);
