@@ -19,6 +19,7 @@ const QuestionsDetail = ({
     like,
     img,
     limit,
+    point,
     mine,
     alread,
     onReportClick,
@@ -44,6 +45,7 @@ const QuestionsDetail = ({
         if (already.isScrapped) setIsSaved(true);
         if (already.isAlarm) setIsNotified(true);
         console.log("isLiked", isLiked);
+        console.log("point: ", point);
     }, [_id, already, isLiked, isSaved, isNotified]);
 
     const LIKE = Number(like);
@@ -126,6 +128,7 @@ const QuestionsDetail = ({
                             subject,
                             img,
                             limit,
+                            point,
                         })}
                     />
                 </TopBar>

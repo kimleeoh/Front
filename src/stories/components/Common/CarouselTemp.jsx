@@ -219,6 +219,7 @@ const SlideWrapper = styled.div`
 
 const SlideContainer = styled.div`
     display: flex;
+    align-items: center;
     transition: transform 0.3s ease-in-out;
     gap: ${(props) => props.gap || "0px"};
 `;

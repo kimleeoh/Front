@@ -72,20 +72,20 @@ const QnADetailPage = () => {
     const navigate = useNavigate();
     const { width: windowSize } = useWindowSize();
 
-    const handleEditNavigation = (
-        _id,
-        picked,
-        title,
-        content,
-        category,
-        imgList,
-        point,
-        limit
-    ) => {
-        navigate(`/qna/${_id}/edit`, {
-            state: { picked, title, content, category, imgList, point, limit },
-        });
-    };
+    // const handleEditNavigation = (
+    //     _id,
+    //     picked,
+    //     title,
+    //     content,
+    //     category,
+    //     imgList,
+    //     point,
+    //     limit
+    // ) => {
+    //     navigate(`/qna/${_id}/edit`, {
+    //         state: { picked, title, content, category, imgList, point, limit },
+    //     });
+    // };
 
     const handleReportClick = (questionId) => {
         setIsReportModalOpen(true);
@@ -158,6 +158,7 @@ const QnADetailPage = () => {
                     like={questionData.likes}
                     img={questionData.img_list}
                     limit={questionData.restricted_type}
+                    point={questionData.point}
                     alread={already}
                     mine={mine}
                     onReportClick={handleReportClick}

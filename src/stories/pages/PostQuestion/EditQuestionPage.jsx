@@ -15,17 +15,17 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 const EditQuestionPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { title, content, subject, img, limit } = location.state || {};
+    const { title, content, subject, img, limit, point } = location.state || {};
     const { _id } = useParams();
     const [formValues, setFormValues] = useState({
         title: title,
         board: subject,
         content: content,
         images: img,
-        point: 0,
+        point: point,
         limit: limit,
     });
-    const [isFocused, setIsFocused] = useState(false);
+    //const [isFocused, setIsFocused] = useState(false);
 
     const [showValidationMessages, setShowValidationMessages] = useState(false);
     // const [isPointInputDisabled, setIsPointInputDisabled] = useState(picked!==-1);
@@ -45,7 +45,7 @@ const EditQuestionPage = () => {
         console.log("title: ", title);
         console.log("subject: ", subject);
         console.log("img: ", img);
-        console.log("point: ", img);
+        console.log("point: ", point);
     }, []);
 
     const handleInputChange = (name, value) => {
@@ -62,9 +62,9 @@ const EditQuestionPage = () => {
         updatedFormValues.append("content", formValues.content);
         updatedFormValues.append("point", formValues.point);
         updatedFormValues.append("limit", formValues.limit);
-        formValues.images.forEach((image, index) => {
-            updatedFormValues.append("images", image);
-        });
+        // formValues.images.forEach((image, index) => {
+        //     updatedFormValues.append("images", image);
+        // });
 
         console.log("updatedFormValues: ", updatedFormValues);
 
@@ -73,7 +73,7 @@ const EditQuestionPage = () => {
             title.trim() !== "" &&
             board.length > 0 &&
             content.trim() !== "" &&
-            point.trim() !== "" &&
+            String(point).trim() !== "" &&
             Number(point) > 0 &&
             Number(point) <= 200;
 
@@ -176,12 +176,7 @@ const EditQuestionPage = () => {
                 isPostPage={true}
                 onChange={(value) => handleInputChange("content", value)}
             />
-            <ImageUploader
-                onChange={(value) => handleInputChange("images", value)}
-                forQ={true}
-                defaultFiles={img}
-                edit={true}
-            />
+            <ImageUploader forQ={true} defaultFiles={img} edit={true} />
             <PointInput
                 point={originPoint}
                 onChange={
@@ -190,7 +185,7 @@ const EditQuestionPage = () => {
                         : (value) => handleInputChange("point", value)
                 }
                 disabled={isPointInputDisabled}
-                value={100}
+                value={point}
             />
             <CheckerWrapper maxWidth={windowSize}>
                 <Checker

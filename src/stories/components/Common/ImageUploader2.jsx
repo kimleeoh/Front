@@ -62,6 +62,7 @@ const ImageUploader = ({
                     multiple
                     onChange={handleFileChange}
                     style={{ display: "none" }}
+                    disabled={edit}
                 />
             </UploadButton>
         </UploaderWrapper>

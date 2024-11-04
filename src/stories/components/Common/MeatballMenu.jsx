@@ -14,6 +14,7 @@ const MeatballMenu = ({
     subject,
     img,
     limit,
+    point,
 }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
@@ -63,6 +64,7 @@ const MeatballMenu = ({
                 subject,
                 img,
                 limit,
+                point,
             },
         });
         setIsPopupOpen(false);
