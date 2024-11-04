@@ -100,7 +100,7 @@ const MenuPage = () => {
             </Link>
 
             <Section maxWidth={windowSize}>
-                <MenuList to="/grades" src={`${process.env.REACT_APP_PUBLICURL}/icons/A+.svg`}>
+                <MenuList to="/grades" src={`${process.env.REACT_APP_PUBLICURL}/Icons/A+.svg`}>
                     내 성적
                 </MenuList>
                 <MenuList to="/points" src={`${process.env.REACT_APP_PUBLICURL}/icons/point.svg`}>
