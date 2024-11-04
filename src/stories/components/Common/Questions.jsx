@@ -218,7 +218,7 @@ const Questions = ({
                         {point && (
                             <Point>
                                 <img
-                                    src={`${process.env.REACT_APP_PUBLICURL}/Icons/point_white.svg`}
+                                    src={`${process.env.REACT_APP_PUBLICURL}/Point_white.svg`}
                                     width={"16px"}
                                 />{" "}
                                 + {point}
