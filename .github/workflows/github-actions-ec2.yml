@@ -25,7 +25,17 @@ jobs:
           chmod 600 ~/.ssh/deploy_key_Amazon
           ssh-keyscan -H ${{ secrets.HOST_DNS }} >> ~/.ssh/known_hosts
 
-      # 3. 캐시 클리어 후 빌드 작업
+      # 3. GitHub Actions 캐시 무효화
+      # 캐시 키를 고유하게 생성하여 매번 빌드가 새롭게 이루어지도록 설정
+      - name: Cache Node Modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # 4. 캐시 클리어 후 빌드 작업
       - name: Clean npm cache and Build project
         run: |
           cd Front
@@ -33,17 +43,17 @@ jobs:
           npm install
           CI=false npm run build  # CI 환경을 false로 설정하여 경고를 무시
 
-      # 4. 서버 배포 - 배포 작업은 `ssh-deploy`로
-      - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@main
+      # 5. rsync를 사용해 서버에 변경된 파일만 전송
+      - name: Deploy to Server using rsync
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}  # 호스트 이름 또는 IP 주소
           REMOTE_USER: ${{ secrets.USERNAME }}
-          TARGET: ${{ secrets.TARGET_DIR }}
+        run: |
+          rsync -avz -e "ssh -i ~/.ssh/deploy_key_Amazon" --delete Front/ ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }}:${{ secrets.TARGET_DIR }}/
 
-      # 5. 서버 재시작을 위한 SSH 명령 실행
-      - name: Restart server and apply new build
+      # 6. Nginx 캐시 무효화 및 서버 재시작을 위한 SSH 명령 실행
+      - name: Restart server and clear cache
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST_DNS }}  # 호스트 이름 또는 IP 주소
@@ -51,11 +61,16 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }} # SSH 키 사용
           
           script: |
-            cd Front
+            # 서버 디렉토리로 이동 및 Git 갱신
+            cd ${{ secrets.TARGET_DIR }}
             forever stopall || true  # 실행 중인 서버가 없을 경우에도 오류 무시
             sudo systemctl stop nginx
-            git pull origin server
+
+            # 필요 시 npm 설치 및 빌드
             npm install
             npm run build
+
+            # Nginx 캐시 비우기 및 서버 재시작
+            sudo rm -rf /var/cache/nginx/*
             forever start -c "node server.js" .
             sudo systemctl restart nginx
