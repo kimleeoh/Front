@@ -19,10 +19,12 @@ jobs:
 
       # 2. SSH 설정
       - name: Set up SSH
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key_Amazon
-          chmod 600 ~/.ssh/deploy_key_Amazon
+          echo "${EC2_SSH_KEY}" > ~/.ssh/deploy_key.pem
+          chmod 600 ~/.ssh/deploy_key.pem
           ssh-keyscan -H ${{ secrets.HOST_DNS }} >> ~/.ssh/known_hosts
 
       # 3. 캐시 클리어 후 빌드 작업
@@ -42,38 +44,42 @@ jobs:
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.TARGET_DIR }}
 
-      # 5. 서버 상태 확인 (로그 확인 및 프로세스 상태 점검)
-      - name: Check Server Status and Logs
+      # 5. 서버 상태 확인 및 문제 해결
+      - name: Check Server Status and Restart if Needed
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 현재 실행 중인 Node.js 서버 확인
-            echo "Checking running Node.js processes..."
+            # Node.js 서버 상태 확인
+            echo "Checking Node.js process status..."
             forever list
-            
-            # Nginx 에러 로그 출력 (최근 20줄)
-            echo "Fetching Nginx error log..."
-            sudo tail -n 20 /var/log/nginx/error.log
-            
-            # Node.js 로그 출력 (파일 위치 확인 필요)
-            echo "Fetching Node.js server log..."
-            sudo tail -n 20 /home/ubuntu/Front/server.log  # 실제 로그 경로에 맞춰 변경 필요
 
-      # 6. 서버 재시작 및 Nginx 캐시 무효화
-      - name: Restart server and apply new build
+            # 서버가 실행 중이지 않으면 다시 시작
+            if ! forever list | grep -q "RUNNING"; then
+              echo "Node.js server is not running. Starting server..."
+              cd ${{ secrets.TARGET_DIR }}
+              forever start server.js
+            fi
+
+            # Nginx 에러 로그 출력 (최근 20줄)
+            echo "Checking Nginx error log..."
+            sudo tail -n 20 /var/log/nginx/error.log
+
+            # Nginx 캐시 삭제 및 재시작
+            echo "Clearing Nginx cache and restarting Nginx..."
+            sudo rm -rf /var/cache/nginx/*
+            sudo systemctl restart nginx
+
+      # 6. Nginx 및 Node.js 재시작 최종 확인
+      - name: Final Check and Logs
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ${{ secrets.TARGET_DIR }}
-            forever stopall || true
-            sudo systemctl stop nginx
-            npm install
-            sudo rm -rf /var/cache/nginx/*
-            forever start -c "node server.js" .
-            sudo systemctl restart nginx
+            echo "Final verification of Node.js and Nginx..."
+            forever list
+            sudo tail -n 20 /var/log/nginx/error.log
