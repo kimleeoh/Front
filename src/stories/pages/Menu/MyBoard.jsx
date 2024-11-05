@@ -161,6 +161,7 @@ const MyBoard = () => {
                         return (
                             <Questions
                                 _id={question._id}
+                                point={question.point}
                                 title={question.title}
                                 content={question.content}
                                 subject={value}
