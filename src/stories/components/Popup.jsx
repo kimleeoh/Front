@@ -19,9 +19,9 @@ const dropdownAnimation = keyframes`
     }
 `;
 
-const Popup = ({ children, title, onClose, position }) => {
+const Popup = ({ children, title, onClose, position, width }) => {
     return (
-        <PopupWrapper style={{ top: position.top, left: position.left }}>
+        <PopupWrapper style={{ top: position.top, left: position.left }} width={width}>
             <Header>{title}</Header>
             <Content>{children}</Content>
         </PopupWrapper>
@@ -36,11 +36,12 @@ Popup.propTypes = {
         top: PropTypes.number.isRequired,
         left: PropTypes.number.isRequired,
     }).isRequired,
+    width: PropTypes.number,
 };
 
 const PopupWrapper = styled.div`
     position: absolute;
-    width: 195px;
+    width: ${(props) => props.width || 195}px;
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(8px);
     box-shadow: 6px 6px 8px 0px rgba(0, 0, 0, 0.25);

@@ -345,7 +345,7 @@ const ListItem = styled.li`
     border-radius: 8px;
 
     &:hover {
-        background-color: #e2e5e9;
+        background-color: rgba(226, 229, 233, 0.6);
     }
     &:active {
         transform: scale(0.98);
