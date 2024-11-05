@@ -42,7 +42,7 @@ const Header = forwardRef(
                     {backButton && (
                         <LeftContent>
                             <IconButton onClick={handleBackClick}>
-                                <img src={`${process.env.REACT_APP_PUBLICURL}/Icons/Icon_arrow.svg`} alt="Back" />
+                                <img src={"/Icons/Icon_arrow.svg"} alt="Back" />
                             </IconButton>
                         </LeftContent>
                     )}
@@ -58,7 +58,7 @@ const Header = forwardRef(
                     <RightContent ref={ref}>
                         {searchButton && !children && (
                             <IconButton onClick={handleSearchClick}>
-                                <img src={`${process.env.REACT_APP_PUBLICURL}/Icons/Search.svg`} alt="Search" />
+                                <img src={"/Icons/Search.svg"} alt="Search" />
                             </IconButton>
                         )}
                         {children}

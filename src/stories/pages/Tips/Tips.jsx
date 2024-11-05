@@ -134,12 +134,12 @@ const Tips = ({
                             }}
                         >
                             <div style={{ transform: "translateY(1px)" }}>
-                                <img src={`${process.env.REACT_APP_PUBLICURL}/Icons/Thumb_c.svg`} />
+                                <img src={"/Icons/Thumb_c.svg"} />
                             </div>{" "}
                             {likes}
                         </span>
                         <Point>
-                            <img src="/point_white.svg" width={"14px"} /> -{" "}
+                            <img src="/Point_white.svg" width={"14px"} /> -{" "}
                             {purchase_price}
                         </Point>
                     </MetaContainer>

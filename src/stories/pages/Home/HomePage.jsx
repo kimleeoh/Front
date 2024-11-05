@@ -127,7 +127,7 @@ const HomePage = () => {
                 </PointButton>
                 <NotificationButton onClick={() => navigate("/notification")}>
                     <img
-                        src={`${process.env.REACT_APP_PUBLICURL}/Icons/Bellnactive.svg`}
+                        src={"/Icons/Bellnactive.svg"}
                         alt="Notification"
                         loading="lazy"
                     />

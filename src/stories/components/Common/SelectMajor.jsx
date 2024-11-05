@@ -156,7 +156,7 @@ const SelectMajor = ({
                     ? placeholder
                     : categoryHistoryName.map((option) => option).join(" > ")}
                 <ArrowIcon isOpen={isOpen}>
-                    <img src={`${process.env.REACT_APP_PUBLICURL}/Icons/Arrow.svg`} alt="arrow" />
+                    <img src={"/Icons/Arrow.svg"} alt="arrow" />
                 </ArrowIcon>
             </DropdownHeader>
             {isOpen && (
@@ -181,7 +181,7 @@ const SelectMajor = ({
                                                 }}
                                             >
                                                 <img
-                                                    src={`${process.env.REACT_APP_PUBLICURL}/Icons/Arrow.svg`}
+                                                    src={"/Icons/Arrow.svg"}
                                                     alt="arrow"
                                                     width={"12px"}
                                                 />
