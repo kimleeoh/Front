@@ -21,7 +21,7 @@ const EditQuestionPage = () => {
         title: title,
         board: subject,
         content: content,
-        images: img,
+        img_list: img,
         point: point,
         limit: limit,
     });
@@ -173,7 +173,12 @@ const EditQuestionPage = () => {
                 isPostPage={true}
                 onChange={(value) => handleInputChange("content", value)}
             />
-            <ImageUploader forQ={true} defaultFiles={img} edit={true} />
+            <ImageUploader
+                forQ={true}
+                defaultFiles={img}
+                edit={true}
+                onChange={(value) => handleInputChange("img_list", value)}
+            />
             <PointInput
                 point={originPoint}
                 onChange={
