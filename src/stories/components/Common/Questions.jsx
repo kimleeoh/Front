@@ -148,7 +148,7 @@ const Questions = ({
             <StyledLink to={`/qna/${_id}`}>
                 <Wrapper>
                     <ContentWrapper>
-                        <TextWrapper hasImage={img!=null}>
+                        <TextWrapper hasImage={img != null}>
                             <Title>{title}</Title>
                             <MetaContainer>
                                 <span
@@ -214,8 +214,8 @@ const Questions = ({
                             {like}
                         </span>
                         {point&&(<Point>
-                            <img src="/Point_white.svg" width={"16px"} /> +{" "}
-                            {point}
+                            <img src="/Point_white.svg" width={"16px"} /> {" "}
+                            +{point}
                         </Point>)}
                     </MetaContainer>
                 </Wrapper>

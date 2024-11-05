@@ -74,7 +74,7 @@ const Tips = ({
             <StyledLink onClick={handleClick}>
                 <Wrapper>
                     <ContentWrapper>
-                        <TextWrapper hasImage={preview_img!=""}>
+                        <TextWrapper hasImage={preview_img != ""}>
                             <Title>{title}</Title>
                             <MetaContainer>
                                 <span
@@ -139,8 +139,8 @@ const Tips = ({
                             {likes}
                         </span>
                         <Point>
-                            <img src="/Point_white.svg" width={"14px"} /> -{" "}
-                            {purchase_price}
+                            <img src="/Point_white.svg" width={"14px"} /> {" "}
+                            - {purchase_price}
                         </Point>
                     </MetaContainer>
                 </Wrapper>
