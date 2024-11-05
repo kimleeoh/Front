@@ -82,7 +82,7 @@ const UploaderWrapper = styled.div`
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     border: 1px solid #acb2bb;
     border-radius: 16px;
-    padding: 0 20px;
+    padding: 10px 20px;
     font-size: 14px;
     flex-wrap: wrap;
     box-sizing: border-box;
@@ -112,12 +112,14 @@ const PlaceholderText = styled.div`
 const FileName = styled.p`
     color: #acb2bb;
     font-size: 14px;
+    margin: 0;
 `;
 
 const FileListWrapper = styled.div`
     display: flex;
     flex: 1;
     overflow-x: auto;
+    white-space: nowrap;
     margin-right: 10px;
     align-items: center;
 `;

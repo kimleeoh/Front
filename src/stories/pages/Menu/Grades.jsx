@@ -79,7 +79,7 @@ const Grades = () => {
                 const filteredSemesters = response.data.semester_list
                     .map((semester, index) => ({
                         ...semester,
-                        originalIndex: index
+                        originalIndex: index,
                     }))
                     .filter((semester) => semester.filled);
                 setSemesters(filteredSemesters);
@@ -136,48 +136,75 @@ const Grades = () => {
             </Header>
             <ContentWrapper maxWidth={windowSize}>
                 <HeadLabel>
-                <HeadBox>
-                    <img src="/Icons/check_border_e.svg" alt="check icon" /> 인증
-                    <img src="/Icons/check_border_d.svg" alt="check icon" /> 미인증
-                </HeadBox>
-                <HelpButton ref={menuRef} onClick={handleTogglePopup}>
-                    <img src="/Icons/Help.svg" alt="help icon" style={{transform: "translateY(2px)"}} />
-                </HelpButton>
+                    <HeadBox>
+                        <img src="/Icons/check_border_e.svg" alt="check icon" />{" "}
+                        인증
+                        <img
+                            src="/Icons/check_border_d.svg"
+                            alt="check icon"
+                        />{" "}
+                        미인증
+                    </HeadBox>
+                    <HelpButton ref={menuRef} onClick={handleTogglePopup}>
+                        <img
+                            src="/Icons/Help.svg"
+                            alt="help icon"
+                            style={{ transform: "translateY(2px)" }}
+                        />
+                    </HelpButton>
 
-                {isPopupOpen && (
-                    <Popup
-                        title="도움말"
-                        position={popupPosition}
-                        onClose={() => setIsPopupOpen(false)}
-                    >
-                        <Help>
-                        인증사진과 실제 입력하신 과목명, 성적, 전공여부가 맞는지 반드시 확인해주세요
-                        </Help>
-                    </Popup>
-                )}
+                    {isPopupOpen && (
+                        <Popup
+                            title="도움말"
+                            position={popupPosition}
+                            onClose={() => setIsPopupOpen(false)}
+                        >
+                            <Help>
+                                인증사진과 실제 입력하신 과목명, 성적,
+                                전공여부가 맞는지 반드시 확인해주세요
+                            </Help>
+                        </Popup>
+                    )}
                 </HeadLabel>
                 {semesters.map((semester) => {
-                    const { year, semester: semesterNum } = getSemesterInfo(semester.originalIndex);
+                    const { year, semester: semesterNum } = getSemesterInfo(
+                        semester.originalIndex
+                    );
                     return (
-                        <div key={semester.originalIndex} style={{width: "85%"}}>
-                            <div style={{display: 'flex'}}>
-                                <BoardTitle text={`${year}학년도 ${semesterNum}학기`} />
-                                <img 
-                                    src={semester.confirmed === 2 ? "/Icons/check_border_e.svg" : "/Icons/check_border_d.svg"} 
-                                    alt="check icon" 
-                                    style={{ marginLeft: "8px" }} 
+                        <div
+                            key={semester.originalIndex}
+                            style={{ width: "85%" }}
+                        >
+                            <div style={{ display: "flex" }}>
+                                <BoardTitle
+                                    text={`${year}학년도 ${semesterNum}학기`}
+                                />
+                                <img
+                                    src={
+                                        semester.confirmed === 2
+                                            ? "/Icons/check_border_e.svg"
+                                            : "/Icons/check_border_d.svg"
+                                    }
+                                    alt="check icon"
+                                    style={{ marginLeft: "8px" }}
                                 />
                             </div>
                             <SubjectWrapper maxWidth={windowSize}>
                                 <ScrollableSubjectList>
-                                    {semester.subject_list.map((subject, idx) => (
-                                        <SubjectList
-                                            key={idx}
-                                            subject={subject}
-                                            disableLink={true}
-                                            rate={Grades[semester.grade_list[idx]]}
-                                        />
-                                    ))}
+                                    {semester.subject_list.map(
+                                        (subject, idx) => (
+                                            <SubjectList
+                                                key={idx}
+                                                subject={subject}
+                                                disableLink={true}
+                                                rate={
+                                                    Grades[
+                                                        semester.grade_list[idx]
+                                                    ]
+                                                }
+                                            />
+                                        )
+                                    )}
                                 </ScrollableSubjectList>
                             </SubjectWrapper>
                         </div>
