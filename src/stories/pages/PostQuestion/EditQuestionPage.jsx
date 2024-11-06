@@ -212,7 +212,7 @@ const EditQuestionPage = () => {
                 </Condition>
             )}
             <Button
-                label={"저장하기"}
+                label={"수정하기"}
                 style={{ marginTop: "15px" }}
                 onClick={handleFormSubmit}
             />
