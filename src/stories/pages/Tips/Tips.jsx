@@ -143,8 +143,8 @@ const Tips = ({
                             {likes}
                         </span>
                         <Point>
-                            <img src="/Point_white.svg" width={"14px"} /> {" "}
-                            - {purchase_price}
+                            <img src="/Point_white.svg" width={"14px"} /> -{" "}
+                            {purchase_price}
                         </Point>
                     </MetaContainer>
                 </Wrapper>

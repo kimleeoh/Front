@@ -266,7 +266,7 @@ const MyPageEdit = () => {
                                 }}
                             >
                                 <img
-                                    src={/Icons/Bookmark_c.svg}
+                                    src={"/Icons/Bookmark_c.svg"}
                                     alt="스크랩"
                                     width="20px"
                                     height="28px"
@@ -299,7 +299,7 @@ const MyPageEdit = () => {
                                 }}
                             >
                                 <img
-                                    src={/Icons/Crown_c.svg}
+                                    src={"/Icons/Crown_c.svg"}
                                     alt="꿀팁"
                                     width="40px"
                                     height="40px"
@@ -332,7 +332,7 @@ const MyPageEdit = () => {
                                 }}
                             >
                                 <img
-                                    src={/Icons/Global_c.svg}
+                                    src={"/Icons/Global_c.svg"}
                                     alt="답변"
                                     width="28px"
                                     height="28px"

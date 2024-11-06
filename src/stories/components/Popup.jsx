@@ -21,7 +21,10 @@ const dropdownAnimation = keyframes`
 
 const Popup = ({ children, title, onClose, position, width }) => {
     return (
-        <PopupWrapper style={{ top: position.top, left: position.left }} width={width}>
+        <PopupWrapper
+            style={{ top: position.top, left: position.left }}
+            width={width}
+        >
             <Header>{title}</Header>
             <Content>{children}</Content>
         </PopupWrapper>

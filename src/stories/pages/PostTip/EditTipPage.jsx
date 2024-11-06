@@ -17,7 +17,8 @@ const EditTipPage = () => {
     const { _id, categories } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
-    const { title, content, board, img, type, purchase_price, target } = location.state || {};
+    const { title, content, board, img, type, purchase_price, target } =
+        location.state || {};
     const [formValues, setFormValues] = useState({
         title: "",
         board: [],

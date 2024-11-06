@@ -156,7 +156,7 @@ const GradeRegister = () => {
     };
 
     const handleDeleteSubject = (index) => {
-        setSubjects((prevSubjects) => 
+        setSubjects((prevSubjects) =>
             prevSubjects.filter((_, i) => i !== index)
         );
         setSubjectList((prevSubjectList) =>
@@ -196,7 +196,6 @@ const GradeRegister = () => {
             </TermPickerWrapper>
             {selectedYear && selectedTerm ? (
                 <>
-                    
                     <SubjectWrapper maxWidth={windowSize}>
                         <SubjectItem>
                             <SubjectName>과목명</SubjectName>
@@ -234,7 +233,11 @@ const GradeRegister = () => {
                                         }
                                         type={"box"}
                                     />
-                                    <DeleteButton onClick={() => handleDeleteSubject(index)}>
+                                    <DeleteButton
+                                        onClick={() =>
+                                            handleDeleteSubject(index)
+                                        }
+                                    >
                                         ×
                                     </DeleteButton>
                                 </div>
@@ -391,14 +394,13 @@ const DeleteButton = styled.button`
     transition: all 0.3s ease;
     cursor: pointer;
     font-size: 28px;
-    color: #ACB2BB;
+    color: #acb2bb;
     margin-top: 5px;
 
     &:hover {
         background: rgba(0, 0, 0, 0.1);
-}
+    }
     &:active {
         transform: scale(0.9);
     }
-
-`
+`;

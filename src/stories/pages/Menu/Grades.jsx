@@ -79,7 +79,7 @@ const Grades = () => {
                 const filteredSemesters = response.data.semester_list
                     .map((semester, index) => ({
                         ...semester,
-                        originalIndex: index
+                        originalIndex: index,
                     }))
                     .filter((semester) => semester.filled);
                 setSemesters(filteredSemesters);
@@ -137,10 +137,17 @@ const Grades = () => {
             <ContentWrapper maxWidth={windowSize}>
                 <HeadLabel>
                     <HeadBox>
-                        <img src="/Icons/check_border_e.svg" alt="check icon" width={'22px'}/>{" "}
+                        <img
+                            src="/Icons/check_border_e.svg"
+                            alt="check icon"
+                            width={"22px"}
+                        />{" "}
                         인증
                         <img
-                            src="/Icons/check_border_d.svg" alt="check icon" width={'22px'}/>{" "}
+                            src="/Icons/check_border_d.svg"
+                            alt="check icon"
+                            width={"22px"}
+                        />{" "}
                         미인증
                     </HeadBox>
                     <HelpButton ref={menuRef} onClick={handleTogglePopup}>

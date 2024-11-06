@@ -57,7 +57,7 @@ const MeatballMenu = ({
 
     const handleEdit = () => {
         // 수정 로직 구현
-        if (categories === 'qna'){
+        if (categories === "qna") {
             const editPath = `/${categories}/${_id}/edit`;
             navigate(editPath, {
                 state: {
@@ -69,8 +69,7 @@ const MeatballMenu = ({
                     point,
                 },
             });
-        }
-        else {
+        } else {
             const editPath = `/${categories}/${category_type}/${_id}/edit`;
             navigate(editPath, {
                 state: {

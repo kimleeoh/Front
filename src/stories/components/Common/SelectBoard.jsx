@@ -219,7 +219,7 @@ const SelectBoard = ({ startId, placeholder, onChange, disabled }) => {
                                                     }}
                                                 >
                                                     <img
-                                                        src={/Icons/Arrow.svg}
+                                                        src={"/Icons/Arrow.svg"}
                                                         alt="arrow"
                                                         width={"12px"}
                                                     />
