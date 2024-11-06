@@ -37,10 +37,7 @@ const Picker = ({ items, selectedItem, onChange, placeholder, width }) => {
             <PickerButton onClick={toggleDropdown}>
                 {selectedItem || placeholder || "Select an item"}
                 <ArrowIcon isOpen={isOpen}>
-                    <img
-                        src={`${process.env.PUBLICURL}/Icons/Arrow.svg`}
-                        alt="arrow"
-                    />
+                    <img src={"/Icons/Arrow.svg"} alt="arrow" />
                 </ArrowIcon>
             </PickerButton>
             {isOpen && (

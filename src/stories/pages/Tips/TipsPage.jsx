@@ -168,9 +168,7 @@ const TipsPage = () => {
             {loading && <Spinner color="#434B60" size={32} />}
             {isEmpty && (
                 <EmptyBox>
-                    <Icon
-                        src={`${process.env.PUBLICURL}/Icons/Alert_gray.svg`}
-                    />
+                    <Icon src={"/Icons/Alert_gray.svg"} />
                     <Content>
                         {message == "uniqueSubjectIds is null or empty"
                             ? "board에서 관심있는 과목을 담고 그에 대한 글들을 받아보세요!"
@@ -178,10 +176,7 @@ const TipsPage = () => {
                     </Content>
                 </EmptyBox>
             )}
-            <FixedIcon
-                src={`${process.env.PUBLICURL}/Icons/Pen.svg`}
-                url={"/tips/post"}
-            />
+            <FixedIcon src={"/Icons/Pen.svg"} url={"/tips/post"} />
             <FixedBottomContainer>
                 <NavBar state="Tips" />
             </FixedBottomContainer>

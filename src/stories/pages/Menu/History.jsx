@@ -98,9 +98,7 @@ const History = () => {
             ))}
             {isEmpty ? (
                 <EmptyBox>
-                    <Icon
-                        src={`${process.env.PUBLICURL}/Icons/Alert_gray.svg`}
-                    />
+                    <Icon src={"/Icons/Alert_gray.svg"} />
                     <Content>아직 본 글이 없어요!</Content>
                 </EmptyBox>
             ) : (

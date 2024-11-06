@@ -79,7 +79,7 @@ const Grades = () => {
                 const filteredSemesters = response.data.semester_list
                     .map((semester, index) => ({
                         ...semester,
-                        originalIndex: index,
+                        originalIndex: index
                     }))
                     .filter((semester) => semester.filled);
                 setSemesters(filteredSemesters);

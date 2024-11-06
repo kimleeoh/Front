@@ -64,11 +64,9 @@ const Answers = ({
                 >
                     <SubWrapper>
                         <Title>
-                            <img src={`${process.env.PUBLICURL}/Icons/A.svg`} />
+                            <img src={"/Icons/A.svg"} />
                         </Title>
-                        <img
-                            src={`${process.env.PUBLICURL}/Icons/Profile.svg`}
-                        />
+                        <img src={"/Icons/Profile.svg"} />
                         <ProfileContainer>
                             <LevelGrade>
                                 Lv. {level} |{" "}

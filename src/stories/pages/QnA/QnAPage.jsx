@@ -177,9 +177,7 @@ const QnAPage = () => {
             {error && <ErrorMessage>{error}</ErrorMessage>}
             {!loading && isEmpty && (
                 <EmptyBox>
-                    <Icon
-                        src={`${process.env.PUBLIC_URL}/Icons/Alert_gray.svg`}
-                    />
+                    <Icon src={"/Icons/Alert_gray.svg"} />
                     <Content>
                         {message == "uniquecategory is null"
                             ? "board에서 관심있는 과목을 담고 그에 대한 글들을 받아보세요!"
@@ -187,10 +185,7 @@ const QnAPage = () => {
                     </Content>
                 </EmptyBox>
             )}
-            <FixedIcon
-                src={`${process.env.PUBLICURL}/Icons/Question.svg`}
-                url={"/qna/post"}
-            />
+            <FixedIcon src={"/Icons/Question.svg"} url={"/qna/post"} />
             <FixedBottomContainer>
                 <NavBar state="QnA" />
             </FixedBottomContainer>

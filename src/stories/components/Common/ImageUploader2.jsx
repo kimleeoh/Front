@@ -52,10 +52,7 @@ const ImageUploader = ({
                 )}
             </FileListWrapper>
             <UploadButton>
-                <img
-                    src={`${process.env.PUBLICURL}/Icons/Plus.svg`}
-                    alt="Add"
-                />
+                <img src={"/Icons/Plus.svg"} alt="Add" />
                 <input
                     type="file"
                     accept="image/*,application/pdf,application/zip"

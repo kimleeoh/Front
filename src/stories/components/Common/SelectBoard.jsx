@@ -190,10 +190,7 @@ const SelectBoard = ({ startId, placeholder, onChange, disabled }) => {
                               .map((option) => option)
                               .join(" > ")}
                     <ArrowIcon isOpen={isOpen}>
-                        <img
-                            src={`${process.env.PUBLICURL}/Icons/Arrow.svg`}
-                            alt="arrow"
-                        />
+                        <img src={"/Icons/Arrow.svg"} alt="arrow" />
                     </ArrowIcon>
                 </DropdownHeader>
                 {isOpen && (
@@ -222,7 +219,7 @@ const SelectBoard = ({ startId, placeholder, onChange, disabled }) => {
                                                     }}
                                                 >
                                                     <img
-                                                        src={`${process.env.PUBLICURL}/Icons/Arrow.svg`}
+                                                        src={/Icons/Arrow.svg}
                                                         alt="arrow"
                                                         width={"12px"}
                                                     />

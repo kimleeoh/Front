@@ -40,7 +40,7 @@ const ImageDownloadList = ({ images }) => {
                 <FileName>{getFileNames()}</FileName>
                 <DownloadLink onClick={handleDownloadClick}>
                     <img
-                        src={`${process.env.PUBLIC_URL}/Icons/Download.svg`}
+                        src={"/Icons/Download.svg"}
                         alt="Download icon"
                     />
                 </DownloadLink>

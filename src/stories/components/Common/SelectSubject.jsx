@@ -138,7 +138,7 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
                               {option.label}
                               <span style={{ transform: "rotate(270deg)" }}>
                                   <img
-                                      src={`${process.env.PUBLICURL}/Icons/Arrow.svg`}
+                                      src={"/Icons/Arrow.svg"}
                                       alt="arrow"
                                       width={"12px"}
                                   />
