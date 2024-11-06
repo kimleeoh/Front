@@ -137,12 +137,10 @@ const Grades = () => {
             <ContentWrapper maxWidth={windowSize}>
                 <HeadLabel>
                     <HeadBox>
-                        <img src="/Icons/check_border_e.svg" alt="check icon" />{" "}
+                        <img src="/Icons/check_border_e.svg" alt="check icon" width={'22px'}/>{" "}
                         인증
                         <img
-                            src="/Icons/check_border_d.svg"
-                            alt="check icon"
-                        />{" "}
+                            src="/Icons/check_border_d.svg" alt="check icon" width={'22px'}/>{" "}
                         미인증
                     </HeadBox>
                     <HelpButton ref={menuRef} onClick={handleTogglePopup}>
@@ -158,10 +156,11 @@ const Grades = () => {
                             title="도움말"
                             position={popupPosition}
                             onClose={() => setIsPopupOpen(false)}
+                            width={185}
                         >
                             <Help>
                                 인증사진과 실제 입력하신 과목명, 성적,
-                                전공여부가 맞는지 반드시 확인해주세요
+                                전공여부가 맞는지 확인해주세요
                             </Help>
                         </Popup>
                     )}
@@ -374,6 +373,7 @@ const HeadBox = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
+    font-size: 16px;
     gap: 10px;
 `;
 
