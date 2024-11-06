@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Header from "../../components/Header";
 import TextInput from "../../components/Common/TextInput";
 import TextArea from "../../components/Common/TextArea";
@@ -16,6 +16,8 @@ import TargetInput from "../PostQuestion/TargetInput";
 const EditTipPage = () => {
     const { _id, categories } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
+    const { title, content, board, img, type, purchase_price, target } = location.state || {};
     const [formValues, setFormValues] = useState({
         title: "",
         board: [],
@@ -133,15 +135,16 @@ const EditTipPage = () => {
                 height={"30px"}
                 fontSize={"15px"}
                 placeholder={"제목 입력"}
-                value={formValues.title}
+                value={title}
                 onChange={(value) => handleInputChange("title", value)}
             />
             <SelectBoard
-                value={formValues.board}
+                placeholder={board}
+                disabled={true}
                 onChange={(value) => handleInputChange("board", value)}
             />
             <ChipFilter
-                value={formValues.type}
+                value={type}
                 onFilterChange={handleChipFilterChange}
                 postOnly={true}
             />
@@ -152,20 +155,20 @@ const EditTipPage = () => {
                     "답변 시 타인에 대한 비방 및 허위 사실 유포에 대한 책임은 답변자에게 있습니다. \n\n서비스 운영 정책에 따라주세요."
                 }
                 isPostPage={true}
-                value={formValues.content}
+                value={content}
                 onChange={(value) => handleInputChange("content", value)}
             />
             <ImageUploader
-                initialImages={formValues.images}
+                initialImages={img}
                 onChange={(value) => handleInputChange("images", value)}
             />
             <PointInput
-                value={formValues.purchase_price}
+                value={purchase_price}
                 onChange={(value) => handleInputChange("purchase_price", value)}
                 placeholder={"판매할 가격을 입력해 주세요. (0~200p)"}
             />
             <TargetInput
-                value={formValues.target}
+                value={target}
                 onChange={(value) => handleInputChange("target", value)}
             />
             <Button

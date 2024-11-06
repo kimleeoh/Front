@@ -15,6 +15,10 @@ const MeatballMenu = ({
     img,
     limit,
     point,
+    board,
+    type,
+    purchase_price,
+    target,
     onDelete,
 }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -53,21 +57,33 @@ const MeatballMenu = ({
 
     const handleEdit = () => {
         // 수정 로직 구현
-        const editPath =
-            categories === "qna"
-                ? `/${categories}/${_id}/edit`
-                : `/${categories}/${category_type}/${_id}/edit`;
-
-        navigate(editPath, {
-            state: {
-                title,
-                content,
-                subject,
-                img,
-                limit,
-                point,
-            },
-        });
+        if (categories === 'qna'){
+            const editPath = `/${categories}/${_id}/edit`;
+            navigate(editPath, {
+                state: {
+                    title,
+                    content,
+                    subject,
+                    img,
+                    limit,
+                    point,
+                },
+            });
+        }
+        else {
+            const editPath = `/${categories}/${category_type}/${_id}/edit`;
+            navigate(editPath, {
+                state: {
+                    title,
+                    board,
+                    content,
+                    img,
+                    type,
+                    purchase_price,
+                    target,
+                },
+            });
+        }
         setIsPopupOpen(false);
     };
 

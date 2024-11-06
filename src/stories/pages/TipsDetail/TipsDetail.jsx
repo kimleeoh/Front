@@ -16,6 +16,8 @@ const TipsDetail = ({
     category_name,
     category_type,
     content,
+    purchase_price,
+    target,
     likes,
     views,
     file_links,
@@ -84,7 +86,12 @@ const TipsDetail = ({
                         _id={_id}
                         onReportClick={() => onReportClick(_id)}
                         categories="tips"
-                        category_type={category_type}
+                        type={category_type}
+                        board={category_name}
+                        title={title}
+                        content={content}
+                        purchase_price={purchase_price}
+                        target={target}
                         mine={mine}
                     />
                 </TopBar>

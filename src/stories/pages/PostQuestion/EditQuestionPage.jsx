@@ -157,6 +157,7 @@ const EditQuestionPage = () => {
             <TextInput
                 height={"30px"}
                 fontSize={"15px"}
+                placeholder={"제목 입력"}
                 value={title}
                 marginTop={"0"}
                 onChange={(value) => handleInputChange("title", value)}
