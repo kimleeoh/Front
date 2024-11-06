@@ -86,7 +86,7 @@ const TipsDetail = ({
                         _id={_id}
                         onReportClick={() => onReportClick(_id)}
                         categories="tips"
-                        type={category_type}
+                        category_type={category_type}
                         board={category_name}
                         title={title}
                         content={content}
