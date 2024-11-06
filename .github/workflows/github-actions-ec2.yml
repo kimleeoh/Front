@@ -60,7 +60,7 @@ jobs:
             if ! forever list | grep -q "RUNNING"; then
               echo "Node.js server is not running. Starting server..."
               cd ${{ secrets.TARGET_DIR }}
-              forever start index.js
+              forever start server.js
             fi
 
             # Nginx 에러 로그 출력 (최근 20줄)
