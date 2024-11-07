@@ -6,8 +6,6 @@ import Button from "../../components/Button";
 import BoardTitle from "../../components/Common/BoardTitle";
 import SubjectList from "../../components/Common/SubjectList";
 import useWindowSize from "../../components/Common/WindowSize";
-import Modal from "../../components/Common/Modal";
-import Picker from "../../components/Common/Picker";
 import BaseAxios from "../../../axioses/BaseAxios";
 import Popup from "../../components/Popup";
 
@@ -16,11 +14,7 @@ const Grades = () => {
     const navigate = useNavigate();
     const [semesters, setSemesters] = useState([]);
     const { width: windowSize } = useWindowSize();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedYear, setSelectedYear] = useState(null);
-    const [selectedSemester, setSelectedSemester] = useState(null);
     const [semesterIndex, setSemesterIndex] = useState(null);
-    const modalRef = useRef(null);
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
@@ -60,8 +54,6 @@ const Grades = () => {
         (2018 + i).toString()
     ).reverse();
 
-    const semesterOptions = ["1학기", "2학기"];
-
     // 인덱스로부터 년도와 학기를 계산하는 함수
     const getSemesterInfo = (index) => {
         const year = Math.floor(index / 2) + 2018;
@@ -96,37 +88,6 @@ const Grades = () => {
 
     const handleVerifyClick = () => {
         navigate("/grades/register");
-    };
-
-    const handleAddSemester = () => {
-        if (modalRef.current) {
-            modalRef.current.open();
-        }
-    };
-
-    const handleConfirmAddSemester = async () => {
-        if (selectedYear && selectedSemester) {
-            const newSemesterIndex =
-                (selectedYear - 2018) * 2 +
-                (selectedSemester === "2학기" ? 1 : 0);
-
-            try {
-                console.log(
-                    `새 학기 추가: ${selectedYear}년 ${selectedSemester}`
-                );
-                setSemesterIndex(newSemesterIndex);
-            } catch (error) {
-                console.error("학기 추가 중 오류 발생", error);
-            }
-
-            if (modalRef.current) {
-                modalRef.current.close();
-            }
-            setSelectedYear(null);
-            setSelectedSemester(null);
-        } else {
-            alert("연도와 학기를 모두 선택해주세요.");
-        }
     };
 
     return (
@@ -172,7 +133,13 @@ const Grades = () => {
                         </Popup>
                     )}
                 </HeadLabel>
-                {semesters.map((semester) => {
+                {semesters.length === 0 ? (
+                    <>
+                    <img src={"/Icons/Alert_gray.svg"} width={'70px'}/>
+                    <Content>성적을 등록하고 더 많은 혜택을 누려보세요.</Content>
+                    </>
+                ) : (
+                semesters.map((semester) => {
                     const { year, semester: semesterNum } = getSemesterInfo(
                         semester.originalIndex
                     );
@@ -193,6 +160,7 @@ const Grades = () => {
                                     }
                                     alt="check icon"
                                     style={{ marginLeft: "8px" }}
+                                    width={"22px"}
                                 />
                             </div>
                             <SubjectWrapper maxWidth={windowSize}>
@@ -215,41 +183,9 @@ const Grades = () => {
                             </SubjectWrapper>
                         </div>
                     );
-                })}
+                })
+            )}
             </ContentWrapper>
-
-            <Modal
-                ref={modalRef}
-                width="300px"
-                height="auto"
-                isOpen={isModalOpen}
-            >
-                <ModalContent>
-                    <h3>학기 추가</h3>
-                    <PickerWrapper>
-                        <Picker
-                            items={years}
-                            selectedItem={selectedYear}
-                            onChange={setSelectedYear}
-                            placeholder="연도 선택"
-                            width="105px"
-                        />
-                        <Picker
-                            items={semesterOptions}
-                            selectedItem={selectedSemester}
-                            onChange={setSelectedSemester}
-                            placeholder="학기 선택"
-                            width="105px"
-                        />
-                    </PickerWrapper>
-                    <ModalButtonWrapper>
-                        <Button
-                            onClick={handleConfirmAddSemester}
-                            label="추가"
-                        />
-                    </ModalButtonWrapper>
-                </ModalContent>
-            </Modal>
         </Wrapper>
     );
 };
@@ -322,29 +258,6 @@ const Verify = styled.button`
     text-align: center;
 `;
 
-const ModalContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-`;
-
-const PickerWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 20px;
-    gap: 10px;
-`;
-
-const ModalButtonWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 20px;
-    gap: 10px;
-`;
-
 const HelpButton = styled.button`
     background: none;
     border: none;
@@ -391,4 +304,17 @@ const Help = styled.div`
     padding: 10px;
     border-radius: 12px;
     background: transparent;
+`;
+
+const Content = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align-center;
+    box-sizing: border-box;
+    font-size: 15px;
+    font-weight: regular;
+    padding: 15px;
+    margin-top: 10px;
+    color: #acb2bb;
 `;
