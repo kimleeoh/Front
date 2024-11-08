@@ -31,11 +31,11 @@ jobs:
       - name: Clean npm cache and Build project
         run: |
           cd Front
+          npm cache clean --force
+          npm install
           forever stopall
           git pull origin server
           rm -r .github
-          npm cache clean --force
-          npm install
           CI=false npm run build  # CI 환경을 false로 설정하여 경고를 무시
 
       # 5. 서버 상태 확인 및 문제 해결
