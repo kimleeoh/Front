@@ -20,7 +20,7 @@ import { UserContext } from "../../context/UserContext";
 const MenuPage = () => {
     const modalRef = useRef();
     const navigate = useNavigate();
-    const { userData, fetchUserData, setUserData ,isLoading, error } =
+    const { userData, fetchUserData, setUserData, isLoading, error } =
         useContext(UserContext);
 
     useEffect(() => {
@@ -32,7 +32,7 @@ const MenuPage = () => {
     const { name, profile_Img } = useMemo(
         () => ({
             name: userData?.name || "Guest",
-            profile_Img: userData?.profile_Img || '/Profile.svg'
+            profile_Img: userData?.profile_Img || "/Profile.svg",
         }),
         [userData]
     );
@@ -127,10 +127,7 @@ const MenuPage = () => {
                     공지사항
                 </MenuList>
                 {/* 문의하기 버튼에 onClick 이벤트 추가 */}
-                <MenuList
-                    onClick={handleContactClick}
-                    src={"/Icons/speak.svg"}
-                >
+                <MenuList onClick={handleContactClick} src={"/Icons/speak.svg"}>
                     문의하기
                 </MenuList>
                 <Title> 기타 </Title>

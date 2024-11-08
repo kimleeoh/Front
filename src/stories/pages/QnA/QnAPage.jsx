@@ -23,6 +23,14 @@ const QnAPage = () => {
     const observer = useRef();
     const { width: windowSize } = useWindowSize();
 
+    // 삭제 콜백 함수
+    const handleDeleteQuestion = (deletedId) => {
+        // 삭제된 항목을 제외한 새로운 배열로 questionData 업데이트
+        setQuestionData((prevQuestions) =>
+            prevQuestions.filter((question) => question._id !== deletedId)
+        );
+    };
+
     const lastQuestionElementRef = useCallback(
         (node) => {
             if (loading) return;
@@ -42,38 +50,34 @@ const QnAPage = () => {
             setLoading(true);
             try {
                 const response = await BaseAxios.get("/api/bulletin/qnas", {
-                    params: { isAGradeOnly,
-                        type: "many",
-                        depth: depth
-                     },
+                    params: { isAGradeOnly, type: "many", depth: depth },
                 });
                 const newQuestions = response.data.docList;
-                if (newQuestions.message === "uniquecategory is null" ) {
+                if (newQuestions.message === "uniquecategory is null") {
                     setIsEmpty(true);
-                    setMessage("uniquecategory is null")
-                }
-                else if (newQuestions.message === "qnalist is null") {
+                    setMessage("uniquecategory is null");
+                } else if (newQuestions.message === "qnalist is null") {
                     setIsEmpty(true);
-                    setMessage("uniquecategory is null")
+                    setMessage("uniquecategory is null");
                 }
-                if(newQuestions.length === 0) {
+                if (newQuestions.length === 0) {
                     setHasMore(false);
+                } else {
+                    setQuestionData((prevQuestions) =>
+                        isInitial
+                            ? newQuestions
+                            : [...prevQuestions, ...newQuestions]
+                    );
+
+                    setDepth((prevDepth) => {
+                        const newDepth = prevDepth + 1;
+                        console.log("Updated depth:", newDepth);
+                        return newDepth;
+                    });
+                    console.log("depth: ", depth);
+                    setHasMore(newQuestions.length > 0);
+                    setError(null);
                 }
-                else{
-                setQuestionData((prevQuestions) =>
-                    isInitial
-                        ? newQuestions
-                        : [...prevQuestions, ...newQuestions]
-                );
-                
-                setDepth(prevDepth => {
-                    const newDepth = prevDepth + 1;
-                    console.log("Updated depth:", newDepth);
-                    return newDepth;
-                });
-                console.log("depth: ", depth);
-                setHasMore(newQuestions.length > 0);
-                setError(null);}
             } catch (error) {
                 console.error("Error fetching question data:", error);
                 setError("질문을 불러오는 중 오류가 발생했습니다.");
@@ -81,7 +85,7 @@ const QnAPage = () => {
                 setLoading(false);
             }
         },
-        [isAGradeOnly,depth]
+        [isAGradeOnly, depth]
     );
 
     const fetchMoreQuestions = () => {
@@ -92,7 +96,6 @@ const QnAPage = () => {
 
     useEffect(() => {
         fetchQuestions(true);
-        
     }, [isAGradeOnly]);
 
     const handleCheckerChange = (isChecked) => {
@@ -111,7 +114,8 @@ const QnAPage = () => {
         const postsWithAds = [];
         questionData.forEach((post, index) => {
             postsWithAds.push(
-                <div key={post._id}
+                <div
+                    key={post._id}
                     ref={
                         index === questionData.length - 1
                             ? lastQuestionElementRef
@@ -124,9 +128,11 @@ const QnAPage = () => {
                         title={post.title}
                         content={post.preview_content}
                         subject={
-                            Object.values(post.now_category_list[
-                                post.now_category_list.length - 1
-                            ])[0]
+                            Object.values(
+                                post.now_category_list[
+                                    post.now_category_list.length - 1
+                                ]
+                            )[0]
                         }
                         time={post.time}
                         views={post.views}
@@ -135,6 +141,7 @@ const QnAPage = () => {
                         limit={post.restricted_type}
                         user_main={post.user_main}
                         point={post.point}
+                        onDelete={handleDeleteQuestion}
                     />
                 </div>
             );
@@ -176,7 +183,7 @@ const QnAPage = () => {
                             ? "board에서 관심있는 과목을 담고 그에 대한 글들을 받아보세요!"
                             : "아직 관련과목들에 대한 글이 없어요! 글을 작성해주세요!"}
                     </Content>
-            </EmptyBox>
+                </EmptyBox>
             )}
             <FixedIcon src={"/Icons/Question.svg"} url={"/qna/post"} />
             <FixedBottomContainer>

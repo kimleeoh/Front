@@ -64,22 +64,22 @@ const UnifiedBoard = () => {
             }
             console.log("isEmpty: ", isEmpty);
             if (!isEmpty && questionResponse?.documents.length) {
-                if(isInitial) {
+                if (isInitial) {
                     setQuestionData(questionResponse.documents);
                     setIsInitial(false);
-                }
-                else {
+                } else {
                     setQuestionData((prev) => [
-                    ...prev,
-                    ...questionResponse.documents,
-                ]);}
+                        ...prev,
+                        ...questionResponse.documents,
+                    ]);
+                }
                 console.log("questionData: ", questionData);
             }
             if (!isEmpty && tipsResponse?.documents.length) {
-                if(isInitial) {
+                if (isInitial) {
                     setTipsData(tipsResponse.documents);
                     setIsInitial(false);
-                }else{
+                } else {
                     setTipsData((prev) => [...prev, ...tipsResponse.documents]);
                 }
                 console.log("tipsData: ", tipsData);

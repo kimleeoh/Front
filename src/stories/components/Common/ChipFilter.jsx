@@ -45,7 +45,9 @@ const ChipFilter = ({ onFilterChange, marginTop, postOnly, value }) => {
             let updatedChips;
 
             if (postOnly) {
-                updatedChips = internalActiveChips.includes(label) ? [] : [label];
+                updatedChips = internalActiveChips.includes(label)
+                    ? []
+                    : [label];
             } else {
                 updatedChips = internalActiveChips.includes(label)
                     ? internalActiveChips.filter((badge) => badge !== label)

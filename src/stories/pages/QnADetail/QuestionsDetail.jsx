@@ -19,9 +19,11 @@ const QuestionsDetail = ({
     like,
     img,
     limit,
+    point,
     mine,
     alread,
     onReportClick,
+    onDelete,
 }) => {
     const images = Array.isArray(img) ? img : img ? [img] : [];
 
@@ -29,18 +31,22 @@ const QuestionsDetail = ({
     const [already, setAlready] = useState(alread);
     const [isSaved, setIsSaved] = useState(false); // Scrap 상태 관리
     const [isNotified, setIsNotified] = useState(false); // Notification 상태 관리
-    
 
     useEffect(() => {
         setAlready(alread);
-        console.log("already",alread);
+        console.log("already", alread);
         console.log("isLiked", already.isLiked);
-        console.log("??", already.isLiked==1);
-        if (already.isLiked!=0) already.isLiked==1 ? setIsLiked("up") : already.isLiked==-1 ? setIsLiked("down") : setIsLiked(null);
-        if(already.isScrapped) setIsSaved(true);
-        if(already.isAlarm) setIsNotified(true);
+        console.log("??", already.isLiked == 1);
+        if (already.isLiked != 0)
+            already.isLiked == 1
+                ? setIsLiked("up")
+                : already.isLiked == -1
+                  ? setIsLiked("down")
+                  : setIsLiked(null);
+        if (already.isScrapped) setIsSaved(true);
+        if (already.isAlarm) setIsNotified(true);
         console.log("isLiked", isLiked);
-        
+        console.log("point: ", point);
     }, [_id, already, isLiked, isSaved, isNotified]);
 
     const LIKE = Number(like);
@@ -52,7 +58,7 @@ const QuestionsDetail = ({
         let newLikeValue;
 
         if (already.isLiked === -1) {
-            newLikeValue = l != 1? 2 : 1;
+            newLikeValue = l != 1 ? 2 : 1;
         } else if (already.isLiked === 1) {
             newLikeValue = l != 0 ? 0 : -1;
         } else if (already.isLiked === 0) {
@@ -64,9 +70,9 @@ const QuestionsDetail = ({
         // const m = Number(sessionStorage.getItem("like"));
         // setIsLiked(m + like); // Ensure `like` is defined or default to 0
 
-        console.log("Post liked:", _id);}
-        // Additional logic to update likes on the backend or state could go here
-
+        console.log("Post liked:", _id);
+    };
+    // Additional logic to update likes on the backend or state could go here
 
     const handleUnlike = () => {
         const l = Number(sessionStorage.getItem("like"));
@@ -104,6 +110,12 @@ const QuestionsDetail = ({
         console.log("Notification toggled:", newIsNotified);
     };
 
+    const handleDeleteQuestion = (deletedId) => {
+        if (onDelete) {
+            onDelete(deletedId); // 상위 컴포넌트에 삭제된 ID를 전달하여 상태를 업데이트하도록 함
+        }
+    };
+
     const { width: windowSize } = useWindowSize();
 
     return (
@@ -113,10 +125,19 @@ const QuestionsDetail = ({
                     {subject}
                     <MeatballMenu
                         _id={_id}
+                        onDelete={handleDeleteQuestion}
                         onReportClick={() => onReportClick(_id)}
                         category_type={"qna"}
                         categories={"qna"}
                         mine={mine}
+                        {...(mine && {
+                            title,
+                            content,
+                            subject,
+                            img,
+                            limit,
+                            point,
+                        })}
                     />
                 </TopBar>
                 <Title>
@@ -157,7 +178,7 @@ const QuestionsDetail = ({
                         like={LIKE}
                         handleLike={handleLike}
                         handleUnlike={handleUnlike}
-                        voted = {isLiked}
+                        voted={isLiked}
                         mine={mine}
                     />
                     <div>

@@ -16,6 +16,8 @@ const TipsDetail = ({
     category_name,
     category_type,
     content,
+    purchase_price,
+    target,
     likes,
     views,
     file_links,
@@ -24,7 +26,11 @@ const TipsDetail = ({
     likePost,
     mine,
 }) => {
-    const images = Array.isArray(file_links) ? file_links : file_links ? [file_links] : [];
+    const images = Array.isArray(file_links)
+        ? file_links
+        : file_links
+          ? [file_links]
+          : [];
     const { width: windowSize } = useWindowSize();
 
     const [isLiked, setIsLiked] = useState(false);
@@ -39,12 +45,14 @@ const TipsDetail = ({
     }, [_id, likePostIds]);
 
     const handleLike = () => {
-        setLikePostIds(prevIds => [...(prevIds || []), _id]);
+        setLikePostIds((prevIds) => [...(prevIds || []), _id]);
         setIsLiked(true);
     };
 
     const handleUnlike = () => {
-        setLikePostIds(prevIds => (prevIds || []).filter(postId => postId !== _id));
+        setLikePostIds((prevIds) =>
+            (prevIds || []).filter((postId) => postId !== _id)
+        );
         setIsLiked(false);
     };
 
@@ -58,12 +66,12 @@ const TipsDetail = ({
 
     const getCategoryTypeName = (type) => {
         switch (type) {
-            case 'pilgy':
-                return '필기공유';
-            case 'honey':
-                return '수업꿀팁';
-            case 'test':
-                return '시험정보';
+            case "pilgy":
+                return "필기공유";
+            case "honey":
+                return "수업꿀팁";
+            case "test":
+                return "시험정보";
             default:
                 return type;
         }
@@ -79,15 +87,19 @@ const TipsDetail = ({
                         onReportClick={() => onReportClick(_id)}
                         categories="tips"
                         category_type={category_type}
+                        board={category_name}
+                        title={title}
+                        content={content}
+                        purchase_price={purchase_price}
+                        target={target}
                         mine={mine}
                     />
                 </TopBar>
-                <Title>
-                    {title}
-                </Title>
+                <Title>{title}</Title>
 
                 <MetaContainer>
-                        {getTimeElapsed(time)} | {user.hakbu} {user.name} | 조회수 {views}
+                    {getTimeElapsed(time)} | {user.hakbu} {user.name} | 조회수{" "}
+                    {views}
                 </MetaContainer>
                 <Content>{content} </Content>
 
@@ -111,7 +123,7 @@ const TipsDetail = ({
                         </CarouselTemp>
                     </CarouselWrapper>
                 )}
-                { images.length > 0 && <ImageDownloadList images={images} /> }
+                {images.length > 0 && <ImageDownloadList images={images} />}
                 <BottomBar>
                     <Votes
                         like={likes}
@@ -135,7 +147,6 @@ const TipsDetail = ({
     );
 };
 
-
 TipsDetail.propTypes = {
     _id: PropTypes.string.isRequired,
     user: PropTypes.shape({
@@ -145,7 +156,10 @@ TipsDetail.propTypes = {
     title: PropTypes.string.isRequired,
     category_name: PropTypes.string.isRequired,
     category_type: PropTypes.string.isRequired,
-    img: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+    img: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+    ]),
     content: PropTypes.string.isRequired,
     likes: PropTypes.number.isRequired,
     views: PropTypes.number.isRequired,

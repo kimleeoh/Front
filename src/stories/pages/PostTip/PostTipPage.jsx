@@ -37,7 +37,6 @@ const PostTipsPage = () => {
         }));
     }, []);
 
-
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const now = new Date().toISOString();

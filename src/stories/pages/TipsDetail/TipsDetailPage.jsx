@@ -19,18 +19,22 @@ const TipsDetailPage = () => {
                 const response = await BaseAxios.get(
                     `/api/tips/${category_type}/${docid}`
                 );
+                console.log("response.data: ", response.data);
                 setTipData(response.data);
                 setIsLoading(false);
 
                 // Move checkMine logic here
-                const checkMineResponse = await BaseAxios.post("/api/tips/manage", {
-                    docid: docid,
-                    category_type: category_type,
-                    Ruser: response.data.user,
-                });
+                const checkMineResponse = await BaseAxios.post(
+                    "/api/tips/manage",
+                    {
+                        docid: docid,
+                        category_type: category_type,
+                        Ruser: response.data.user,
+                    }
+                );
 
                 if (checkMineResponse.data.message === "Mine") {
-                    setTipData(prevData => ({
+                    setTipData((prevData) => ({
                         ...prevData,
                         mine: true,
                     }));
@@ -71,6 +75,7 @@ const TipsDetailPage = () => {
                     warn={tipData.warn}
                     warn_why_list={tipData.warn_why_list}
                     purchase_price={tipData.purchase_price}
+                    target={tipData.target}
                     user={tipData.user}
                     file_links={tipData.file_links}
                     category_name={tipData.category_name}

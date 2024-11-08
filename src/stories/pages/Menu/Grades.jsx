@@ -9,6 +9,7 @@ import useWindowSize from "../../components/Common/WindowSize";
 import Modal from "../../components/Common/Modal";
 import Picker from "../../components/Common/Picker";
 import BaseAxios from "../../../axioses/BaseAxios";
+import Popup from "../../components/Popup";
 
 const Grades = () => {
     const Grades = ["A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "F"];
@@ -20,6 +21,39 @@ const Grades = () => {
     const [selectedSemester, setSelectedSemester] = useState(null);
     const [semesterIndex, setSemesterIndex] = useState(null);
     const modalRef = useRef(null);
+
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
+    const menuRef = useRef(null);
+
+    const handleTogglePopup = () => {
+        if (!isPopupOpen) {
+            const rect = menuRef.current.getBoundingClientRect();
+            const scrollTop =
+                window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft =
+                window.pageXOffset || document.documentElement.scrollLeft;
+
+            setPopupPosition({
+                top: rect.bottom + scrollTop,
+                left: rect.right - 195 + scrollLeft,
+            });
+        }
+        setIsPopupOpen(!isPopupOpen);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsPopupOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: currentYear - 2017 }, (_, i) =>
@@ -45,7 +79,7 @@ const Grades = () => {
                 const filteredSemesters = response.data.semester_list
                     .map((semester, index) => ({
                         ...semester,
-                        originalIndex: index
+                        originalIndex: index,
                     }))
                     .filter((semester) => semester.filled);
                 setSemesters(filteredSemesters);
@@ -101,21 +135,82 @@ const Grades = () => {
                 <Verify onClick={handleVerifyClick}>등록</Verify>
             </Header>
             <ContentWrapper maxWidth={windowSize}>
+                <HeadLabel>
+                    <HeadBox>
+                        <img
+                            src="/Icons/check_border_e.svg"
+                            alt="check icon"
+                            width={"22px"}
+                        />{" "}
+                        인증
+                        <img
+                            src="/Icons/check_border_d.svg"
+                            alt="check icon"
+                            width={"22px"}
+                        />{" "}
+                        미인증
+                    </HeadBox>
+                    <HelpButton ref={menuRef} onClick={handleTogglePopup}>
+                        <img
+                            src="/Icons/Help.svg"
+                            alt="help icon"
+                            style={{ transform: "translateY(2px)" }}
+                        />
+                    </HelpButton>
+
+                    {isPopupOpen && (
+                        <Popup
+                            title="도움말"
+                            position={popupPosition}
+                            onClose={() => setIsPopupOpen(false)}
+                            width={185}
+                        >
+                            <Help>
+                                인증사진과 실제 입력하신 과목명, 성적,
+                                전공여부가 맞는지 확인해주세요
+                            </Help>
+                        </Popup>
+                    )}
+                </HeadLabel>
                 {semesters.map((semester) => {
-                    const { year, semester: semesterNum } = getSemesterInfo(semester.originalIndex);
+                    const { year, semester: semesterNum } = getSemesterInfo(
+                        semester.originalIndex
+                    );
                     return (
-                        <div key={semester.originalIndex} style={{width: "85%"}}>
-                            <BoardTitle text={`${year}학년도 ${semesterNum}학기`} />
+                        <div
+                            key={semester.originalIndex}
+                            style={{ width: "85%" }}
+                        >
+                            <div style={{ display: "flex" }}>
+                                <BoardTitle
+                                    text={`${year}학년도 ${semesterNum}학기`}
+                                />
+                                <img
+                                    src={
+                                        semester.confirmed === 2
+                                            ? "/Icons/check_border_e.svg"
+                                            : "/Icons/check_border_d.svg"
+                                    }
+                                    alt="check icon"
+                                    style={{ marginLeft: "8px" }}
+                                />
+                            </div>
                             <SubjectWrapper maxWidth={windowSize}>
                                 <ScrollableSubjectList>
-                                    {semester.subject_list.map((subject, idx) => (
-                                        <SubjectList
-                                            key={idx}
-                                            subject={subject}
-                                            disableLink={true}
-                                            rate={Grades[semester.grade_list[idx]]}
-                                        />
-                                    ))}
+                                    {semester.subject_list.map(
+                                        (subject, idx) => (
+                                            <SubjectList
+                                                key={idx}
+                                                subject={subject}
+                                                disableLink={true}
+                                                rate={
+                                                    Grades[
+                                                        semester.grade_list[idx]
+                                                    ]
+                                                }
+                                            />
+                                        )
+                                    )}
                                 </ScrollableSubjectList>
                             </SubjectWrapper>
                         </div>
@@ -180,7 +275,7 @@ const ContentWrapper = styled.div`
     align-items: center;
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    padding: 100px 10px 80px;
+    padding: 120px 10px 80px;
     box-sizing: border-box;
 `;
 
@@ -248,4 +343,52 @@ const ModalButtonWrapper = styled.div`
     width: 100%;
     margin-top: 20px;
     gap: 10px;
+`;
+
+const HelpButton = styled.button`
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        loading: lazy;
+    }
+
+    &:active {
+        transform: scale(0.95);
+        background: rgba(0, 0, 0, 0.1);
+    }
+`;
+
+const HeadLabel = styled.div`
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin-bottom: 20px;
+    gap: 10px;
+`;
+
+const HeadBox = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-size: 16px;
+    gap: 10px;
+`;
+
+const Help = styled.div`
+    font-size: 14px;
+    border: none;
+    color: #434b60;
+    padding: 10px;
+    border-radius: 12px;
+    background: transparent;
 `;

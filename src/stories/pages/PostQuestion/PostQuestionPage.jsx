@@ -55,10 +55,11 @@ const PostQuestionPage = () => {
         updatedFormValues.append("point", formValues.point);
         updatedFormValues.append("time", now);
         updatedFormValues.append("limit", formValues.limit);
-        if(formValues.images){
-        formValues.images.forEach((image, index) => {
-            updatedFormValues.append("images", image);
-        });}
+        if (formValues.images) {
+            formValues.images.forEach((image, index) => {
+                updatedFormValues.append("images", image);
+            });
+        }
 
         console.log("updatedFormValues: ", updatedFormValues);
 

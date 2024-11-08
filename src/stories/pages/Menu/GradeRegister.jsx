@@ -47,14 +47,18 @@ const GradeRegister = () => {
                         (parseInt(selectedTerm) - 1);
                     const response = await BaseAxios.get(`/api/score`);
                     const data = response.data;
-			setSubjects(
+                    setSubjects(
                         data.semester_list[index].subject_list.map(
                             (subject, i) => ({
-                                name: subject==undefined? "과목 선택" : subject,
+                                name:
+                                    subject == undefined
+                                        ? "과목 선택"
+                                        : subject,
                                 grade: Grades[
                                     data.semester_list[index].grade_list[i]
                                 ],
-                                isMajor: data.semester_list[index].ismajor_list[i],
+                                isMajor:
+                                    data.semester_list[index].ismajor_list[i],
                             })
                         )
                     );
@@ -84,7 +88,7 @@ const GradeRegister = () => {
             const aa = Convert(selectedYear, selectedTerm);
             formData.append("semester", aa);
             formData.append("img", UploadedFiles);
-            
+
             await BaseAxios.post("/api/score", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -151,6 +155,24 @@ const GradeRegister = () => {
         setNowIndex(nowIndex + 1);
     };
 
+    const handleDeleteSubject = (index) => {
+        setSubjects((prevSubjects) =>
+            prevSubjects.filter((_, i) => i !== index)
+        );
+        setSubjectList((prevSubjectList) =>
+            prevSubjectList.filter((_, i) => i !== index)
+        );
+        setRcategoryList((prevRcategoryList) =>
+            prevRcategoryList.filter((_, i) => i !== index)
+        );
+        setGradeList((prevGradeList) =>
+            prevGradeList.filter((_, i) => i !== index)
+        );
+        setIsMajorList((prevIsMajorList) =>
+            prevIsMajorList.filter((_, i) => i !== index)
+        );
+    };
+
     const { width: windowSize } = useWindowSize();
 
     return (
@@ -174,18 +196,11 @@ const GradeRegister = () => {
             </TermPickerWrapper>
             {selectedYear && selectedTerm ? (
                 <>
-                    <CheckerWrapper maxWidth={windowSize}>
-                        { <Checker
-                            text={confirmed ? "인증됨" : "인증되지 않음"}
-                            readOnly={true}
-                            type={"check"}
-                        /> }
-                    </CheckerWrapper>
                     <SubjectWrapper maxWidth={windowSize}>
                         <SubjectItem>
                             <SubjectName>과목명</SubjectName>
-                            <span style={{ margin: "0 0 0 125px" }}>성적</span>
-                            <span style={{ margin: "0 5px 0 0" }}>전공</span>
+                            <span style={{ margin: "0 0 0 120px" }}>성적</span>
+                            <span style={{ margin: "0 45px 0 0" }}>전공</span>
                         </SubjectItem>
                         {subjects.map((subject, index) => (
                             <SubjectItem key={index}>
@@ -218,6 +233,13 @@ const GradeRegister = () => {
                                         }
                                         type={"box"}
                                     />
+                                    <DeleteButton
+                                        onClick={() =>
+                                            handleDeleteSubject(index)
+                                        }
+                                    >
+                                        ×
+                                    </DeleteButton>
                                 </div>
                             </SubjectItem>
                         ))}
@@ -360,4 +382,25 @@ const NoSelectionMessage = styled.div`
 const SelectBoardWrapper = styled.div`
     display: flex;
     width: 200px;
+`;
+
+const DeleteButton = styled.button`
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 28px;
+    color: #acb2bb;
+    margin-top: 5px;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.1);
+    }
+    &:active {
+        transform: scale(0.9);
+    }
 `;

@@ -33,16 +33,11 @@ jobs:
           cd Front
           npm cache clean --force
           npm install
+          forever stopall
+          git pull origin server
+          rm -r .github
           CI=false npm run build  # CI 환경을 false로 설정하여 경고를 무시
-
-      # 4. 서버에 빌드 파일 배포
-      - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.HOST_DNS }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
-          TARGET: ${{ secrets.TARGET_DIR }}
+          forever start -c "node server.js" .
 
       # 5. 서버 상태 확인 및 문제 해결
       - name: Check Server Status and Restart if Needed
@@ -52,16 +47,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Node.js 서버 상태 확인
-            echo "Checking Node.js process status..."
-            forever list
-
-            # 서버가 실행 중이지 않으면 다시 시작
-            if ! forever list | grep -q "RUNNING"; then
-              echo "Node.js server is not running. Starting server..."
-              cd ${{ secrets.TARGET_DIR }}
-              forever start server.js
-            fi
 
             # Nginx 에러 로그 출력 (최근 20줄)
             echo "Checking Nginx error log..."

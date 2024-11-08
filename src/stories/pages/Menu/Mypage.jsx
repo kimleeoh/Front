@@ -61,8 +61,16 @@ const MyPage = () => {
     if (error) return <div>Error: {error.message}</div>;
     if (!userData) return <div>No user data available</div>;
 
-    const { name, level, tipsCount, replyCount, hakbu, intro, profile_img, exp } =
-        userData;
+    const {
+        name,
+        level,
+        tipsCount,
+        replyCount,
+        hakbu,
+        intro,
+        profile_img,
+        exp,
+    } = userData;
 
     return (
         <Wrapper>
@@ -90,7 +98,10 @@ const MyPage = () => {
                         </DetailInfo>{" "}
                         {/* 답변 수 */}
                         <DetailInfo>
-                            레벨<Measurement>{Math.floor(exp / 100)+1}</Measurement>
+                            레벨
+                            <Measurement>
+                                {Math.floor(exp / 100) + 1}
+                            </Measurement>
                         </DetailInfo>{" "}
                         {/* 유저 레벨 */}
                     </InfoBox>
@@ -144,8 +155,8 @@ const MyPage = () => {
                     <Title>명성</Title>
                     <Reputation>
                         {/* exp를 100으로 나눈 몫이 level */}
-                        {Math.floor(exp / 100)+1}
-                        
+                        {Math.floor(exp / 100) + 1}
+
                         <ProgressBarContainer>
                             {/* 100으로 나눈 나머지를 progress로 사용 */}
                             다음 단계까지 {100 - (exp % 100)}점 남음

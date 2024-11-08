@@ -44,9 +44,9 @@ const TipsPage = () => {
                     chips.length > 0 ? chips : ["test", "pilgy", "honey"];
                 const response = await BaseAxios.post("/api/bulletin/tips", {
                     filters: filtersArray,
-                    depth:depth
+                    depth: depth,
                 });
-                
+
                 console.log("response: ", response);
                 console.log("filters: ", chips);
                 const newTips = response.data;
@@ -64,13 +64,20 @@ const TipsPage = () => {
                 setTipsData((prevTips) =>
                     isInitial ? newTips : [...prevTips, ...newTips]
                 );
-                setDepth(prevDepth => {
+                setDepth((prevDepth) => {
                     const newDepth = prevDepth + 1;
                     console.log("Updated depth:", newDepth);
                     return newDepth;
                 });
                 setHasMore(newTips.length > 0);
-                console.log("hasmore", hasMore, "tipsL",tipsData, "loading", loading);
+                console.log(
+                    "hasmore",
+                    hasMore,
+                    "tipsL",
+                    tipsData,
+                    "loading",
+                    loading
+                );
             } catch (error) {
                 console.error("Error fetching tips data:", error);
             } finally {

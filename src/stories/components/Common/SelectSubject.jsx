@@ -154,7 +154,10 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
                           sub_student={option.Sub_student}
                           id={option._id}
                           onClick={() =>
-                              handleFinalCategorySelect(option.CategoryName, option._id)
+                              handleFinalCategorySelect(
+                                  option.CategoryName,
+                                  option._id
+                              )
                           }
                       />
                   ))}

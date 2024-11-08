@@ -16,7 +16,7 @@ const dropdownAnimation = keyframes`
     }
 `;
 
-const SelectBoard = ({ startId, placeholder, onChange }) => {
+const SelectBoard = ({ startId, placeholder, onChange, disabled }) => {
     const { width: windowSize } = useWindowSize();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -33,6 +33,7 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
     const [tempType, setTempType] = useState(0); // type을 임의로 2로 설정하기 위함
 
     const toggleDropdown = () => {
+        if (disabled) return;
         setIsOpen(!isOpen);
         if (isFinalCategory) {
             setIsBottomSheetVisible(true);
@@ -218,7 +219,7 @@ const SelectBoard = ({ startId, placeholder, onChange }) => {
                                                     }}
                                                 >
                                                     <img
-                                                        src={/Icons/Arrow.svg}
+                                                        src={"/Icons/Arrow.svg"}
                                                         alt="arrow"
                                                         width={"12px"}
                                                     />
@@ -341,7 +342,7 @@ const ListItem = styled.li`
     border-radius: 8px;
 
     &:hover {
-        background-color: #e2e5e9;
+        background-color: rgba(226, 229, 233, 0.6);
     }
     &:active {
         transform: scale(0.98);

@@ -15,21 +15,21 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 const EditQuestionPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { picked, title, content, category, imgList, point, limit } = location.state || {};
+    const { title, content, subject, img, limit, point } = location.state || {};
     const { _id } = useParams();
     const [formValues, setFormValues] = useState({
         title: title,
-        board: category,
+        board: subject,
         content: content,
-        images: [],
-        removeImg: [],
-        point: 0,
+        img_list: img,
+        point: point,
         limit: limit,
     });
-    const [isFocused, setIsFocused] = useState(false);
+    //const [isFocused, setIsFocused] = useState(false);
 
     const [showValidationMessages, setShowValidationMessages] = useState(false);
-    const [isPointInputDisabled, setIsPointInputDisabled] = useState(picked!==-1);
+    // const [isPointInputDisabled, setIsPointInputDisabled] = useState(picked!==-1);
+    const [isPointInputDisabled, setIsPointInputDisabled] = useState(limit);
 
     const [originPoint, setOriginPoint] = useState(null);
 
@@ -42,24 +42,11 @@ const EditQuestionPage = () => {
 
         fetchPoint();
         handleCheckerChange(limit);
+        console.log("formValues: ", formValues);
     }, []);
 
-    const handleInputChange = (name, value, isRemove=false) => {
-        if (isRemove) setFormValues(prevValues => {
-            const newValues = { ...prevValues };
-            newValues['images'].filter((image) => image.name !== value);
-            if((newValues['images'].length==prevValues['images'].length)&&imgList.includes(value)){
-            newValues['removeImg'].push(value);}
-            
-            return newValues;
-        });
-        else if (name === "images") {
-            setFormValues(prevValues => {
-                const newValues = { ...prevValues };
-                newValues['images'].push(value);
-                return newValues;
-            });}
-        else setFormValues({ ...formValues, [name]: value });
+    const handleInputChange = (name, value) => {
+        setFormValues({ ...formValues, [name]: value });
     };
 
     const handleFormSubmit = async (e) => {
@@ -72,9 +59,9 @@ const EditQuestionPage = () => {
         updatedFormValues.append("content", formValues.content);
         updatedFormValues.append("point", formValues.point);
         updatedFormValues.append("limit", formValues.limit);
-        formValues.images.forEach((image, index) => {
-            updatedFormValues.append("images", image);
-        });
+        // formValues.images.forEach((image, index) => {
+        //     updatedFormValues.append("images", image);
+        // });
 
         console.log("updatedFormValues: ", updatedFormValues);
 
@@ -83,7 +70,7 @@ const EditQuestionPage = () => {
             title.trim() !== "" &&
             board.length > 0 &&
             content.trim() !== "" &&
-            point.trim() !== "" &&
+            String(point).trim() !== "" &&
             Number(point) > 0 &&
             Number(point) <= 200;
 
@@ -168,38 +155,45 @@ const EditQuestionPage = () => {
                 searchButton={false}
             />
             <TextInput
-                
                 height={"30px"}
                 fontSize={"15px"}
-                placeholder={title}
+                placeholder={"제목 입력"}
+                value={title}
                 marginTop={"0"}
                 onChange={(value) => handleInputChange("title", value)}
             />
             <SelectBoard
                 onChange={(value) => handleInputChange("board", value)}
+                disabled={true}
+                placeholder={subject}
             />
             <TextArea
                 height={"300px"}
                 fontSize={"15px"}
-                placeholder={content}
+                value={content}
                 isPostPage={true}
                 onChange={(value) => handleInputChange("content", value)}
             />
             <ImageUploader
-                onChange={(value, isRemove) => handleInputChange("images", value, isRemove)}
-                forQ = {true}
-                defaultFiles={imgList}
+                forQ={true}
+                defaultFiles={img}
+                edit={true}
+                onChange={(value) => handleInputChange("img_list", value)}
             />
             <PointInput
                 point={originPoint}
-                onChange={isPointInputDisabled ? ()=>{} : (value) => handleInputChange("point", value)}
+                onChange={
+                    isPointInputDisabled
+                        ? () => {}
+                        : (value) => handleInputChange("point", value)
+                }
                 disabled={isPointInputDisabled}
-                placeholder={point}
+                value={point}
             />
             <CheckerWrapper maxWidth={windowSize}>
                 <Checker
                     text={"A 이상의 답변만 받고 싶어요."}
-                    onChange={isPointInputDisabled? null : handleCheckerChange}
+                    onChange={isPointInputDisabled ? null : handleCheckerChange}
                     disabled={formValues.point < 100}
                 />
             </CheckerWrapper>
@@ -218,7 +212,7 @@ const EditQuestionPage = () => {
                 </Condition>
             )}
             <Button
-                label={"등록하기"}
+                label={"수정하기"}
                 style={{ marginTop: "15px" }}
                 onClick={handleFormSubmit}
             />

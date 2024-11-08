@@ -39,10 +39,7 @@ const ImageDownloadList = ({ images }) => {
             <FileContainer>
                 <FileName>{getFileNames()}</FileName>
                 <DownloadLink onClick={handleDownloadClick}>
-                    <img
-                        src={"/Icons/Download.svg"}
-                        alt="Download icon"
-                    />
+                    <img src={"/Icons/Download.svg"} alt="Download icon" />
                 </DownloadLink>
             </FileContainer>
         </DownloadContainer>
