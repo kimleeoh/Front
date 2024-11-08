@@ -4,6 +4,7 @@ import React, {
     useEffect,
     useMemo,
     useCallback,
+    useState,
 } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -19,14 +20,33 @@ import { UserContext } from "../../context/UserContext";
 
 const MenuPage = () => {
     const modalRef = useRef();
+    const modalNotifyRef = useRef();
     const navigate = useNavigate();
     const { userData, fetchUserData, setUserData, isLoading, error } =
         useContext(UserContext);
+    const [modalNotifyContent, setModalNotifyContent] = useState(null);
 
     useEffect(() => {
         if (!userData && !isLoading && !error) {
             fetchUserData();
         }
+
+        // 페이지 첫 로드 시 /api/modal-notify 요청
+        const fetchModalNotifyContent = async () => {
+            try {
+                const response = await BaseAxios.get("/api/modal-notify");
+                const data = response.data;
+
+                if (data && typeof data === "string" && data.trim()) {
+                    setModalNotifyContent(data);
+                    modalRef.current.open();
+                }
+            } catch (error) {
+                console.error("Failed to fetch modal content:", error);
+            }
+        };
+
+        fetchModalNotifyContent();
     }, [userData, isLoading, error, fetchUserData]);
 
     const { name, profile_Img } = useMemo(
@@ -159,6 +179,16 @@ const MenuPage = () => {
                         width={"130px"}
                     />
                 </ButtonWrapper>
+            </Modal>
+            <Modal ref={modalNotifyRef} width="300px">
+                <div dangerouslySetInnerHTML={{ __html: modalNotifyContent }} />
+                <Button
+                    onClick={() => modalNotifyRef.current.close()}
+                    label={"확인"}
+                    backgroundColor={"#FF3C3C"}
+                    hoverBackgroundColor={"red"}
+                    width={"130px"}
+                />
             </Modal>
         </Wrapper>
     );

@@ -169,6 +169,7 @@ const Wrapper = styled.div`
     justify-content: center;
     padding: 20px 0;
     border-bottom: 1px solid #f1f2f4;
+    color: #434b60;
 `;
 
 const TopBar = styled.div`

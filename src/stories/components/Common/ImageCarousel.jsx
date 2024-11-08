@@ -166,7 +166,8 @@ const Button = styled.button`
     z-index: 10;
     color: white;
     width: 40px;
-    height: 100%;
+    height: 50%;
+    transition: all 0.3s;
 
     &:focus {
         outline: none;
