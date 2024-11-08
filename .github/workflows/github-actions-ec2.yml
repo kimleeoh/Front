@@ -31,10 +31,13 @@ jobs:
       - name: Clean npm cache and Build project
         run: |
           cd Front
-          git pull origin server
           npm cache clean --force
           npm install
+          forever stopall
+          git pull origin server
+          rm -r .github
           CI=false npm run build  # CI 환경을 false로 설정하여 경고를 무시
+          forever start -c "node server.js" .
 
       # 5. 서버 상태 확인 및 문제 해결
       - name: Check Server Status and Restart if Needed
@@ -44,17 +47,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Node.js 서버 상태 확인
-            echo "Checking Node.js process status..."
-            forever list
-
-            # 서버가 실행 중이지 않으면 다시 시작
-            if ! forever list | grep -q "RUNNING"; then
-              echo "Node.js server is not running. Starting server..."
-              cd ${{ secrets.TARGET_DIR }}
-              forever start -c "node server.js" .
-            fi
-
             # Nginx 에러 로그 출력 (최근 20줄)
             echo "Checking Nginx error log..."
             sudo tail -n 20 /var/log/nginx/error.log
@@ -63,6 +55,7 @@ jobs:
             echo "Clearing Nginx cache and restarting Nginx..."
             sudo rm -rf /var/cache/nginx/*
             sudo systemctl restart nginx
+           
 
       # 6. Nginx 및 Node.js 재시작 최종 확인
       - name: Final Check and Logs
