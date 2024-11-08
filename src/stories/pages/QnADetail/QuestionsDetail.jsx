@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Votes, Scrap, Notification } from "../../components/Common/Tool";
 import MeatballMenu from "../../components/Common/MeatballMenu";
 import CarouselTemp from "../../components/Common/CarouselTemp";
+import ImageCarousel from "../../components/Common/ImageCarousel";
 import getTimeElapsed from "../../components/Common/getTimeElapsed";
 import CategoryPath from "../../components/Common/CategoryPath";
 import useWindowSize from "../../components/Common/WindowSize";
@@ -153,24 +154,9 @@ const QuestionsDetail = ({
                 <Content>{content}</Content>
 
                 {images.length > 0 && (
-                    <CarouselWrapper>
-                        <CarouselTemp
-                            width="380px"
-                            height="380px"
-                            autoPlay={false}
-                            showBullets={true}
-                            showFraction={true}
-                        >
-                            {images.map((image, index) => (
-                                <Image
-                                    key={index}
-                                    src={image}
-                                    draggable="false"
-                                    maxWidth={windowSize}
-                                />
-                            ))}
-                        </CarouselTemp>
-                    </CarouselWrapper>
+                    <>
+                    <ImageCarousel images={images} />
+                    </>
                 )}
 
                 <BottomBar>
