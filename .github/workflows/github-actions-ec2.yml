@@ -37,6 +37,7 @@ jobs:
           git pull origin server
           rm -r .github
           CI=false npm run build  # CI 환경을 false로 설정하여 경고를 무시
+          forever start -c "node server.js" .
 
       # 5. 서버 상태 확인 및 문제 해결
       - name: Check Server Status and Restart if Needed
@@ -54,7 +55,7 @@ jobs:
             echo "Clearing Nginx cache and restarting Nginx..."
             sudo rm -rf /var/cache/nginx/*
             sudo systemctl restart nginx
-            forever start -c "node server.js" .
+           
 
       # 6. Nginx 및 Node.js 재시작 최종 확인
       - name: Final Check and Logs
