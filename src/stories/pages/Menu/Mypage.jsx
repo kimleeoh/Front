@@ -119,15 +119,8 @@ const MyPage = () => {
             />
             {activeTab === "프로필" && (
                 <Content maxWidth={windowSize}>
-                    {/* 배지 연결안함  */}
-                    {/* <BadgeContainer>
-                        <BadgeBox onClick={() => navigate("/badge")} />
-                        <BadgeBox onClick={() => navigate("/badge")} />
-                        <BadgeBox onClick={() => navigate("/badge")} />
-                        <BadgeBox onClick={() => navigate("/badge")} />
-                    </BadgeContainer> */}
                     {/* 성적연결안함 */}
-                    <BoardTitle text="성적" />
+                    {/* <BoardTitle text="성적" />
                     <SubjectWrapper>
                         {/* <ScrollableSubjectList>
                             <SubjectList
@@ -141,7 +134,7 @@ const MyPage = () => {
                                 rate={"A-"}
                             />
                         </ScrollableSubjectList> */}
-                    </SubjectWrapper>
+                    {/* </SubjectWrapper> */}
                     <Title>인기게시글</Title>
                     {popularPosts.length > 0 ? (
                         <PostCarousel posts={popularPosts} />
@@ -168,142 +161,10 @@ const MyPage = () => {
                         </ProgressBarContainer>
                     </Reputation>
 
-                    <Title>배지</Title>
-                    {/* <div style={{ padding: "0px 20px 20px" }}>
-                        <InfoBox>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: "8px",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <img
-                                    src={/Icons/Vote_c.svg}
-                                    alt="투표"
-                                    width="35px"
-                                    height="35px"
-                                />
-                                <div
-                                    style={{
-                                        fontSize: "16px",
-                                        color: "#434B60",
-                                        fontWeight: "700",
-                                    }}
-                                >
-                                    20
-                                </div>
-                                <div
-                                    style={{
-                                        fontSize: "10px",
-                                        color: "#ACB2BB",
-                                    }}
-                                >
-                                    받은 투표 수
-                                </div>
-                            </div>
-
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: "8px",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <img
-                                    src={/Icons/Bookmark_c.svg}
-                                    alt="스크랩"
-                                    width="20px"
-                                    height="28px"
-                                />
-                                <div
-                                    style={{
-                                        fontSize: "16px",
-                                        color: "#434B60",
-                                        fontWeight: "700",
-                                    }}
-                                >
-                                    20
-                                </div>
-                                <div
-                                    style={{
-                                        fontSize: "10px",
-                                        color: "#ACB2BB",
-                                    }}
-                                >
-                                    스크랩 수
-                                </div>
-                            </div>
-
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: "8px",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <img
-                                    src={/Icons/Crown_c.svg}
-                                    alt="꿀팁"
-                                    width="40px"
-                                    height="40px"
-                                />
-                                <div
-                                    style={{
-                                        fontSize: "16px",
-                                        color: "#434B60",
-                                        fontWeight: "700",
-                                    }}
-                                >
-                                    20
-                                </div>
-                                <div
-                                    style={{
-                                        fontSize: "10px",
-                                        color: "#ACB2BB",
-                                    }}
-                                >
-                                    채택 수
-                                </div>
-                            </div>
-
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: "8px",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <img
-                                    src={/Icons/Global_c.svg}
-                                    alt="답변"
-                                    width="28px"
-                                    height="28px"
-                                />
-                                <div
-                                    style={{
-                                        fontSize: "16px",
-                                        color: "#434B60",
-                                        fontWeight: "700",
-                                    }}
-                                >
-                                    20
-                                </div>
-                                <div
-                                    style={{
-                                        fontSize: "10px",
-                                        color: "#ACB2BB",
-                                    }}
-                                >
-                                    조회 수
-                                </div>
-                            </div>
-                        </InfoBox>
-                    </div> */}
+                    <Title>배지</Title> 
+                    현재 받은 배지가 없습니다
+                    {/* 배지연결필요 */}
+                    
                 </Content>
             )}
         </Wrapper>
