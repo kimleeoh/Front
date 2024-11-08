@@ -127,21 +127,6 @@ const MyPage = () => {
                         <BadgeBox onClick={() => navigate("/badge")} />
                     </BadgeContainer> */}
                     {/* 성적연결안함 */}
-                    <BoardTitle text="성적" />
-                    <SubjectWrapper>
-                        {/* <ScrollableSubjectList>
-                            <SubjectList
-                                subject={"디지털미디어원리"}
-                                disableLink={true}
-                                rate={"A+"}
-                            />
-                            <SubjectList
-                                subject={"영상편집론"}
-                                disableLink={true}
-                                rate={"A-"}
-                            />
-                        </ScrollableSubjectList> */}
-                    </SubjectWrapper>
                     <Title>인기게시글</Title>
                     {popularPosts.length > 0 ? (
                         <PostCarousel posts={popularPosts} />
