@@ -99,9 +99,9 @@ const UserComment = ({
             <OutWrapper maxWidth={windowSize}>
                 <Wrapper>
                     <SubWrapper>
-                        <ProfileImg src={profileImg} />
+                        <ProfileImg src={profileImg ? profileImg : "/Profile.svg"} />
                         <ProfileContainer>
-                            <LevelGrade>Lv. {level} | A 등급</LevelGrade>
+                            {/* <LevelGrade>Lv. {level} | A 등급</LevelGrade> */}
                             <MajorName>
                                 {major} {name}
                             </MajorName>
@@ -141,12 +141,12 @@ const UserComment = ({
                 <OutWrapper maxWidth={windowSize}>
                     <Wrapper>
                         <SubWrapper>
-                            <ProfileImg src={profileImg} />
+                            <ProfileImg src={profileImg ? profileImg : "/Profile.svg"} />
                             <ProfileContainer>
-                                <LevelGrade>
+                                {/* <LevelGrade>
                                     Lv. {level} |{" "}
                                     {whatScore ? `${whatScore} 등급` : "미정"}
-                                </LevelGrade>
+                                </LevelGrade> */}
                                 <MajorName>
                                     {major} {name}
                                     <span style={{ color: "#3182F7" }}>
@@ -173,11 +173,11 @@ const UserComment = ({
                         {
                             whatScore === null ? (
                                 <SubWrapper>
-                                    <ProfileImg src={profileImg} />
+                                    <ProfileImg src={profileImg ? profileImg : "/Profile.svg"} />
                                     <ProfileContainer>
-                                        <LevelGrade>
+                                        {/* <LevelGrade>
                                             Lv. {level} | 미정
-                                        </LevelGrade>
+                                        </LevelGrade> */}
                                         <MajorName>
                                             <span style={{ color: "#ACB2BB" }}>
                                                 성적 입력 후 답변이 가능합니다.
