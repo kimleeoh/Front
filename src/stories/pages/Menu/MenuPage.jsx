@@ -38,7 +38,8 @@ const MenuPage = () => {
             if (data && typeof data === "string" && data.trim()) {
                 setTotalModalNotifyContent(data);
                 setCurrentModalIndex(0);
-                setModalNotifyContent(data[0]);
+                if(data.length > 0){
+                setModalNotifyContent(data[0]);}
 
                 modalNotifyRef.current.open();
             }
