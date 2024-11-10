@@ -67,6 +67,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             echo "Final verification of Node.js and Nginx..."
-            npm install -g forever
             forever list
             sudo tail -n 20 /var/log/nginx/error.log
