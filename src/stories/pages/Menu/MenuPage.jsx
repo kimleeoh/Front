@@ -38,8 +38,8 @@ const MenuPage = () => {
             if (data && typeof data === "string" && data.trim()) {
                 setTotalModalNotifyContent(data);
                 setCurrentModalIndex(0);
-                if(data.length > 0){
-                setModalNotifyContent(data[0]);}
+                
+                setModalNotifyContent(data[0]);
 
                 modalNotifyRef.current.open();
             }
@@ -96,7 +96,7 @@ const MenuPage = () => {
             if(currentModalIndex < totalModalNotifyContent.length){
             const newIndex = currentModalIndex + 1;
             setCurrentModalIndex(newIndex);
-            setModalNotifyContent(data[newIndex]);
+            setModalNotifyContent(totalModalNotifyContent[newIndex]);
             modalNotifyRef.current.open();}
             else{
                 setCurrentModalIndex(0);
