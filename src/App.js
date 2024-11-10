@@ -1,9 +1,10 @@
 import React, { useEffect, Suspense, lazy } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Loading from "./stories/pages/Loading"; // 로딩 컴포넌트
 import UserProvider, { UserContext } from "./stories/context/UserContext"; // UserProvider 컴포넌트
 import { User } from "lucide-react";
 import EditQuestionPage from "./stories/pages/PostQuestion/EditQuestionPage";
+import { initializeGA } from "./gtag";
 
 // React.lazy를 이용한 동적 import
 const StartPage = lazy(() => import("./stories/pages/OnBoarding/StartPage"));
@@ -84,6 +85,18 @@ class ErrorBoundary extends React.Component {
         return this.props.children;
     }
 }
+// 경로 변경 시 Google Analytics에 페이지 뷰 전송하는 컴포넌트
+const GAListener = () => {
+    const location = useLocation();
+
+    useEffect(() => {
+        window.gtag('config', 'G-TDCJ0Y04C1', {
+            page_path: location.pathname,
+        });
+    }, [location]);
+
+    return null;
+};
 
 const App = () => {
     const [loading, setLoading] = React.useState(true);
@@ -100,6 +113,7 @@ const App = () => {
 
     useEffect(() => {
         mainApi();
+        initializeGA();
     }, []);
 
     if (loading) {
@@ -108,8 +122,10 @@ const App = () => {
 
     return (
         <ErrorBoundary>
+            <div className="App">
             <UserProvider>
                 <Router>
+                    {/* <GAListener /> 경로 변경을 추적하는 GAListener 추가 */}
                     {/* Suspense로 컴포넌트를 로드할 때 보여줄 fallback UI */}
                     <Suspense fallback={<Loading />}>
                         <Routes>
@@ -217,6 +233,7 @@ const App = () => {
                     </Suspense>
                 </Router>
             </UserProvider>
+            </div>
         </ErrorBoundary>
     );
 };

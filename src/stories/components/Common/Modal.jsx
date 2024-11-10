@@ -77,4 +77,5 @@ const ModalContent = styled.div`
     align-items: center;
     justify-content: center;
     animation: ${modalFadeIn} 0.3s ease-out; /* 애니메이션 추가 */
+    color: #434b60;
 `;
