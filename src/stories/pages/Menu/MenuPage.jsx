@@ -29,7 +29,7 @@ const MenuPage = () => {
     const [totalModalNotifyContent, setTotalModalNotifyContent] = useState(null);
 
     // 페이지 첫 로드 시 /api/modal-notify 요청
-    const fetchModalNotifyContent = async () => {
+    const fetchModalNotifyContent = useCallback(async() => {
         try {
             const response = await BaseAxios.get("/api/modal-notify");
             const data = response.data;
@@ -44,7 +44,7 @@ const MenuPage = () => {
         } catch (error) {
             console.error("Failed to fetch modal content:", error);
         }
-    };
+    },[]);
 
     useEffect(() => {
         if (!userData && !isLoading && !error) {
