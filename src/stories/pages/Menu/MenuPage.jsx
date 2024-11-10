@@ -126,7 +126,7 @@ const MenuPage = () => {
                 <MenuList to="/points" src={"/Icons/point.svg"}>
                     내 포인트
                 </MenuList>
-                <MenuList to="/purchased" src={"/Icons/purchased.svg"}>
+                <MenuList to="/purchased" src={"/Icons/Purchased.svg"}>
                     내 구입목록
                 </MenuList>
                 <Title> 게시물 </Title>
