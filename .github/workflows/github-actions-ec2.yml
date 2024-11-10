@@ -56,6 +56,7 @@ jobs:
             echo "Clearing Nginx cache and restarting Nginx..."
             sudo rm -rf /var/cache/nginx/*
             sudo systemctl restart nginx
+           
 
       # 6. Nginx 및 Node.js 재시작 최종 확인
       - name: Final Check and Logs

@@ -40,6 +40,7 @@ const QnADetailPage = () => {
 
                 const newQdata = JSON.parse(result.data.returnData);
                 setQuestionData(newQdata);
+                console.log("questionData: ", questionData);
                 const currentDocs = result.data.currentDocs;
 
                 setAnswered(newQdata.answered);
@@ -203,4 +204,5 @@ const Wrapper = styled.div`
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;
+    color: #434b60;
 `;
