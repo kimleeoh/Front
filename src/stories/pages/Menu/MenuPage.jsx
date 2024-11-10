@@ -25,26 +25,31 @@ const MenuPage = () => {
     const { userData, fetchUserData, setUserData, isLoading, error } =
         useContext(UserContext);
     const [modalNotifyContent, setModalNotifyContent] = useState(null);
+    const [currentModalIndex, setCurrentModalIndex] = useState(0);
+    const [totalModalNotifyContent, setTotalModalNotifyContent] = useState(null);
+
+    // 페이지 첫 로드 시 /api/modal-notify 요청
+    const fetchModalNotifyContent = async () => {
+        try {
+            const response = await BaseAxios.get("/api/modal-notify");
+            const data = response.data;
+
+            if (data && typeof data === "string" && data.trim()) {
+                setTotalModalNotifyContent(data);
+                setCurrentModalIndex(0);
+                setModalNotifyContent(data[0]);
+
+                modalNotifyRef.current.open();
+            }
+        } catch (error) {
+            console.error("Failed to fetch modal content:", error);
+        }
+    };
 
     useEffect(() => {
         if (!userData && !isLoading && !error) {
             fetchUserData();
         }
-
-        // 페이지 첫 로드 시 /api/modal-notify 요청
-        const fetchModalNotifyContent = async () => {
-            try {
-                const response = await BaseAxios.get("/api/modal-notify");
-                const data = response.data;
-
-                if (data && typeof data === "string" && data.trim()) {
-                    setModalNotifyContent(data);
-                    modalRef.current.open();
-                }
-            } catch (error) {
-                console.error("Failed to fetch modal content:", error);
-            }
-        };
 
         fetchModalNotifyContent();
     }, [userData, isLoading, error, fetchUserData]);
@@ -80,6 +85,22 @@ const MenuPage = () => {
     const handleContactClick = () => {
         alert("nanseulgim1027@gmail.com으로 문의해주세요!");
     };
+
+    const closeHandler = () => {
+
+        modalNotifyRef.current.close();
+
+        if(totalModalNotifyContent.length > 1){ 
+            if(currentModalIndex < totalModalNotifyContent.length){
+            const newIndex = currentModalIndex + 1;
+            setCurrentModalIndex(newIndex);
+            setModalNotifyContent(data[newIndex]);
+            modalNotifyRef.current.open();}
+            else{
+                setCurrentModalIndex(0);
+            }
+        }
+    }
 
     return (
         <Wrapper>
@@ -183,7 +204,7 @@ const MenuPage = () => {
             <Modal ref={modalNotifyRef} width="300px">
                 <div dangerouslySetInnerHTML={{ __html: modalNotifyContent }} />
                 <Button
-                    onClick={() => modalNotifyRef.current.close()}
+                    onClick={() => closeHandler}
                     label={"확인"}
                     backgroundColor={"#FF3C3C"}
                     hoverBackgroundColor={"red"}
