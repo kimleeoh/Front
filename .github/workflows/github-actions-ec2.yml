@@ -33,7 +33,6 @@ jobs:
           cd Front
           npm cache clean --force
           npm install
-          npm install -g forever
           forever stopall
           git pull origin server
           rm -r .github
@@ -68,5 +67,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             echo "Final verification of Node.js and Nginx..."
+            npm install -g forever
             forever list
             sudo tail -n 20 /var/log/nginx/error.log
