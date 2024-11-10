@@ -33,6 +33,7 @@ const MenuPage = () => {
         try {
             const response = await BaseAxios.get("/api/modal-notify");
             const data = response.data;
+            console.log("modal-notify data: ", data);
 
             if (data && typeof data === "string" && data.trim()) {
                 setTotalModalNotifyContent(data);
