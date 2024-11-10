@@ -236,7 +236,7 @@ Questions.propTypes = {
     time: PropTypes.string.isRequired,
     views: PropTypes.number.isRequired,
     like: PropTypes.number.isRequired,
-    img: PropTypes.array,
+    img: PropTypes.string,
     limit: PropTypes.number.isRequired,
     point: PropTypes.number.isRequired,
 };

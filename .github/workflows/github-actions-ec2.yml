@@ -47,6 +47,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+
             # Nginx 에러 로그 출력 (최근 20줄)
             echo "Checking Nginx error log..."
             sudo tail -n 20 /var/log/nginx/error.log
