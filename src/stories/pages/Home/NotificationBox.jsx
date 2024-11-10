@@ -47,6 +47,8 @@ const getNotificationContent = (type, data) => {
             return `알림 설정된 '${data.title}' 게시글이 채택되었습니다.`;
         case 12:
             return `게시글 '${data.title}'에서 내 답변이 채택되었습니다. + ${data.point}포인트`;
+        case 13:
+            return `답변 추가 10개를 작성했습니다. + ${data.point}포인트`;
         default:
             return "알 수 없는 알림입니다.";
     }
