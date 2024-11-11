@@ -99,13 +99,13 @@ const Grades = () => {
                 <HeadLabel>
                     <HeadBox>
                         <img
-                            src="/Icons/check_border_e.svg"
+                            src="/Icons/Check_border_e.svg"
                             alt="check icon"
                             width={"22px"}
                         />{" "}
                         인증
                         <img
-                            src="/Icons/check_border_d.svg"
+                            src="/Icons/Check_border_d.svg"
                             alt="check icon"
                             width={"22px"}
                         />{" "}
@@ -155,8 +155,8 @@ const Grades = () => {
                                 <img
                                     src={
                                         semester.confirmed === 2
-                                            ? "/Icons/check_border_e.svg"
-                                            : "/Icons/check_border_d.svg"
+                                            ? "/Icons/Check_border_e.svg"
+                                            : "/Icons/Check_border_d.svg"
                                     }
                                     alt="check icon"
                                     style={{ marginLeft: "8px" }}
