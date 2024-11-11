@@ -45,7 +45,7 @@ const MenuPage = () => {
                 setCurrentModalIndex(0);
                 
                 setModalNotifyContent(data[0]);
-                console.log(modalNotifyContent);
+                //console.log(modalNotifyContent);
                 modalNotifyRef.current.open();
             }
         } catch (error) {

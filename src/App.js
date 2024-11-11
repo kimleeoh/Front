@@ -86,17 +86,17 @@ class ErrorBoundary extends React.Component {
     }
 }
 // // 경로 변경 시 Google Analytics에 페이지 뷰 전송하는 컴포넌트
-// const GAListener = () => {
-//     const location = useLocation();
+const GAListener = () => {
+    const location = useLocation();
 
-//     useEffect(() => {
-//         window.gtag('config', 'G-TDCJ0Y04C1', {
-//             page_path: location.pathname,
-//         });
-//     }, [location]);
+    useEffect(() => {
+        window.gtag('config', 'G-TDCJ0Y04C1', {
+            page_path: location.pathname,
+        });
+    }, [location]);
 
-//     return null;
-// };
+    return null;
+};
 
 const App = () => {
     const [loading, setLoading] = React.useState(true);
@@ -113,7 +113,7 @@ const App = () => {
 
     useEffect(() => {
         mainApi();
-        //initializeGA();
+        initializeGA();
     }, []);
 
     if (loading) {
