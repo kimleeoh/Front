@@ -35,7 +35,7 @@ const MenuPage = () => {
             const data = response.data;
             console.log("modal-notify data: ", data);
 
-            if (data && Array.isArray(data) && data.trim()) {
+            if (data && Array.isArray(data)) {
                 setTotalModalNotifyContent(data);
                 setCurrentModalIndex(0);
                 
