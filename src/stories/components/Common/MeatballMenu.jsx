@@ -131,7 +131,7 @@ const MeatballMenu = ({
     return (
         <div ref={menuRef}>
             <MenuButton onClick={handleTogglePopup}>
-                <img src={"/Icons/meatballs.svg"} alt="Meatball Menu" />
+                <img src={"/Icons/Meatballs.svg"} alt="Meatball Menu" />
             </MenuButton>
             {isPopupOpen && (
                 <Popup
