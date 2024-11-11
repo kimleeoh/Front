@@ -117,7 +117,6 @@ const QnADetailPage = () => {
 
         const formData = { id: _id.toString(), currentDocs };
         await BaseAxios.put("/api/qna/update/post", formData);
-
         if (isNoti) navigate(-1, { state: { isNoti: true } });
         else navigate("/qna");
     };
