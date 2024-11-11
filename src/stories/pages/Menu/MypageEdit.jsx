@@ -183,7 +183,7 @@ const MyPageEdit = () => {
                     </BadgeContainer>
                     <BoardTitle text="성적" type={"edit"} />
                     <SubjectWrapper>
-                        <ScrollableSubjectList>
+                        <ScrollableSubjectList maxWidth={windowSize}>
                             <SubjectList
                                 subject={"디지털미디어원리"}
                                 disableLink={true}
@@ -615,6 +615,7 @@ const SubjectWrapper = styled.div`
 
 const ScrollableSubjectList = styled.div`
     width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     max-height: 280px;
     overflow-y: auto;
 `;
