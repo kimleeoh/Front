@@ -206,7 +206,7 @@ const MenuPage = () => {
             <Modal ref={modalNotifyRef} width="300px">
                 <div dangerouslySetInnerHTML={{ __html: modalNotifyContent }} />
                 <Button
-                    onClick={() => closeHandler}
+                    onClick={closeHandler}
                     label={"확인"}
                     backgroundColor={"#FF3C3C"}
                     hoverBackgroundColor={"red"}
