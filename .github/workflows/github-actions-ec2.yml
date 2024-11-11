@@ -11,62 +11,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 레포지토리 체크아웃 및 작업 디렉토리 설정
       - name: Checkout the files
-        uses: actions/checkout@v3
-        with:
-          path: Front
+        uses: actions/checkout@v2
 
-      # 2. SSH 설정
       - name: Set up SSH
-        env:
-          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "${EC2_SSH_KEY}" > ~/.ssh/deploy_key.pem
-          chmod 600 ~/.ssh/deploy_key.pem
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key_Amazon 
+          chmod 600 ~/.ssh/deploy_key_Amazon
           ssh-keyscan -H ${{ secrets.HOST_DNS }} >> ~/.ssh/known_hosts
 
-      # 3. 캐시 클리어 후 빌드 작업
-      - name: Clean npm cache and Build project
-        run: |
-          cd Front
-          npm cache clean --force
-          npm install
-          npm install -g forever  # Install forever globally
-          forever stopall
-          git pull origin server
-          rm -r .github
-          CI=false npm run build  # CI 환경을 false로 설정하여 경고를 무시
-          forever start -c "node server.js" .
+      - name: Deploy to Server 1
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.HOST_DNS }}  # 호스트 이름 또는 IP 주소
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          TARGET: ${{ secrets.TARGET_DIR }}
 
-      # 5. 서버 상태 확인 및 문제 해결
-      - name: Check Server Status and Restart if Needed
+      - name: Executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST_DNS }}
+          host: ${{ secrets.HOST_DNS }}  # 호스트 이름 또는 IP 주소
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.EC2_SSH_KEY }}  # 올바른 SSH 키 사용
           script: |
-
-            # Nginx 에러 로그 출력 (최근 20줄)
-            echo "Checking Nginx error log..."
-            sudo tail -n 20 /var/log/nginx/error.log
-
-            # Nginx 캐시 삭제 및 재시작
-            echo "Clearing Nginx cache and restarting Nginx..."
-            sudo rm -rf /var/cache/nginx/*
+            cd Front
+            forever stopall
+            sudo systemctl stop nginx
+            git pull origin server
+            rm -r .github
+            npm install
+            npm run build
+            forever start -c "node server.js" .
             sudo systemctl restart nginx
-           
-
-      # 6. Nginx 및 Node.js 재시작 최종 확인
-      - name: Final Check and Logs
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST_DNS }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            echo "Final verification of Node.js and Nginx..."
-            forever list
-            sudo tail -n 20 /var/log/nginx/error.log
