@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Questions from "../../components/Common/Questions";
@@ -16,84 +16,53 @@ const Bookmarks = () => {
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
     const [tipsData, setTipsData] = useState([]);
     const [activeTab, setActiveTab] = useState("QnA");
-    const observerRef = useRef();
     const [loading, setLoading] = useState(false);
     const [nowChips, setNowChips] = useState([]);
     const [isEmpty, setIsEmpty] = useState(false);
 
     const tabs = ["QnA", "Tips"];
-
     const { width: windowSize } = useWindowSize();
 
-    const fetchApi = async ({ filtersArray, lastDocTime }) => {
+    const fetchApi = async (filtersArray) => {
         try {
-            console.log("Sending filters:", filtersArray);
-            console.log("lastDocTime: ", lastDocTime);
-            if (lastDocTime) {
-                const response = await BaseAxios.post("/api/menu/scraplist", {
-                    filters: filtersArray,
-                    lastDocTime: lastDocTime,
-                });
+            const response = await BaseAxios.post("/api/menu/scraplist", {
+                filters: filtersArray,
+            });
 
-                if (response.data.message) {
-                    setIsEmpty(true);
-                    return;
-                }
-                console.log("response:", response);
-                return response.data; // Return response data
+            if (response.data.message) {
+                setIsEmpty(true);
+                return null;
             }
+            return response.data;
         } catch (error) {
             console.error("Error in fetchApi:", error);
             throw error;
         }
     };
 
-    const fetchData = async (filtersArray = null, lastDocTime = []) => {
+    const fetchData = async (filtersArray = null) => {
         try {
             setLoading(true);
             let questionResponse, tipsResponse;
+
             if (filtersArray?.length > 0) {
-                tipsResponse = await fetchApi({
-                    filtersArray: filtersArray,
-                    lastDocTime,
-                });
+                tipsResponse = await fetchApi(filtersArray);
             } else if (!filtersArray && activeTab === "QnA") {
-                questionResponse = await fetchApi({
-                    filtersArray: ["qna"],
-                    lastDocTime,
-                });
+                questionResponse = await fetchApi(["qna"]);
             } else {
-                tipsResponse = await fetchApi({
-                    filtersArray: ["test", "pilgy", "honey"],
-                    lastDocTime,
-                });
+                tipsResponse = await fetchApi(["test", "pilgy", "honey"]);
             }
 
-            if (!isEmpty && questionResponse?.documents.length) {
-                setQuestionData((prev) => [
-                    ...prev,
-                    ...questionResponse.documents,
-                ]);
-                console.log("questionData: ", questionData);
+            if (questionResponse?.documents.length) {
+                setQuestionData(questionResponse.documents);
             }
-            if (!isEmpty && tipsResponse?.documents.length) {
-                setTipsData((prev) => [...prev, ...tipsResponse.documents]);
-                console.log("tipsData: ", tipsData);
+            if (tipsResponse?.documents.length) {
+                setTipsData(tipsResponse.documents);
             }
         } catch (error) {
-            console.error("Error fetching tips data:", error);
+            console.error("Error fetching data:", error);
         } finally {
             setLoading(false);
-        }
-    };
-
-    const fetchMore = () => {
-        if (!loading && activeTab == "Tips") {
-            const lastTip = tipsData[tipsData.length - 1];
-            const lastDocTime = lastTip?.time || null;
-
-            console.log("Fetching more with lastDocTime:", lastDocTime);
-            fetchData(nowChips, lastDocTime); // Pass the last document's time
         }
     };
 
@@ -101,31 +70,12 @@ const Bookmarks = () => {
         fetchData();
     }, [activeTab]);
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting && !loading) {
-                    console.log("fetchMore !");
-                    fetchMore(); // Fetch more data when reaching the bottom
-                }
-            },
-            { threshold: 1.0 }
-        );
-
-        if (observerRef.current) observer.observe(observerRef.current);
-
-        return () => {
-            if (observerRef.current) observer.unobserve(observerRef.current);
-        };
-    }, [loading]);
-
     const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
     };
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
-        // 늦게 반영되므로 데이터 뭐가 들었는지 보고 싶으면 아래 두 개 주석 처리
         setNowChips([]);
         setQuestionData([]);
         setTipsData([]);
@@ -138,6 +88,7 @@ const Bookmarks = () => {
 
     const handleFilterChange = (activeChips) => {
         setTipsData([]);
+        setIsEmpty(false);
         setNowChips(
             activeChips.length === 0 ? ["test", "pilgy", "honey"] : activeChips
         );
@@ -154,16 +105,11 @@ const Bookmarks = () => {
         const postsWithAds = [];
         posts.forEach((post, index) => {
             postsWithAds.push(
-                <div
-                    key={post._id}
-                    ref={index === posts.length - 1 ? observerRef : null}
-                    style={{ width: "100%" }}
-                >
+                <div key={post._id} style={{ width: "100%" }}>
                     {renderFunction(post)}
                 </div>
             );
 
-            // Insert an ad after every 5th post, except for the last post
             if ((index + 1) % 5 === 0 && index !== posts.length - 1) {
                 postsWithAds.push(
                     <AdBox
@@ -203,6 +149,7 @@ const Bookmarks = () => {
                     </CheckerWrapper>
                     {renderPostsWithAds(filteredQuestions, (question) => (
                         <Questions
+                            key={question._id}
                             _id={question._id}
                             title={question.title}
                             content={question.content}
@@ -238,6 +185,7 @@ const Bookmarks = () => {
                     </ChipFilterWrapper>
                     {renderPostsWithAds(tipsData, (tip) => (
                         <Tips
+                            key={tip._id}
                             _id={tip._id}
                             Ruser={tip.Ruser}
                             category_name={tip.category_name}

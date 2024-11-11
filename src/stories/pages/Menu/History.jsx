@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Questions from "../../components/Common/Questions";
 import Tips from "../Tips/Tips";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
+import { Spinner } from "../../components/Common/Spinner";
 
 const History = () => {
     const [questionData, setQuestionData] = useState([]);
     const [tipsData, setTipsData] = useState([]);
     const [isEmpty, setIsEmpty] = useState(false);
-    const observerRef = useRef();
     const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(false);
 
     const { width: windowSize } = useWindowSize();
 
     const fetchData = async () => {
         try {
+            setLoading(true);
             const response = await BaseAxios.get("/api/menu/recentlist");
             console.log("response: ", response);
             const fetchedData = response.data;
@@ -36,16 +36,17 @@ const History = () => {
 
             setQuestionData(questions);
             setTipsData(tips);
-            console.log("questionData: ", questionData);
-            console.log("tipsData: ", tipsData);
         } catch (error) {
-            console.error("Error in fetchApi:", error);
-            throw error;
+            console.error("Error in fetchData:", error);
+        } finally {
+            setLoading(false);
         }
     };
+
     useEffect(() => {
         fetchData();
     }, []);
+
     return (
         <Wrapper>
             <Header
@@ -63,11 +64,11 @@ const History = () => {
                     question.now_category_list[
                         question.now_category_list.length - 1
                     ];
-
-                // 동적으로 키를 가져와서 값 반환
                 const value = lastCategory[Object.keys(lastCategory)[0]];
+
                 return (
                     <Questions
+                        key={question._id}
                         _id={question._id}
                         title={question.title}
                         content={question.content}
@@ -83,6 +84,7 @@ const History = () => {
             })}
             {tipsData.map((tip) => (
                 <Tips
+                    key={tip._id}
                     _id={tip._id}
                     Ruser={tip.Ruser}
                     category_name={tip.category_name}
@@ -96,13 +98,12 @@ const History = () => {
                     time={tip.time}
                 />
             ))}
-            {isEmpty ? (
+            {loading && <Spinner color="#434B60" size={32} />}
+            {isEmpty && (
                 <EmptyBox>
                     <Icon src={"/Icons/Alert_gray.svg"} />
                     <Content>아직 본 글이 없어요!</Content>
                 </EmptyBox>
-            ) : (
-                <div ref={observerRef} />
             )}
         </Wrapper>
     );
@@ -118,20 +119,6 @@ const Wrapper = styled.div`
     margin-top: 120px;
     margin-bottom: 100px;
     width: 100%;
-`;
-
-const CheckerWrapper = styled.div`
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    padding-left: 10px;
-    box-sizing: border-box;
-`;
-
-const ChipFilterWrapper = styled.div`
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    padding-left: 10px;
-    box-sizing: border-box;
 `;
 
 const EmptyBox = styled.div`

@@ -55,14 +55,20 @@ const Likes = () => {
                 tipsResponse = await fetchApi(["test", "pilgy", "honey"]);
             }
 
+            // 중복 요청 방지 및 빈 데이터 여부 확인
             if (!isEmpty && questionResponse?.documents.length) {
-                setQuestionData((prev) => [
-                    ...prev,
-                    ...questionResponse.documents,
-                ]);
+                setQuestionData((prev) => [...prev, ...questionResponse.documents]);
             }
             if (!isEmpty && tipsResponse?.documents.length) {
                 setTipsData((prev) => [...prev, ...tipsResponse.documents]);
+            }
+
+            // 더 불러올 게시물이 없는 경우 hasMore를 false로 설정
+            if (
+                (!questionResponse?.documents?.length && activeTab === "QnA") ||
+                (!tipsResponse?.documents?.length && activeTab === "Tips")
+            ) {
+                setHasMore(false);
             }
         } catch (error) {
             console.error("Error fetching tips data:", error);
@@ -78,6 +84,7 @@ const Likes = () => {
     };
 
     useEffect(() => {
+        setHasMore(true); // 탭 변경 시 다시 데이터를 로드할 수 있도록 초기화
         fetchData();
     }, [activeTab]);
 

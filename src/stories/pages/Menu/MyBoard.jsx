@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../../components/Header";
@@ -16,27 +16,22 @@ const MyBoard = () => {
     const [isAGradeOnly, setIsAGradeOnly] = useState(false);
     const [tipsData, setTipsData] = useState([]);
     const [activeTab, setActiveTab] = useState("QnA");
-    const observerRef = useRef();
     const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
     const [isEmpty, setIsEmpty] = useState(false);
 
-    const tabs = ["QnA", "Tips"]; // 탭 목록을 동적으로 관리합니다.
-
+    const tabs = ["QnA", "Tips"];
     const { width: windowSize } = useWindowSize();
 
     const fetchApi = async (filtersArray) => {
         try {
-            console.log("Sending filters:", filtersArray);
             const response = await BaseAxios.post("/api/menu/postlist", {
                 filters: filtersArray,
             });
             if (response.data.message) {
                 setIsEmpty(true);
-                return;
+                return null;
             }
-            console.log("response:", response);
-            return response.data; // Return response data
+            return response.data;
         } catch (error) {
             console.error("Error in fetchApi:", error);
             throw error;
@@ -46,60 +41,36 @@ const MyBoard = () => {
     const fetchData = async (filtersArray = null) => {
         try {
             setLoading(true);
-            let questionResponse, tipsResponse;
+            let response;
+
             if (filtersArray) {
-                tipsResponse = await fetchApi(filtersArray);
+                response = await fetchApi(filtersArray);
             } else if (activeTab === "QnA") {
-                questionResponse = await fetchApi(["qna"]);
+                response = await fetchApi(["qna"]);
             } else {
-                tipsResponse = await fetchApi(["test", "pilgy", "honey"]);
+                response = await fetchApi(["test", "pilgy", "honey"]);
             }
 
-            if (!isEmpty && questionResponse?.documents.length) {
-                setQuestionData((prev) => [
-                    ...prev,
-                    ...questionResponse.documents,
-                ]);
-                console.log("questionData: ", questionData);
-            }
-            if (!isEmpty && tipsResponse?.documents.length) {
-                setTipsData((prev) => [...prev, ...tipsResponse.documents]);
-                console.log("tipsData: ", tipsData);
+            if (response) {
+                if (activeTab === "QnA") {
+                    setQuestionData(response.documents);
+                } else {
+                    setTipsData(response.documents);
+                }
             }
         } catch (error) {
-            console.error("Error fetching tips data:", error);
+            console.error("Error fetching data:", error);
         } finally {
             setLoading(false);
         }
     };
 
-    const fetchMore = () => {
-        if (!loading && hasMore) {
-            fetchData();
-        }
-    };
-
     useEffect(() => {
+        setIsEmpty(false); // 탭 변경 시 초기화
+        setQuestionData([]);
+        setTipsData([]);
         fetchData();
     }, [activeTab]);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting && hasMore && !loading) {
-                    console.log("fetchMore !");
-                    fetchMore(); // Fetch more data when reaching the bottom
-                }
-            },
-            { threshold: 1.0 }
-        );
-
-        if (observerRef.current) observer.observe(observerRef.current);
-
-        return () => {
-            if (observerRef.current) observer.unobserve(observerRef.current);
-        };
-    }, [hasMore, loading]);
 
     const handleCheckerChange = (isChecked) => {
         setIsAGradeOnly(isChecked);
@@ -107,10 +78,6 @@ const MyBoard = () => {
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
-        // 늦게 반영되므로 데이터 뭐가 들었는지 보고 싶으면 아래 두 개 주석 처리
-        setQuestionData([]);
-        setTipsData([]);
-        setIsEmpty(false);
     };
 
     const filteredQuestions = isAGradeOnly
@@ -119,7 +86,7 @@ const MyBoard = () => {
 
     const handleFilterChange = (activeChips) => {
         setTipsData([]);
-        setHasMore(true);
+        setIsEmpty(false);
         fetchData(
             activeChips.length === 0 ? ["test", "pilgy", "honey"] : activeChips
         );
@@ -151,12 +118,11 @@ const MyBoard = () => {
                             question.now_category_list[
                                 question.now_category_list.length - 1
                             ];
-
-                        // 동적으로 키를 가져와서 값 반환
                         const value =
                             lastCategory[Object.keys(lastCategory)[0]];
                         return (
                             <Questions
+                                key={question._id}
                                 _id={question._id}
                                 title={question.title}
                                 content={question.content}
@@ -182,6 +148,7 @@ const MyBoard = () => {
                     </ChipFilterWrapper>
                     {tipsData.map((tip) => (
                         <Tips
+                            key={tip._id}
                             _id={tip._id}
                             Ruser={tip.Ruser}
                             category_name={tip.category_name}
@@ -198,15 +165,13 @@ const MyBoard = () => {
                 </>
             )}
             {loading && <Spinner color="#434B60" size={32} />}
-            {isEmpty ? (
+            {isEmpty && (
                 <EmptyBox>
                     <Icon src={"/Icons/Alert_gray.svg"} />
                     <Content>
                         아직 작성한 글이 없어요! 글을 작성해 볼까요?
                     </Content>
                 </EmptyBox>
-            ) : (
-                <div ref={observerRef} />
             )}
         </Wrapper>
     );
