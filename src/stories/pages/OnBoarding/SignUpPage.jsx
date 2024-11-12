@@ -147,12 +147,19 @@ const SignUpPage = () => {
     };
 
     const handleSubmit = async () => {
-        // 서버로 데이터를 전송하는 로직을 추가할 수 있습니다.
-        // 예: await fetch('/api/signup', { method: 'POST', body: JSON.stringify(formData) });
-        console.log(step - 1);
-        SignUpHandler(step - 1, formData);
-        console.log("제출된 데이터:", formData);
-        navigate("/confirm");
+        // 최종 단계에서만 제출 허용
+        if (validateStep() && step === 6) {
+            try {
+                console.log("회원가입 최종 제출:", formData);
+                await SignUpHandler(step - 1, formData); // 마지막 단계만 서버로 전송
+                navigate("/confirm");
+            } catch (error) {
+                console.error("회원가입 제출 오류:", error);
+                setErrorMessage("회원가입 과정에서 오류가 발생했습니다.");
+            }
+        } else {
+            alert("모든 회원정보를 정확히 입력해 주세요.");
+        }
     };
 
     const validateStep = () => {
