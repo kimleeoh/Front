@@ -151,8 +151,8 @@ const MyBoard = () => {
                             key={tip._id}
                             _id={tip._id}
                             Ruser={tip.Ruser}
-                            category_name={tip.category_name}
-                            category_type={tip.category_type}
+                            category_name={tip.now_category.category_name}
+                            category_type={tip.now_category.category_type}
                             title={tip.title}
                             preview_img={tip.preview_img}
                             likes={tip.likes}

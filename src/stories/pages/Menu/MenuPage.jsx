@@ -95,21 +95,25 @@ const MenuPage = () => {
         alert("nanseulgim1027@gmail.com으로 문의해주세요!");
     };
 
-    const closeHandler = () => {
+    // 문의하기 버튼 클릭 시 알림창 표시
+    const handleRecentDocsClick = () => {
+        alert("준비중인 기능입니다!");
+    };
 
+    const closeHandler = () => {
         modalNotifyRef.current.close();
 
-        if(totalModalNotifyContent.length > 1){ 
-            if(currentModalIndex < totalModalNotifyContent.length){
-            const newIndex = currentModalIndex + 1;
-            setCurrentModalIndex(newIndex);
-            setModalNotifyContent(totalModalNotifyContent[newIndex]);
-            modalNotifyRef.current.open();}
-            else{
+        if (totalModalNotifyContent.length > 1) {
+            if (currentModalIndex < totalModalNotifyContent.length) {
+                const newIndex = currentModalIndex + 1;
+                setCurrentModalIndex(newIndex);
+                setModalNotifyContent(totalModalNotifyContent[newIndex]);
+                modalNotifyRef.current.open();
+            } else {
                 setCurrentModalIndex(0);
             }
         }
-    }
+    };
 
     return (
         <Wrapper>
@@ -169,7 +173,10 @@ const MenuPage = () => {
                 <MenuList to="/likes" src={"/Icons/thumb.svg"}>
                     좋아요한 글
                 </MenuList>
-                <MenuList to="/history" src={"/Icons/recent.svg"}>
+                <MenuList
+                    onClick={handleRecentDocsClick}
+                    src={"/Icons/recent.svg"}
+                >
                     최근 본 글
                 </MenuList>
                 <Title> 도움말 </Title>

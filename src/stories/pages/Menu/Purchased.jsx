@@ -9,31 +9,38 @@ import Tips from "../Tips/Tips";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 
-const initialQuestionData = [];
-
-const initialTipsData = [];
-
 const History = () => {
-    const { subject } = useParams();
-    const [questionData, setQuestionData] = useState([]);
-    const [isAGradeOnly, setIsAGradeOnly] = useState(false);
+    // const { subject } = useParams();
+    // const [questionData, setQuestionData] = useState([]);
+    // const [isAGradeOnly, setIsAGradeOnly] = useState(false);
     const [tipsData, setTipsData] = useState([]);
     const [filteredTips, setFilteredTips] = useState([]);
-    const [activeTab, setActiveTab] = useState("전체");
-    const [depth, setDepth] = useState(1);
+    // const [activeTab, setActiveTab] = useState("전체");
+    // const [depth, setDepth] = useState(1);
 
     const { width: windowSize } = useWindowSize();
 
+    const fetchData = async (filtersArray) => {
+        console.log("filtersArray: ", filtersArray);
+        const tipsData = await BaseAxios.post("/api/menu/purchased", {
+            filters: filtersArray,
+        });
+        console.log(tipsData.data.pList);
+        setTipsData(tipsData.data.pList);
+        setFilteredTips(tipsData.data.pList);
+    }
+
     useEffect(() => {
         // 데이터 로딩 로직
-        const loadData = async () => {
-            const tipsData = await BaseAxios.get("/api/menu/purchased");
-            console.log(tipsData.data.pList);
-            setTipsData(tipsData.data.pList);
-            setFilteredTips(tipsData.data.pList);
-        };
-        loadData();
+        fetchData(["honey", "pilgy", "test"]);
     }, []);
+
+    const handleFilterChange = (activeChips) => {
+        setTipsData([]);
+        fetchData(
+            activeChips.length === 0 ? ["test", "pilgy", "honey"] : activeChips
+        );
+    };
 
     return (
         <Wrapper>
@@ -43,6 +50,12 @@ const History = () => {
                 backButton={true}
                 searchButton={true}
             />
+            <ChipFilterWrapper maxWidth={windowSize}>
+                <ChipFilter
+                    onFilterChange={handleFilterChange}
+                    marginTop={"10px"}
+                />
+            </ChipFilterWrapper>
         </Wrapper>
     );
 };
@@ -57,13 +70,6 @@ const Wrapper = styled.div`
     margin-top: 120px;
     margin-bottom: 100px;
     width: 100%;
-`;
-
-const CheckerWrapper = styled.div`
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    padding-left: 10px;
-    box-sizing: border-box;
 `;
 
 const ChipFilterWrapper = styled.div`

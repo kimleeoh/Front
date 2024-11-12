@@ -226,8 +226,8 @@ const Likes = () => {
                         <Tips
                             _id={tip._id}
                             Ruser={tip.Ruser}
-                            category_name={tip.category_name}
-                            category_type={tip.category_type}
+                            category_name={tip.now_category.category_name}
+                            category_type={tip.now_category.category_type}
                             title={tip.title}
                             preview_img={tip.preview_img}
                             likes={tip.likes}
@@ -244,8 +244,8 @@ const Likes = () => {
                 <EmptyBox>
                     <Icon src={"/Icons/Alert_gray.svg"} />
                     <Content>
-                        아직 좋아요를 누른 글이 없어요!
-                        마음에 든 글에 좋아요를 달아보세요!
+                        아직 좋아요를 누른 글이 없어요! 마음에 든 글에 좋아요를
+                        달아보세요!
                     </Content>
                 </EmptyBox>
             )}
