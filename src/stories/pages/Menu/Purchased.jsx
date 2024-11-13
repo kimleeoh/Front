@@ -10,19 +10,19 @@ import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 
 const History = () => {
-    const { subject } = useParams();
-    const [questionData, setQuestionData] = useState([]);
-    const [isAGradeOnly, setIsAGradeOnly] = useState(false);
+    // const { subject } = useParams();
+    // const [questionData, setQuestionData] = useState([]);
+    // const [isAGradeOnly, setIsAGradeOnly] = useState(false);
     const [tipsData, setTipsData] = useState([]);
     const [filteredTips, setFilteredTips] = useState([]);
-    const [activeTab, setActiveTab] = useState("전체");
-    const [depth, setDepth] = useState(1);
+    // const [activeTab, setActiveTab] = useState("전체");
+    // const [depth, setDepth] = useState(1);
 
     const { width: windowSize } = useWindowSize();
 
     const fetchData = async (filtersArray) => {
         console.log("filtersArray: ", filtersArray);
-        const tipsData = await BaseAxios.get("/api/menu/purchased", {
+        const tipsData = await BaseAxios.post("/api/menu/purchased", {
             filters: filtersArray,
         });
         console.log(tipsData.data.pList);
@@ -52,7 +52,7 @@ const History = () => {
             />
             <ChipFilterWrapper maxWidth={windowSize}>
                 <ChipFilter
-                     onFilterChange={handleFilterChange}
+                    onFilterChange={handleFilterChange}
                     marginTop={"10px"}
                 />
             </ChipFilterWrapper>
