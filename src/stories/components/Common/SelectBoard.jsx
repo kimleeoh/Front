@@ -44,7 +44,7 @@ const SelectBoard = ({ startId, placeholder, onChange, disabled }) => {
     };
 
     useEffect(() => {
-        BaseAxios.post("/api/category", { id: selectedCategoryId })
+        BaseAxios.post("/api/c/category", { id: selectedCategoryId })
             .then((response) => {
                 const fetchedCategories = response.data;
                 const newBoardOptions =
@@ -64,7 +64,7 @@ const SelectBoard = ({ startId, placeholder, onChange, disabled }) => {
                     console.log("newBoardOptions: ", newBoardOptions);
                     Promise.all(
                         newBoardOptions.map((option) =>
-                            BaseAxios.post("/api/category", {
+                            BaseAxios.post("/api/c/category", {
                                 id: option.id,
                             }).then((response) => ({
                                 CategoryName: response.data.category_name,

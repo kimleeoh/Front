@@ -29,7 +29,7 @@ const MyPage = () => {
         const fetchData = async () => {
             try {
                 const [popularPosts] = await Promise.all([
-                    BaseAxios.post("/api/mypage/trending"),
+                    BaseAxios.post("/api/h/mypage/trending"),
                 ]);
 
                 if (Array.isArray(popularPosts.data)) {

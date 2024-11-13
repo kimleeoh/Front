@@ -36,7 +36,7 @@ const MenuPage = () => {
         setIsFetching(true);
             
         try {
-            const response = await BaseAxios.get("/api/modal-notify");
+            const response = await BaseAxios.get("/api/h/modal-notify");
             const data = response.data;
             console.log("modal-notify data: ", data);
 

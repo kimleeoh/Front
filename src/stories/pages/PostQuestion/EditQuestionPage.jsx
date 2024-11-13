@@ -36,7 +36,7 @@ const EditQuestionPage = () => {
     useEffect(() => {
         const fetchPoint = async () => {
             // Simulate fetching point value
-            const fetchedPoint = await BaseAxios.get("/api/point");
+            const fetchedPoint = await BaseAxios.get("/api/h/point");
             setOriginPoint(fetchedPoint.data.point);
         };
 

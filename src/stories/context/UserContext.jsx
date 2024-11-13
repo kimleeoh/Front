@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await BaseAxios.get("/api/mypage/profile");
+            const response = await BaseAxios.get("/api/h/mypage/profile");
             setUserData(response.data);
         } catch (error) {
             console.error("Error fetching user data:", error);

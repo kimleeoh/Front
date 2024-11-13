@@ -25,7 +25,7 @@ const NotificationPage = () => {
 
         const checkNewNotifications = async () => {
             try {
-                const response = await BaseAxios.get("/api/notify/new");
+                const response = await BaseAxios.get("/api/h/notify/new");
                 setHasNewNotifications(response.data.newNotify);
             } catch (error) {
                 console.error("Failed to check for new notifications:", error);

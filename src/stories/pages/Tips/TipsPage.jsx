@@ -42,7 +42,7 @@ const TipsPage = () => {
             try {
                 const filtersArray =
                     chips.length > 0 ? chips : ["test", "pilgy", "honey"];
-                const response = await BaseAxios.post("/api/bulletin/tips", {
+                const response = await BaseAxios.post("/api/h/bulletin/tips", {
                     filters: filtersArray,
                     depth: depth,
                 });

@@ -48,11 +48,11 @@ const HomePage = () => {
                     answerablePostsResponse,
                     modalResponse
                 ] = await Promise.all([
-                    BaseAxios.get("/api/point"),
-                    BaseAxios.get("/api/notify/new", { send: false }),
-                    BaseAxios.post("/api/home/trending"),
-                    BaseAxios.post("/api/home/answer-possible"),
-                    BaseAxios.get("/api/modal-notify")
+                    BaseAxios.get("/api/h/point"),
+                    BaseAxios.get("/api/h/notify/new", { send: false }),
+                    BaseAxios.post("/api/h/home/trending"),
+                    BaseAxios.post("/api/h/home/answer-possible"),
+                    BaseAxios.get("/api/h/modal-notify")
                 ]);
 
                 const { trendingTipsResponse, trendingQnaResponse } =

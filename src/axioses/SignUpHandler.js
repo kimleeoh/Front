@@ -84,7 +84,7 @@ const LoginHandler = async (formData) => {
         const passData = {
             pub: publicKeyPem,
         };
-        const response = await BaseAxios.post("/api/login/key", passData, {
+        const response = await BaseAxios.post("/api/lg/login/key", passData, {
             headers: { "idempotency-key": idempotencyKey },
         });
 
@@ -100,7 +100,7 @@ const LoginHandler = async (formData) => {
         sensitiveInfo.setLoginKey(iv, key);
 
         formData.password = sensitiveInfo.encrypt(formData.password);
-        const result = await BaseAxios.post("/api/login", formData, {
+        const result = await BaseAxios.post("/api/lg/login", formData, {
             headers: { "idempotency-key": idempotencyKey },
         });
 

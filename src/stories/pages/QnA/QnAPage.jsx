@@ -49,7 +49,7 @@ const QnAPage = () => {
         async (isInitial = false) => {
             setLoading(true);
             try {
-                const response = await BaseAxios.get("/api/bulletin/qnas", {
+                const response = await BaseAxios.get("/api/h/bulletin/qnas", {
                     params: { isAGradeOnly, type: "many", depth: depth },
                 });
                 const newQuestions = response.data.docList;
