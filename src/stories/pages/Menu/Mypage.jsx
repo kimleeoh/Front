@@ -79,7 +79,8 @@ const MyPage = () => {
             </Header>
             <Profile maxWidth={windowSize}>
                 <img
-                    src={profile_img ? profile_img : "/Profile.svg"}
+                    //src={profile_img ? profile_img : "/Profile.svg"}
+                    src={"/Profile.svg"}
                     alt="프로필"
                     width="100px"
                     height="100px"

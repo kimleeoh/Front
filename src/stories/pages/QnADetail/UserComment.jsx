@@ -87,7 +87,6 @@ const UserComment = ({
             });
             alert("답변이 등록되었습니다.");
             navigate(`/qna/${now_id}/edit`);
-            
         };
 
         if (isFormValid) submitHandler();
@@ -103,7 +102,8 @@ const UserComment = ({
                 <Wrapper>
                     <SubWrapper>
                         <ProfileImg
-                            src={profileImg ? profileImg : "/Profile.svg"}
+                            //src={profileImg ? profileImg : "/Profile.svg"}
+                            src={"/Profile.svg"}
                         />
                         <ProfileContainer>
                             {/* <LevelGrade>Lv. {level} | A 등급</LevelGrade> */}

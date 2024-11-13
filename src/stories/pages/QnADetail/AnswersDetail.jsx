@@ -29,12 +29,12 @@ const Answers = ({
     const handleLike = () => {
         const a = sessionStorage.getItem("answer_like_list");
         let aList = a ? a.split(",") : [];
-        
+
         // Ensure aList has the correct length
         if (aList.length <= index) {
             aList = Array(index + 1).fill(0);
         }
-    
+
         if (aList[index] > 0) {
             aList[index] = 0;
             sessionStorage.setItem("answer_like_list", aList.join(","));
@@ -50,12 +50,12 @@ const Answers = ({
     const handleUnlike = () => {
         const a = sessionStorage.getItem("answer_like_list");
         let aList = a ? a.split(",") : [];
-        
+
         // Ensure aList has the correct length
         if (aList.length <= index) {
             aList = Array(index + 1).fill(0);
         }
-    
+
         if (aList[index] < 0) {
             aList[index] = 0;
             sessionStorage.setItem("answer_like_list", aList.join(","));
