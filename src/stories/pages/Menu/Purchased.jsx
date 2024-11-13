@@ -14,7 +14,6 @@ const History = () => {
     // const [questionData, setQuestionData] = useState([]);
     // const [isAGradeOnly, setIsAGradeOnly] = useState(false);
     const [tipsData, setTipsData] = useState([]);
-    const [filteredTips, setFilteredTips] = useState([]);
     // const [activeTab, setActiveTab] = useState("전체");
     // const [depth, setDepth] = useState(1);
 
@@ -22,17 +21,17 @@ const History = () => {
 
     const fetchData = async (filtersArray) => {
         console.log("filtersArray: ", filtersArray);
-        const tipsData = await BaseAxios.post("/api/menu/purchased", {
+        const response = await BaseAxios.post("/api/menu/purchased", {
             filters: filtersArray,
         });
-        console.log(tipsData.data.pList);
-        setTipsData(tipsData.data.pList);
-        setFilteredTips(tipsData.data.pList);
+        console.log(response.data.docs);
+        setTipsData(response.data.docs);
     };
 
     useEffect(() => {
         // 데이터 로딩 로직
         fetchData(["honey", "pilgy", "test"]);
+        console.log("tipsData: ", tipsData);
     }, []);
 
     const handleFilterChange = (activeChips) => {
@@ -56,6 +55,23 @@ const History = () => {
                     marginTop={"10px"}
                 />
             </ChipFilterWrapper>
+            {tipsData.map((tip) => {
+                return (
+                    <Tips
+                        _id={tip._id}
+                        Ruser={tip.Ruser}
+                        category_name={tip.now_category.category_name}
+                        category_type={tip.now_category.category_type}
+                        title={tip.title}
+                        preview_img={tip.preview_img}
+                        likes={tip.likes}
+                        purchase_price={tip.purchase_price}
+                        target={tip.target}
+                        views={tip.views}
+                        time={tip.time}
+                    />
+                );
+            })}
         </Wrapper>
     );
 };
