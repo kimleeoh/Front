@@ -103,9 +103,7 @@ const TipsDetail = ({
                 </MetaContainer>
                 <Content>{content} </Content>
 
-                {images.length > 0 && (
-                    <ImageCarousel images={images} />
-                )}
+                {images.length > 0 && <ImageCarousel images={images} />}
                 {images.length > 0 && <ImageDownloadList images={images} />}
                 <BottomBar>
                     <Votes
@@ -164,6 +162,7 @@ const OutWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -225,11 +224,6 @@ const Image = styled.img`
     object-position: center;
     border-radius: 8px;
     flex-shrink: 0;
-`;
-
-const CarouselWrapper = styled.div`
-    margin-top: 20px;
-    width: 100%;
 `;
 
 export default TipsDetail;

@@ -135,56 +135,60 @@ const Grades = () => {
                 </HeadLabel>
                 {semesters.length === 0 ? (
                     <>
-                    <img src={"/Icons/Alert_gray.svg"} width={'70px'}/>
-                    <Content>성적을 등록하고 더 많은 혜택을 누려보세요.</Content>
+                        <img src={"/Icons/Alert_gray.svg"} width={"70px"} />
+                        <Content>
+                            성적을 등록하고 더 많은 혜택을 누려보세요.
+                        </Content>
                     </>
                 ) : (
-                semesters.map((semester) => {
-                    const { year, semester: semesterNum } = getSemesterInfo(
-                        semester.originalIndex
-                    );
-                    return (
-                        <div
-                            key={semester.originalIndex}
-                            style={{ width: "85%" }}
-                        >
-                            <div style={{ display: "flex" }}>
-                                <BoardTitle
-                                    text={`${year}학년도 ${semesterNum}학기`}
-                                />
-                                <img
-                                    src={
-                                        semester.confirmed === 2
-                                            ? "/Icons/check_border_e.svg"
-                                            : "/Icons/check_border_d.svg"
-                                    }
-                                    alt="check icon"
-                                    style={{ marginLeft: "8px" }}
-                                    width={"22px"}
-                                />
+                    semesters.map((semester) => {
+                        const { year, semester: semesterNum } = getSemesterInfo(
+                            semester.originalIndex
+                        );
+                        return (
+                            <div
+                                key={semester.originalIndex}
+                                style={{ width: "85%" }}
+                            >
+                                <div style={{ display: "flex" }}>
+                                    <BoardTitle
+                                        text={`${year}학년도 ${semesterNum}학기`}
+                                    />
+                                    <img
+                                        src={
+                                            semester.confirmed === 2
+                                                ? "/Icons/check_border_e.svg"
+                                                : "/Icons/check_border_d.svg"
+                                        }
+                                        alt="check icon"
+                                        style={{ marginLeft: "8px" }}
+                                        width={"22px"}
+                                    />
+                                </div>
+                                <SubjectWrapper maxWidth={windowSize}>
+                                    <ScrollableSubjectList>
+                                        {semester.subject_list.map(
+                                            (subject, idx) => (
+                                                <SubjectList
+                                                    key={idx}
+                                                    subject={subject}
+                                                    disableLink={true}
+                                                    rate={
+                                                        Grades[
+                                                            semester.grade_list[
+                                                                idx
+                                                            ]
+                                                        ]
+                                                    }
+                                                />
+                                            )
+                                        )}
+                                    </ScrollableSubjectList>
+                                </SubjectWrapper>
                             </div>
-                            <SubjectWrapper maxWidth={windowSize}>
-                                <ScrollableSubjectList>
-                                    {semester.subject_list.map(
-                                        (subject, idx) => (
-                                            <SubjectList
-                                                key={idx}
-                                                subject={subject}
-                                                disableLink={true}
-                                                rate={
-                                                    Grades[
-                                                        semester.grade_list[idx]
-                                                    ]
-                                                }
-                                            />
-                                        )
-                                    )}
-                                </ScrollableSubjectList>
-                            </SubjectWrapper>
-                        </div>
-                    );
-                })
-            )}
+                        );
+                    })
+                )}
             </ContentWrapper>
         </Wrapper>
     );

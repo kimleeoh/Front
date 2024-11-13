@@ -155,7 +155,7 @@ const QuestionsDetail = ({
 
                 {images.length > 0 && (
                     <>
-                    <ImageCarousel images={images} />
+                        <ImageCarousel images={images} />
                     </>
                 )}
 

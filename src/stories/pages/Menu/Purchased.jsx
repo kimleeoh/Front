@@ -28,7 +28,7 @@ const History = () => {
         console.log(tipsData.data.pList);
         setTipsData(tipsData.data.pList);
         setFilteredTips(tipsData.data.pList);
-    }
+    };
 
     useEffect(() => {
         // 데이터 로딩 로직

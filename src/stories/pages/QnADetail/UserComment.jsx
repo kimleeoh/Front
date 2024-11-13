@@ -97,7 +97,9 @@ const UserComment = ({
             <OutWrapper maxWidth={windowSize}>
                 <Wrapper>
                     <SubWrapper>
-                        <ProfileImg src={profileImg ? profileImg : "/Profile.svg"} />
+                        <ProfileImg
+                            src={profileImg ? profileImg : "/Profile.svg"}
+                        />
                         <ProfileContainer>
                             {/* <LevelGrade>Lv. {level} | A 등급</LevelGrade> */}
                             <MajorName>
@@ -139,7 +141,9 @@ const UserComment = ({
                 <OutWrapper maxWidth={windowSize}>
                     <Wrapper>
                         <SubWrapper>
-                            <ProfileImg src={profileImg ? profileImg : "/Profile.svg"} />
+                            <ProfileImg
+                                src={profileImg ? profileImg : "/Profile.svg"}
+                            />
                             <ProfileContainer>
                                 {/* <LevelGrade>
                                     Lv. {level} |{" "}
@@ -171,7 +175,13 @@ const UserComment = ({
                         {
                             whatScore === null ? (
                                 <SubWrapper>
-                                    <ProfileImg src={profileImg ? profileImg : "/Profile.svg"} />
+                                    <ProfileImg
+                                        src={
+                                            profileImg
+                                                ? profileImg
+                                                : "/Profile.svg"
+                                        }
+                                    />
                                     <ProfileContainer>
                                         {/* <LevelGrade>
                                             Lv. {level} | 미정

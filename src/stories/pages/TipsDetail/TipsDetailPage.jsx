@@ -5,12 +5,15 @@ import Header from "../../components/Header";
 import FixedBottomContainer from "../../components/FixedBottomContainer";
 import TipsDetail from "./TipsDetail";
 import BaseAxios from "../../../axioses/BaseAxios";
+import useWindowSize from "../../components/Common/WindowSize";
 
 const TipsDetailPage = () => {
     const { category_type, docid } = useParams();
     const [tipData, setTipData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const { width: windowSize } = useWindowSize();
 
     useEffect(() => {
         const fetchTipData = async () => {
@@ -57,7 +60,7 @@ const TipsDetailPage = () => {
     }
 
     return (
-        <Wrapper>
+        <Wrapper maxWidth={windowSize}>
             <Header
                 showIcon={false}
                 text={""}
@@ -97,6 +100,9 @@ const Wrapper = styled.div`
     align-items: center;
     margin-top: 120px;
     margin-bottom: 100px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 100%;
 `;
 
 const LoadingMessage = styled.div`

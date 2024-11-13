@@ -145,11 +145,9 @@ const MyPage = () => {
                             />
                         </ProgressBarContainer>
                     </Reputation>
-
-                    <Title>배지</Title> 
+                    <Title>배지</Title>
                     현재 받은 배지가 없습니다
                     {/* 배지연결필요 */}
-                    
                 </Content>
             )}
         </Wrapper>
