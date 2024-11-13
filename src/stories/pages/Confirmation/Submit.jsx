@@ -55,7 +55,7 @@ const Submit = () => {
             >
                 {selectedFile && <Send onClick={handleSubmit}>제출</Send>}
             </Header>
-            <Ad maxWidth={windowSize}>튜토리얼 & 광고</Ad>
+            <Ad maxWidth={windowSize}></Ad>
             <ImageUploadButton
                 label={selectedFile ? selectedFile.name : "파일추가"}
                 onFileSelect={handleFileSelect}
@@ -91,7 +91,6 @@ const Ad = styled.div`
 
     border: none;
     border-radius: 10px;
-    background-color: #acb2bb;
 `;
 
 const Send = styled.button`
