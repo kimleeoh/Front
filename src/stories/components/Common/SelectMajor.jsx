@@ -51,7 +51,7 @@ const SelectMajor = ({
 
     useEffect(() => {
         console.log("submitHistory: ", submitHistoryId);
-        BaseAxios.post("/api/category", { id: selectedCategoryId })
+        BaseAxios.post("/api/c/category", { id: selectedCategoryId })
             .then((response) => {
                 const fetchedCategories = response.data;
                 if (fetchedCategories.type < 2) {

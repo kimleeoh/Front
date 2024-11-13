@@ -13,17 +13,17 @@ const Confirmationpage = () => {
             <ContentWrapper maxWidth={windowSize}>
                 <Method
                     title={"합격자 인증"}
-                    content={"합격 증명 자료를 통해 인증"}
+                    content={"합격통지서를 통해 인증"}
                     to={"/confirm/newComer"}
                 />
                 <Method
                     title={"재학생 인증"}
-                    content={"재학 증명 자료를 통해 인증"}
+                    content={"유세인트캡쳐본을 통해 인증"}
                     to={"/confirm/registeredStudent"}
                 />
                 <Method
                     title={"졸업생 인증"}
-                    content={"졸업 증명 자료를 통해 인증"}
+                    content={"졸업증명서를 통해 인증"}
                     to={"/confirm/graduate"}
                 />
             </ContentWrapper>

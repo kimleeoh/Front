@@ -76,7 +76,7 @@ const PostTipsPage = () => {
                 },
             });
             alert("작성이 완료되었습니다.");
-            // navigate("/tips");
+            navigate("/tips");
         } else {
             setShowValidationMessages(true);
         }

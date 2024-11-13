@@ -39,7 +39,7 @@ const MyPageEdit = () => {
         const fetchData = async () => {
             try {
                 const [popularPosts] = await Promise.all([
-                    BaseAxios.post("/api/mypage/trending"),
+                    BaseAxios.post("/api/mypage/h/trending"),
                 ]);
 
                 if (Array.isArray(popularPosts.data)) {

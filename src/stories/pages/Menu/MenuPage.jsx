@@ -26,33 +26,41 @@ const MenuPage = () => {
         useContext(UserContext);
     const [modalNotifyContent, setModalNotifyContent] = useState(null);
     const [currentModalIndex, setCurrentModalIndex] = useState(0);
-    const [totalModalNotifyContent, setTotalModalNotifyContent] =
-        useState(null);
+    const [totalModalNotifyContent, setTotalModalNotifyContent] = useState(null);
+    const [isFetching, setIsFetching] = useState(false);
 
     // 페이지 첫 로드 시 /api/modal-notify 요청
-    const fetchModalNotifyContent = async () => {
-        try {
-            const response = await BaseAxios.get("/api/modal-notify");
-            const data = response.data;
+    const fetchModalNotifyContent = useCallback(async() => {
+        if (isFetching) return; // Prevent multiple calls
 
-            if (data && typeof data === "string" && data.trim()) {
+        setIsFetching(true);
+            
+        try {
+            const response = await BaseAxios.get("/api/h/modal-notify");
+            const data = response.data;
+            console.log("modal-notify data: ", data);
+
+            if (data && Array.isArray(data)&& data[0]!==undefined) {
                 setTotalModalNotifyContent(data);
                 setCurrentModalIndex(0);
+                
                 setModalNotifyContent(data[0]);
-
+                //console.log(modalNotifyContent);
                 modalNotifyRef.current.open();
             }
         } catch (error) {
             console.error("Failed to fetch modal content:", error);
+        }finally {
+            setIsFetching(false);
         }
-    };
+    },[isFetching]);
 
     useEffect(() => {
         if (!userData && !isLoading && !error) {
             fetchUserData();
         }
 
-        fetchModalNotifyContent();
+        if(modalNotifyContent==null)fetchModalNotifyContent();
     }, [userData, isLoading, error, fetchUserData]);
 
     const { name, profile_Img } = useMemo(
@@ -212,7 +220,7 @@ const MenuPage = () => {
             <Modal ref={modalNotifyRef} width="300px">
                 <div dangerouslySetInnerHTML={{ __html: modalNotifyContent }} />
                 <Button
-                    onClick={() => closeHandler}
+                    onClick={closeHandler}
                     label={"확인"}
                     backgroundColor={"#FF3C3C"}
                     hoverBackgroundColor={"red"}

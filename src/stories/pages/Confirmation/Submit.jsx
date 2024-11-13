@@ -55,7 +55,30 @@ const Submit = () => {
             >
                 {selectedFile && <Send onClick={handleSubmit}>제출</Send>}
             </Header>
-            <Ad maxWidth={windowSize}>튜토리얼 & 광고</Ad>
+
+            <Ad
+                maxWidth={windowSize}
+                style={{
+                    backgroundImage: "url(/ConfirmExample.png)",
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                }}
+            >
+                <div
+                    style={{
+                        maxWidth: "90%", // 이미지보다 살짝 작게 설정
+                        marginTop: "450px", // 이미지와 텍스트 사이 여백 추가
+                        color: "red", // 경고 문구 색상
+                        textAlign: "center", // 가운데 정렬
+                        fontSize: "14px", // 텍스트 크기 조정
+                        fontWeight: "bold", // 텍스트 강조
+                    }}
+                >
+                    예시 이미지처럼 이름, 학번, 소속, 과정/학기가 잘 보이는
+                    <br></br>유세인트 캡쳐본을 첨부해주세요!
+                </div>
+            </Ad>
             <ImageUploadButton
                 label={selectedFile ? selectedFile.name : "파일추가"}
                 onFileSelect={handleFileSelect}
@@ -91,7 +114,6 @@ const Ad = styled.div`
 
     border: none;
     border-radius: 10px;
-    background-color: #acb2bb;
 `;
 
 const Send = styled.button`

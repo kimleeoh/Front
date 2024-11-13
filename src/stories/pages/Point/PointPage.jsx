@@ -13,7 +13,7 @@ const PointPage = () => {
     useEffect(() => {
         const fetchPoint = async () => {
             // Simulate fetching point value
-            const fetchedPoint = await BaseAxios.get("/api/point");
+            const fetchedPoint = await BaseAxios.get("/api/h/point");
             setOriginPoint(fetchedPoint.data.point);
         };
 
@@ -24,11 +24,9 @@ const PointPage = () => {
         <PageContainer>
             <Header text={`내 포인트: ${originPoint}P`} searchButton={false} />
             <Content maxWidth={windowSize}>
-                <Title>배너 광고</Title>
-                알림컴포넌트?
             </Content>
 
-            <Button label="광고보고 300P 충전하기" width="100%" />
+            {/* <Button label="광고보고 300P 충전하기" width="100%" /> */}
         </PageContainer>
     );
 };

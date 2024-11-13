@@ -90,7 +90,7 @@ class ErrorBoundary extends React.Component {
         return this.props.children;
     }
 }
-// 경로 변경 시 Google Analytics에 페이지 뷰 전송하는 컴포넌트
+// // 경로 변경 시 Google Analytics에 페이지 뷰 전송하는 컴포넌트
 const GAListener = () => {
     const location = useLocation();
 
