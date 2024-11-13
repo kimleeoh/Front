@@ -39,8 +39,8 @@ const QnADetailPage = () => {
                 }
 
                 const newQdata = JSON.parse(result.data.returnData);
+                console.log("newQdata: ", newQdata);
                 setQuestionData(newQdata);
-                console.log("questionData: ", questionData);
                 const currentDocs = result.data.currentDocs;
 
                 setAnswered(newQdata.answered);

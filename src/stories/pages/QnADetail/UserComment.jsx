@@ -39,14 +39,12 @@ const UserComment = ({
         console.log("limit: ", limit);
         setFormValues({ ...formValues, id: post_id, score: whatScore });
         if (limit === false) {
-            console.log("no...oh");
             setAnswerable(true);
         } else if (
             (limit === true && whatScore === "A0") ||
             whatScore === "A+" ||
             whatScore === "A-"
         ) {
-            console.log("there we go");
             setAnswerable(true);
         } else {
             setAnswerable(false);
