@@ -35,7 +35,7 @@ const Answers = ({
             aList = Array(index + 1).fill(0);
         }
     
-        if (aList[index] == -1) {
+        if (aList[index] > 0) {
             aList[index] = 0;
             sessionStorage.setItem("answer_like_list", aList.join(","));
         } else {
@@ -56,7 +56,7 @@ const Answers = ({
             aList = Array(index + 1).fill(0);
         }
     
-        if (aList[index] == 1) {
+        if (aList[index] < 0) {
             aList[index] = 0;
             sessionStorage.setItem("answer_like_list", aList.join(","));
         } else {
