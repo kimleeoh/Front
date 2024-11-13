@@ -7,7 +7,7 @@ import BaseAxios from "../../../axioses/BaseAxios";
 import PostCarousel from "../../components/Common/PostCarousel";
 import { Spinner } from "../../components/Common/Spinner";
 import Loading from "../Loading";
-import Modal from "../../components/Modal";
+import Modal from "../../components/Common/Modal";
 import Button from "../../components/Common/Button";
 
 const NavBar = lazy(() => import("../../components/NavBar"));
