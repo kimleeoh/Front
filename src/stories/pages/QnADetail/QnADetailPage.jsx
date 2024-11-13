@@ -175,6 +175,7 @@ const QnADetailPage = () => {
 
             {!mine && questionData && (
                 <UserComment
+                    now_id={_id}
                     post_id={questionData._id}
                     isScore={questionData.isScore}
                     whatScore={questionData.whatScore}

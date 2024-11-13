@@ -8,8 +8,10 @@ import TextArea from "../../components/Common/TextArea";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import { Link } from "react-router-dom";
+import { navigate } from "@storybook/addon-links";
 
 const UserComment = ({
+    now_id,
     post_id,
     isScore,
     whatScore,
@@ -83,6 +85,9 @@ const UserComment = ({
                     "Content-Type": "multipart/form-data",
                 },
             });
+            alert("답변이 등록되었습니다.");
+            navigate(`/qna/${now_id}/edit`);
+            
         };
 
         if (isFormValid) submitHandler();
