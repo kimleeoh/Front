@@ -79,7 +79,7 @@ const Answers = ({
                             <img src={"/Icons/A.svg"} />
                         </Title>
                         {/* <img src={"/Icons/Profile.svg"} /> */}
-                        <img src={"/Icons/Profile.svg"} />
+                        <img src={"/Profile.svg"} />
                         <ProfileContainer>
                             {/* <LevelGrade>
                                 Lv. {level} |{" "}
