@@ -133,7 +133,7 @@ const EditQuestionPage = () => {
                 </ValidationMessage>
             );
         }
-        if (Number(point) <= 0 || Number(point) > 200) {
+        if (Number(point) < 0 || Number(point) > 200) {
             return (
                 <ValidationMessage maxWidth={windowSize}>
                     0~200p 사이를 입력해 주세요.
