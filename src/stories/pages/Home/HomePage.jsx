@@ -1,4 +1,11 @@
-import React, { Suspense, lazy, useMemo, useEffect, useState, useRef } from "react";
+import React, {
+    Suspense,
+    lazy,
+    useMemo,
+    useEffect,
+    useState,
+    useRef,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../OnBoarding/Logo";
@@ -46,13 +53,13 @@ const HomePage = () => {
                     notificationResponse,
                     trendingResponse,
                     answerablePostsResponse,
-                    modalResponse
+                    modalResponse,
                 ] = await Promise.all([
                     BaseAxios.get("/api/h/point"),
                     BaseAxios.get("/api/h/notify/new", { send: false }),
                     BaseAxios.post("/api/h/home/trending"),
                     BaseAxios.post("/api/h/home/answer-possible"),
-                    BaseAxios.get("/api/h/modal-notify")
+                    BaseAxios.get("/api/h/modal-notify"),
                 ]);
 
                 const { trendingTipsResponse, trendingQnaResponse } =
@@ -102,12 +109,12 @@ const HomePage = () => {
                     );
                     settrendingQna([]);
                 }
-                
+
                 const { data } = modalResponse;
-                if (data && Array.isArray(data)&& data[0]!==undefined) {
+                if (data && Array.isArray(data) && data[0] !== undefined) {
                     setTotalModalNotifyContent(data);
                     setCurrentModalIndex(0);
-                    
+
                     setModalNotifyContent(data[0]);
                     //console.log(modalNotifyContent);
                     modalNotifyRef.current.open();

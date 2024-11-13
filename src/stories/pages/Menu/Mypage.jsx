@@ -79,7 +79,8 @@ const MyPage = () => {
             </Header>
             <Profile maxWidth={windowSize}>
                 <img
-                    src={profile_img ? profile_img : "/Profile.svg"}
+                    //src={profile_img ? profile_img : "/Profile.svg"}
+                    src={"/Profile.svg"}
                     alt="프로필"
                     width="100px"
                     height="100px"
@@ -145,11 +146,9 @@ const MyPage = () => {
                             />
                         </ProgressBarContainer>
                     </Reputation>
-
-                    <Title>배지</Title> 
+                    <Title>배지</Title>
                     현재 받은 배지가 없습니다
                     {/* 배지연결필요 */}
-                    
                 </Content>
             )}
         </Wrapper>

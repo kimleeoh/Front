@@ -41,7 +41,7 @@ BoardTitle.defaultProps = {
 export default BoardTitle;
 
 const Wrapper = styled.div`
-    max-width: ${(props) => props.maxWidth}px;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     width: 100%;
     height: 20px;
     display: flex;
@@ -52,6 +52,7 @@ const Wrapper = styled.div`
     font-size: 16px;
     font-weight: bold;
     padding: 30px 10px;
+    box-sizing: border-box;
     margin: 0 auto;
 `;
 

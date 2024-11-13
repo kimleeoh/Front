@@ -23,8 +23,7 @@ const PointPage = () => {
     return (
         <PageContainer>
             <Header text={`내 포인트: ${originPoint}P`} searchButton={false} />
-            <Content maxWidth={windowSize}>
-            </Content>
+            <Content maxWidth={windowSize}></Content>
 
             {/* <Button label="광고보고 300P 충전하기" width="100%" /> */}
         </PageContainer>

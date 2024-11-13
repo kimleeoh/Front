@@ -8,8 +8,10 @@ import TextArea from "../../components/Common/TextArea";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import { Link } from "react-router-dom";
+import { navigate } from "@storybook/addon-links";
 
 const UserComment = ({
+    now_id,
     post_id,
     isScore,
     whatScore,
@@ -39,14 +41,12 @@ const UserComment = ({
         console.log("limit: ", limit);
         setFormValues({ ...formValues, id: post_id, score: whatScore });
         if (limit === false) {
-            console.log("no...oh");
             setAnswerable(true);
         } else if (
             (limit === true && whatScore === "A0") ||
             whatScore === "A+" ||
             whatScore === "A-"
         ) {
-            console.log("there we go");
             setAnswerable(true);
         } else {
             setAnswerable(false);
@@ -85,6 +85,8 @@ const UserComment = ({
                     "Content-Type": "multipart/form-data",
                 },
             });
+            alert("답변이 등록되었습니다.");
+            navigate(`/qna/${now_id}/edit`);
         };
 
         if (isFormValid) submitHandler();
@@ -99,7 +101,10 @@ const UserComment = ({
             <OutWrapper maxWidth={windowSize}>
                 <Wrapper>
                     <SubWrapper>
-                        <ProfileImg src={profileImg ? profileImg : "/Profile.svg"} />
+                        <ProfileImg
+                            //src={profileImg ? profileImg : "/Profile.svg"}
+                            src={"/Profile.svg"}
+                        />
                         <ProfileContainer>
                             {/* <LevelGrade>Lv. {level} | A 등급</LevelGrade> */}
                             <MajorName>
@@ -141,7 +146,9 @@ const UserComment = ({
                 <OutWrapper maxWidth={windowSize}>
                     <Wrapper>
                         <SubWrapper>
-                            <ProfileImg src={profileImg ? profileImg : "/Profile.svg"} />
+                            <ProfileImg
+                                src={profileImg ? profileImg : "/Profile.svg"}
+                            />
                             <ProfileContainer>
                                 {/* <LevelGrade>
                                     Lv. {level} |{" "}
@@ -173,7 +180,13 @@ const UserComment = ({
                         {
                             whatScore === null ? (
                                 <SubWrapper>
-                                    <ProfileImg src={profileImg ? profileImg : "/Profile.svg"} />
+                                    <ProfileImg
+                                        src={
+                                            profileImg
+                                                ? profileImg
+                                                : "/Profile.svg"
+                                        }
+                                    />
                                     <ProfileContainer>
                                         {/* <LevelGrade>
                                             Lv. {level} | 미정

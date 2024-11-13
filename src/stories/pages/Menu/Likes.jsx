@@ -57,7 +57,10 @@ const Likes = () => {
 
             // 중복 요청 방지 및 빈 데이터 여부 확인
             if (!isEmpty && questionResponse?.documents.length) {
-                setQuestionData((prev) => [...prev, ...questionResponse.documents]);
+                setQuestionData((prev) => [
+                    ...prev,
+                    ...questionResponse.documents,
+                ]);
             }
             if (!isEmpty && tipsResponse?.documents.length) {
                 setTipsData((prev) => [...prev, ...tipsResponse.documents]);

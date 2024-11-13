@@ -3,7 +3,14 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import CarouselTemp from "../../components/Common/CarouselTemp";
 
-const ImageCarousel = ({ images, width = "380px", height = "380px", autoPlay = false, showBullets = true, showFraction = true }) => {
+const ImageCarousel = ({
+    images,
+    width = "380px",
+    height = "380px",
+    autoPlay = false,
+    showBullets = true,
+    showFraction = true,
+}) => {
     const [isOverlayOpen, setOverlayOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -21,12 +28,16 @@ const ImageCarousel = ({ images, width = "380px", height = "380px", autoPlay = f
 
     const prevSlide = (e) => {
         e.stopPropagation();
-        setSelectedIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+        setSelectedIndex((prevIndex) =>
+            prevIndex === 0 ? images.length - 1 : prevIndex - 1
+        );
     };
 
     const nextSlide = (e) => {
         e.stopPropagation();
-        setSelectedIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+        setSelectedIndex((prevIndex) =>
+            prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        );
     };
 
     return (
@@ -76,7 +87,10 @@ const ImageCarousel = ({ images, width = "380px", height = "380px", autoPlay = f
                             </LeftButton>
                         )}
 
-                        <OverlayImage src={images[selectedIndex]} alt="Expanded view" />
+                        <OverlayImage
+                            src={images[selectedIndex]}
+                            alt="Expanded view"
+                        />
 
                         {selectedIndex < images.length - 1 && (
                             <RightButton onClick={nextSlide}>

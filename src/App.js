@@ -1,5 +1,10 @@
 import React, { useEffect, Suspense, lazy } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    useLocation,
+} from "react-router-dom";
 import Loading from "./stories/pages/Loading"; // 로딩 컴포넌트
 import UserProvider, { UserContext } from "./stories/context/UserContext"; // UserProvider 컴포넌트
 import { User } from "lucide-react";
@@ -90,7 +95,7 @@ const GAListener = () => {
     const location = useLocation();
 
     useEffect(() => {
-        window.gtag('config', 'G-TDCJ0Y04C1', {
+        window.gtag("config", "G-TDCJ0Y04C1", {
             page_path: location.pathname,
         });
     }, [location]);
@@ -123,116 +128,131 @@ const App = () => {
     return (
         <ErrorBoundary>
             <div className="App">
-            <UserProvider>
-                <Router>
-                    {/* <GAListener /> 경로 변경을 추적하는 GAListener 추가 */}
-                    {/* Suspense로 컴포넌트를 로드할 때 보여줄 fallback UI */}
-                    <Suspense fallback={<Loading />}>
-                        <Routes>
-                            <Route path="/" element={<StartPage />} />
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route path="/signup" element={<SignUpPage />} />
-                            <Route path="/reset" element={<ResetPage />} />
-                            <Route path="/home" element={<HomePage />} />
-                            <Route
-                                path="/notification"
-                                element={<NotificationPage />}
-                            />
-                            <Route path="/qna" element={<QnAPage />} />
-                            <Route
-                                path="/qna/:_id"
-                                element={<QnADetailPage />}
-                            />
-                            <Route
-                                path="/qna/:_id/edit"
-                                element={<EditQuestionPage />}
-                            />
-                            <Route
-                                path="/qna/post"
-                                element={<PostQuestionPage />}
-                            />
-                            <Route path="/tips" element={<TipsPage />} />
-                            <Route
-                                path="/tips/:category_type/:docid"
-                                element={<TipsDetailPage />}
-                            />
-                            <Route
-                                path="/tips/post"
-                                element={<PostTipPage />}
-                            />
-                            <Route
-                                path="/tips/:categories/:_id/edit"
-                                element={<EditTipPage />}
-                            />
-                            <Route
-                                path="/:category/:_id"
-                                element={<PostsDetail />}
-                            />
-                            <Route
-                                path="/:category/:_id/report"
-                                element={<Report />}
-                            />
-                            <Route path="/board" element={<BoardHome />} />
-                            <Route
-                                path="/edit-board"
-                                element={<EditBoardPage />}
-                            />
-                            <Route
-                                path="/board/:subject"
-                                element={<UnifiedBoard />}
-                            />
-                            <Route path="/search" element={<Searching />} />
+                <UserProvider>
+                    <Router>
+                        {/* <GAListener /> 경로 변경을 추적하는 GAListener 추가 */}
+                        {/* Suspense로 컴포넌트를 로드할 때 보여줄 fallback UI */}
+                        <Suspense fallback={<Loading />}>
+                            <Routes>
+                                <Route path="/" element={<StartPage />} />
+                                <Route path="/login" element={<LoginPage />} />
+                                <Route
+                                    path="/signup"
+                                    element={<SignUpPage />}
+                                />
+                                <Route path="/reset" element={<ResetPage />} />
+                                <Route path="/home" element={<HomePage />} />
+                                <Route
+                                    path="/notification"
+                                    element={<NotificationPage />}
+                                />
+                                <Route path="/qna" element={<QnAPage />} />
+                                <Route
+                                    path="/qna/:_id"
+                                    element={<QnADetailPage />}
+                                />
+                                <Route
+                                    path="/qna/:_id/edit"
+                                    element={<EditQuestionPage />}
+                                />
+                                <Route
+                                    path="/qna/post"
+                                    element={<PostQuestionPage />}
+                                />
+                                <Route path="/tips" element={<TipsPage />} />
+                                <Route
+                                    path="/tips/:category_type/:docid"
+                                    element={<TipsDetailPage />}
+                                />
+                                <Route
+                                    path="/tips/post"
+                                    element={<PostTipPage />}
+                                />
+                                <Route
+                                    path="/tips/:categories/:_id/edit"
+                                    element={<EditTipPage />}
+                                />
+                                <Route
+                                    path="/:category/:_id"
+                                    element={<PostsDetail />}
+                                />
+                                <Route
+                                    path="/:category/:_id/report"
+                                    element={<Report />}
+                                />
+                                <Route path="/board" element={<BoardHome />} />
+                                <Route
+                                    path="/edit-board"
+                                    element={<EditBoardPage />}
+                                />
+                                <Route
+                                    path="/board/:subject"
+                                    element={<UnifiedBoard />}
+                                />
+                                <Route path="/search" element={<Searching />} />
 
-                            <Route path="/menu" element={<MenuPage />} />
-                            <Route path="/mypage" element={<MyPage />} />
-                            <Route
-                                path="/mypage/edit"
-                                element={<MyPageEdit />}
-                            />
+                                <Route path="/menu" element={<MenuPage />} />
+                                <Route path="/mypage" element={<MyPage />} />
+                                <Route
+                                    path="/mypage/edit"
+                                    element={<MyPageEdit />}
+                                />
 
-                            <Route path="/badge" element={<BadgeDetail />} />
-                            <Route path="/points" element={<PointPage />} />
-                            <Route path="/purchased" element={<Purchased />} />
-                            <Route path="/grades" element={<Grades />} />
-                            <Route
-                                path="/grades/register"
-                                element={<GradesRegister />}
-                            />
-                            <Route path="/myboard" element={<MyBoard />} />
-                            <Route path="/bookmarks" element={<Bookmarks />} />
-                            <Route path="/likes" element={<Likes />} />
-                            <Route path="/history" element={<History />} />
-                            <Route
-                                path="/terms"
-                                element={<TermsOfServicePage />}
-                            />
-                            <Route path="/notices" element={<Notices />} />
-                            <Route path="/mycontact" element={<MyContact />} />
-                            <Route path="/contact" element={<Contact />} />
+                                <Route
+                                    path="/badge"
+                                    element={<BadgeDetail />}
+                                />
+                                <Route path="/points" element={<PointPage />} />
+                                <Route
+                                    path="/purchased"
+                                    element={<Purchased />}
+                                />
+                                <Route path="/grades" element={<Grades />} />
+                                <Route
+                                    path="/grades/register"
+                                    element={<GradesRegister />}
+                                />
+                                <Route path="/myboard" element={<MyBoard />} />
+                                <Route
+                                    path="/bookmarks"
+                                    element={<Bookmarks />}
+                                />
+                                <Route path="/likes" element={<Likes />} />
+                                <Route path="/history" element={<History />} />
+                                <Route
+                                    path="/terms"
+                                    element={<TermsOfServicePage />}
+                                />
+                                <Route path="/notices" element={<Notices />} />
+                                <Route
+                                    path="/mycontact"
+                                    element={<MyContact />}
+                                />
+                                <Route path="/contact" element={<Contact />} />
 
-                            <Route
-                                path="/confirm"
-                                element={<ConfirmationPage />}
-                            />
-                            <Route
-                                path="/confirm/newComer"
-                                element={<Submit />}
-                            />
-                            <Route
-                                path="/confirm/registeredStudent"
-                                element={<Submit />}
-                            />
-                            <Route
-                                path="/confirm/graduate"
-                                element={<Submit />}
-                            />
-                            <Route path="/verify" element={<Alert />} />
+                                <Route
+                                    path="/confirm"
+                                    element={<ConfirmationPage />}
+                                />
+                                <Route
+                                    path="/confirm/newComer"
+                                    element={<Submit />}
+                                />
+                                <Route
+                                    path="/confirm/registeredStudent"
+                                    element={<Submit />}
+                                />
+                                <Route
+                                    path="/confirm/graduate"
+                                    element={<Submit />}
+                                />
+                                <Route path="/verify" element={<Alert />} />
 
-                            <Route path="/*" element={<Error />} />
-                        </Routes>
-                    </Suspense>
-                </Router>
-            </UserProvider>
+                                <Route path="/*" element={<Error />} />
+                            </Routes>
+                        </Suspense>
+                    </Router>
+                </UserProvider>
             </div>
         </ErrorBoundary>
     );

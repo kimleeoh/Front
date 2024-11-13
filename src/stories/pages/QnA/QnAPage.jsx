@@ -52,6 +52,7 @@ const QnAPage = () => {
                 const response = await BaseAxios.get("/api/h/bulletin/qnas", {
                     params: { isAGradeOnly, type: "many", depth: depth },
                 });
+                console.log("response: ", response);
                 const newQuestions = response.data.docList;
                 if (newQuestions.message === "uniquecategory is null") {
                     setIsEmpty(true);

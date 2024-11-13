@@ -80,14 +80,15 @@ const Answers = ({
                         <Title>
                             <img src={"/Icons/A.svg"} />
                         </Title>
-                        <img src={"/Icons/Profile.svg"} />
+                        {/* <img src={"/Icons/Profile.svg"} /> */}
+                        <img src={"/Profile.svg"} />
                         <ProfileContainer>
-                            <LevelGrade>
+                            {/* <LevelGrade>
                                 Lv. {level} |{" "}
                                 {user_grade == null
                                     ? "미등록"
                                     : `${user_grade} 등급`}
-                            </LevelGrade>
+                            </LevelGrade> */}
                             <MajorName>
                                 {major} {name}
                             </MajorName>

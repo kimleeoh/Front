@@ -108,7 +108,7 @@ const BoardHome = () => {
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <Wrapper>
+            <Wrapper maxWidth={windowSize}>
                 <Header maxWidth={windowSize}>게시판</Header>
                 <ContentWrapper maxWidth={windowSize}>
                     {renderBoardTitle("내가 수강 중인 과목", "subject")}
@@ -210,12 +210,12 @@ const Wrapper = styled.div`
     min-height: 100vh;
     padding: 100px 0 100px;
     width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     box-sizing: border-box;
 `;
 
 const ContentWrapper = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     margin: 0 auto;
     padding: 0 10px;
     box-sizing: border-box;
@@ -223,7 +223,7 @@ const ContentWrapper = styled.div`
 
 const Header = styled.div`
     width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
+
     height: 88px;
     padding: 0 20px;
     display: flex;
