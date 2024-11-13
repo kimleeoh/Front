@@ -28,44 +28,46 @@ const Answers = ({
 
     const handleLike = () => {
         const a = sessionStorage.getItem("answer_like_list");
-        let aList = a ? a.split(",") : [];
-        
-        // Ensure aList has the correct length
-        if (aList.length <= index) {
-            aList = Array(index + 1).fill(0);
-        }
-    
-        if (aList[index] > 0) {
-            aList[index] = 0;
-            sessionStorage.setItem("answer_like_list", aList.join(","));
-        } else {
-            let chage = 1;
-            if (alread == -1) chage++;
-            aList[index] = chage;
-            sessionStorage.setItem("answer_like_list", aList.join(","));
-            console.log("Post liked:", _id);
-        }
+        let aList = a.split(",");
+        console.log("liked");
+        console.log("aList:", aList);
+        //1->-1 0->1 -1->2
+        switch (alread) {
+            case 1:
+                if(aList[index]==0)aList[index]=-1;
+                else aList[index]=0;
+                break;
+            case 0:
+                if(aList[index]>0)aList[index]=0;
+                else aList[index] = 1;
+                break;
+            case -1:
+                if(aList[index]==0)aList[index]=2;
+                else aList[index] = 1;
+                break;
+        };
+        sessionStorage.setItem("answer_like_list", aList);
     };
 
     const handleUnlike = () => {
         const a = sessionStorage.getItem("answer_like_list");
-        let aList = a ? a.split(",") : [];
-        
-        // Ensure aList has the correct length
-        if (aList.length <= index) {
-            aList = Array(index + 1).fill(0);
-        }
-    
-        if (aList[index] < 0) {
-            aList[index] = 0;
-            sessionStorage.setItem("answer_like_list", aList.join(","));
-        } else {
-            let chage = -1;
-            if (alread == 1) chage--;
-            aList[index] = chage;
-            sessionStorage.setItem("answer_like_list", aList.join(","));
-            console.log("Post unliked:", _id);
-        }
+        let aList = a.split(",");
+        console.log("unliked");
+        switch (alread) {
+            case 1:
+                if(aList[index]>-2)aList[index]=-2;
+                else aList[index]=-1;
+                break;
+            case 0:
+                if(aList[index]<0)aList[index]=0;
+                else aList[index] = -1;
+                break;
+            case -1:
+                if(aList[index]==0)aList[index]=1;
+                else aList[index] = 0;
+                break;
+        };
+        sessionStorage.setItem("answer_like_list", aList);
     };
 
     return (
