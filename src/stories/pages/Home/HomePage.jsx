@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useMemo, useEffect, useState } from "react";
+import React, { Suspense, lazy, useMemo, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../OnBoarding/Logo";
@@ -28,6 +28,10 @@ const HomePage = () => {
     const [trendingQna, settrendingQna] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [modalNotifyContent, setModalNotifyContent] = useState(null);
+    const [totalModalNotifyContent, setTotalModalNotifyContent] = useState([]);
+    const [currentModalIndex, setCurrentModalIndex] = useState(0);
+    const modalNotifyRef = useRef();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,11 +44,13 @@ const HomePage = () => {
                     notificationResponse,
                     trendingResponse,
                     answerablePostsResponse,
+                    modalResponse
                 ] = await Promise.all([
                     BaseAxios.get("/api/point"),
                     BaseAxios.get("/api/notify/new", { send: false }),
                     BaseAxios.post("/api/home/trending"),
                     BaseAxios.post("/api/home/answer-possible"),
+                    BaseAxios.get("/api/modal-notify")
                 ]);
 
                 const { trendingTipsResponse, trendingQnaResponse } =
@@ -94,6 +100,16 @@ const HomePage = () => {
                     );
                     settrendingQna([]);
                 }
+                
+                const { data } = modalResponse;
+                if (data && Array.isArray(data)&& data[0]!==undefined) {
+                    setTotalModalNotifyContent(data);
+                    setCurrentModalIndex(0);
+                    
+                    setModalNotifyContent(data[0]);
+                    //console.log(modalNotifyContent);
+                    modalNotifyRef.current.open();
+                }
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setError("데이터를 불러오는 중 오류가 발생했습니다.");
@@ -104,6 +120,21 @@ const HomePage = () => {
 
         fetchData();
     }, []);
+
+    const closeHandler = () => {
+        modalNotifyRef.current.close();
+
+        if (totalModalNotifyContent.length > 1) {
+            if (currentModalIndex < totalModalNotifyContent.length) {
+                const newIndex = currentModalIndex + 1;
+                setCurrentModalIndex(newIndex);
+                setModalNotifyContent(totalModalNotifyContent[newIndex]);
+                modalNotifyRef.current.open();
+            } else {
+                setCurrentModalIndex(0);
+            }
+        }
+    };
 
     if (isLoading) {
         return (
@@ -157,6 +188,16 @@ const HomePage = () => {
                     <PostCarousel />
                 )}
             </Content>
+            <Modal ref={modalNotifyRef} width="300px">
+                <div dangerouslySetInnerHTML={{ __html: modalNotifyContent }} />
+                <Button
+                    onClick={closeHandler}
+                    label={"확인"}
+                    backgroundColor={"#FF3C3C"}
+                    hoverBackgroundColor={"red"}
+                    width={"130px"}
+                />
+            </Modal>
             <Suspense fallback={<div>Loading...</div>}>
                 <FixedBottomContainer>
                     <NavBar initialState="/home" />
