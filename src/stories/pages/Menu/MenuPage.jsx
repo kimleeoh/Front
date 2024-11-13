@@ -224,8 +224,6 @@ const MenuPage = () => {
                 <Button
                     onClick={closeHandler}
                     label={"확인"}
-                    backgroundColor={"#FF3C3C"}
-                    hoverBackgroundColor={"red"}
                     width={"130px"}
                 />
             </Modal>

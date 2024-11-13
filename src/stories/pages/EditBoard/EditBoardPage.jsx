@@ -291,8 +291,6 @@ const EditBoardPage = () => {
                     <Button
                         onClick={saveSubject}
                         label={"저장"}
-                        backgroundColor={"#FF3C3C"}
-                        hoverBackgroundColor={"red"}
                         width={"130px"}
                     />
                 </ButtonWrapper>

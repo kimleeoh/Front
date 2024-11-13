@@ -172,6 +172,8 @@ const Wrapper = styled.div`
     flex-direction: column;
     width: 100%;
     font-size: 15px;
+    cursor: pointer;
+    border-radius: 8px;
 `;
 const ListItemContainer = styled.div`
     display: flex;

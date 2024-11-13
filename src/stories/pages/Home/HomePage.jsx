@@ -12,7 +12,6 @@ import Logo from "../OnBoarding/Logo";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import PostCarousel from "../../components/Common/PostCarousel";
-import { Spinner } from "../../components/Common/Spinner";
 import Loading from "../Loading";
 import Modal from "../../components/Common/Modal";
 import Button from "../../components/Button";

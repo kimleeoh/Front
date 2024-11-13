@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useEffect, useCallback } from "react";
+import React, { Suspense, useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useWindowSize from "../../components/Common/WindowSize";
@@ -6,6 +6,8 @@ import NavBar from "../../components/NavBar";
 import FixedBottomContainer from "../../components/FixedBottomContainer";
 import BaseAxios from "../../../axioses/BaseAxios";
 import { useLocation } from "react-router-dom";
+import Modal from "../../components/Common/Modal";
+import Button from "../../components/Button";
 
 // Lazy-loaded components
 const BoardTitle = React.lazy(
@@ -106,6 +108,27 @@ const BoardHome = () => {
         />
     );
 
+    
+    const [modalNotifyContent, setModalNotifyContent] = useState(null);
+    const [totalModalNotifyContent, setTotalModalNotifyContent] = useState([]);
+    const [currentModalIndex, setCurrentModalIndex] = useState(0);
+    const modalNotifyRef = useRef();
+
+    const closeHandler = () => {
+        modalNotifyRef.current.close();
+
+        if (totalModalNotifyContent.length > 1) {
+            if (currentModalIndex < totalModalNotifyContent.length) {
+                const newIndex = currentModalIndex + 1;
+                setCurrentModalIndex(newIndex);
+                setModalNotifyContent(totalModalNotifyContent[newIndex]);
+                modalNotifyRef.current.open();
+            } else {
+                setCurrentModalIndex(0);
+            }
+        }
+    };
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <Wrapper maxWidth={windowSize}>
@@ -186,6 +209,14 @@ const BoardHome = () => {
                         </ScrollableSubjectList>
                     </SubjectWrapper>
                 </ContentWrapper>
+                <Modal ref={modalNotifyRef} width="300px">
+                    <div dangerouslySetInnerHTML={{ __html: modalNotifyContent }} />
+                    <Button
+                        onClick={closeHandler}
+                        label={"확인"}
+                        width={"130px"}
+                    />
+                </Modal>
                 <FixedBottomContainer>
                     <NavBar state="Board" />
                 </FixedBottomContainer>
