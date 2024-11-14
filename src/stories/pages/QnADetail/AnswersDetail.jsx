@@ -81,7 +81,7 @@ const Answers = ({
                             <img src={"/Icons/A.svg"} />
                         </Title>
                         {/* <img src={"/Icons/Profile.svg"} /> */}
-                        <img src={"/Profile.svg"} />
+                        <ProfileImg src={"/Profile.svg"} />
                         <ProfileContainer>
                             {/* <LevelGrade>
                                 Lv. {level} |{" "}
@@ -263,3 +263,11 @@ const Image = styled.img`
     border-radius: 8px;
     flex-shrink: 0;
 `;
+
+const ProfileImg = styled.img`
+    width: 29px;
+    height: 29px;
+    border-radius: 100%;
+    object-fit: cover;
+    object-position: center;
+`
