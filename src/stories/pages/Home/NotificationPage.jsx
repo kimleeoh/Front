@@ -4,12 +4,15 @@ import styled from "styled-components";
 import NotificationBox from "./NotificationBox";
 import BaseAxios from "../../../axioses/BaseAxios";
 import { useNavigate } from "react-router-dom";
+import useWindowSize from "../../components/Common/WindowSize";
 
 const NotificationPage = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [hasNewNotifications, setHasNewNotifications] = useState(false);
     const navigate = useNavigate();
+
+    const { width: windowSize } = useWindowSize();
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -50,7 +53,7 @@ const NotificationPage = () => {
     };
 
     return (
-        <PageContainer>
+        <PageContainer maxWidth={windowSize}>
             <Header
                 showIcon={false}
                 text="알림"
@@ -103,7 +106,7 @@ export default NotificationPage;
 
 const PageContainer = styled.div`
     width: 100%;
-    max-width: 380px;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     margin: 0 auto;
     padding-top: 120px;
     box-sizing: border-box;
@@ -111,6 +114,7 @@ const PageContainer = styled.div`
 
 const Content = styled.div`
     text-align: center;
+    width: 100%;
 `;
 
 const AlertMessage = styled.p`
@@ -122,7 +126,7 @@ const AlertMessage = styled.p`
 const NotificationList = styled.div`
     display: flex;
     align-items: center;
-
+    width: 100%;
     flex-direction: column;
     gap: 5px;
 `;
