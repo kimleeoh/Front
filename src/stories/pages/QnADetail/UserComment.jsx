@@ -86,7 +86,7 @@ const UserComment = ({
                 },
             });
             alert("답변이 등록되었습니다.");
-            navigate(`/qna/${now_id}/edit`);
+            navigate(0);
         };
 
         if (isFormValid) submitHandler();
