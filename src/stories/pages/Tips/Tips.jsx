@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,6 +6,8 @@ import getTimeElapsed from "../../components/Common/getTimeElapsed";
 import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import { Spinner } from "../../components/Common/Spinner";
+import Modal from "../../components/Common/Modal";
+import Button from "../../components/Button";
 
 const Tips = ({
     _id,
@@ -23,6 +25,27 @@ const Tips = ({
     const { width: windowSize } = useWindowSize();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+
+    
+    const [modalNotifyContent, setModalNotifyContent] = useState(null);
+    const [totalModalNotifyContent, setTotalModalNotifyContent] = useState([]);
+    const [currentModalIndex, setCurrentModalIndex] = useState(0);
+    const modalNotifyRef = useRef();
+
+    const closeHandler = () => {
+        modalNotifyRef.current.close();
+
+        if (totalModalNotifyContent.length > 1) {
+            if (currentModalIndex < totalModalNotifyContent.length) {
+                const newIndex = currentModalIndex + 1;
+                setCurrentModalIndex(newIndex);
+                setModalNotifyContent(totalModalNotifyContent[newIndex]);
+                modalNotifyRef.current.open();
+            } else {
+                setCurrentModalIndex(0);
+            }
+        }
+    };
 
     const conversion = (category_type) => {
         if (category_type == "test") {
@@ -154,6 +177,14 @@ const Tips = ({
                     <Spinner />
                 </LoadingOverlay>
             )}
+            <Modal ref={modalNotifyRef} width="300px">
+                <div dangerouslySetInnerHTML={{ __html: modalNotifyContent }} />
+                <Button
+                    onClick={closeHandler}
+                    label={"확인"}
+                    width={"130px"}
+                />
+            </Modal>
         </OutWrapper>
     );
 };

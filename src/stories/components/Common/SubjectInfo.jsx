@@ -36,11 +36,13 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+    border-radius: 16px;
 
     padding: 10px 10px;
     box-sizing: border-box;
 
     transition: all 0.3s ease;
+    cursor: pointer;
     &:hover {
         background-color: #e2e5e9;
     }

@@ -154,6 +154,7 @@ const BottomSheetContainer = styled.div`
     flex-direction: column;
     animation: ${slideUp} 0.5s ease-out;
     z-index: 1000;
+    color: #434b60;
 `;
 
 const Handle = styled.div`

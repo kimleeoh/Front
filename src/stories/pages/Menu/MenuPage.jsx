@@ -182,9 +182,9 @@ const MenuPage = () => {
                     최근 본 글
                 </MenuList>
                 <Title> 도움말 </Title>
-                <MenuList to="/notices" src={"/Icons/notice.svg"}>
+                {/* <MenuList to="/notices" src={"/Icons/notice.svg"}>
                     공지사항
-                </MenuList>
+                </MenuList> */}
                 {/* 문의하기 버튼에 onClick 이벤트 추가 */}
                 <MenuList onClick={handleContactClick} src={"/Icons/speak.svg"}>
                     문의하기
@@ -224,8 +224,6 @@ const MenuPage = () => {
                 <Button
                     onClick={closeHandler}
                     label={"확인"}
-                    backgroundColor={"#FF3C3C"}
-                    hoverBackgroundColor={"red"}
                     width={"130px"}
                 />
             </Modal>

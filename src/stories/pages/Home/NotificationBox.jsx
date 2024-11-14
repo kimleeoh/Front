@@ -114,7 +114,7 @@ export default NotificationBox;
 
 const Wrapper = styled.div`
     display: flex;
-    width: 393px;
+    width: 100%;
     height: auto;
     border-radius: 12px;
     box-sizing: border-box;

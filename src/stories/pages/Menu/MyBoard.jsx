@@ -130,7 +130,7 @@ const MyBoard = () => {
                                 time={question.time}
                                 views={question.views}
                                 like={question.like}
-                                img={question.img_list}
+                                img={question.preview_img}
                                 limit={question.restricted_type}
                                 user_main={question.user_main}
                             />

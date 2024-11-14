@@ -10,6 +10,8 @@ import useWindowSize from "../../components/Common/WindowSize";
 import BaseAxios from "../../../axioses/BaseAxios";
 import AdBox from "../../components/Common/AdBox";
 import { Spinner } from "../../components/Common/Spinner";
+import Modal from "../../components/Common/Modal";
+import Button from "../../components/Button";
 
 const QnAPage = () => {
     const [questionData, setQuestionData] = useState([]);
@@ -162,6 +164,27 @@ const QnAPage = () => {
         return postsWithAds;
     };
 
+    
+    const [modalNotifyContent, setModalNotifyContent] = useState(null);
+    const [totalModalNotifyContent, setTotalModalNotifyContent] = useState([]);
+    const [currentModalIndex, setCurrentModalIndex] = useState(0);
+    const modalNotifyRef = useRef();
+
+    const closeHandler = () => {
+        modalNotifyRef.current.close();
+
+        if (totalModalNotifyContent.length > 1) {
+            if (currentModalIndex < totalModalNotifyContent.length) {
+                const newIndex = currentModalIndex + 1;
+                setCurrentModalIndex(newIndex);
+                setModalNotifyContent(totalModalNotifyContent[newIndex]);
+                modalNotifyRef.current.open();
+            } else {
+                setCurrentModalIndex(0);
+            }
+        }
+    };
+
     return (
         <Wrapper>
             <Header
@@ -186,6 +209,14 @@ const QnAPage = () => {
                     </Content>
                 </EmptyBox>
             )}
+            <Modal ref={modalNotifyRef} width="300px">
+                <div dangerouslySetInnerHTML={{ __html: modalNotifyContent }} />
+                <Button
+                    onClick={closeHandler}
+                    label={"확인"}
+                    width={"130px"}
+                />
+            </Modal>
             <FixedIcon src={"/Icons/Question.svg"} url={"/qna/post"} />
             <FixedBottomContainer>
                 <NavBar state="QnA" />

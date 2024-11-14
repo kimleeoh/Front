@@ -130,7 +130,7 @@ const SelectSubject = ({ startId, isBackClicked, onCategorySelect }) => {
             {finalOptions.length === 0
                 ? subCategories.map((option) => (
                       <ListItemContainer>
-                          <ListItem
+                          <ListItem 
                               onClick={() =>
                                   handleCategorySelect(option.id, option.label)
                               }
@@ -172,6 +172,8 @@ const Wrapper = styled.div`
     flex-direction: column;
     width: 100%;
     font-size: 15px;
+    
+    border-radius: 8px;
 `;
 const ListItemContainer = styled.div`
     display: flex;
