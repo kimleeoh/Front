@@ -24,7 +24,7 @@ const Report = () => {
         new Array(8).fill(false)
     );
     const [isLoading, setIsLoading] = useState(false);
-    const { category, _id } = useParams();
+    const { category, _id, title } = useParams();
     const navigate = useNavigate();
     const modalRef = useRef();
 
@@ -86,7 +86,9 @@ const Report = () => {
                 backButton={true}
                 searchButton={false}
             />
-            "" 게시글의 신고사유를 선택해주세요.
+            <div style={{display: 'flex', gap: '8px'}}>
+            <span style={{ fontWeight: 'bold' }}>{title} </span> 게시글의 신고사유를 선택해주세요.
+            </div>
             <Container>
                 {reportReasons.map((reason, index) => (
                     <Checker
@@ -151,8 +153,6 @@ const Report = () => {
 
 export default Report;
 
-// 스타일 컴포넌트는 이전과 동일하므로 생략했습니다.
-
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -164,6 +164,7 @@ const Wrapper = styled.div`
     padding: 0 20px;
     box-sizing: border-box;
     gap: 8px;
+    color: #434b60;
 `;
 
 const Container = styled.div`

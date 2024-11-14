@@ -118,7 +118,12 @@ const MenuPage = () => {
 
     return (
         <Wrapper>
-            <Header maxWidth={windowSize}><HeaderBackground />전체 메뉴</Header>
+            <TopLayout>
+                <BlurBackground />
+                <Head maxWidth={windowSize > 430 ? 400 : windowSize - 40}>
+                    전체 메뉴
+                </Head>
+            </TopLayout>
             <Link
                 to="/mypage"
                 style={{ textDecoration: "none", width: "100%" }}
@@ -247,28 +252,24 @@ const Wrapper = styled.div`
     box-sizing: border-box;
 `;
 
-const Header = styled.div`
-    display: flex;
-    width: 100%;
-    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
-    box-sizing: border-box;
-    height: 80px;
-    padding: 10px 20px;
-    justify-content: space-between;
-    align-items: flex-end;
-    color: #434b60;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
+
+// Styled Components
+const TopLayout = styled.div`
     position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
     z-index: 1000;
+    padding: 10px;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
 `;
 
-const HeaderBackground = styled.div`
+const BlurBackground = styled.div`
     position: absolute;
     top: 0;
     left: 0;
@@ -278,8 +279,23 @@ const HeaderBackground = styled.div`
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     z-index: -1;
+`;
 
-    
+const Head = styled.div`
+    position: relative;
+    display: flex;
+    width: 100%;
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)}px;
+    box-sizing: border-box;
+    height: 80px;
+    padding: 10px 20px;
+    justify-content: space-between;
+    align-items: center;
+    color: #434b60;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 `;
 
 const MyPage = styled.div`

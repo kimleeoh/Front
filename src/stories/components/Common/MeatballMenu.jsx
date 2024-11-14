@@ -45,7 +45,7 @@ const MeatballMenu = ({
     };
 
     const handleReportClick = () => {
-        navigate(`/${category_type}/${_id}/report`);
+        navigate(`/${category_type}/${_id}/${title}/report`);
         setIsPopupOpen(false);
     };
 

@@ -114,10 +114,6 @@ const BlurBackground = styled.div`
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   z-index: -1;
-
-  @supports not (backdrop-filter: blur(8px)) {
-    background: rgba(240, 242, 244, 0.95);
-  }
 `;
 
 const Head = styled.div`

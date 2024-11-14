@@ -158,23 +158,25 @@ const HomePage = () => {
 
     return (
         <Wrapper>
-            <Header maxWidth={maxWidth}>
-                <HeaderBackground />
-                <div style={{ marginBottom: "10px", width: "100%" }}>
-                    <Logo theme="darkgray" />
-                </div>
-                <PointButton onClick={() => navigate("/points")}>
-                    내 포인트: {originPoint}P
-                </PointButton>
-                <NotificationButton onClick={() => navigate("/notification")}>
-                    <img
-                        src={"/Icons/Bellnactive.svg"}
-                        alt="Notification"
-                        loading="lazy"
-                    />
-                    {hasNewNotification && <BlueDot />}
-                </NotificationButton>
-            </Header>
+            <TopLayout>
+                <BlurBackground />
+                <Head maxWidth={windowSize > 430 ? 400 : windowSize - 40}>
+                    <div style={{ marginBottom: "10px", width: "100%" }}>
+                        <Logo theme="darkgray" />
+                    </div>
+                    <PointButton onClick={() => navigate("/points")}>
+                        내 포인트: {originPoint}P
+                    </PointButton>
+                    <NotificationButton onClick={() => navigate("/notification")}>
+                        <img
+                            src={"/Icons/Bellnactive.svg"}
+                            alt="Notification"
+                            loading="lazy"
+                        />
+                        {hasNewNotification && <BlueDot />}
+                    </NotificationButton>
+                </Head>
+            </TopLayout>
             <Content maxWidth={maxWidth}>
                 <Title>내가 답할 수 있는 게시물</Title>
                 {answerablePosts.length > 0 ? (
@@ -231,11 +233,40 @@ const Wrapper = styled.div`
     box-sizing: border-box;
     width: 100%;
 `;
+const TopLayout = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    z-index: 1000;
+    padding: 10px;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+`;
 
-const Header = styled.div`
+const BlurBackground = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(240, 242, 244, 0.3);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    z-index: -1;
+`;
+
+const Head = styled.div`
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)}px;
+    box-sizing: border-box;
+
+
     box-sizing: border-box;
     width: 100%;
-    max-width: ${(props) => props.maxWidth};
     height: 80px;
     padding: 10px 20px;
     display: flex;
@@ -246,21 +277,19 @@ const Header = styled.div`
     top: 0;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
+
+    // Logo container
+    > div:first-child {
+        min-width: 120px; // Logo의 최소 너비 설정
+        margin-bottom: 10px;
+        img {
+            width: 100%;
+            height: auto;
+            min-width: 120px; // Logo 이미지의 최소 너비 설정
+        }
+    }
 `;
 
-const HeaderBackground = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(240, 242, 244, 0.3);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    z-index: -1;
-
-    
-`;
 
 const PointButton = styled.button`
     display: flex;
@@ -289,18 +318,17 @@ const PointButton = styled.button`
 const NotificationButton = styled.button`
     background: none;
     border: none;
+    min-width: 40px; // 최소 너비 설정
     width: 40px;
     height: 40px;
-    position: relative;
     border-radius: 12px;
     transition: all 0.3s ease;
     cursor: pointer;
 
     img {
-        width: 100%;
-        height: auto;
+        width: 20px; // 고정 너비 설정
+        height: 23px; // 고정 높이 설정
         object-fit: contain;
-        loading: lazy;
     }
 
     &:active {

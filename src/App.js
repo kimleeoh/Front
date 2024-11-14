@@ -177,7 +177,7 @@ const App = () => {
                                     element={<PostsDetail />}
                                 />
                                 <Route
-                                    path="/:category/:_id/report"
+                                    path="/:category/:_id/:title/report"
                                     element={<Report />}
                                 />
                                 <Route path="/board" element={<BoardHome />} />

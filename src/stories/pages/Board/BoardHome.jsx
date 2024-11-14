@@ -131,6 +131,7 @@ const BoardHome = () => {
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
+            <Background>
             <Wrapper maxWidth={windowSize}>
                 <Header maxWidth={windowSize}>게시판</Header>
                 <ContentWrapper>
@@ -221,6 +222,7 @@ const BoardHome = () => {
                     <NavBar state="Board" />
                 </FixedBottomContainer>
             </Wrapper>
+            </Background>
         </Suspense>
     );
 };
@@ -245,6 +247,13 @@ const Wrapper = styled.div`
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     box-sizing: border-box;
     margin: 0 auto;
+    padding: 0 20px;
+`;
+
+const Background = styled.div`
+    background-color: ${backgroundColor};
+    min-height: 100vh;
+    width: 100%;
 `;
 
 const ContentWrapper = styled.div`
