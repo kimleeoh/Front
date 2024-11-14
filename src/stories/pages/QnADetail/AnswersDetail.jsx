@@ -69,7 +69,7 @@ const Answers = ({
         };
         sessionStorage.setItem("answer_like_list", aList);
     };
-
+//Lv. {level} |{" "}
     return (
         <OutWrapper maxWidth={windowSize}>
             <Wrapper>
@@ -83,12 +83,12 @@ const Answers = ({
                         {/* <img src={"/Icons/Profile.svg"} /> */}
                         <ProfileImg src={"/Profile.svg"} />
                         <ProfileContainer>
-                            {/* <LevelGrade>
-                                Lv. {level} |{" "}
+                            { <LevelGrade>
+                                
                                 {user_grade == null
                                     ? "미등록"
                                     : `${user_grade} 등급`}
-                            </LevelGrade> */}
+                            </LevelGrade> }
                             <MajorName>
                                 {major} {name}
                             </MajorName>
