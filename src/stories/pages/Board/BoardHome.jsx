@@ -133,7 +133,7 @@ const BoardHome = () => {
         <Suspense fallback={<div>Loading...</div>}>
             <Wrapper maxWidth={windowSize}>
                 <Header maxWidth={windowSize}>게시판</Header>
-                <ContentWrapper maxWidth={windowSize}>
+                <ContentWrapper>
                     {renderBoardTitle("내가 수강 중인 과목", "subject")}
                     <SubjectWrapper>
                         <ScrollableSubjectList>
@@ -236,6 +236,7 @@ const borderRadius = "24px";
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     background-color: ${backgroundColor};
     min-height: 100vh;
@@ -243,18 +244,18 @@ const Wrapper = styled.div`
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     box-sizing: border-box;
+    margin: 0 auto;
 `;
 
 const ContentWrapper = styled.div`
     width: 100%;
-    margin: 0 auto;
     padding: 0 10px;
     box-sizing: border-box;
 `;
 
 const Header = styled.div`
     width: 100%;
-
+    max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     height: 88px;
     padding: 0 20px;
     display: flex;
