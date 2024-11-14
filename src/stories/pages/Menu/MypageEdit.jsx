@@ -424,9 +424,7 @@ const EditButton = styled.button`
 
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
-    @supports not (backdrop-filter: blur(8px)) {
-        background: rgba(240, 242, 244, 0.95);
-    }
+    
 `;
 
 // Modified Profile Component

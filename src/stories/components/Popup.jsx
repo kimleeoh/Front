@@ -48,9 +48,7 @@ const PopupWrapper = styled.div`
     background: rgba(255, 255, 255, 0.7);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
-    @supports not (backdrop-filter: blur(8px)) {
-        background: rgba(240, 242, 244, 0.95);
-    }
+    
         
     box-shadow: 6px 6px 8px 0px rgba(0, 0, 0, 0.25);
     border-radius: 16px;

@@ -279,9 +279,7 @@ const HeaderBackground = styled.div`
     backdrop-filter: blur(8px);
     z-index: -1;
 
-    @supports not (backdrop-filter: blur(8px)) {
-        background: rgba(240, 242, 244, 0.95);
-    }
+    
 `;
 
 const MyPage = styled.div`
