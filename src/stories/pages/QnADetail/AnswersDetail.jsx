@@ -85,7 +85,7 @@ const Answers = ({
                         <ProfileContainer>
                             { <LevelGrade>
                                 
-                                {user_grade == null
+                                {user_grade == null || user_grade == undefined
                                     ? "미등록"
                                     : `${user_grade} 등급`}
                             </LevelGrade> }
