@@ -264,13 +264,18 @@ const Header = styled.div`
     font-size: 24px;
     color: ${mainColor};
     background: rgba(240, 242, 244, 0.3);
-    backdrop-filter: blur(5px);
     position: fixed;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
     box-sizing: border-box;
+
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    @supports not (backdrop-filter: blur(8px)) {
+        background: rgba(240, 242, 244, 0.95);
+    }
 `;
 
 const SubjectWrapper = styled.div`

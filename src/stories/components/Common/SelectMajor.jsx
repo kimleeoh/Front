@@ -264,7 +264,6 @@ const DropdownListContainer = styled.div`
     z-index: 1;
     border-radius: 0 0 16px 16px;
     background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(8px);
     max-height: 180px;
     transition: all 0.3s ease;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); // box-shadow 적용
@@ -273,6 +272,12 @@ const DropdownListContainer = styled.div`
 
     display: flex;
     flex-direction: column;
+
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    @supports not (backdrop-filter: blur(8px)) {
+        background: rgba(240, 242, 244, 0.95);
+    }
 `;
 
 const DropdownList = styled.ul`

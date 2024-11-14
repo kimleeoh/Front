@@ -118,7 +118,7 @@ const MenuPage = () => {
 
     return (
         <Wrapper>
-            <Header maxWidth={windowSize}>전체 메뉴</Header>
+            <Header maxWidth={windowSize}><HeaderBackground />전체 메뉴</Header>
             <Link
                 to="/mypage"
                 style={{ textDecoration: "none", width: "100%" }}
@@ -252,13 +252,10 @@ const Header = styled.div`
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     box-sizing: border-box;
-    height: 88px;
+    height: 80px;
     padding: 10px 20px;
     justify-content: space-between;
     align-items: flex-end;
-    flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
     color: #434b60;
     font-size: 24px;
     font-style: normal;
@@ -267,6 +264,24 @@ const Header = styled.div`
     position: fixed;
     top: 0;
     z-index: 1000;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+`;
+
+const HeaderBackground = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(240, 242, 244, 0.3);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    z-index: -1;
+
+    @supports not (backdrop-filter: blur(8px)) {
+        background: rgba(240, 242, 244, 0.95);
+    }
 `;
 
 const MyPage = styled.div`

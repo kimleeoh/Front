@@ -412,7 +412,6 @@ const EditButton = styled.button`
     background-size: ${(props) =>
         props.iconSize || "20px"}; /* 아이콘 크기 prop으로 조정 */
     background-color: transparent; /* 배경색 제거 */
-    backdrop-filter: blur(12px); /* 배경 흐리게 처리 */
     border: none;
     cursor: pointer;
     border-radius: 50%;
@@ -421,6 +420,12 @@ const EditButton = styled.button`
 
     &:active {
         scale: 0.95;
+    }
+
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    @supports not (backdrop-filter: blur(8px)) {
+        background: rgba(240, 242, 244, 0.95);
     }
 `;
 

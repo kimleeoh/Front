@@ -310,10 +310,15 @@ const FractionIndicator = styled.div`
     bottom: 10px;
     right: 10px;
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
     color: ${(props) => props.color};
     font-size: 14px;
     font-weight: 700;
     padding: 3px 6px;
     border-radius: 10px;
+
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    @supports not (backdrop-filter: blur(8px)) {
+        background: rgba(240, 242, 244, 0.95);
+    }
 `;

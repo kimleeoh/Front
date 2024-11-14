@@ -159,6 +159,7 @@ const HomePage = () => {
     return (
         <Wrapper>
             <Header maxWidth={maxWidth}>
+                <HeaderBackground />
                 <div style={{ marginBottom: "10px", width: "100%" }}>
                     <Logo theme="darkgray" />
                 </div>
@@ -235,16 +236,32 @@ const Header = styled.div`
     box-sizing: border-box;
     width: 100%;
     max-width: ${(props) => props.maxWidth};
-    height: 88px;
+    height: 80px;
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    background: rgba(240, 242, 244, 0.3);
-    backdrop-filter: blur(5px);
     position: fixed;
     z-index: 1000;
     top: 0;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+`;
+
+const HeaderBackground = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(240, 242, 244, 0.3);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    z-index: -1;
+
+    @supports not (backdrop-filter: blur(8px)) {
+        background: rgba(240, 242, 244, 0.95);
+    }
 `;
 
 const PointButton = styled.button`
@@ -263,6 +280,7 @@ const PointButton = styled.button`
     text-decoration: underline;
     cursor: pointer;
     transition: all 0.3s ease;
+    background: transparent;
 
     &:active {
         transform: scale(0.95);

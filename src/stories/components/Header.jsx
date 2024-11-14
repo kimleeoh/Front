@@ -37,6 +37,7 @@ const Header = forwardRef(
 
     return (
       <TopLayout>
+        <BlurBackground />
         <Head maxWidth={windowSize > 430 ? 400 : windowSize - 40}>
           <LeftContent>
             {backButton && (
@@ -93,14 +94,30 @@ const TopLayout = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(240, 242, 244, 0.3);
-  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
   height: 80px;
   z-index: 1000;
   padding: 10px;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+`;
+
+const BlurBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(240, 242, 244, 0.3);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  z-index: -1;
+
+  @supports not (backdrop-filter: blur(8px)) {
+    background: rgba(240, 242, 244, 0.95);
+  }
 `;
 
 const Head = styled.div`
