@@ -151,10 +151,10 @@ const UserComment = ({
                                 src={profileImg ? profileImg : "/Profile.svg"}
                             />
                             <ProfileContainer>
-                                { <LevelGrade>
+                                {/* { <LevelGrade>
                                     
                                     {whatScore ? `${whatScore} 등급` : "미정"}
-                                </LevelGrade> }
+                                </LevelGrade> } */}
                                 <MajorName>
                                     {major} {name}
                                     <span style={{ color: "#3182F7" }}>

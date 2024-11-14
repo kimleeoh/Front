@@ -83,12 +83,12 @@ const Answers = ({
                         {/* <img src={"/Icons/Profile.svg"} /> */}
                         <ProfileImg src={"/Profile.svg"} />
                         <ProfileContainer>
-                            { <LevelGrade>
+                            {/* { <LevelGrade>
                                 
                                 {user_grade == "" || user_grade == undefined
                                     ? "미등록"
                                     : `${user_grade} 등급`}
-                            </LevelGrade> }
+                            </LevelGrade> } */}
                             <MajorName>
                                 {major} {name}
                             </MajorName>
