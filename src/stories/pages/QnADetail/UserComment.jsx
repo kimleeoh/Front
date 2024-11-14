@@ -43,7 +43,7 @@ const UserComment = ({
         if (limit === false) {
             setAnswerable(true);
         } else if (
-            (limit === true && whatScore === "A0") ||
+            whatScore === "A0" ||
             whatScore === "A+" ||
             whatScore === "A-"
         ) {
@@ -86,7 +86,7 @@ const UserComment = ({
                 },
             });
             alert("답변이 등록되었습니다.");
-            navigate(`/qna/${now_id}/edit`);
+            navigate(`/qna/${now_id}`);
         };
 
         if (isFormValid) submitHandler();
@@ -102,8 +102,8 @@ const UserComment = ({
                 <Wrapper>
                     <SubWrapper>
                         <ProfileImg
-                            //src={profileImg ? profileImg : "/Profile.svg"}
-                            src={"/Profile.svg"}
+                            src={profileImg ? profileImg : "/Profile.svg"}
+                            //src={"/Profile.svg"}
                         />
                         <ProfileContainer>
                             {/* <LevelGrade>Lv. {level} | A 등급</LevelGrade> */}
@@ -141,6 +141,7 @@ const UserComment = ({
             </OutWrapper>
         );
     } else {
+        //Lv. {level} |{" "}
         if (answerable) {
             return (
                 <OutWrapper maxWidth={windowSize}>
@@ -150,10 +151,10 @@ const UserComment = ({
                                 src={profileImg ? profileImg : "/Profile.svg"}
                             />
                             <ProfileContainer>
-                                {/* <LevelGrade>
-                                    Lv. {level} |{" "}
+                                { <LevelGrade>
+                                    
                                     {whatScore ? `${whatScore} 등급` : "미정"}
-                                </LevelGrade> */}
+                                </LevelGrade> }
                                 <MajorName>
                                     {major} {name}
                                     <span style={{ color: "#3182F7" }}>
