@@ -45,7 +45,7 @@ const GradeRegister = () => {
                     const index =
                         (parseInt(selectedYear) - 2018) * 2 +
                         (parseInt(selectedTerm) - 1);
-                    const response = await BaseAxios.get(`/api/score`);
+                    const response = await BaseAxios.get(`/api/l/score`);
                     const data = response.data;
                     setSubjects(
                         data.semester_list[index].subject_list.map(
@@ -89,7 +89,7 @@ const GradeRegister = () => {
             formData.append("semester", aa);
             formData.append("img", UploadedFiles);
 
-            await BaseAxios.post("/api/score", formData, {
+            await BaseAxios.post("/api/l/score", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

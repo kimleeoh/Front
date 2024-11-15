@@ -62,7 +62,7 @@ const Tips = ({
         setIsLoading(true);
 
         try {
-            const response = await BaseAxios.post("/api/tips/manage", {
+            const response = await BaseAxios.post("/api/l/tips/manage", {
                 docid: _id,
                 Ruser: Ruser._id,
                 category_type: category_type,
@@ -76,7 +76,7 @@ const Tips = ({
                 ) {
                     // 여기에 구매 로직을 추가할 수 있습니다.
                     const response = await BaseAxios.post(
-                        "/api/tips/purchase",
+                        "/api/l/tips/purchase",
                         { docid: _id, category_type: category_type }
                     );
                     if (response.status == 200)

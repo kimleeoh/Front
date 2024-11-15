@@ -39,7 +39,7 @@ const MyPageEdit = () => {
         const fetchData = async () => {
             try {
                 const [popularPosts] = await Promise.all([
-                    BaseAxios.post("/api/mypage/h/trending"),
+                    BaseAxios.post("/api/h/mypage/trending"),
                 ]);
 
                 if (Array.isArray(popularPosts.data)) {
@@ -69,7 +69,7 @@ const MyPageEdit = () => {
 
     const handleUpdateProfile = async () => {
         try {
-            const response = await BaseAxios.post("/api/update-profile", {
+            const response = await BaseAxios.post("/api/l/update-profile", {
                 name,
                 intro,
                 profile_img: profileImg,

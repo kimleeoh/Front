@@ -78,7 +78,7 @@ const MenuPage = () => {
 
     const confirmLogout = useCallback(async () => {
         try {
-            await BaseAxios.delete("/api/logout");
+            await BaseAxios.delete("/api/l/logout");
             modalRef.current.close();
             setUserData(null);
             navigate("/");

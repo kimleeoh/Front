@@ -21,7 +21,7 @@ const History = () => {
 
     const fetchData = async (filtersArray) => {
         console.log("filtersArray: ", filtersArray);
-        const response = await BaseAxios.post("/api/menu/purchased", {
+        const response = await BaseAxios.post("/api/l/menu/purchased", {
             filters: filtersArray,
         });
         console.log(response.data.docs);

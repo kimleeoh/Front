@@ -17,7 +17,7 @@ const Searching = () => {
         setLoading(true); // 로딩 시작
         try {
             const response = await BaseAxios.get(
-                `/api/search/posts?query=${query}`
+                `/api/l/search/posts?query=${query}`
             ); // 필요한 엔드포인트로 조정
             setPosts(response.data); // 응답 데이터를 포스트 상태에 저장
         } catch (error) {

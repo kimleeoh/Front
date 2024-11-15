@@ -91,10 +91,10 @@ const MeatballMenu = ({
             try {
                 // MongoDB에서 데이터 삭제
                 if (categories === "qna") {
-                    await BaseAxios.delete(`/api/${categories}/${_id}`);
+                    await BaseAxios.delete(`/api/l/${categories}/${_id}`);
                 } else {
                     await BaseAxios.delete(
-                        `/api/${categories}/${category_type}/${_id}`
+                        `/api/l/${categories}/${category_type}/${_id}`
                     );
                 }
 

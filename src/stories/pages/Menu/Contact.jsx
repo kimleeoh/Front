@@ -76,7 +76,7 @@ const Contact = () => {
 
         if (isFormValid) {
             // Add your API call here to send updatedFormValues to the backend.
-            await BaseAxios.post("/api/qna/create/post", updatedFormValues);
+            await BaseAxios.post("/api/l/qna/create/post", updatedFormValues);
             console.log(updatedFormValues);
         } else {
             setShowValidationMessages(true);

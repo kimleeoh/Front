@@ -32,7 +32,7 @@ const Report = () => {
         if (selectedReasons.some((reason) => reason)) {
             setIsLoading(true);
             try {
-                const response = await BaseAxios.post("/api/warn", {
+                const response = await BaseAxios.post("/api/l/warn", {
                     filters: category, // 또는 적절한 필터 값
                     warn_why: selectedReasons,
                     id: _id,

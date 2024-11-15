@@ -74,7 +74,7 @@ const PostQuestionPage = () => {
 
         if (isFormValid) {
             console.log(updatedFormValues.images);
-            await BaseAxios.post("/api/qna/create/post", updatedFormValues, {
+            await BaseAxios.post("/api/l/qna/create/post", updatedFormValues, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

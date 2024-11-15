@@ -59,7 +59,7 @@ const EditBoardPage = () => {
         if (title == "내가 수강 중인 과목") type = 1;
         else if (title == "즐겨찾기") type = 2;
         else type = 3;
-        BaseAxios.post("/api/board/edit", {
+        BaseAxios.post("/api/l/board/edit", {
             type: type,
             subject: subjects,
         }).then((response) => {
@@ -101,7 +101,7 @@ const EditBoardPage = () => {
         if (title == "내가 수강 중인 과목") type = 1;
         else if (title == "즐겨찾기") type = 2;
         else type = 3;
-        BaseAxios.post("/api/board/edit", {
+        BaseAxios.post("/api/l/board/edit", {
             type: type,
             subject: subjects,
         }).then((response) => {

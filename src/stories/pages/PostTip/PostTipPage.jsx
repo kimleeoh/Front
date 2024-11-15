@@ -70,7 +70,7 @@ const PostTipsPage = () => {
 
         if (isFormValid) {
             console.log(updatedFormValues.images);
-            await BaseAxios.post("/api/tips/create/post", updatedFormValues, {
+            await BaseAxios.post("/api/l/tips/create/post", updatedFormValues, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

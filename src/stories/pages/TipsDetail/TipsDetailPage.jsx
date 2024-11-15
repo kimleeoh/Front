@@ -20,7 +20,7 @@ const TipsDetailPage = () => {
             try {
                 setIsLoading(true);
                 const response = await BaseAxios.get(
-                    `/api/tips/${category_type}/${docid}`
+                    `/api/l/tips/${category_type}/${docid}`
                 );
                 console.log("response.data: ", response.data);
                 setTipData(response.data);
@@ -28,7 +28,7 @@ const TipsDetailPage = () => {
 
                 // Move checkMine logic here
                 const checkMineResponse = await BaseAxios.post(
-                    "/api/tips/manage",
+                    "/api/l/tips/manage",
                     {
                         docid: docid,
                         category_type: category_type,

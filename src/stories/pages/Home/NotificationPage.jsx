@@ -17,7 +17,7 @@ const NotificationPage = () => {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await BaseAxios.get("/api/notify");
+                const response = await BaseAxios.get("/api/l/notify");
                 setNotifications(response.data.notifyList);
                 setLoading(false);
             } catch (error) {
@@ -45,7 +45,7 @@ const NotificationPage = () => {
 
     const revertNewHandler = async () => {
         try {
-            await BaseAxios.post("/api/notify/unnew");
+            await BaseAxios.post("/api/l/notify/unnew");
             navigate(-1);
         } catch (error) {
             console.error("Failed to revert new notifications:", error);

@@ -32,7 +32,7 @@ const BoardHome = () => {
 
     const fetchData = async () => {
         try {
-            const response = await BaseAxios.get("/api/board");
+            const response = await BaseAxios.get("/api/l/board");
             console.log("response: ", response.data);
             const fetchedData = response.data;
             if (fetchedData.enroll && fetchedData.enroll.length > 0) {

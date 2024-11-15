@@ -25,7 +25,7 @@ const Bookmarks = () => {
 
     const fetchApi = async (filtersArray) => {
         try {
-            const response = await BaseAxios.post("/api/menu/scraplist", {
+            const response = await BaseAxios.post("/api/l/menu/scraplist", {
                 filters: filtersArray,
             });
 

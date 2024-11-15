@@ -126,7 +126,7 @@ const SignUpHandler = async (step = 1, formData) => {
             };
 
             const response = await BaseAxios.post(
-                "/api/register/page/1",
+                "/api/l/register/page/1",
                 passData
             );
 
@@ -150,7 +150,7 @@ const SignUpHandler = async (step = 1, formData) => {
             };
 
             const response = await BaseAxios.post(
-                "/api/register/page/2",
+                "/api/l/register/page/2",
                 passData
             );
             //response 검사해서 오류 코드 뜨면 navigate하는 함수
@@ -164,7 +164,7 @@ const SignUpHandler = async (step = 1, formData) => {
             };
 
             const response = await BaseAxios.post(
-                "/api/register/page/3",
+                "/api/l/register/page/3",
                 passData
             );
             if (response.status == 201) {
@@ -182,7 +182,7 @@ const SignUpHandler = async (step = 1, formData) => {
             };
 
             const response = await BaseAxios.post(
-                "/api/register/page/4",
+                "/api/l/register/page/4",
                 passData
             );
             //response 검사해서 오류 코드 뜨면 navigate하는 함수
@@ -196,7 +196,7 @@ const SignUpHandler = async (step = 1, formData) => {
             };
 
             const response = await BaseAxios.post(
-                "/api/register/page/5",
+                "/api/l/register/page/5",
                 passData
             );
             //response 검사해서 오류 코드 뜨면 navigate하는 함수
@@ -209,7 +209,7 @@ const SignUpHandler = async (step = 1, formData) => {
                 imgLink: sensitiveInfo.encrypt(formData),
             };
             const response = await BaseAxios.post(
-                "/api/register/page/6",
+                "/api/l/register/page/6",
                 passData
             );
             //response 검사해서 오류 코드 뜨면 navigate하는 함수

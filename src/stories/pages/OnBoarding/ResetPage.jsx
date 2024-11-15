@@ -75,7 +75,7 @@ const ResetPage = () => {
                 if (step === 1) {
                     setIsLoading(true);
                     const response = await BaseAxios.post(
-                        "/api/findPassword/email",
+                        "/api/l/findPassword/email",
                         { email: formData.email }
                     );
                     if (response.status === 200) {
@@ -90,7 +90,7 @@ const ResetPage = () => {
                     }
                 } else if (step === 2) {
                     const response = await BaseAxios.post(
-                        "/api/findPassword/emailAuthNum",
+                        "/api/l/findPassword/emailAuthNum",
                         {
                             email: formData.email,
                             authNum: formData.confirmEmail,
@@ -131,7 +131,7 @@ const ResetPage = () => {
             console.log(key, ib);
             const encryptedPassword = encryptAES(formData.password, key, ib);
             const response = await BaseAxios.post(
-                "/api/findPassword/changePassword",
+                "/api/l/findPassword/changePassword",
                 {
                     email: formData.email,
                     newPassword: encryptedPassword,

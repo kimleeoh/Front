@@ -34,7 +34,7 @@ const UnifiedBoard = () => {
         try {
             console.log("Sending filters:", filtersArray);
             console.log("id: ", state.id);
-            const response = await BaseAxios.post("/api/board/detail", {
+            const response = await BaseAxios.post("/api/l/board/detail", {
                 subjectId: state.id,
                 filters: filtersArray,
                 isAGradeOnly: isAGradeOnly,

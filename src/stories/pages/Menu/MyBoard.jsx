@@ -24,7 +24,7 @@ const MyBoard = () => {
 
     const fetchApi = async (filtersArray) => {
         try {
-            const response = await BaseAxios.post("/api/menu/postlist", {
+            const response = await BaseAxios.post("/api/l/menu/postlist", {
                 filters: filtersArray,
             });
             if (response.data.message) {

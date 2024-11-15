@@ -82,7 +82,7 @@ const NotificationBox = ({ _id, type, timestamp, data, url, checked }) => {
             if (!checked) {
                 try {
                     // 백엔드로 checked 상태 전송
-                    await BaseAxios.post("/api/notify/check", {
+                    await BaseAxios.post("/api/l/notify/check", {
                         notificationId: _id,
                     });
                     checked = true;

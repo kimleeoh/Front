@@ -80,7 +80,7 @@ const UserComment = ({
                 });
             }
 
-            await BaseAxios.post("/api/qna/create/answer", formValues, {
+            await BaseAxios.post("/api/l/qna/create/answer", formValues, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

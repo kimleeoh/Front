@@ -18,7 +18,7 @@ const History = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const response = await BaseAxios.get("/api/menu/recentlist");
+            const response = await BaseAxios.get("/api/l/menu/recentlist");
             console.log("response: ", response);
             const fetchedData = response.data;
 

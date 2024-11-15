@@ -64,7 +64,7 @@ const Grades = () => {
     useEffect(() => {
         const fetchGrades = async () => {
             try {
-                const response = await BaseAxios.get("/api/score");
+                const response = await BaseAxios.get("/api/l/score");
                 const data = response.data;
                 console.log(response.data);
                 // filled가 true인 학기만 필터링하고, 인덱스 정보도 함께 저장

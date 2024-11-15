@@ -36,7 +36,7 @@ const EditTipPage = () => {
         const fetchTipData = async () => {
             try {
                 const response = await BaseAxios.get(
-                    `/api/tips/${categories}/${_id}`
+                    `/api/l/tips/${categories}/${_id}`
                 );
                 const tipData = response.data;
                 setFormValues({
@@ -96,7 +96,7 @@ const EditTipPage = () => {
                 // 현재 시간을 추가
                 const currentTime = new Date().toISOString(); // ISO 형식으로 현재 시간 설정
 
-                await BaseAxios.post(`/api/tips/update`, {
+                await BaseAxios.post(`/api/l/tips/update`, {
                     ...formValues,
                     type: type[0], // 서버에 단일 문자열로 전송
                     time: currentTime, // 시간 정보 포함

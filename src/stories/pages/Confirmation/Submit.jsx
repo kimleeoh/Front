@@ -28,7 +28,7 @@ const Submit = () => {
             // Send the POST request with the FormData
             const i = new FormData();
             i.append("img", selectedFile);
-            const r = await BaseAxios.post("/api/register/imgUpload", i, {
+            const r = await BaseAxios.post("/api/l/register/imgUpload", i, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
