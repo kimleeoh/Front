@@ -242,12 +242,11 @@ const Wrapper = styled.div`
     align-items: center;
     background-color: ${backgroundColor};
     min-height: 100vh;
-    padding: 100px 0 100px;
     width: 100%;
     max-width: ${(props) => (props.maxWidth > 430 ? "400px" : props.maxWidth)};
     box-sizing: border-box;
+    padding: 100px 20px;
     margin: 0 auto;
-    padding: 0 20px;
 `;
 
 const Background = styled.div`

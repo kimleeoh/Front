@@ -10,6 +10,7 @@ import UserProvider, { UserContext } from "./stories/context/UserContext"; // Us
 import { User } from "lucide-react";
 import EditQuestionPage from "./stories/pages/PostQuestion/EditQuestionPage";
 import { initializeGA } from "./gtag";
+import "./App.css";
 
 // React.lazy를 이용한 동적 import
 const StartPage = lazy(() => import("./stories/pages/OnBoarding/StartPage"));
