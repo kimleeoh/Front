@@ -25,7 +25,7 @@ const LoginPage = () => {
     const handleLogin = async () => {
         const res = await LoginHandler(formData);
         if (res.status === 200) {
-            navigate("/home");
+            navigate("/board");
         } else {
             alert(`Error during login: ${res.error}`);
             // 프론트 분들 이 에러 데이터 받아서 Error.jsx페이지에 넣으려면 어떻게 하면 될까요
@@ -40,7 +40,7 @@ const LoginPage = () => {
             </LogoWrapper>
             <LoginWrapper>
                 <TextField
-                    label="아이디"
+                    label="이메일"
                     name="username"
                     value={formData.username}
                     onChange={handleChange}
