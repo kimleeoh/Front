@@ -40,7 +40,7 @@ const LoginPage = () => {
             </LogoWrapper>
             <LoginWrapper>
                 <TextField
-                    label="아이디"
+                    label="이메일"
                     name="username"
                     value={formData.username}
                     onChange={handleChange}

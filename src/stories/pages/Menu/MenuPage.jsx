@@ -362,6 +362,7 @@ const Title = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    margin-left: 6px;
 `;
 
 const ButtonWrapper = styled.div`
