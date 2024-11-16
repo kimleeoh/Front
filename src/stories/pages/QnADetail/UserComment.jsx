@@ -86,7 +86,7 @@ const UserComment = ({
                 },
             });
             alert("답변이 등록되었습니다.");
-            navigate(0);
+            window.location.reload();
         };
 
         if (isFormValid) submitHandler();
