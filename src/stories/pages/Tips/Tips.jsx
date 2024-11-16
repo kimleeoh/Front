@@ -22,6 +22,7 @@ const Tips = ({
     views,
     time,
 }) => {
+    const adjustedPurchasePrice = purchase_price === 0 ? "FREE" : - purchase_price;
     const { width: windowSize } = useWindowSize();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
@@ -166,8 +167,8 @@ const Tips = ({
                             {likes}
                         </span>
                         <Point>
-                            <img src="/Point_white.svg" width={"14px"} /> -{" "}
-                            {purchase_price}
+                            <img src="/Point_white.svg" width={"14px"} /> 
+                            {adjustedPurchasePrice}
                         </Point>
                     </MetaContainer>
                 </Wrapper>
